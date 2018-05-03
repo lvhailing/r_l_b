@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:paddingBottom="25dp">
+    <TextView
+        android:id="@+id/tv_home_promotionMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/main_color_yellow"/>
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:src="@color/gray_light"
+        android:layout_margin="15dp"/>
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/tv_home_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中荣信托-兴创美林湖"
+            android:textSize="16sp"
+            android:textColor="@color/gray_dark"/>
+        <TextView
+            android:id="@+id/tv_home_recommendations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="兴创美林湖推荐语兴创美林湖推荐语兴创美林湖推荐语"
+            android:lineSpacingExtra="3dp"
+            android:textColor="@color/gray_d"/>
+    </LinearLayout>
+</LinearLayout>

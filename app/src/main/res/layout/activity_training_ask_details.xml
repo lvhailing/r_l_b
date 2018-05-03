@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:orientation="vertical"
+    tools:context="com.rulaibao.activity.MainActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lv_ask_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/white"
+        android:dividerHeight="0dip"
+        android:visibility="visible">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_ask_details_answer"
+        android:layout_width="55dip"
+        android:layout_height="55dip"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="40dip"
+        android:layout_marginRight="20dip"
+        android:background="@drawable/shape_circle_orange_light"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="回答"
+        android:textSize="16sp" />
+</FrameLayout>

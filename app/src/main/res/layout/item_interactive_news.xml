@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="12dp"
+              android:paddingRight="12dp"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+
+        <ImageView
+            android:id="@+id/iv_interactive_news_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_verify_password"/>
+
+        <TextView
+            android:id="@+id/tv_interactive_news_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@id/iv_interactive_news_photo"
+            android:text="渣渣辉"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_interactive_news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="00:00"/>
+
+        <TextView
+            android:id="@+id/tv_interactive_news_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/tv_interactive_news_time"
+            android:text="07-17"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_interactive_news_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="财富精灵PC端开发测试沟通，财富精灵APP功能规划原型设计制作"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tv_interactive_news_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_reply"
+        android:text="jkasjdiladjklasjdasdsadsadsadsadasdsadsadasdsak"
+        android:textColor="@color/txt_black2"/>
+
+    <View
+        style="@style/v_line"/>
+</LinearLayout>

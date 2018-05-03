@@ -1,0 +1,231 @@
+<resources>
+    <string name="app_name">如来保</string>
+    <string name="app_id">rulaibao</string>
+    <string name="app_chinesename">如来保版本更新</string>
+
+    <string name="net_fail_text">当前网络不可用，点此检查网络设置</string>
+
+
+
+    <!--研修-->
+
+    <string name="training">研修</string>
+
+
+    <string name="training_class">课程</string>
+    <string name="training_ask">问答</string>
+    <string name="training_circle">圈子</string>
+    <string name="training_promote">展业</string>
+    <string name="training_circle_all">全部圈子</string>
+
+    <string name="training_toask">我要提问</string>
+    <string name="training_answer">回答</string>
+    <string name="training_ask_details">问题详情</string>
+    <string name="training_answer_details">回答详情</string>
+    <string name="training_topic_details">话题详情</string>
+    <string name="training_topic_add">发布话题</string>
+
+    <string name="training_recommend">课程推荐</string>
+    <string name="training_boutique">精品课程</string>
+    <string name="training_hotask">热门问答</string>
+    <string name="training_refresh">换一换</string>
+
+    <string name="training_class_details">课程详情</string>
+    <string name="training_mycircle">我的圈子</string>
+    <string name="training_mycircle_join">我加入的圈子</string>
+    <string name="training_recommend_circle">推荐圈子</string>
+    <string name="training_set_authority">设置权限</string>
+
+
+    <string name="training_class_details_discuss_comment">发表</string>
+    <string name="training_class_details_discuss_comment_hint">我也来说几句...(最多500字)</string>
+
+
+
+    <!-- 登录 -->
+    <string name="login_title">中国财富领航者！</string>
+    <string name="login_phone">手机号：</string>
+    <string name="login_password">密码：</string>
+    <string name="login_forget_password">忘记密码？</string>
+    <string name="login_sign">注册</string>
+    <string name="login_name">登录</string>
+
+    <!-- 注册 -->
+    <string name="sign_phone_name">手机号码</string>
+    <string name="sign_verify">验证码</string>
+    <string name="sign_password">请输入登录密码</string>
+    <string name="sign_real_name">真实姓名</string>
+    <string name="sign_recommendation">推荐码</string>
+    <string name="sign_get_verify">获取验证码</string>
+    <string name="sign_agree">我已阅读并同意</string>
+    <string name="sign_web">《国恒保险》</string>
+    <string name="sign_agree_two">服务协议。</string>
+    <string name="sign_btn_name">立即注册</string>
+    <string name="sign_getsms_again">重新获取</string>
+
+
+    <!-- 找回密码 -->
+    <string name="findpassword_titile">密码找回</string>
+    <string name="findpassword_phone">注册的手机号</string>
+    <string name="findpassword_verify_code_mess">请输入注册手机号收到的短信验证码。</string>
+    <string name="findpassword_password">新密码</string>
+    <string name="findpassword_password_new">确认密码</string>
+    <string name="findpassword_btn">密码重置</string>
+
+
+    <!-- 手势密码 -->
+    <string name="gesture_edit_title">解锁</string>
+    <string name="forget_gesture_code">忘记手势密码</string>
+    <string name="setup_gesture_pattern">绘制解锁图案</string>
+    <string name="setup_gesture_code">设置手势密码</string>
+    <string name="setup_gesture_pattern_again">再次绘制解锁图案</string>
+    <string name="reset_gesture_code">重新设置手势密码</string>
+    <string name="title_changegesture">修改手势密码</string>
+    <string name="set_gesture_pattern_old">绘制旧解锁图案</string>
+    <string name="gesture_login">手势密码登录</string>
+
+    <string name="use_other_account_login">用其他账号登录</string>
+    <string name="set_gesture_pattern">绘制解锁图案</string>
+    <string name="set_gesture_pattern_reason">设置手势密码，防止他人未经授权查看</string>
+
+
+    <string name="set_gesture_pattern_jump">跳过</string>
+    <string name="title_gestureset">设置手势密码</string>
+
+    <!-- 产品预约 -->
+    <string name="product_appointment_name">你的姓名:</string>
+    <string name="product_appointment_phone">你的电话:</string>
+    <string name="product_appointment_insurance_company">保险公司:</string>
+    <string name="product_appointment_insurance_plan">保险计划:</string>
+    <string name="product_appointment_insurance_amount">保险金额:</string>
+    <string name="product_appointment_pay_year">年缴保费:</string>
+    <string name="product_appointment_insurance_limit">保险期限:</string>
+    <string name="product_appointment_pay_limit">缴费期限:</string>
+    <string name="product_appointment_time">预计交单时间:</string>
+    <string name="product_appointment_remark">备注说明:</string>
+    <string name="product_appointment_insurance_plan_edit">请输入保险计划</string>
+    <string name="product_appointment_insurance_amount_edit">请输入保险金额</string>
+    <string name="product_appointment_pay_year_edit">请输入年缴保费</string>
+    <string name="product_appointment_insurance_limit_edit">请输入保险期限</string>
+    <string name="product_appointment_pay_limit_edit">请输入缴费期限</string>
+    <string name="product_appointment_btn">提交预约</string>
+
+    <!-- 邀请好友内容 -->
+    <string name="shared_message">海德汇致力于打造最专业的客户服务，提供最前沿的海外产品，组织最舒适的线下体验，承办全方位的社交活动！</string>
+
+    <!-- 客服电话 -->
+    <string name="phone_number_format">4000000314</string>
+    <string name="phone_number">4000000314</string>
+
+    <string name="title_null"></string>
+    <string name="title_house_detail">房源详情</string>
+
+    <string name="btn_login">登录</string>
+    <string name="txt_my_policy">我的保单</string>
+    <string name="txt_check_pending">待审核</string>
+    <string name="txt_underwriting">已承保</string>
+    <string name="txt_problem_parts">问题件</string>
+    <string name="txt_return_receipt">回执签收</string>
+    <string name="txt_renewal_reminder">续保提醒</string>
+    <string name="txt_my_bookings">我的预约</string>
+    <string name="txt_my_ask">我的提问</string>
+    <string name="txt_my_topic">我的话题</string>
+    <string name="txt_my_participation">我的参与</string>
+    <string name="txt_my_collection">我的收藏</string>
+
+    <string name="setting_title">设置</string>
+    <string name="txt_setting_gesture_password">手势密码</string>
+    <string name="setting_change_login_password">修改登录密码</string>
+    <string name="setting_invite">推荐APP给好友</string>
+    <string name="setting_contact_customer_service">联系客服</string>
+    <string name="setting_platform_bulletin">平台公告</string>
+    <string name="setting_service_agreement">服务协议</string>
+    <string name="setting_about">关于国恒保险</string>
+    <string name="setting_logout">退出登录</string>
+    <string name="et_consulting_questions">请输入您想要咨询的问题,我们会及时与您联系！</string>
+    <string name="tv_phone">手机号码</string>
+    <string name="et_phone">请输入您的手机号码</string>
+    <string name="btn_submit">提交</string>
+    <string name="btn_cancel_booking">取消预约</string>
+
+    <!--设置页面文字-->
+    <string name="setting_change_gesture_password">修改手势密码</string>
+    <string name="setting_recommend_rule">推荐规则</string>
+    <string name="setting_recommend_record">推荐记录</string>
+    <string name="setting_recommend_btn">推荐给朋友</string>
+    <string name="setting_recommend_title">推荐APP给好友</string>
+
+    <string name="recommend_record_name">姓名</string>
+    <string name="recommend_record_phone">手机号</string>
+    <string name="recommend_record_status">认证状态</string>
+
+    <!--所有的页面标题-->
+    <string name="title_my_info">个人信息</string>
+    <string name="title_sales_certification">销售认证</string>
+    <string name="title_transaction_record">交易记录</string>
+    <string name="title_transaction_detail">交易明细</string>
+    <string name="title_policy_record">保单记录</string>
+    <string name="title_policy_record_detail">保单详情</string>
+    <string name="title_insurance_product">保险产品</string>
+    <string name="title_contact_customer_service">联系客服</string>
+    <string name="title_platform_bulletin">平台公告</string>
+    <string name="title_platform_bulletin_detail">公告详情</string>
+    <string name="title_renewal_reminder">续保提醒</string>
+    <string name="title_insurance_product_detail">产品详情</string>
+    <string name="title_plan">计划书</string>
+    <string name="title_policy_plan">保单规划</string>
+    <string name="title_product_appointment">产品预约</string>
+    <string name="title_policy_booking_list">预约列表</string>
+    <string name="title_policy_booking_detail">预约详情</string>
+    <string name="title_my_collection">我的收藏</string>
+    <string name="title_my_ask">我的提问</string>
+    <string name="title_my_topic">我的话题</string>
+    <string name="title_my_partake">我参与的</string>
+    <string name="title_interaction_news">互动消息</string>
+    <string name="title_new_members_of_circle">圈子新成员</string>
+    <string name="title_news">消息</string>
+    <string name="title_commission_news">佣金消息</string>
+    <string name="title_policy_news">保单消息</string>
+
+
+
+
+    <!-- 交易明细/保单详情 页面文字-->
+    <string name="bill_type">帐单类型：</string>
+    <string name="underwriting_time">承保时间：</string>
+    <string name="product_name">产品名称：</string>
+    <string name="policy_number">保单编号：</string>
+    <string name="customer_name">客户姓名：</string>
+    <string name="id_number">身份证号：</string>
+    <string name="insurance_period">保险期限：</string>
+    <string name="payment_period">缴费期限：</string>
+    <string name="renewal_date">续费日期：</string>
+    <string name="have_insurance_premiums">已交保费：</string>
+    <string name="promotion_fee">推广费：</string>
+    <string name="get_commission">获得佣金：</string>
+    <string name="record_date">记录日期：</string>
+    <string name="settlement_time">结算时间：</string>
+
+    <string name="policy_status">保单状态：</string>
+    <string name="renewal_date2">续期日期：</string>
+    <string name="related_vouchers">相关凭证</string>
+    <string name="remarks">备注说明</string>
+
+    <!-- 保单预约详情 页面文字-->
+    <string name="policy_booking_status">预约状态：</string>
+    <string name="policy_booking_time">预约时间：</string>
+    <string name="policy_booking_people">预约人：</string>
+    <string name="policy_booking_phone">预约电话：</string>
+    <string name="insurance_company">保险公司：</string>
+    <string name="insurance_plan">保险计划：</string>
+    <string name="insurance_amount">保险金额：</string>
+    <string name="annual_premium">年缴保费：</string>
+    <string name="expected_policy">预计交单：</string>
+
+
+
+    <string name="three_month_renewal_reminder">当前3个月内待续保的保单：</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

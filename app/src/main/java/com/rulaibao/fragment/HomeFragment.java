@@ -1,0 +1,432 @@
+package com.rulaibao.fragment;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.rulaibao.R;
+import com.rulaibao.activity.InsuranceProductActivity;
+import com.rulaibao.activity.InsuranceProductDetailActivity;
+import com.rulaibao.activity.LoginActivity;
+import com.rulaibao.activity.PlanActivity;
+import com.rulaibao.activity.ProductAppointmentActivity;
+import com.rulaibao.activity.WebActivity;
+import com.rulaibao.adapter.HomeAdapter;
+import com.rulaibao.adapter.InsuranceProductAdapter;
+import com.rulaibao.bean.Bulletin2B;
+import com.rulaibao.bean.CycleIndex2B;
+import com.rulaibao.bean.HomeIndex2B;
+import com.rulaibao.bean.HomeViewPager2B;
+import com.rulaibao.bean.InsuranceProduct2B;
+import com.rulaibao.bean.InsuranceProduct3B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.MarqueeView;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.MyListView;
+import com.rulaibao.widget.MyRollViewPager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+/**
+ * 首页模块
+ */
+
+public class HomeFragment extends Fragment implements View.OnClickListener{
+    private View mView;
+    private Context context;
+    private Intent intent;
+    private String userId;
+    private SwipeRefreshLayout swipe_refresh;
+    private ScrollView scrollView;
+    private LinearLayout ll_vp; //顶部轮播图
+    private LinearLayout ll_point_container; // 轮播图下面的圆点
+    private MouldList<CycleIndex2B> picList;
+    private CycleIndex2B cycleIndex2B; //  CycleIndex2B 类型的对象
+    private MyRollViewPager rollViewPager;
+    private String url; // url
+    private String name;
+    private MarqueeView marqueeView;
+    private MouldList<Bulletin2B> bulletinlist=new MouldList<>();
+
+    private TextView tv_project_plan;//计划书
+    private TextView tv_disease_guarantee;//疾病保障
+    private TextView tv_pension_guarantee;//养老保障
+    private TextView tv_property_guarantee;//资产保障
+    private TextView tv_accident_guarantee;//意外保障
+    private TextView tv_medical_guarantee;//医疗保障
+    private TextView tv_old_young;//一老一小
+    private TextView tv_enterprise_team;//企业团
+
+    //重磅推荐
+    private ViewPager mViewPager;
+    private ArrayList<View> viewList;
+    private ArrayList<ImageView> indicator_imgs=new ArrayList<>();
+    private MouldList<HomeViewPager2B> homeVpList=new MouldList<>();
+    private HomeAdapter homeAdapter;
+    private View vIndicator;
+
+    private MyListView listView;
+    private InsuranceProductAdapter mAdapter;
+    private MouldList<InsuranceProduct2B> totalList = new MouldList<>();
+
+ //   private HomeIndex2B homeIndexData;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.fragment_home, container, false);
+            try {
+                initView(mView);
+                initData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (mView.getParent() != null) {
+                ((ViewGroup) mView.getParent()).removeView(mView);
+            }
+        }
+
+        return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestHomeData();// 请求首页数据
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if(context!=null){
+                requestHomeData();// 请求首页数据
+            }
+        } else {
+
+        }
+
+    }
+    private void initView(View mView) {
+        context = getActivity();
+        swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
+        swipe_refresh.setEnabled(false);
+        scrollView= (ScrollView) mView.findViewById(R.id.scrollView);
+        picList = new MouldList<CycleIndex2B>();
+        ll_vp = (LinearLayout) mView.findViewById(R.id.ll_vp);
+        ll_point_container = (LinearLayout) mView.findViewById(R.id.ll_point_container);
+        marqueeView = (MarqueeView) mView.findViewById(R.id.marqueeView);//公告
+        tv_project_plan= (TextView) mView.findViewById(R.id.tv_project_plan);//计划书
+        tv_disease_guarantee= (TextView) mView.findViewById(R.id.tv_disease_guarantee);//疾病保障
+        tv_pension_guarantee= (TextView) mView.findViewById(R.id.tv_pension_guarantee);//养老保障
+        tv_property_guarantee= (TextView) mView.findViewById(R.id.tv_property_guarantee);//资产保障
+        tv_accident_guarantee= (TextView) mView.findViewById(R.id.tv_accident_guarantee);//意外保障
+        tv_medical_guarantee= (TextView) mView.findViewById(R.id.tv_medical_guarantee);//医疗保障
+        tv_old_young= (TextView) mView.findViewById(R.id.tv_old_young);//一老一小
+        tv_enterprise_team= (TextView) mView.findViewById(R.id.tv_enterprise_team);//企业团
+
+        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, TextView textView) {
+                /**
+                 *
+                 * 跳转到公告详情
+                 *
+                 *
+                 */
+                Toast.makeText(getContext(), String.valueOf(marqueeView.getPosition()) + ". " + textView.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        //热销精品
+        listView= (MyListView) mView.findViewById(R.id.home_listview);
+        mAdapter = new InsuranceProductAdapter(context, totalList);
+        listView.setAdapter(mAdapter);
+       /* swipe_refresh.setColorScheme(getResources().getColor(R.color.orange));
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+						resetScrollViewSmooth();
+
+                    }
+                }, 0);
+
+            }
+        });*/
+       //重磅推荐
+        mViewPager = (ViewPager) mView.findViewById(R.id.home_viewpager);
+        vIndicator = mView.findViewById(R.id.home_indicator);// 线性水平布局，负责动态调整导航图标
+    }
+    private void initData() {
+        userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tv_project_plan.setOnClickListener(this);
+        tv_disease_guarantee.setOnClickListener(this);
+        tv_pension_guarantee.setOnClickListener(this);
+        tv_property_guarantee.setOnClickListener(this);
+        tv_accident_guarantee.setOnClickListener(this);
+        tv_medical_guarantee.setOnClickListener(this);
+        tv_old_young.setOnClickListener(this);
+        tv_enterprise_team.setOnClickListener(this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
+                intent.putExtra("id", totalList.get(position).getId());
+                startActivity(intent);
+            }
+        });
+    }
+    //重磅推荐
+    public void initViewPageData(final MouldList<HomeViewPager2B> homeVpList) {
+        ImageView imgView;
+        viewList = new ArrayList<>();
+        ((ViewGroup) vIndicator).removeAllViews();
+        for (int i = 0; i < homeVpList.size(); i++) {
+            View view= LayoutInflater.from(context).inflate(R.layout.item_home_viewpager, null);
+            imgView = new ImageView(context);
+            LinearLayout.LayoutParams params_linear = new LinearLayout.LayoutParams(
+                    18, 18);
+            params_linear.setMargins(7, 10, 7, 10);
+            imgView.setLayoutParams(params_linear);
+            indicator_imgs.add(i,imgView);
+            if (i == 0) { // 初始化第一个为选中状态
+                indicator_imgs.get(i).setBackgroundResource(R.drawable.round_orange);
+            } else {
+                indicator_imgs.get(i).setBackgroundResource(R.drawable.round_gray);
+            }
+            ((ViewGroup) vIndicator).addView(indicator_imgs.get(i));
+            viewList.add(view);
+        }
+        homeAdapter = new HomeAdapter(context,viewList,homeVpList,new HomeAdapter.callBack() {
+            @Override
+            public void callBack(int position) {
+                Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
+                intent.putExtra("id", homeVpList.get(position).getId());
+                startActivity(intent);
+            }
+        });
+        mViewPager.setAdapter(homeAdapter);
+        // 绑定动作监听器：如翻页的动画
+        mViewPager.setOnPageChangeListener(new MyListener());
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_project_plan://计划书
+                intent = new Intent(context, PlanActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_disease_guarantee://疾病保障---重疾险
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","重疾险");
+                startActivity(intent);
+                break;
+            case R.id.tv_pension_guarantee://养老保障---年金险
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","年金险");
+                startActivity(intent);
+                break;
+            case R.id.tv_property_guarantee://资产保障---终身寿险
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","终身寿险");
+                startActivity(intent);
+                break;
+            case R.id.tv_accident_guarantee://意外保障---意外险
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","意外险");
+                startActivity(intent);
+                break;
+            case R.id.tv_medical_guarantee://医疗保障---医疗险
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","医疗险");
+                startActivity(intent);
+                break;
+            case R.id.tv_old_young://一老一小---
+                intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_enterprise_team://企业团---企业团体
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","企业团体");
+                startActivity(intent);
+                break;
+        }
+    }
+    /**
+     * 获取首页数据
+     */
+    private void requestHomeData() {
+        String userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId",userId);
+        HtmlRequest.getHomeData(context, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params == null) {
+                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (params.result == null) {
+                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                HomeIndex2B homeIndex2B = (HomeIndex2B) params.result;
+
+                //轮播图
+                picList = homeIndex2B.getAdvertiseList();
+                freshVP();
+
+                //公告
+                bulletinlist=homeIndex2B.getBulletinlist();
+                List<String> info = new ArrayList<>();
+                for(int i=0;i<bulletinlist.size();i++){
+                    info.add(bulletinlist.get(i).getBulletinContent());//marqueeView 有1个数据就不会转动
+                }
+                if (bulletinlist.size()==0){
+                    info.add("暂无公告");
+                }
+                marqueeView.startWithList(info);
+
+                //重磅推荐
+                indicator_imgs.clear();
+                homeVpList.clear();
+                homeVpList.addAll(homeIndex2B.getRecommendlist());
+                initViewPageData(homeVpList);
+                homeAdapter.notifyDataSetChanged();
+
+                //热销精品
+                totalList.clear();
+                totalList.addAll(homeIndex2B.getSellList());
+                mAdapter.notifyDataSetChanged();
+                scrollView.smoothScrollTo(0, 0);
+  //              swipe_refresh.setRefreshing(false);
+            }
+
+        });
+    }
+
+    /**
+     * 请求轮播图数据
+     */
+    private void freshVP() {
+        if (context == null) {
+            return;
+        }
+        if (rollViewPager == null) {
+            //第一次从后台获取到数据
+            rollViewPager = new MyRollViewPager(context, picList, ll_point_container);
+            rollViewPager.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_MOVE:
+           //                 swipe_refresh.setEnabled(false);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
+           //                 swipe_refresh.setEnabled(true);
+                            break;
+                    }
+                    return false;
+                }
+            });
+            rollViewPager.setCycle(true);
+            rollViewPager.setOnMyListener(new MyRollViewPager.MyClickListener() {
+                @Override
+                public void onMyClick(int position) {
+                    if (picList != null && picList.size()!=0) {
+                        cycleIndex2B = picList.get(position);
+                        url = cycleIndex2B.getTargetUrl();
+                        name = cycleIndex2B.getName();
+
+                        intent = new Intent(context, WebActivity.class);
+                        intent.putExtra("type", WebActivity.WEBTYPE_BANNER);
+                        intent.putExtra("url", url);
+                        intent.putExtra("title", name);
+                        startActivity(intent);
+                    }
+
+                }
+            });
+            rollViewPager.startRoll();
+            ll_vp.addView(rollViewPager);
+        } else {
+            //第二或之后获取到数据，刷新vp
+            rollViewPager.setPicList(picList);
+            rollViewPager.reStartRoll();
+        }
+    }
+    /**
+     * 动作监听器，可异步加载图片
+     */
+    private class MyListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            if (state == 0) {
+                // new MyAdapter(null).notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            // 改变所有导航的背景图片为：未选中
+            for (int i = 0; i < indicator_imgs.size(); i++) {
+                indicator_imgs.get(i).setBackgroundResource(R.drawable.round_gray);
+            }
+            // 改变当前背景图片为：选中
+            indicator_imgs.get(position)
+                    .setBackgroundResource(R.drawable.round_orange);
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        marqueeView.startFlipping();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        marqueeView.stopFlipping();
+    }
+}

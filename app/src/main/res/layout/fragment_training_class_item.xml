@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_light"
+    android:id="@+id/rsv_fragment_training"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    android:fillViewport="true"
+    android:layout_marginTop="10dip"
+    >
+        <ImageView
+            android:id="@+id/iv_training_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_traffining_recommend"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="70dip"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shape_shadow_gray"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            >
+            <TextView
+                android:id="@+id/tv_training_recommend_manager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="【CIPA 投资分析精彩实战课程】"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                />
+            <TextView
+                android:id="@+id/tv_training_recommend_manager_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="哈哈哈 微金客科技有限公司总经理"
+                android:layout_marginTop="5dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginBottom="5dip"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dip"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shape_shadow_gray"
+            />
+
+</FrameLayout>
+
+
+
+

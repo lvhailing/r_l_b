@@ -1,0 +1,142 @@
+package com.rulaibao.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.rulaibao.R;
+import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.UnreadNewsCount2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.widget.TitleBar;
+
+import java.util.HashMap;
+
+/**
+ *  icon_mine_news
+ * Created by junde on 2018/4/21.
+ */
+
+public class NewsActivity extends BaseActivity implements View.OnClickListener{
+
+    private RelativeLayout rl_commission;
+    private RelativeLayout rl_policy;
+    private RelativeLayout rl_interaction;
+    private RelativeLayout rl_new_members_circle;
+
+    private TextView tv_commission_news_number; // 佣金消息数
+    private TextView tv_policy_news_number; // 保单消息数
+    private TextView tv_interaction_news_number; // 互动消息数
+    private TextView tv_circle_news_number; // 圈子新成员数
+    private Intent intent;
+    private String newsType;
+    private UnreadNewsCount2B data;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        baseSetContentView(R.layout.activity_news);
+
+        initTopTitle();
+        initView();
+        requestData();
+    }
+
+    private void initTopTitle() {
+        TitleBar title = (TitleBar) findViewById(R.id.rl_title);
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_news))
+                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+
+            @Override
+            public void onMenu(int id) {
+            }
+
+            @Override
+            public void onBack() {
+                finish();
+            }
+
+            @Override
+            public void onAction(int id) {
+
+            }
+        });
+    }
+
+    private void initView() {
+        rl_commission = (RelativeLayout) findViewById(R.id.rl_commission);
+        rl_policy = (RelativeLayout) findViewById(R.id.rl_policy);
+        rl_interaction = (RelativeLayout) findViewById(R.id.rl_interaction);
+        rl_new_members_circle = (RelativeLayout) findViewById(R.id.rl_new_members_circle);
+
+        tv_commission_news_number = (TextView) findViewById(R.id.tv_commission_news_number);
+        tv_policy_news_number = (TextView) findViewById(R.id.tv_policy_news_number);
+        tv_interaction_news_number = (TextView) findViewById(R.id.tv_interaction_news_number);
+        tv_circle_news_number = (TextView) findViewById(R.id.tv_circle_news_number);
+
+        rl_commission.setOnClickListener(this);
+        rl_policy.setOnClickListener(this);
+        rl_interaction.setOnClickListener(this);
+        rl_new_members_circle.setOnClickListener(this);
+    }
+
+    private void requestData() {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("userId", "1234561");
+        HtmlRequest.getUnreadNewsCount(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(NewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                data = (UnreadNewsCount2B) params.result;
+                if (data != null) {
+                    setData(data);
+                }
+            }
+        });
+    }
+
+    private void setData(UnreadNewsCount2B data) {
+        if (!TextUtils.isEmpty(data.getCommission())) {
+            tv_commission_news_number.setVisibility(View.VISIBLE);
+            tv_commission_news_number.setText(data.getCommission());
+        }
+        if (!TextUtils.isEmpty(data.getInsurance())) {
+            tv_policy_news_number.setVisibility(View.VISIBLE);
+            tv_policy_news_number.setText(data.getInsurance());
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rl_commission: // 佣金消息
+                intent = new Intent(this, CommissionNewsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_policy: // 保单消息
+                intent = new Intent(this,PolicyNewsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_interaction: // 互动消息
+                intent = new Intent(this, InteractiveNewsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_new_members_circle: // 圈子新成员消息
+                intent = new Intent(this, NewMembersOfCircleActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+}

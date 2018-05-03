@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+
+        >
+        <ImageView
+            android:id="@+id/iv_training_discuss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/img_list_photo"
+
+            />
+        <TextView
+            android:id="@+id/tv_training_discuss_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@id/iv_training_discuss"
+            android:text="渣渣辉"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/tv_training_discuss_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="7-7 00:00:00"
+            />
+
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_training_discuss_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="8dip"
+        android:text="财富精灵PC端开发测试沟通，财富精灵APP功能规划原型设计制作"
+        android:textSize="16sp"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        >
+        <TextView
+            android:id="@+id/tv_discuss_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:layout_alignParentRight="true"
+            android:text="回复"
+            android:textColor="@color/txt_blue"
+            />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_training_discuss_repay_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_reply"
+        android:text="jkasjdisajdklajsdfsadsadasdsadasdasdsadsadsadsadsadsadsadsadsadsadasdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddsadasdsadsadklsajdklwjkladjklasjdasdsadsadsadsadasdsadsadsadsadsasdsadsaddsadasdsak"
+        android:textColor="@color/txt_black2"
+        android:layout_marginBottom="20dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:background="@color/gray_light"
+        />
+
+
+</LinearLayout>

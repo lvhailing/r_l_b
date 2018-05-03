@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.rulaibao">
+
+    <!-- Push service 运行需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <!--  sharedSdk所需权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <application
+        android:name="com.rulaibao.common.MyApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.rulaibao.activity.SplashActivity"
+            android:theme="@style/AppThemeSplah">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <!-- ShareSDK3.1.0版本之前才需要在MobUIShell下面注册此意图，3.1.0版本之后（包含3.1.0）不需要注册此intent-->
+            <!--<intent-filter>-->
+            <!--<data android:scheme="tencent100371282"/>-->
+            <!--<action android:name="android.intent.action.VIEW"/>-->
+
+            <!--<category android:name="android.intent.category.BROWSABLE"/>-->
+            <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!--</intent-filter>-->
+
+
+            <!--（3.1.0版本之后（包含3.1.0）才需要注册此Activity）如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，-->
+            <!--须要在此处添加一个回调activity， 对ACTION_VIEW事件的过滤器，其中的scheme是“tencent”前缀再开发者应用-->
+            <!--的加上appId。如果此Activity和过滤器不设置，则分享结束以后不能得到正确的回调。-->
+
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="tencent100371282"/>
+            </intent-filter>
+        </activity>
+        <!--<activity-->
+        <!--android:name=".activity.MainActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"/>-->
+
+        <activity
+            android:name="com.rulaibao.activity.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.TrainingClassActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.TrainingAskActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.TrainingCircleActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.TrainingPromoteActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingClassDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingToAskActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingAnswerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingAskDetailsActivity"
+
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <!--android:theme="@style/Theme.InCallScreen"-->
+        <activity
+            android:name="com.rulaibao.activity.TrainingAnswerDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingCircleDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingIssueTopicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingTopicDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TrainingSetAuthorityActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.SignActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.FindPasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.GestureEditActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.GestureVerifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.RecommendActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.WebActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PlayerVideoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoTitleBar"
+            />
+        <activity
+            android:name="com.rulaibao.activity.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.MyInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.rulaibao.activity.SalesCertificationActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TransactionRecordActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.TransactionDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.SearchActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+
+        <activity
+            android:name="com.rulaibao.activity.InsuranceProductActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PlanActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.ContactCustomerServiceActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PlatformBulletinActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PlatformBulletinDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PolicyRecordListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PolicyRecordDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.InsuranceProductDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.SearchForPlanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+
+        <activity
+            android:name="com.rulaibao.activity.SearchForPolicyPlanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name="com.rulaibao.activity.ProductAppointmentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name="com.rulaibao.activity.RenewalReminderActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PolicyBookingListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PolicyBookingDetailActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.RecommendRecordActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.MyCollectionActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.MyAskActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.NewsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.CommissionNewsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.PolicyNewsActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.MyTopicActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.MyPartakeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.NewMembersOfCircleActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.rulaibao.activity.InteractiveNewsActivity"
+            android:screenOrientation="portrait"/>
+
+    </application>
+
+</manifest>
