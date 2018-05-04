@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyBookingDetailActivity;
-import com.rulaibao.bean.PolicyBookingList3B;
+import com.rulaibao.bean.PolicyBookingList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -21,7 +21,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<PolicyBookingList3B> list;
+    private final MouldList<PolicyBookingList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -38,7 +38,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int mLoadMoreStatus = 0;
 
 
-    public PolicyBookingAdapter(Context context, MouldList<PolicyBookingList3B> list) {
+    public PolicyBookingAdapter(Context context, MouldList<PolicyBookingList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -63,9 +63,9 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-            itemViewHolder.tv_status.setText(list.get(position).getStatus());
-            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancePremiums());
+//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
+//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
+//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancePremiums());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -150,12 +150,12 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
 
-    public void AddHeaderItem(MouldList<PolicyBookingList3B> items) {
+    public void AddHeaderItem(MouldList<PolicyBookingList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<PolicyBookingList3B> items) {
+    public void AddFooterItem(MouldList<PolicyBookingList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

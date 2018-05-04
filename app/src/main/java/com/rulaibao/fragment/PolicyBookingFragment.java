@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.PolicyBookingAdapter;
-import com.rulaibao.bean.PolicyBookingList3B;
+import com.rulaibao.bean.PolicyBookingList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -23,7 +23,7 @@ public class PolicyBookingFragment extends Fragment {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private PolicyBookingAdapter policyBookingAdapter;
-    private MouldList<PolicyBookingList3B> totalList = new MouldList<>();
+    private MouldList<PolicyBookingList2B> totalList = new MouldList<>();
 
 
     public static PolicyBookingFragment newInstance(String param1) {
@@ -54,10 +54,10 @@ public class PolicyBookingFragment extends Fragment {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         for (int i = 0; i < 10; i++) {
-            PolicyBookingList3B bean = new PolicyBookingList3B();
-            bean.setInsuranceName("10"+i+"国华人寿-盛世年年年金保险C款");
-            bean.setStatus("待确认");
-            bean.setInsurancePremiums("1000"+i+".00元");
+            PolicyBookingList2B bean = new PolicyBookingList2B();
+//            bean.setInsuranceName("10"+i+"国华人寿-盛世年年年金保险C款");
+//            bean.setStatus("待确认");
+//            bean.setInsurancePremiums("1000"+i+".00元");
             totalList.add(bean);
 
             recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private Context context;
 
-    private ArrayList arrayList;
+    private ArrayList<String> arrayList;
     private LayoutInflater layoutInflater;
 
     private static final int TYPE_ITEM = 0;     // item布局
@@ -38,7 +39,7 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public TrainingClassPPTAdapter(Context context, ArrayList arrayList) {
+    public TrainingClassPPTAdapter(Context context, ArrayList<String> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
@@ -79,6 +80,8 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof ViewHolder) {
 
             ViewHolder holder1 = (ViewHolder) holder;
+
+            ImageLoader.getInstance().displayImage(arrayList.get(position),holder1.ivPpt);
 
 //            holder1.tv_training_name.setText(arrayList.get(position).toString());
 //            itemViewHolder.tv_policy_number.setText(str);

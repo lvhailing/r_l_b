@@ -13,10 +13,10 @@
         android:layout_marginTop="10dip"
         android:background="@color/white"
         >
-        <ImageView
+        <com.rulaibao.widget.CircularImage
             android:id="@+id/iv_introduction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
             android:layout_marginLeft="20dip"
             android:src="@mipmap/img_verify_password"
             android:layout_centerVertical="true"

@@ -10,7 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.bean.MyAskList3B;
+import com.rulaibao.bean.MyAskList1B;
+import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -19,7 +20,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<MyAskList3B> list;
+    private final MouldList<MyAskList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,7 +37,7 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private int mLoadMoreStatus = 0;
 
 
-    public MyAskAdapter(Context context, MouldList<MyAskList3B> list) {
+    public MyAskAdapter(Context context, MouldList<MyAskList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -61,8 +62,8 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_ask_title.setText(list.get(position).getAskTitle());
-            itemViewHolder.tv_answer_number.setText(list.get(position).getAnswerNumber());
+            itemViewHolder.tv_ask_title.setText(list.get(position).getTitle());
+            itemViewHolder.tv_answer_number.setText(list.get(position).getAnswerCount());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -120,7 +121,7 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private void initListener(View itemView) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { // 跳转到?
+                public void onClick(View v) { // 跳转到话题详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(mContext,PlatformBulletinDetailActivity.class);
 //                    mContext.startActivity(intent);
@@ -145,12 +146,12 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public void AddHeaderItem(MouldList<MyAskList3B> items) {
+    public void AddHeaderItem(MouldList<MyAskList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<MyAskList3B> items) {
+    public void AddFooterItem(MouldList<MyAskList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

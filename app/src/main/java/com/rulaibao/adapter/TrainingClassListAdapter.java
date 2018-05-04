@@ -15,6 +15,8 @@ import com.rulaibao.bean.ResultClassIndexItemBean;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.RlbActivityManager;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -72,7 +74,7 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
 
         if (holder instanceof Holder) {
@@ -87,9 +89,19 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
 
             holder1.tvTrainingRecommendManager.setText(arrayList.get(position).getCourseName());
             holder1.tvTrainingRecommendManagerName.setText(arrayList.get(position).getSpeechmakeName()+" "+arrayList.get(position).getPosition());
-//            itemViewHolder.tv_policy_number.setText(str);
 
-//            itemViewHolder.tv_commission.setText(str);
+            holder1.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("id",arrayList.get(position).getCourseId());
+                    map.put("speechmakeId",arrayList.get(position).getSpeechmakeId());
+                    map.put("courseId",arrayList.get(position).getCourseId());
+                    RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context,map, false);
+                }
+            });
+
+
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -143,12 +155,7 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
             super(itemView);
             ButterKnife.bind(this, itemView);
 //            tv_training_name = (TextView) itemView.findViewById(R.id.tv_training_name);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context, false);
-                }
-            });
+
         }
     }
 

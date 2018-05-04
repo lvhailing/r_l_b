@@ -14,6 +14,8 @@ import com.rulaibao.bean.InsuranceDetail1B;
 import com.rulaibao.bean.InsuranceProduct1B;
 import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.bean.MineData2B;
+import com.rulaibao.bean.MyAskList1B;
+import com.rulaibao.bean.MyTopicList1B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.Plan2B;
 import com.rulaibao.bean.PolicyPlan2B;
@@ -31,6 +33,10 @@ import com.rulaibao.bean.ResultAskDetailsAnswerBean;
 import com.rulaibao.bean.ResultAskDetailsBean;
 import com.rulaibao.bean.ResultAskIndexBean;
 import com.rulaibao.bean.ResultAskTypeBean;
+import com.rulaibao.bean.ResultClassDetailsCatalogBean;
+import com.rulaibao.bean.ResultClassDetailsDiscussBean;
+import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
+import com.rulaibao.bean.ResultClassDetailsPPTBean;
 import com.rulaibao.bean.ResultClassIndexBean;
 import com.rulaibao.bean.UnreadNewsCount2B;
 import com.rulaibao.bean.UserInfo2B;
@@ -1453,6 +1459,170 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
+    /**
+     *  (我的)预约列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getPolicyBookingListData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_APPOINTMENT_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的--预约列表：" + data);
+
+                    Repo<PolicyRecordDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordDetail1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+
+    /**
+     *  我的提问列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getMyAskListData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_MY_ASK_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的提问列表：" + data);
+
+                    Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+    /**
+     *  我的话题列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getMyTopicListData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_MY_TOPIC_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的话题列表：" + data);
+
+                    Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+
+
+
+
 
     /************************************************* 研修模块start *****************************************************************/
 
@@ -2821,6 +2991,270 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
+    /**
+     * 课程详情--简介
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getClassDetailsDesc(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_TRAINING_CLASS_DETAILS_DESC;
+//        final String url = Urls.URL_INDEX;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<ResultClassDetailsIntroductionBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsIntroductionBean>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+    /**
+     * 课程详情--目录
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getClassDetailsCatalog(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_TRAINING_CLASS_DETAILS_CATALOG;
+//        final String url = Urls.URL_INDEX;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<ResultClassDetailsCatalogBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsCatalogBean>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+
+    /**
+     * 课程详情--研讨
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getClassDetailsDiscuss(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_TRAINING_CLASS_DETAILS_DISCUSS;
+//        final String url = Urls.URL_INDEX;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<ResultClassDetailsDiscussBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsDiscussBean>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+
+
+    /**
+     * 课程详情--研讨 回复
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getClassDetailsDiscussReply(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_TRAINING_CLASS_DETAILS_DISCUSS_REPLY;
+//        final String url = Urls.URL_INDEX;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+    /**
+     * 课程详情--PPT
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getClassDetailsPPT(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_TRAINING_CLASS_DETAILS_PPT;
+//        final String url = Urls.URL_INDEX;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<ResultClassDetailsPPTBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsPPTBean>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
 
 
 

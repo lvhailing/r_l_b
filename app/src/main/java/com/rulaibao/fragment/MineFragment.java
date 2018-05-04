@@ -361,33 +361,28 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.rl_my_policy: // 我的保单
                 intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("flag", "0");
                 intent.putExtra("position",0);
                 startActivity(intent);
 
                 break;
             case R.id.tv_check_pending: // 待审核
                 intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("flag", "1000");
                 intent.putExtra("position",1);
                 startActivity(intent);
 
                 break;
             case R.id.tv_underwriting: // 已承保
                 intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("flag", "1000");
                 intent.putExtra("position",2);
                 startActivity(intent);
                 break;
             case R.id.tv_problem_parts: // 问题件
                 intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("flag", "1000");
                 intent.putExtra("position",3);
                 startActivity(intent);
                 break;
             case R.id.tv_return_receipt: // 回执签收
                 intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("flag", "1000");
                 intent.putExtra("position",4);
                 startActivity(intent);
                 break;

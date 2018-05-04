@@ -271,7 +271,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                 break;
 
             case R.id.iv_training_recommend:        //  推荐课程(跳转课程详情)
-                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), false);
+                HashMap<String,Object> classMap = new HashMap<>();
+                classMap.put("id",bean.getCourseRecommend().getCourseId());
+                classMap.put("speechmakeId",bean.getCourseRecommend().getSpeechmakeId());
+                classMap.put("courseId",bean.getCourseRecommend().getCourseId());
+                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(),classMap, false);
                 break;
 
             case R.id.tv_training_refresh:          //  精品课程 刷新（换一换）

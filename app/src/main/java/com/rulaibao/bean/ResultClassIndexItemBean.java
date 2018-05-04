@@ -10,8 +10,10 @@ public class ResultClassIndexItemBean implements IMouldType{
     private String speechmakeId;        //  演讲人Id
     private String position;        //  从业岗位
     private String courseTime;        //  课程时间
+
     private String typeName;        //  类型名称
     private String typeCode;        //  类型编号
+
     private String courseLogo;        //  封面编号
 
     public String getCourseLogo() {

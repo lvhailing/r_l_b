@@ -11,8 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.PolicyRecordDetailActivity;
 import com.rulaibao.activity.TransactionDetailActivity;
 import com.rulaibao.bean.PolicyRecordList2B;
+import com.rulaibao.bean.RenewalReminderList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -21,7 +23,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<PolicyRecordList2B> list;
+    private final MouldList<RenewalReminderList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,9 +38,10 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
+    private String orderId;
 
 
-    public RenewalReminderAdapter(Context context,  MouldList<PolicyRecordList2B> list) {
+    public RenewalReminderAdapter(Context context,  MouldList<RenewalReminderList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -63,6 +66,7 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            orderId = list.get(position).getOrderId();
             itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
@@ -131,9 +135,10 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private void initListener(View itemView) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { // 跳转到交易明细
+                public void onClick(View v) { // 跳转到保单详情页
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
+                    Intent intent = new Intent(mContext,PolicyRecordDetailActivity.class);
+                    intent.putExtra("orderId", orderId);
                     mContext.startActivity(intent);
                 }
             });
@@ -156,12 +161,12 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public void AddHeaderItem( MouldList<PolicyRecordList2B> items) {
+    public void AddHeaderItem( MouldList<RenewalReminderList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<PolicyRecordList2B> items) {
+    public void AddFooterItem(MouldList<RenewalReminderList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

@@ -9,9 +9,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.bean.ResultClassDetailsDiscussBean;
+import com.rulaibao.bean.ResultClassDetailsDiscussItemBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +31,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private Context context;
 
-    private ArrayList arrayList;
+    private MouldList<ResultClassDetailsDiscussItemBean> arrayList;
     private LayoutInflater layoutInflater;
 
     private static final int TYPE_ITEM = 0;     // item布局
@@ -37,11 +48,14 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
 
+    private DiscussReply discussReply;
 
-    public TrainingClassDiscussAdapter(Context context, ArrayList arrayList) {
+
+    public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList,DiscussReply discussReply) {
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
+        this.discussReply = discussReply;
     }
 
     @Override
@@ -62,14 +76,31 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolder) {
 
             ViewHolder holder1 = (ViewHolder) holder;
 
-            holder1.tvTrainingDiscussName.setText(arrayList.get(position).toString());
-//            itemViewHolder.tv_policy_number.setText(str);
-//            itemViewHolder.tv_commission.setText(str);
+            holder1.tvTrainingDiscussName.setText(arrayList.get(position).getCommentName());
+            ImageLoader.getInstance().displayImage(arrayList.get(position).getCommentPhoto(),holder1.ivTrainingDiscuss);
+            holder1.tvTrainingDiscussDate.setText(arrayList.get(position).getCommentTime());
+            holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());
+            if(arrayList.get(position).getReplys()==null||arrayList.get(position).getReplys().size()==0){
+                holder1.tvDiscussReply.setVisibility(View.VISIBLE);
+                holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
+                holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName());
+                    }
+                });
+
+            }else{
+                holder1.tvDiscussReply.setVisibility(View.GONE);
+                holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
+                holder1.tvTrainingDiscussRepayContent.setText(arrayList.get(position).getReplys().get(0).getReplyContent());
+            }
+
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -104,7 +135,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.iv_training_discuss)
-        ImageView ivTrainingDiscuss;
+        CircularImage ivTrainingDiscuss;
         @BindView(R.id.tv_training_discuss_name)
         TextView tvTrainingDiscussName;
         @BindView(R.id.tv_training_discuss_date)
@@ -121,6 +152,13 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             ButterKnife.bind(this, view);
         }
     }
+
+    public interface DiscussReply{
+
+        public void reply(String toUserId,String commentId,String commentName);
+
+    }
+
 
 
     @Override
@@ -142,13 +180,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             super(itemView);
 
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    loadMoreData.getMoreData();
 
-                }
-            });
         }
 
     }

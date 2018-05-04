@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.PolicyRecordListActivity;
 import com.rulaibao.activity.TransactionRecordActivity;
 import com.rulaibao.adapter.PolicyRecordAdapter;
 import com.rulaibao.bean.PolicyRecordList1B;
@@ -40,6 +41,8 @@ public class PolicyRecordListFragment extends Fragment {
     private MouldList<PolicyRecordList2B> totalList = new MouldList<>();
     private int currentPage = 1;    //当前页
     private Context context;
+    private PolicyRecordList1B data;
+    private String status = "";
 
 
     public static PolicyRecordListFragment newInstance(String param1) {
@@ -82,7 +85,7 @@ public class PolicyRecordListFragment extends Fragment {
 //            totalList.add(bean);
 //
 //        }
-            initRecyclerView();
+        initRecyclerView();
     }
 
     private void initRecyclerView() {
@@ -137,12 +140,13 @@ public class PolicyRecordListFragment extends Fragment {
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             private int firstVisibleItem;
             private int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==policyRecordAdapter.getItemCount()&& firstVisibleItem != 0){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == policyRecordAdapter.getItemCount() && firstVisibleItem != 0) {
 
 //                    swipe_refresh.setRefreshing(true);
 
@@ -177,12 +181,13 @@ public class PolicyRecordListFragment extends Fragment {
 
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                lastVisibleItem=layoutManager.findLastVisibleItemPosition();
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
     }
 
     private void requestData() {
+
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", "18042513234098822058");
         param.put("page", currentPage + "");
@@ -196,7 +201,8 @@ public class PolicyRecordListFragment extends Fragment {
                     return;
                 }
 
-                PolicyRecordList1B data = (PolicyRecordList1B) params.result;
+                data = (PolicyRecordList1B) params.result;
+                ((PolicyRecordListActivity) getActivity()).refreshTabTitle(data);
                 MouldList<PolicyRecordList2B> everyList = data.getList();
                 if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
@@ -222,5 +228,19 @@ public class PolicyRecordListFragment extends Fragment {
         });
     }
 
+    public void getTabTitleCurrentPosition(int currentPosition) {
+        if ("0".equals(currentPosition)) {
+            status = "allTotal";  //保单列表中全部数量=待审核+已承保+问题件+回执签收
+        } else if ("1".equals(currentPosition)) {
+            status = "initTotal";  //待审核
+        } else if ("2".equals(currentPosition)) {
+            status = "payedTotal";  //已承保
+        } else if ("3".equals(currentPosition)) {
+            status = "rejectedTotal";  //问题件
+        } else if ("4".equals(currentPosition)) {
+            status = "receiptSignedTotal";  //回执签收
+        }
+
+    }
 
 }

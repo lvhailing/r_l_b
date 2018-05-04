@@ -137,7 +137,7 @@ public class TrainingClassFragment extends BaseFragment {
     }
 
     public void requestIndexData(){
-        typeCode = "";
+
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();

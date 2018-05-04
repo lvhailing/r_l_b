@@ -12,10 +12,16 @@ import android.widget.ListView;
 import com.rulaibao.R;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
+import com.rulaibao.bean.ResultClassDetailsCatalogBean;
+import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
 import com.rulaibao.bean.ResultClassIndexItemBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +41,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     private String string = "";
     private TrainingClassListAdapter adapter;
     private MouldList<ResultClassIndexItemBean> courseList;
+    private String speechmakeId = "";
+    private int page = 0;
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,10 +60,27 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+
+//            scrollView.smoothScrollTo(0, 0);
+        } else {
+
+        }
+
+    }
+
+
+    @Override
     protected void initViews() {
+        speechmakeId = getArguments().getString("speechmakeId");
         test();
         courseList = new MouldList<ResultClassIndexItemBean>();
         initRecyclerView();
+        requestData();
+
 
     }
 
@@ -109,6 +134,33 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
 
     }
+
+    public void requestData() {
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("speechmakeId", speechmakeId);      //  演讲人id
+        map.put("page", page+"");      //  课程id
+
+        HtmlRequest.getClassDetailsCatalog(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultClassDetailsCatalogBean bean = (ResultClassDetailsCatalogBean) params.result;
+                    courseList.addAll(bean.getCourseList());
+                    adapter.notifyDataSetChanged();
+//                    course = bean.getCourse();
+//                    setView();
+                } else {
+
+                }
+            }
+        });
+    }
+
 
 
 

@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DSL;
+    private static String EC_HOST = URL_ZYL;
 
     /**
      * 注册
@@ -174,6 +174,22 @@ public class Urls {
     // 研修回答详情点赞
     public static final String URL_TRAINING_ANSWER_LIKE = EC_HOST + "appQuestion/answer/like";
 
+    // 研修课程详情--简介
+    public static final String URL_TRAINING_CLASS_DETAILS_DESC = EC_HOST + "appCourse/detail/content";
+
+    // 研修课程详情--目录
+    public static final String URL_TRAINING_CLASS_DETAILS_CATALOG = EC_HOST + "appCourse/detail/outline";
+
+    // 研修课程详情--研讨
+    public static final String URL_TRAINING_CLASS_DETAILS_DISCUSS = EC_HOST + "appCourse/detail/comment";
+
+    // 研修课程详情--研讨 回复
+    public static final String URL_TRAINING_CLASS_DETAILS_DISCUSS_REPLY = EC_HOST + "appCourse/detail/comment/add";
+
+    // 研修课程详情--PPT
+    public static final String URL_TRAINING_CLASS_DETAILS_PPT = EC_HOST + "appCourse/detail/ppt";
+
+
     /************************************************* 研修模块end *****************************************************************/
     //首页
     public static final String URL_INDEX = EC_HOST + "product/index/list";
@@ -238,14 +254,19 @@ public class Urls {
     public static final String URL_ACCOUNT_ORDER_LIST = EC_HOST + "account/order/list";
 
     // 保单详情
-    public static final String URL_ACCOUNT_ORDER_DETAIL = EC_HOST + "account/order/details";
+    public static final String URL_ACCOUNT_ORDER_DETAIL = EC_HOST + "account/order/detail";
 
     // 续保提醒列表
     public static final String URL_ACCOUNT_ORDER_RENEWAL_LIST = EC_HOST + "account/order/renewal/list";
 
+    // 预约列表
+    public static final String URL_ACCOUNT_APPOINTMENT_LIST = EC_HOST + "appointment/list";
 
+    // 我的提问列表
+    public static final String URL_MY_ASK_LIST = EC_HOST + "appQuestion/my/list";
 
-
+    // 我的话题列表
+    public static final String URL_MY_TOPIC_LIST = EC_HOST + "appTopic/my/list";
 
 
 

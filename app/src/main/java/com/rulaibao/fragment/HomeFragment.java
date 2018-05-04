@@ -273,7 +273,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.tv_old_young://一老一小---
-                intent = new Intent(context, LoginActivity.class);
+                intent = new Intent(context, InsuranceProductActivity.class);
+                intent.putExtra("category","一老一小");
                 startActivity(intent);
                 break;
             case R.id.tv_enterprise_team://企业团---企业团体
@@ -316,7 +317,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 bulletinlist=homeIndex2B.getBulletinlist();
                 List<String> info = new ArrayList<>();
                 for(int i=0;i<bulletinlist.size();i++){
-                    info.add(bulletinlist.get(i).getBulletinContent());//marqueeView 有1个数据就不会转动
+                    info.add(bulletinlist.get(i).getBulletinTopic());//marqueeView 有1个数据就不会转动
                 }
                 if (bulletinlist.size()==0){
                     info.add("暂无公告");

@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.bean.MyTopicList3B;
+import com.rulaibao.bean.MyTopicList2B;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.RlbActivityManager;
 
@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<MyTopicList3B> list;
+    private final MouldList<MyTopicList2B> list;
     Activity mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -39,7 +39,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int mLoadMoreStatus = 0;
 
 
-    public MyTopicAdapter(Activity activity, MouldList<MyTopicList3B> list) {
+    public MyTopicAdapter(Activity activity, MouldList<MyTopicList2B> list) {
         mContext = activity;
         this.list = list;
         mInflater = LayoutInflater.from(mContext);
@@ -64,11 +64,11 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName()+"/");
-            itemViewHolder.tv_group_name.setText(list.get(position).getGroupName());
-            itemViewHolder.tv_topic_title.setText(list.get(position).getTopicTitle());
-            itemViewHolder.tv_zan_number.setText(list.get(position).getZanNumber());
-            itemViewHolder.tv_comment_number.setText(list.get(position).getCommentNumber());
+            itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName());
+//            itemViewHolder.tv_group_name.setText(list.get(position).getGroupName());
+            itemViewHolder.tv_topic_title.setText(list.get(position).getCommentCount());
+            itemViewHolder.tv_zan_number.setText(list.get(position).getLikeCount());
+            itemViewHolder.tv_comment_number.setText(list.get(position).getCommentCount());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -109,7 +109,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tv_circle_name; // 圈子名
-        private final TextView tv_group_name; // 小组名
+//        private final TextView tv_group_name; // 小组名
         private final TextView tv_topic_title; // 话题标题
         private final TextView tv_zan_number; // 点赞数
         private final TextView tv_comment_number; // 评论数
@@ -117,7 +117,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public ItemViewHolder(View itemView) {
             super(itemView);
             tv_circle_name = (TextView) itemView.findViewById(R.id.tv_circle_name);
-            tv_group_name = (TextView) itemView.findViewById(R.id.tv_group_name);
+//            tv_group_name = (TextView) itemView.findViewById(R.id.tv_group_name);
             tv_topic_title = (TextView) itemView.findViewById(R.id.tv_topic_title);
             tv_zan_number = (TextView) itemView.findViewById(R.id.tv_zan_number);
             tv_comment_number = (TextView) itemView.findViewById(R.id.tv_comment_number);
@@ -160,12 +160,12 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public void AddHeaderItem(MouldList<MyTopicList3B> items) {
+    public void AddHeaderItem(MouldList<MyTopicList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<MyTopicList3B> items) {
+    public void AddFooterItem(MouldList<MyTopicList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,19 @@ import com.rulaibao.R;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
+import com.rulaibao.bean.ResultClassDetailsCatalogBean;
+import com.rulaibao.bean.ResultClassDetailsDiscussBean;
+import com.rulaibao.bean.ResultClassDetailsDiscussItemBean;
+import com.rulaibao.bean.ResultInfoBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +39,7 @@ import butterknife.OnClick;
  * 课程详情 研讨 栏
  */
 
-public class TrainingDetailsDiscussFragment extends BaseFragment {
+public class TrainingDetailsDiscussFragment extends BaseFragment implements TrainingClassDiscussAdapter.DiscussReply {
 
 
     @BindView(R.id.tv_introduction_discuss_count)
@@ -45,6 +57,12 @@ public class TrainingDetailsDiscussFragment extends BaseFragment {
     private TrainingClassDiscussAdapter adapter;
 
     private String string = "";
+    private String courseId = "";
+    private String toUserId = "";
+    private String commentId = "";
+    private int page = 0;
+
+    private MouldList<ResultClassDetailsDiscussItemBean> list;
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,16 +82,18 @@ public class TrainingDetailsDiscussFragment extends BaseFragment {
     @Override
     protected void initViews() {
 
-        test();
-        initRecyclerView();
+        list = new MouldList<ResultClassDetailsDiscussItemBean>();
 
+        courseId = getArguments().getString("courseId");
+        initRecyclerView();
+        requestData();
 
     }
 
     public void initRecyclerView(){
 
         lvDiscuss.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new TrainingClassDiscussAdapter(getActivity(),arrayList);
+        adapter = new TrainingClassDiscussAdapter(getActivity(),list,TrainingDetailsDiscussFragment.this);
         lvDiscuss.setAdapter(adapter);
 
 
@@ -93,7 +113,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment {
 //                        }
 //                    }, 2000);
                     if(arrayList.size()<30){
-                        test();
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
                     }else{
 
@@ -121,20 +140,112 @@ public class TrainingDetailsDiscussFragment extends BaseFragment {
 
     }
 
-    public void test() {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
 
-        for (int i = 0; i < 10; i++) {
 
-            String sd = string + "11" + i;
-            arrayList.add(sd);
+//            scrollView.smoothScrollTo(0, 0);
+        } else {
 
         }
 
     }
 
+    public void requestData() {
+
+        String userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("courseId", courseId);      //
+        map.put("userId", userId);      //
+        map.put("page", page+"");      //
+
+        HtmlRequest.getClassDetailsDiscuss(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultClassDetailsDiscussBean bean = (ResultClassDetailsDiscussBean) params.result;
+
+                    list.addAll(bean.getList());
+                    adapter.notifyDataSetChanged();
+
+                } else {
+
+                }
+            }
+        });
+    }
+
+    //评论
+
+    public void requestReply(String toUserId, String commentId,String commentContent) {
+
+        String userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        if(TextUtils.isEmpty(commentId)){
+
+            map.put("courseId", courseId);      //话题课程id
+            map.put("commentContent", commentContent);      //
+            map.put("userId", userId);      //
+
+        }else{
+
+            map.put("courseId", courseId);      //话题课程id
+            map.put("commentContent", commentContent);      //
+            map.put("userId", userId);      //
+            map.put("toUserId", toUserId);      //      回复的目标用户id（注：当回复时需要，评论不需要传）
+            map.put("commentId", commentId);      //所属评论的id（注：当回复时需要，评论不需要传）
+
+        }
+
+
+        HtmlRequest.getClassDetailsDiscussReply(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultInfoBean bean = (ResultInfoBean) params.result;
+                    if(bean.getFlag().equals("true")){
+
+
+                    }else{
+
+
+                    }
+//                    list.addAll(bean.getList());
+//                    adapter.notifyDataSetChanged();
+
+                } else {
+
+                }
+            }
+        });
+    }
+
     @OnClick(R.id.btn_details_discuss)
     public void onclick(){
-
+        String commentContent = etDetailDiscuss.getText().toString();
+        requestReply(toUserId,commentId,commentContent);
     }
 
     @Override
@@ -143,5 +254,16 @@ public class TrainingDetailsDiscussFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    public void reply(String toUserId, String commentId,String commentName) {
+        this.toUserId = toUserId;
+        this.commentId = commentId;
+        etDetailDiscuss.setHint("回复" + commentName + "：");
+
+
+
+
     }
 }

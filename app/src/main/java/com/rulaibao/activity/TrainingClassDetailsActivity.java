@@ -18,14 +18,20 @@ import android.widget.LinearLayout;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
+import com.rulaibao.bean.ResultClassDetailsIntroductionItemBean;
 import com.rulaibao.fragment.TrainingDetailsCatalogFragment;
 import com.rulaibao.fragment.TrainingDetailsDiscussFragment;
 import com.rulaibao.fragment.TrainingDetailsIntroductionFragment;
 import com.rulaibao.fragment.TrainingDetailsPPTFragment;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.widget.TitleBar;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +67,10 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
     private List<Fragment> fragments;
     private List<String> listTitles;
+    private String id = "";
+    private ResultClassDetailsIntroductionItemBean course;
+    private String speechmakeId = "";       //  演讲人id
+    private String courseId = "";       //  课程id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +83,10 @@ public class TrainingClassDetailsActivity extends BaseActivity {
     }
 
     public void initView() {
-
-
-        initPlayView();
-        initTabView();
+        id = getIntent().getStringExtra("id");
+        speechmakeId = getIntent().getStringExtra("speechmakeId");
+        courseId = getIntent().getStringExtra("courseId");
+        requestData();
 
 
     }
@@ -87,12 +97,24 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         listTitles = new ArrayList<>();
 
         introdutionFragment = new TrainingDetailsIntroductionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id",id);
+        bundle.putString("speechmakeId",speechmakeId);
+        bundle.putSerializable("course",course);
+        bundle.putSerializable("courseId",courseId);
+        introdutionFragment.setArguments(bundle);
         fragments.add(introdutionFragment);
+
         catalogFragment = new TrainingDetailsCatalogFragment();
+        catalogFragment.setArguments(bundle);
         fragments.add(catalogFragment);
+
         discussFragment = new TrainingDetailsDiscussFragment();
+        discussFragment.setArguments(bundle);
         fragments.add(discussFragment);
+
         pptFragment = new TrainingDetailsPPTFragment();
+        pptFragment.setArguments(bundle);
         fragments.add(pptFragment);
 
 
@@ -131,6 +153,33 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
     }
 
+
+    public void requestData() {
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("id", id);      //  课程id
+
+        HtmlRequest.getClassDetailsDesc(this, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultClassDetailsIntroductionBean bean = (ResultClassDetailsIntroductionBean) params.result;
+                    course = bean.getCourse();
+                    initPlayView();
+                    initTabView();
+
+                } else {
+
+                }
+            }
+        });
+    }
+
+
     public void initPlayView() {
 
         WebSettings ws = wvTrainingClassDetails.getSettings();
@@ -161,7 +210,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
             }
         });
 
-        wvTrainingClassDetails.loadUrl(url2);
+        wvTrainingClassDetails.loadUrl(course.getCourseVideo());
 
 
     }

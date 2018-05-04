@@ -1,5 +1,6 @@
 package com.rulaibao.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,7 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
+import com.rulaibao.bean.ResultClassDetailsIntroductionItemBean;
+import com.rulaibao.bean.ResultInfoBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.widget.CircularImage;
+
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +33,7 @@ import butterknife.ButterKnife;
 public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
     @BindView(R.id.iv_introduction)
-    ImageView ivIntroduction;
+    CircularImage ivIntroduction;
     @BindView(R.id.tv_introduction_manager)
     TextView tvIntroductionManager;
     @BindView(R.id.tv_introduction_manager_name)
@@ -35,6 +46,10 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
     TextView tvIntroductionClassType;
     @BindView(R.id.tv_introduction_content)
     TextView tvIntroductionContent;
+
+    private String id = "";
+    private ResultClassDetailsIntroductionItemBean course;
+    private Context context;
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +69,69 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
     @Override
     protected void initViews() {
 
+        context = getActivity();
+        id = getArguments().getString("id");
+        course = new ResultClassDetailsIntroductionItemBean();
+//        course = (ResultClassDetailsIntroductionItemBean)getArguments().getSerializable("course");
+        requestData();
+//
+
     }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if(context!=null){
+
+            }
+
+//            scrollView.smoothScrollTo(0, 0);
+        } else {
+
+        }
+
+    }
+
+
+
+    public void requestData() {
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("id", id);      //  课程id
+
+        HtmlRequest.getClassDetailsDesc(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultClassDetailsIntroductionBean bean = (ResultClassDetailsIntroductionBean) params.result;
+                    course = bean.getCourse();
+                    setView();
+                } else {
+
+                }
+            }
+        });
+    }
+
+    public void setView(){
+
+        ImageLoader.getInstance().displayImage(course.getHeadPhoto(),ivIntroduction);
+        tvIntroductionManager.setText(course.getPosition());
+        tvIntroductionManagerName.setText(course.getRealName());
+        tvIntroductionClassName.setText(course.getCourseName());
+        tvIntroductionClassTime.setText(course.getCourseTime());
+        tvIntroductionClassType.setText(course.getTypeName());
+        tvIntroductionContent.setText(course.getCourseContent());
+
+    }
+
 
 
     @Override

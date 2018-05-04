@@ -47,8 +47,8 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
     private ViewPager mViewPager;
     private ViewGroup mViewGroup;
     private TabsViewPagerAdapter tabAdapter;
-    private String[] mTabItems = new String[]{"意外险", "重疾险", "年金险", "医疗险",
-            "终身寿险", "企业团体", ""};
+    private String[] mTabItems = new String[]{"重疾险", "年金险", "终身寿险", "意外险",
+            "医疗险", "一老一小", "企业团体",""};
     View view;
 
     private int mPreSelectItem;
@@ -132,30 +132,34 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
         tabAdapter = new TabsViewPagerAdapter(this, newview);//设置水平滑动控件adapter
         mViewPager.setAdapter(tabAdapter);//设置viewpager的adapter
         mViewPager.setOnPageChangeListener(this);
-        if ("意外险".equals(category)){
+        if ("重疾险".equals(category)){
             mPreSelectItem=0;
             mViewPager.setCurrentItem(mPreSelectItem);
 
-
-        }else if("重疾险".equals(category)){
+        }else if("年金险".equals(category)){
             mPreSelectItem=1;
             mViewPager.setCurrentItem(mPreSelectItem);
 
-        } else if("年金险".equals(category)){
+        } else if("终身寿险".equals(category)){
             mPreSelectItem=2;
             mViewPager.setCurrentItem(mPreSelectItem);
 
-        }else if("医疗险".equals(category)) {
+        }else if("意外险".equals(category)) {
             mPreSelectItem=3;
             mViewPager.setCurrentItem(mPreSelectItem);
 
-        }else if("终身寿险".equals(category)) {
+        }else if("医疗险".equals(category)) {
             mPreSelectItem=4;
             mViewPager.setCurrentItem(mPreSelectItem);
 
-        }else if("企业团体".equals(category)) {
+        }else if("一老一小".equals(category)) {
             mPreSelectItem=5;
             mViewPager.setCurrentItem(mPreSelectItem);
+
+        }else if("企业团体".equals(category)) {
+            mPreSelectItem=6;
+            mViewPager.setCurrentItem(mPreSelectItem);
+
         }
 
     }
@@ -216,6 +220,9 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
 
         }else if("终身寿险".equals(category)) {
             categoryEng = "wholeLife";
+
+        }else if("一老一小".equals(category)) {
+            categoryEng = "oldSmall";
 
         }else if("企业团体".equals(category)) {
             categoryEng = "enterpriseGroup";

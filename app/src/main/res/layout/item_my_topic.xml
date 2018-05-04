@@ -21,18 +21,18 @@
             android:id="@+id/tv_circle_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="圈子"
+            android:text="圈子/小组名称"
             android:textColor="@color/txt_black1"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/tv_group_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_circle_name"
-            android:text="/小组名称"
-            android:textColor="@color/txt_black1"
-            android:textSize="16sp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_group_name"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/tv_circle_name"-->
+            <!--android:text="/小组名称"-->
+            <!--android:textColor="@color/txt_black1"-->
+            <!--android:textSize="16sp"/>-->
     </RelativeLayout>
 
     <View

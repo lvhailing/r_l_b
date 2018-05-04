@@ -80,6 +80,8 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
 
         if(type.equals(TrainingCircleActivity.RECOMMEND)){
 
+
+
         }else{
             holder.tvCircleJoin.setVisibility(View.GONE);
 

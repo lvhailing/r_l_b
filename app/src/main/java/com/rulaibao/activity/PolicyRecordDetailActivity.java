@@ -4,18 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.PolicyRecordDetail1B;
+import com.rulaibao.bean.PolicyRecordList1B;
+import com.rulaibao.bean.PolicyRecordList2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
 
+import java.util.LinkedHashMap;
+
 /**
- *  保单详情
+ * 保单详情
  * Created by junde on 2018/4/18.
  */
 
@@ -40,12 +52,14 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
     private TextView tv_have_insurance_premiums; // 已交保费
     private TextView tv_promotion_fee; // 推广费
     private TextView tv_record_date; // 记录日期
-    private ImageView iv1; // 身份证正面
-    private ImageView iv2; // 身份证反面
-    private ImageView iv3; // 银行卡
-    private ImageView iv4; // 其他
-    private ImageView iv5; // 其他
+    private ImageView iv_id_card_positive; // 身份证正面
+    private ImageView iv_id_card_negative; // 身份证反面
+    private ImageView iv_bank_card; // 银行卡
+    private ImageView iv_other_card_first; // 其他
+    private ImageView iv_other_card_second; // 其他
     private TextView tv_remarks_description; // 备注内容
+    private String orderId;
+    private PolicyRecordDetail1B data;
 
 
     @Override
@@ -60,9 +74,7 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_policy_record_detail))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_policy_record_detail)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -81,6 +93,8 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
+        orderId = getIntent().getStringExtra("orderId");
+
         rl_audit_status = (RelativeLayout) findViewById(R.id.rl_audit_status);
         iv_delete = (ImageView) findViewById(R.id.iv_delete);
         tv_turn_down = (TextView) findViewById(R.id.tv_turn_down);
@@ -100,21 +114,120 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
         tv_have_insurance_premiums = (TextView) findViewById(R.id.tv_have_insurance_premiums);
         tv_promotion_fee = (TextView) findViewById(R.id.tv_promotion_fee);
         tv_record_date = (TextView) findViewById(R.id.tv_record_date);
-        iv1 = (ImageView) findViewById(R.id.iv1);
-        iv2 = (ImageView) findViewById(R.id.iv2);
-        iv3 = (ImageView) findViewById(R.id.iv3);
-        iv4 = (ImageView) findViewById(R.id.iv4);
-        iv5 = (ImageView) findViewById(R.id.iv5);
+        iv_id_card_positive = (ImageView) findViewById(R.id.iv_id_card_positive);
+        iv_id_card_negative = (ImageView) findViewById(R.id.iv_id_card_negative);
+        iv_bank_card = (ImageView) findViewById(R.id.iv_bank_card);
+        iv_other_card_first = (ImageView) findViewById(R.id.iv_other_card_first);
+        iv_other_card_second = (ImageView) findViewById(R.id.iv_other_card_second);
         tv_remarks_description = (TextView) findViewById(R.id.tv_remarks_description);
 
         rl_insurance_name.setOnClickListener(this);
     }
 
     /**
-     *  获取保单详情页数据
+     * 获取保单详情页数据
      */
     private void requestData() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", "18042513234098822058");
+        param.put("orderId", orderId);
 
+        HtmlRequest.getPolicyRecordDetail(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(PolicyRecordDetailActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                data = (PolicyRecordDetail1B) params.result;
+                setView();
+            }
+        });
+    }
+
+    private void setView() {
+        if (!TextUtils.isEmpty(data.getInsuranceName())) {
+            tv_insurance_name.setText(data.getInsuranceName());
+            tv_product_name.setText(data.getInsuranceName());
+        }
+        if (!TextUtils.isEmpty(data.getAuditDesc())) {
+            rl_audit_status.setVisibility(View.VISIBLE);
+            tv_turn_down.setText(data.getAuditDesc());
+        }
+
+        String status = data.getStatus();
+        if (TextUtils.isEmpty(data.getStatus())) {
+            return;
+        }
+        if ("init".equals(status)) {
+            tv_policy_status.setText("待审核");
+        } else if ("payed".equals(status)) {
+            tv_policy_status.setText("已承保");
+            ll_underwriting_time.setVisibility(View.VISIBLE);
+            tv_underwriting_time.setText(data.getUnderwirteTime());
+            ll_policy_number.setVisibility(View.VISIBLE);
+            tv_policy_number.setText(data.getOrderCode());
+        } else if ("rejected".equals(status)) {
+            tv_policy_status.setText("问题件");
+        } else if ("receiptSigned".equals(status)) {
+            tv_policy_status.setText("回执签收");
+            ll_underwriting_time.setVisibility(View.VISIBLE);
+            tv_underwriting_time.setText(data.getUnderwirteTime());
+            ll_policy_number.setVisibility(View.VISIBLE);
+            tv_policy_number.setText(data.getOrderCode());
+        }else if ("commissioned".equals(status)) {
+            tv_policy_status.setText("已结算");
+            ll_underwriting_time.setVisibility(View.VISIBLE);
+            tv_underwriting_time.setText(data.getUnderwirteTime());
+            ll_policy_number.setVisibility(View.VISIBLE);
+            tv_policy_number.setText(data.getOrderCode());
+        }
+
+        if (!TextUtils.isEmpty(data.getCustomerName())) {
+            tv_customer_name.setText(data.getCustomerName());
+        }
+        if (!TextUtils.isEmpty(data.getCustomerIdNo())) {
+            tv_id_number.setText(data.getCustomerIdNo());
+        }
+        if (!TextUtils.isEmpty(data.getInsurancePeriod())) {
+            tv_insurance_period.setText(data.getInsurancePeriod());
+        }
+        if (!TextUtils.isEmpty(data.getPaymentPeriod())) {
+            tv_payment_period.setText(data.getPaymentPeriod());
+        }
+        if (!TextUtils.isEmpty(data.getRenewalDate())) {
+            tv_renewal_date2.setText(data.getRenewalDate());
+        }
+        if (!TextUtils.isEmpty(data.getPaymentedPremiums())) {
+            tv_have_insurance_premiums.setText(data.getPaymentedPremiums());
+        }
+        if (!TextUtils.isEmpty(data.getPromotioinCost())) {
+            tv_promotion_fee.setText(data.getPromotioinCost());
+        }
+        if (!TextUtils.isEmpty(data.getRecordTime())) {
+            tv_record_date.setText(data.getRecordTime());
+        }
+
+        if (!TextUtils.isEmpty(data.getIdcardPositive())){
+        ImageLoader.getInstance().displayImage(data.getIdcardPositive(), iv_id_card_positive); // 身份证正面
+        }
+        if (!TextUtils.isEmpty(data.getIdcardNegative())){
+        ImageLoader.getInstance().displayImage(data.getIdcardNegative(), iv_id_card_negative); // 身份证反面
+        }
+        if (!TextUtils.isEmpty(data.getBankCard())){
+        ImageLoader.getInstance().displayImage(data.getBankCard(), iv_bank_card); // 银行卡
+        }
+        if (!TextUtils.isEmpty(data.getAttachmentFirst())){
+        ImageLoader.getInstance().displayImage(data.getAttachmentFirst(), iv_other_card_first); // 其他卡1
+        }
+        if (!TextUtils.isEmpty(data.getAttachmentSecond())){
+        ImageLoader.getInstance().displayImage(data.getAttachmentSecond(), iv_other_card_second); // 其他卡2
+        }
+
+        if (!TextUtils.isEmpty(data.getRemark())) {
+            tv_remarks_description.setText(data.getRemark());
+        }
     }
 
     @Override
@@ -125,6 +238,10 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
                 // Todo  跳转保险产品详情页
 //                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
 //                startActivity(intent);
+                break;
+            case R.id.iv_delete:
+                rl_audit_status.setVisibility(View.GONE);
+                break;
         }
-   }
+    }
 }

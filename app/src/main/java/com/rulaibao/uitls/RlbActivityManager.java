@@ -204,11 +204,11 @@ public class RlbActivityManager {
      *
      */
 
-    public static void toTrainingClassDetailsActivity(Activity activity, boolean isFinish) {
+    public static void toTrainingClassDetailsActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity, TrainingClassDetailsActivity.class);
+            startActivityAndFinish(activity,map, TrainingClassDetailsActivity.class);
         } else {
-            startActivity(activity, TrainingClassDetailsActivity.class);
+            startActivity(activity,map, TrainingClassDetailsActivity.class);
         }
     }
 

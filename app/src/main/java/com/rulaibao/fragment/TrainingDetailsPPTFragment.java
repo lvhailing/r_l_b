@@ -14,8 +14,16 @@ import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingClassPPTAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
+import com.rulaibao.bean.ResultClassDetailsDiscussBean;
+import com.rulaibao.bean.ResultClassDetailsPPTBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +40,9 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
     private String string = "";
     private TrainingClassPPTAdapter adapter;
+    private String courseId = "";
+
+    private ArrayList<String> pptImgs;
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,17 +61,18 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-
+        courseId = getArguments().getString("courseId");
+        pptImgs = new ArrayList<String>();
 
         test();
         initRecyclerView();
-
+        requestData();
     }
 
     public void initRecyclerView(){
 
         lvPpt.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new TrainingClassPPTAdapter(getActivity(),arrayList);
+        adapter = new TrainingClassPPTAdapter(getActivity(),pptImgs);
         lvPpt.setAdapter(adapter);
 
 
@@ -107,6 +119,33 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
 
     }
+
+    public void requestData() {
+
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("id", courseId);      //
+
+        HtmlRequest.getClassDetailsPPT(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultClassDetailsPPTBean bean = (ResultClassDetailsPPTBean) params.result;
+                    pptImgs.addAll(bean.getPptImgs());
+                    adapter.notifyDataSetChanged();
+
+                } else {
+
+                }
+            }
+        });
+    }
+
+
 
 
     public void test() {
