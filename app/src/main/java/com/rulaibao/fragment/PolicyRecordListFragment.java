@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class PolicyRecordListFragment extends Fragment {
         initView(view);
         requestData();
         initListener();
+        Log.i("aaa", "onCreateView: " + this + " status:" + status);
         return view;
     }
 
@@ -186,12 +188,14 @@ public class PolicyRecordListFragment extends Fragment {
         });
     }
 
-    private void requestData() {
+    public void requestData() {
 
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", "18042513234098822058");
         param.put("page", currentPage + "");
-        param.put("status", "all");
+        param.put("status", status);
+
+        Log.i("aaa", this + " requestData status: " + status);
 
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -229,18 +233,18 @@ public class PolicyRecordListFragment extends Fragment {
     }
 
     public void getTabTitleCurrentPosition(int currentPosition) {
-        if ("0".equals(currentPosition)) {
-            status = "allTotal";  //保单列表中全部数量=待审核+已承保+问题件+回执签收
-        } else if ("1".equals(currentPosition)) {
+        if (currentPosition == 0) {
+            status = "all";  //保单列表中全部数量=待审核+已承保+问题件+回执签收
+        } else if (currentPosition == 1) {
             status = "initTotal";  //待审核
-        } else if ("2".equals(currentPosition)) {
+        } else if (currentPosition == 2) {
             status = "payedTotal";  //已承保
-        } else if ("3".equals(currentPosition)) {
+        } else if (currentPosition == 3) {
             status = "rejectedTotal";  //问题件
-        } else if ("4".equals(currentPosition)) {
+        } else if (currentPosition == 4) {
             status = "receiptSignedTotal";  //回执签收
         }
-
     }
+
 
 }

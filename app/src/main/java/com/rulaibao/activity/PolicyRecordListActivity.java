@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import com.rulaibao.widget.TitleBar;
  * Created by junde on 2018/4/13.
  */
 
-public class PolicyRecordListActivity extends BaseActivity implements View.OnClickListener {
+public class PolicyRecordListActivity extends BaseActivity {
 
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
@@ -29,6 +30,7 @@ public class PolicyRecordListActivity extends BaseActivity implements View.OnCli
     private String flag; // 如果flag =1000,则说明是要展示指定的tab及对应的内容；
     private int currentTabPosition; // currentTabPosition = 0 (全部)、currentTabPosition = 1 (待审核)、currentTabPosition = 2 (已承保)、currentTabPosition = 3 (问题件)、currentTabPosition = 4 (回执签收)
     private TabLayout.Tab tab;
+    private PolicyRecordListFragment fragment;
 //    private PolicyRecordList1B data;
 
 
@@ -40,26 +42,33 @@ public class PolicyRecordListActivity extends BaseActivity implements View.OnCli
         initTopTitle();
         initView();
         initData();
+
     }
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_policy_record)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null))
+                .setLogo(R.drawable.icons, false)
+                .setIndicator(R.mipmap.icon_back)
+                .setCenterText(getResources().getString(R.string.title_policy_record))
+                .showMore(false)
+                .setOnActionListener(new TitleBar.OnActionListener() {
 
-            @Override
-            public void onMenu(int id) {
-            }
+                    @Override
+                    public void onMenu(int id) {
 
-            @Override
-            public void onBack() {
-                finish();
-            }
+                    }
 
-            @Override
-            public void onAction(int id) {
+                    @Override
+                    public void onBack() {
+                        finish();
+                    }
 
-            }
-        });
+                    @Override
+                    public void onAction(int id) {
+
+                    }
+                });
     }
 
     private void initView() {
@@ -73,10 +82,28 @@ public class PolicyRecordListActivity extends BaseActivity implements View.OnCli
     private void initData() {
         titles = new String[]{"全部（）", "待审核（）", "已承保（）", "问题件（）", "回执签收（）"};
         vpAdapter = new PolicyRrcordListVPAdapter(getSupportFragmentManager(), titles, this);
+        ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
         viewpager.setAdapter(vpAdapter);
         sliding_tabs.setupWithViewPager(viewpager);  //将TabLayout和ViewPager关联起来
         chooseAppointedTab(currentTabPosition);
-        ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
+                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestData();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**
@@ -134,8 +161,4 @@ public class PolicyRecordListActivity extends BaseActivity implements View.OnCli
     }
 
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }
