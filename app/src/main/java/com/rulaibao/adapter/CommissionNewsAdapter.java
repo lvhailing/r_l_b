@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.bean.CommissionNewsList3B;
+import com.rulaibao.bean.CommissionNewsList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -19,7 +19,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<CommissionNewsList3B> list;
+    private final MouldList<CommissionNewsList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,7 +36,7 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int mLoadMoreStatus = 0;
 
 
-    public CommissionNewsAdapter(Context context, MouldList<CommissionNewsList3B> list) {
+    public CommissionNewsAdapter(Context context, MouldList<CommissionNewsList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -61,9 +61,10 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_commission_income.setText(list.get(position).getCommissionIncome());
-            itemViewHolder.tv_date.setText(list.get(position).getIncomeDate());
-            itemViewHolder.tv_time.setText(list.get(position).getIncomeTime());
+//            itemViewHolder.tv_commission_income.setText(list.get(position).getCommissionIncome());
+            itemViewHolder.tv_commission_title.setText(list.get(position).getContent());
+            itemViewHolder.tv_date.setText(list.get(position).getCreateTime());
+//            itemViewHolder.tv_time.setText(list.get(position).getIncomeTime());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -103,15 +104,17 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tv_commission_income; // 佣金收益
+        private final TextView tv_commission_title; // 消息内容
+        private final TextView tv_commission_income; // 佣金收益金额
         private final TextView tv_date; // 日期
-        private final TextView tv_time; // 时间
+//        private final TextView tv_time; // 时间
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+            tv_commission_title = (TextView) itemView.findViewById(R.id.tv_commission_title);
             tv_commission_income = (TextView) itemView.findViewById(R.id.tv_commission_income);
             tv_date = (TextView) itemView.findViewById(R.id.tv_date);
-            tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+//            tv_time = (TextView) itemView.findViewById(R.id.tv_time);
 
             initListener(itemView);
         }
@@ -148,12 +151,12 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    public void AddHeaderItem(MouldList<CommissionNewsList3B> items) {
+    public void AddHeaderItem(MouldList<CommissionNewsList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<CommissionNewsList3B> items) {
+    public void AddFooterItem(MouldList<CommissionNewsList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

@@ -9,6 +9,7 @@ import android.webkit.CookieSyncManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rulaibao.bean.Collection2B;
+import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.InsuranceDetail1B;
 import com.rulaibao.bean.InsuranceProduct1B;
@@ -18,6 +19,7 @@ import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyTopicList1B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.Plan2B;
+import com.rulaibao.bean.PlatformBulletinList1B;
 import com.rulaibao.bean.PolicyBookingList1B;
 import com.rulaibao.bean.PolicyPlan2B;
 import com.rulaibao.bean.PolicyRecordDetail1B;
@@ -1088,6 +1090,58 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+    /**
+     *  获取佣金/保单消息列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getMessageListData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_MESSAGE_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "佣金/保单消息列表：" + data);
+
+                    Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
 
     /**
      *  推荐app给好友
@@ -1705,7 +1759,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     data = DESUtil.decrypt(result);
                     Log.i("hh", "公告列表：" + data);
 
-                    Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
+                    Repo<PlatformBulletinList1B> b = json.fromJson(data, new TypeToken<Repo<PlatformBulletinList1B>>() {
                     }.getType());
 
                     return b.getData();
@@ -1725,7 +1779,57 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
+    /**
+     *  联系客服
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getFeedbackData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_FEEDBACK_ADD;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "联系客服：" + data);
 
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
 
 
 

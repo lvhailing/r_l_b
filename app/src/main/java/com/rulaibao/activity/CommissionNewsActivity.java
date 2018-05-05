@@ -6,13 +6,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.CommissionNewsAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.CommissionNewsList3B;
+import com.rulaibao.bean.CommissionNewsList1B;
+import com.rulaibao.bean.CommissionNewsList2B;
+import com.rulaibao.bean.PlatformBulletinList1B;
+import com.rulaibao.bean.PlatformBulletinList2B;
+import com.rulaibao.bean.UnreadNewsCount2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.HashMap;
 
 /**
  *  佣金消息
@@ -24,7 +34,8 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private CommissionNewsAdapter commissionNewsAdapter;
-    private MouldList<CommissionNewsList3B> totalList = new MouldList<>();
+    private MouldList<CommissionNewsList2B> totalList = new MouldList<>();
+    private int currentPage = 1;  //当前页
 
 
     @Override
@@ -34,7 +45,7 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
         initTopTitle();
         initView();
-        initData();
+        requesData();
     }
 
     private void initTopTitle() {
@@ -62,16 +73,6 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
     private void initView() {
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-    }
-
-    private void initData() {
-        for(int i=0;i<10;i++){
-            CommissionNewsList3B bean = new CommissionNewsList3B();
-            bean.setCommissionIncome("中纪委发文谈落马：十九大后“首虎”");
-            bean.setIncomeDate("04-1"+i);
-            bean.setIncomeTime("08:10"+"--"+i);
-            totalList.add(bean);
-        }
 
         initRecylerView();
     }
@@ -84,6 +85,57 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         recycler_view.setItemAnimator(new DefaultItemAnimator());
 
     }
+
+    private void requesData() {
+//        for(int i=0;i<10;i++){
+//            CommissionNewsList2B bean = new CommissionNewsList2B();
+//            bean.setCommissionIncome("中纪委发文谈落马：十九大后“首虎”");
+//            bean.setIncomeDate("04-1"+i);
+//            bean.setIncomeTime("08:10"+"--"+i);
+//            totalList.add(bean);
+//        }
+
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("userId", "18042709525931594357");
+        param.put("busiType", "commission");
+
+        HtmlRequest.getMessageListData(CommissionNewsActivity.this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
+                if (params.result == null) {
+                    Toast.makeText(CommissionNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                CommissionNewsList1B data = (CommissionNewsList1B) params.result;
+                MouldList<CommissionNewsList2B> everyList = data.getList();
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
+                    Toast.makeText(CommissionNewsActivity.this, "已显示全部", Toast.LENGTH_SHORT).show();
+                    commissionNewsAdapter.changeMoreStatus(commissionNewsAdapter.NO_LOAD_MORE);
+                }
+                if (currentPage == 1) {
+                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
+                    totalList.clear();
+                }
+                totalList.addAll(everyList);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    commissionNewsAdapter.changeMoreStatus(commissionNewsAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    commissionNewsAdapter.changeMoreStatus(commissionNewsAdapter.NO_LOAD_MORE);
+                }
+            }
+        });
+    }
+
+
 
     @Override
     public void onClick(View v) {

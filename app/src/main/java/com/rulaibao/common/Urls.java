@@ -236,6 +236,9 @@ public class Urls {
     // 我的模块 未读消息数
     public static final String URL_MESSAGE_TYPE_COUNT = EC_HOST + "message/type/count";
 
+    // 我的模块 消息列表
+    public static final String URL_MESSAGE_LIST = EC_HOST + "message/list";
+
     //上传图片
     public static final String URL_SUBMIT_PHOTO = EC_HOST + "android/account/photo/upload";
 
@@ -275,6 +278,8 @@ public class Urls {
     // 平台公告 列表
     public static final String URL_BULLETIN_LIST = EC_HOST + "bulletin/list";
 
+    // 联系客服
+    public static final String URL_FEEDBACK_ADD = EC_HOST + "feedback/add";
 
 
 

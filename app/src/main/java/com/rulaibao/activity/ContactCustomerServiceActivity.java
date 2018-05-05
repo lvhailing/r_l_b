@@ -12,8 +12,14 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.OK2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.LinkedHashMap;
 
 /**
  * 联系客服 页面
@@ -26,6 +32,7 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
     private EditText et_phone; // 手机号
     private TextView tv_change_text;  // 用户输入时字数的变化
     private Button btn_submit; // 提交 按钮
+    private String content = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +158,32 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
      *  请求后台数据
      */
     private void requestData() {
-        // Todo 稍后写接口
+        content = et_consulting_questions.getText().toString();
+        phone = et_phone.getText().toString();
 
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("content", content);
+        param.put("mobile",  phone);
+        param.put("userId",  "");
+        param.put("userName",  "");
+
+        HtmlRequest.getFeedbackData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(ContactCustomerServiceActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data != null) {
+                    if (data.getFlag().equals("true")) {
+                        Toast.makeText(ContactCustomerServiceActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(ContactCustomerServiceActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
     }
 }

@@ -63,9 +63,9 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_bulletin_title.setText(list.get(position).getTitle());
-//            itemViewHolder.tv_bulletin_time.setText(list.get(position).getSendTime());
-//            itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
+            itemViewHolder.tv_bulletin_title.setText(list.get(position).getTopic());
+            itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
+            itemViewHolder.tv_bulletin_content.setText(list.get(position).getContent());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;

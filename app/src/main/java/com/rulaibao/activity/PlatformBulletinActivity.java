@@ -86,7 +86,7 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
 
     private void requestData() {
       LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042513234098822058");
+        param.put("userId", "123456");
         param.put("page", currentPage + "");
 
 
