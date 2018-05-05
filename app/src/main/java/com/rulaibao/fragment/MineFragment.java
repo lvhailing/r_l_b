@@ -405,6 +405,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.rl_my_participation: // 我的参与
                 intent = new Intent(context,MyPartakeActivity.class);
+                intent.putExtra("position",0);
                 startActivity(intent);
                 break;
             case R.id.rl_my_collection: // 我的收藏

@@ -5,14 +5,24 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.PlatformBulletinAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.PlatformBulletinList3B;
+import com.rulaibao.bean.PlatformBulletinList1B;
+import com.rulaibao.bean.PlatformBulletinList2B;
+import com.rulaibao.bean.PolicyRecordList1B;
+import com.rulaibao.bean.PolicyRecordList2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.LinkedHashMap;
 
 /**
  *   平台公告 列表
@@ -24,7 +34,8 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private PlatformBulletinAdapter platformBulletinAdapter;
-    private MouldList<PlatformBulletinList3B> totalList = new MouldList<>();
+    private MouldList<PlatformBulletinList2B> totalList = new MouldList<>();
+    private int currentPage = 1;  //当前页
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +44,7 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
 
         initTopTitle();
         initView();
-        initData();
+        requestData();
     }
 
     private void initTopTitle() {
@@ -60,17 +71,6 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
     private void initView() {
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-    }
-
-    private void initData() {
-         for(int i=0;i<10;i++){
-        PlatformBulletinList3B bean = new PlatformBulletinList3B();
-        bean.setSendTime("04-12 12:30");
-        bean.setDescription("哈哈，我是测试的内容！哈哈，我是测试的内容！");
-        bean.setTitle("测试数据公告标题测试数据公告标题测试数据测试数据公告标题测试数据公告标题测试数据");
-        bean.setBulletinId("2222");
-        totalList.add(bean);
-    }
 
         initRecylerView();
     }
@@ -84,21 +84,52 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
 
     }
 
+    private void requestData() {
+      LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", "18042513234098822058");
+        param.put("page", currentPage + "");
+
+
+        HtmlRequest.getBulletinListData(PlatformBulletinActivity.this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
+                if (params.result == null) {
+                    Toast.makeText(PlatformBulletinActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                PlatformBulletinList1B data = (PlatformBulletinList1B) params.result;
+                MouldList<PlatformBulletinList2B> everyList = data.getList();
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
+                    Toast.makeText(PlatformBulletinActivity.this, "已显示全部", Toast.LENGTH_SHORT).show();
+                    platformBulletinAdapter.changeMoreStatus(platformBulletinAdapter.NO_LOAD_MORE);
+                }
+                if (currentPage == 1) {
+                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
+                    totalList.clear();
+                }
+                totalList.addAll(everyList);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    platformBulletinAdapter.changeMoreStatus(platformBulletinAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    platformBulletinAdapter.changeMoreStatus(platformBulletinAdapter.NO_LOAD_MORE);
+                }
+            }
+        });
+    }
+
+
     @Override
     public void onClick(View v) {
 
     }
 
-
-//    public void test(){
-//        for(int i=0;i<10;i++){
-//            PlatformBulletinList3B bean = new PlatformBulletinList3B();
-//            bean.setSendTime("04-12 12:30");
-//            bean.setDescription("-----");
-//            bean.setTitle("公告标题测试数据");
-//            bean.setBulletinId("2222");
-//            totalList.add(bean);
-//        }
-//
-//    }
 }

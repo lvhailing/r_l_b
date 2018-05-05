@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PlatformBulletinDetailActivity;
-import com.rulaibao.bean.PlatformBulletinList3B;
+import com.rulaibao.bean.PlatformBulletinList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -21,7 +21,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<PlatformBulletinList3B> list;
+    private final MouldList<PlatformBulletinList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -38,7 +38,7 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public PlatformBulletinAdapter(Context context,MouldList<PlatformBulletinList3B> list) {
+    public PlatformBulletinAdapter(Context context,MouldList<PlatformBulletinList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -63,9 +63,9 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_bulletin_title.setText(list.get(position).getTitle());
-            itemViewHolder.tv_bulletin_time.setText(list.get(position).getSendTime());
-            itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
+//            itemViewHolder.tv_bulletin_title.setText(list.get(position).getTitle());
+//            itemViewHolder.tv_bulletin_time.setText(list.get(position).getSendTime());
+//            itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -150,12 +150,12 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void AddHeaderItem(MouldList<PlatformBulletinList3B> items) {
+    public void AddHeaderItem(MouldList<PlatformBulletinList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<PlatformBulletinList3B> items) {
+    public void AddFooterItem(MouldList<PlatformBulletinList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.PolicyBookingDetailActivity;
 import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -45,7 +47,7 @@ public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_ITEM) { // 加载收藏列表 item 布局
+        if (viewType == TYPE_ITEM) { // 加载列表 item 布局
             View itemView = mInflater.inflate(R.layout.item_my_partake, parent, false);
 
             return new ItemViewHolder(itemView);
@@ -119,8 +121,8 @@ public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View v) { // 跳转到保险产品详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
         }

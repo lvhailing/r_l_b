@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DSL;
+    private static String EC_HOST = URL_XYJ;
 
     /**
      * 注册
@@ -265,8 +265,14 @@ public class Urls {
     // 我的提问列表
     public static final String URL_MY_ASK_LIST = EC_HOST + "appQuestion/my/list";
 
+    // 我参与的（提问列表）
+    public static final String URL_APPQUESTION_MYJOIN_LIST = EC_HOST + "appQuestion/myJoin/list";
+
     // 我的话题列表
     public static final String URL_MY_TOPIC_LIST = EC_HOST + "appTopic/my/list";
+
+    // 平台公告 列表
+    public static final String URL_BULLETIN_LIST = EC_HOST + "bulletin/list";
 
 
 
