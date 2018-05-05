@@ -131,15 +131,15 @@ public class PolicyRecordListActivity extends BaseActivity {
         TextView title2 = (TextView) titleView2.findViewById(R.id.tv_title);
         title2.setText("待审核（" + data.getInitTotal() + "）");
 
-        View titleView3 = (View) sliding_tabs.getTabAt(1).getCustomView();
+        View titleView3 = (View) sliding_tabs.getTabAt(2).getCustomView();
         TextView title3 = (TextView) titleView3.findViewById(R.id.tv_title);
         title3.setText("已承保（" + data.getPayedTotal() + "）");
 
-        View titleView4 = (View) sliding_tabs.getTabAt(1).getCustomView();
+        View titleView4 = (View) sliding_tabs.getTabAt(3).getCustomView();
         TextView title4 = (TextView) titleView4.findViewById(R.id.tv_title);
         title4.setText("问题件（" + data.getRejectedTotal() + "）");
 
-        View titleView5 = (View) sliding_tabs.getTabAt(1).getCustomView();
+        View titleView5 = (View) sliding_tabs.getTabAt(4).getCustomView();
         TextView title5 = (TextView) titleView5.findViewById(R.id.tv_title);
         title5.setText("回执签收（" + data.getReceiptSignedTotal() + "）");
 

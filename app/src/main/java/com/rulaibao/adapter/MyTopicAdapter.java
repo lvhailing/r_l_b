@@ -37,6 +37,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
+    private String topicId; // 话题
 
 
     public MyTopicAdapter(Activity activity, MouldList<MyTopicList2B> list) {
@@ -64,6 +65,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            topicId = list.get(position).getTopicId();
             itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName());
 //            itemViewHolder.tv_group_name.setText(list.get(position).getGroupName());
             itemViewHolder.tv_topic_title.setText(list.get(position).getCommentCount());
@@ -136,8 +138,8 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 
                     HashMap<String,Object> map = new HashMap<String,Object>();
-                    map.put("appTopicId","");
-                    map.put("circleId","");
+                    map.put("appTopicId",topicId);
+//                    map.put("circleId","");
                     RlbActivityManager.toTrainingTopicDetailsActivity(mContext,map,false);
                 }
             });

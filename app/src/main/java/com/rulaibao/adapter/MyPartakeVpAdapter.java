@@ -30,7 +30,7 @@ public class MyPartakeVpAdapter extends FragmentStatePagerAdapter {
 
     private void initFragments() {
         fragments = new ArrayList<>();
-        fragments.add(MyPartakeFragment.newInstance("icon_my_ask"));
+        fragments.add(MyPartakeFragment.newInstance("提问"));
         fragments.add(MyPartakeFragment.newInstance("话题"));
     }
 

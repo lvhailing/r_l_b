@@ -18,6 +18,7 @@ import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyTopicList1B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.Plan2B;
+import com.rulaibao.bean.PolicyBookingList1B;
 import com.rulaibao.bean.PolicyPlan2B;
 import com.rulaibao.bean.PolicyRecordDetail1B;
 import com.rulaibao.bean.PolicyRecordList1B;
@@ -1492,7 +1493,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     data = DESUtil.decrypt(result);
                     Log.i("hh", "我的--预约列表：" + data);
 
-                    Repo<PolicyRecordDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordDetail1B>>() {
+                    Repo<PolicyBookingList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingList1B>>() {
                     }.getType());
 
                     return b.getData();

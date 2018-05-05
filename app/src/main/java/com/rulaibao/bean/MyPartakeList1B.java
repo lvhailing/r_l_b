@@ -4,13 +4,14 @@ import com.rulaibao.network.types.IMouldType;
 import com.rulaibao.network.types.MouldList;
 
 /**
- * Created by junde on 2018/5/4.
+ *    我参与的列表 实体类
+ * Created by junde on 2018/4/21.
  */
 
-public class MyAskList1B implements IMouldType {
+public class MyPartakeList1B implements IMouldType {
 
     private String total; // 总数
-    private MouldList<MyAskList2B> list; // 提问列表
+    private MouldList<MyAskList2B> list; // 提问列表 (“我参与的”里面的提问请求的接口出参跟“我的提问”接口出参相同故在此共用这一层)
     private String flag;
     private String msg;
 

@@ -1,5 +1,6 @@
 package com.rulaibao.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,10 +13,12 @@ import android.view.ViewGroup;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyPartakeRecycleAdapter;
-import com.rulaibao.bean.MyPartakeList3B;
+import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
-
+/**
+ *
+ */
 public class MyPartakeFragment extends Fragment {
     private static final String KEY = "param1";
 
@@ -23,7 +26,8 @@ public class MyPartakeFragment extends Fragment {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private MyPartakeRecycleAdapter myPartakeRecycleAdapter;
-    private MouldList<MyPartakeList3B> totalList = new MouldList<>();
+    private MouldList<MyAskList2B> totalList = new MouldList<>();
+    private Context context;
 
 
     public static MyPartakeFragment newInstance(String param1) {
@@ -50,20 +54,21 @@ public class MyPartakeFragment extends Fragment {
     }
 
     private void initView(View view) {
+        context = getActivity();
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        for (int i = 0; i < 10; i++) {
-            MyPartakeList3B bean = new MyPartakeList3B();
-            bean.setTitle("中纪委发文中纪委发文" + "10" + i);
-            totalList.add(bean);
-
-            recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-            myPartakeRecycleAdapter = new MyPartakeRecycleAdapter(getActivity(), totalList);
+//        for (int i = 0; i < 10; i++) {
+//            MyPartakeList2B bean = new MyPartakeList2B();
+//            bean.setTitle("中纪委发文中纪委发文" + "10" + i);
+//            totalList.add(bean);
+//
+//        }
+            recycler_view.setLayoutManager(new LinearLayoutManager(context));
+            myPartakeRecycleAdapter = new MyPartakeRecycleAdapter(context, totalList);
             recycler_view.setAdapter(myPartakeRecycleAdapter);
             //添加动画
             recycler_view.setItemAnimator(new DefaultItemAnimator());
-        }
 
 
     }

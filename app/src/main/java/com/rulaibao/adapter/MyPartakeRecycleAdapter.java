@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.bean.MyPartakeList3B;
+import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -19,7 +19,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<MyPartakeList3B> list;
+    private final MouldList<MyAskList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,7 +36,7 @@ public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public MyPartakeRecycleAdapter(Context context, MouldList<MyPartakeList3B> list) {
+    public MyPartakeRecycleAdapter(Context context, MouldList<MyAskList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -142,12 +142,12 @@ public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void AddHeaderItem(MouldList<MyPartakeList3B> items) {
+    public void AddHeaderItem(MouldList<MyAskList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<MyPartakeList3B> items) {
+    public void AddFooterItem(MouldList<MyAskList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

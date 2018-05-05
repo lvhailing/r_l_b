@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * 保险预约列表  viewPager  Adapter类
+ * 预约列表  viewPager  Adapter类
  * Created by junde on 2018/4/19.
  */
 
@@ -34,6 +34,7 @@ public class PolicyBookingVpAdapter extends FragmentStatePagerAdapter {
         fragments.add(PolicyBookingFragment.newInstance("待确认"));
         fragments.add(PolicyBookingFragment.newInstance("已确认"));
         fragments.add(PolicyBookingFragment.newInstance("已驳回"));
+        fragments.add(PolicyBookingFragment.newInstance("已取消"));
     }
 
     @Override

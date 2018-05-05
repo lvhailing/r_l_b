@@ -47,7 +47,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_ITEM) { // 加载保单预约列表 item 布局
+        if (viewType == TYPE_ITEM) { // 加载预约列表 item 布局
             View itemView = mInflater.inflate(R.layout.item_policy_booking, parent, false);
 
             return new ItemViewHolder(itemView);
@@ -63,9 +63,19 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
-//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancePremiums());
+            itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
+
+            String status = list.get(position).getAuditStatus();
+            if ("confirming".equals(status)) {
+            itemViewHolder.tv_status.setText("待确认");
+            } else if ("confirmed".equals(status)) {
+            itemViewHolder.tv_status.setText("已确认");
+            }else if ("refuse".equals(status)) {
+                itemViewHolder.tv_status.setText("已驳回");
+            }else if ("canceled".equals(status)) {
+                itemViewHolder.tv_status.setText("已取消");
+            }
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;

@@ -392,6 +392,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.rl_my_bookings: // 我的预约
                 intent = new Intent(context,PolicyBookingListActivity.class);
+                intent.putExtra("position",0);
                 startActivity(intent);
                 break;
             case R.id.rl_my_ask: // 我的提问

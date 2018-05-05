@@ -15,7 +15,7 @@ import com.rulaibao.widget.TitleBar;
  * Created by junde on 2018/4/23.
  */
 
-public class MyPartakeActivity extends BaseActivity implements View.OnClickListener{
+public class MyPartakeActivity extends BaseActivity {
 
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
@@ -68,8 +68,4 @@ public class MyPartakeActivity extends BaseActivity implements View.OnClickListe
         sliding_tabs.setupWithViewPager(viewpager);
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }
