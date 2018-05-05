@@ -109,31 +109,6 @@ public class PolicyRecordListFragment extends Fragment {
             public void onRefresh() {  // 下拉刷新
                 currentPage = 1;
                 requestData();
-
-                //刷新完成
-                Toast.makeText(context, "下拉刷新", Toast.LENGTH_SHORT).show();
-
-                //2秒后关掉动画
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        swipe_refresh.setRefreshing(false);
-                    }
-                }, 2000);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        List<String> headDatas = new ArrayList<String>();
-//                        for (int i = 20; i <30 ; i++) {
-//                            headDatas.add("Heard Item "+i);
-//                        }
-//                        transactionRecordAdapter.AddHeaderItem(headDatas);
-//
-//                        //刷新完成
-//                        swipe_refresh.setRefreshing(false);
-//                        Toast.makeText(TransactionRecordActivity.this, "更新了 "+headDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, 3000);
-
             }
         });
     }
@@ -146,41 +121,16 @@ public class PolicyRecordListFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == policyRecordAdapter.getItemCount() && firstVisibleItem != 0) {
-
-//                    swipe_refresh.setRefreshing(true);
-
                     currentPage++;
                     requestData();
-
-
-                    //改为网络请求
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //
-//                            List<String> footerDatas = new ArrayList<String>();
-//                            for (int i = 0; i< 10; i++) {
-//                                footerDatas.add("footer  item" + i);
-//                            }
-//                            transactionRecordAdapter.AddFooterItem(footerDatas);
-//                            //设置回到上拉加载更多
-//                            transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
-//                            //没有加载更多了
-//                            //mRefreshAdapter.changeMoreStatus(mRefreshAdapter.NO_LOAD_MORE);
-//                            Toast.makeText(TransactionRecordActivity.this, "更新了 "+footerDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 3000);
                 }
-
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
@@ -200,6 +150,11 @@ public class PolicyRecordListFragment extends Fragment {
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
                 if (params.result == null) {
                     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
@@ -217,17 +172,11 @@ public class PolicyRecordListFragment extends Fragment {
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                policyRecordAdapter.notifyDataSetChanged();
-
-                //上滑加载更多 数据填充后 关闭动画
-//                swipe_refresh.setRefreshing(false);
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
-
-                //没有加载更多了
-                policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 20 == 0) {
+                    policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }

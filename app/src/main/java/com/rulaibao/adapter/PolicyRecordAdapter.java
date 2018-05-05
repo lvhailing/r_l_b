@@ -18,7 +18,6 @@ import com.rulaibao.bean.PolicyRecordList2B;
 import com.rulaibao.network.types.MouldList;
 
 
-
 /**
  * 保单记录 Adapter 类
  */
@@ -38,7 +37,7 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int NO_LOAD_MORE = 2;
 
     //上拉加载更多状态-默认为0
-    private int mLoadMoreStatus = 0;
+    private int mLoadMoreStatus = 2;
     private String orderId; // 保单编号
 
 
@@ -50,14 +49,12 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         if (viewType == TYPE_ITEM) { // 加载保单记录 item 布局
             View itemView = mInflater.inflate(R.layout.item_policy_record, parent, false);
-
             return new ItemViewHolder(itemView);
-        } else if (viewType == TYPE_FOOTER) {
-            View itemView = mInflater.inflate(R.layout.load_more_footview_layout, parent, false);
 
+        } else if (viewType == TYPE_FOOTER) {   // 加载底部布局
+            View itemView = mInflater.inflate(R.layout.load_more_footview_layout, parent, false);
             return new FooterViewHolder(itemView);
         }
         return null;
@@ -71,17 +68,17 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums()+"元");
-            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod()+"年");
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
+            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod() + "年");
             // 加载图片
-            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(),itemViewHolder.iv_company_logo);
+            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
-                    footerViewHolder.tvLoadText.setText("上拉加载更多...");
+                    footerViewHolder.tvLoadText.setText("加载中...");
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvLoadText.setText("正加载更多...");
@@ -98,13 +95,17 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        //RecyclerView的count设置为数据总条数+ 1（footerView）
-        return list.size() + 1;
+        if (list == null) {
+            //如果加载不到数据，只绘制1条 footerView
+            return 1;
+        } else {
+            //否则，绘制总条数+ 1（footerView）个
+            return list.size() + 1;
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-
         if (position + 1 == getItemCount()) {
             //最后一个item设置为footerView
             return TYPE_FOOTER;
@@ -134,7 +135,8 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         /**
-         *   item 点击监听
+         * item 点击监听
+         *
          * @param itemView
          */
         private void initListener(View itemView) {
@@ -142,8 +144,8 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) { // 跳转到保险详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,PolicyRecordDetailActivity.class);
-                    intent.putExtra("orderId",orderId);
+                    Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
+                    intent.putExtra("orderId", orderId);
                     mContext.startActivity(intent);
                 }
             });
