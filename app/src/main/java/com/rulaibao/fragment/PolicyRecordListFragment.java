@@ -68,7 +68,6 @@ public class PolicyRecordListFragment extends Fragment {
         initView(view);
         requestData();
         initListener();
-        Log.i("aaa", "onCreateView: " + this + " status:" + status);
         return view;
     }
 
@@ -77,16 +76,6 @@ public class PolicyRecordListFragment extends Fragment {
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-//        for (int i = 0; i < 10; i++) {
-//            PolicyRecordList2B bean = new PolicyRecordList2B();
-//            bean.setInsuranceName("国华人寿-盛世年年年金保险C款");
-//            bean.setStatus("待审核");
-//            bean.setCustomerName("王小金");
-//            bean.setInsurancPeremiums("2222.00元");
-//            bean.setInsurancePeriod("2年");
-//            totalList.add(bean);
-//
-//        }
         initRecyclerView();
     }
 
@@ -139,7 +128,6 @@ public class PolicyRecordListFragment extends Fragment {
     }
 
     public void requestData() {
-
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", "18042513234098822058");
         param.put("page", currentPage + "");
@@ -163,16 +151,19 @@ public class PolicyRecordListFragment extends Fragment {
                 data = (PolicyRecordList1B) params.result;
                 ((PolicyRecordListActivity) getActivity()).refreshTabTitle(data);
                 MouldList<PolicyRecordList2B> everyList = data.getList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
-
+                    policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                if (totalList.size() != 0 && totalList.size() % 20 == 0) {
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
                 } else {
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);

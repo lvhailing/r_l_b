@@ -79,9 +79,11 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
                     footerViewHolder.tvLoadText.setText("加载中...");
+                    footerViewHolder.loadLayout.setVisibility(View.VISIBLE);
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvLoadText.setText("正加载更多...");
+                    footerViewHolder.loadLayout.setVisibility(View.VISIBLE);
                     break;
                 case NO_LOAD_MORE:
                     //隐藏加载更多
