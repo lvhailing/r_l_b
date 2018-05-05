@@ -66,9 +66,17 @@ public class PolicyRecordListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         initView(view);
-        requestData();
         initListener();
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //页面可见时调接口刷新数据
+            requestData();
+        }
     }
 
     private void initView(View view) {

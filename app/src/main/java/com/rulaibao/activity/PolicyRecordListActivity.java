@@ -96,7 +96,7 @@ public class PolicyRecordListActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestData();
+//                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestData();
             }
 
             @Override
