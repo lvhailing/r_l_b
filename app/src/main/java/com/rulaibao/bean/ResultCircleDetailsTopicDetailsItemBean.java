@@ -15,6 +15,15 @@ public class ResultCircleDetailsTopicDetailsItemBean implements IMouldType{
     private String circleName;      //     圈子名称
     private String isTop;       //  是否置顶（yes是  no 否）
     private String isManager;       //  是否是管理员 (yes是  no否)
+    private String circleId;        //  圈子id
+
+    public String getCircleId() {
+        return circleId;
+    }
+
+    public void setCircleId(String circleId) {
+        this.circleId = circleId;
+    }
 
     public String getIsTop() {
         return isTop;

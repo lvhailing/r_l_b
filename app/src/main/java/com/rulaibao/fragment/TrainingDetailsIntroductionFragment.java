@@ -1,5 +1,6 @@
 package com.rulaibao.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.widget.CircularImage;
+import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.util.LinkedHashMap;
 
@@ -30,6 +32,7 @@ import butterknife.ButterKnife;
  *
  */
 
+@SuppressLint("ValidFragment")
 public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
     @BindView(R.id.iv_introduction)
@@ -50,6 +53,12 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
     private String id = "";
     private ResultClassDetailsIntroductionItemBean course;
     private Context context;
+    private ViewPagerForScrollView vp;
+
+
+    public TrainingDetailsIntroductionFragment(ViewPagerForScrollView vp) {
+        this.vp = vp;
+    }
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +66,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_introduction, container, false);
-
+            vp.setObjectForPosition(mView,0);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);

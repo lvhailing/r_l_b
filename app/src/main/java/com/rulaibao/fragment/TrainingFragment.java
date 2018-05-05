@@ -174,8 +174,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
 
 
-
-
     }
 
     public void setAdapterData(){

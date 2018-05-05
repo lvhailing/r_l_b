@@ -28,6 +28,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.widget.TitleBar;
+import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
     @BindView(R.id.tl_class_details)
     TabLayout tlClassDetails;
     @BindView(R.id.vp_class_details)
-    ViewPager vpClassDetails;
+    ViewPagerForScrollView vpClassDetails;
 
     private String url = "http://player.youku.com/player.php/sid/XMzUxMzM5MzQyMA==/v.swf";
 
@@ -96,7 +97,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         fragments = new ArrayList<>();
         listTitles = new ArrayList<>();
 
-        introdutionFragment = new TrainingDetailsIntroductionFragment();
+        introdutionFragment = new TrainingDetailsIntroductionFragment(vpClassDetails);
         Bundle bundle = new Bundle();
         bundle.putString("id",id);
         bundle.putString("speechmakeId",speechmakeId);
@@ -105,15 +106,15 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         introdutionFragment.setArguments(bundle);
         fragments.add(introdutionFragment);
 
-        catalogFragment = new TrainingDetailsCatalogFragment();
+        catalogFragment = new TrainingDetailsCatalogFragment(vpClassDetails);
         catalogFragment.setArguments(bundle);
         fragments.add(catalogFragment);
 
-        discussFragment = new TrainingDetailsDiscussFragment();
+        discussFragment = new TrainingDetailsDiscussFragment(vpClassDetails);
         discussFragment.setArguments(bundle);
         fragments.add(discussFragment);
 
-        pptFragment = new TrainingDetailsPPTFragment();
+        pptFragment = new TrainingDetailsPPTFragment(vpClassDetails);
         pptFragment.setArguments(bundle);
         fragments.add(pptFragment);
 
@@ -149,6 +150,29 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
         tlClassDetails.setupWithViewPager(vpClassDetails);//将TabLayout和ViewPager关联起来。
         tlClassDetails.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
+
+        vpClassDetails.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                vpClassDetails.resetHeight(position);
+
+
+
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        vpClassDetails.resetHeight(0);
 
 
     }

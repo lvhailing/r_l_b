@@ -1,5 +1,6 @@
 package com.rulaibao.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -39,6 +41,7 @@ import butterknife.OnClick;
  * 课程详情 研讨 栏
  */
 
+@SuppressLint("ValidFragment")
 public class TrainingDetailsDiscussFragment extends BaseFragment implements TrainingClassDiscussAdapter.DiscussReply {
 
 
@@ -62,7 +65,13 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     private String commentId = "";
     private int page = 0;
 
+    private ViewPagerForScrollView vp;
+
     private MouldList<ResultClassDetailsDiscussItemBean> list;
+
+    public TrainingDetailsDiscussFragment(ViewPagerForScrollView vp) {
+        this.vp = vp;
+    }
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,7 +79,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_discuss, container, false);
-
+            vp.setObjectForPosition(mView,2);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
@@ -92,7 +101,16 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
 
     public void initRecyclerView(){
 
-        lvDiscuss.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context) {
+            @Override
+            public boolean canScrollVertically() {
+                // 直接禁止垂直滑动
+                return false;
+            }
+        };
+
+        lvDiscuss.setLayoutManager(layoutManager);
         adapter = new TrainingClassDiscussAdapter(getActivity(),list,TrainingDetailsDiscussFragment.this);
         lvDiscuss.setAdapter(adapter);
 

@@ -2108,6 +2108,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      *
      * @param context  上下文
      * @param listener 监听事件
+     *
      */
     public static void getTrainingCircleDetailsTopicDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);

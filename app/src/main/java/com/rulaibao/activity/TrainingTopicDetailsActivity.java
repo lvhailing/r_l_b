@@ -102,7 +102,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     public void initView() {
 
         appTopicId = getIntent().getStringExtra("appTopicId");
-        circleId = getIntent().getStringExtra("circleId");
+//        circleId = getIntent().getStringExtra("circleId");
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
 //        test();
@@ -470,7 +470,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
         map.put("appTopicId", appTopicId);      //  话题id
         map.put("userId", userId);
-        map.put("circleId", circleId);
+        map.put("circleId", appTopic.getCircleId());
         map.put("topStatus", topStatus);    //  yes:置顶；no:取消置顶
 
         HtmlRequest.getTrainingCircleSetTop(this, map, new BaseRequester.OnRequestListener() {

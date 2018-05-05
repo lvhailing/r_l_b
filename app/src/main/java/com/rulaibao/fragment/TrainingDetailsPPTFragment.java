@@ -1,5 +1,6 @@
 package com.rulaibao.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -32,6 +34,7 @@ import butterknife.ButterKnife;
  * 课程详情 PPT 栏
  */
 
+@SuppressLint("ValidFragment")
 public class TrainingDetailsPPTFragment extends BaseFragment {
     @BindView(R.id.lv_ppt)
     RecyclerView lvPpt;
@@ -44,13 +47,19 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
     private ArrayList<String> pptImgs;
 
+    private ViewPagerForScrollView vp;
+
+    public TrainingDetailsPPTFragment(ViewPagerForScrollView vp) {
+        this.vp = vp;
+    }
+
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_ppt, container, false);
-
+            vp.setObjectForPosition(mView,3);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
@@ -71,7 +80,15 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
     public void initRecyclerView(){
 
-        lvPpt.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context) {
+            @Override
+            public boolean canScrollVertically() {
+                // 直接禁止垂直滑动
+                return false;
+            }
+        };
+
+        lvPpt.setLayoutManager(layoutManager);
         adapter = new TrainingClassPPTAdapter(getActivity(),pptImgs);
         lvPpt.setAdapter(adapter);
 
