@@ -40,7 +40,7 @@ public class PolicyRecordListFragment extends Fragment {
     private RecyclerView recycler_view;
     private PolicyRecordAdapter policyRecordAdapter;
     private MouldList<PolicyRecordList2B> totalList = new MouldList<>();
-    private int currentPage = 1;    //当前页
+    private int currentPage = 1; //当前页
     private Context context;
     private PolicyRecordList1B data;
     private String status = "";

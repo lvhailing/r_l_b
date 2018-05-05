@@ -87,23 +87,6 @@ public class PolicyRecordListActivity extends BaseActivity {
         sliding_tabs.setupWithViewPager(viewpager);  //将TabLayout和ViewPager关联起来
         chooseAppointedTab(currentTabPosition);
 
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestData();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     /**
