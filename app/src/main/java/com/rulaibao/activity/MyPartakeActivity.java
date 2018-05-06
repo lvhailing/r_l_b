@@ -3,11 +3,12 @@ package com.rulaibao.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyPartakeVpAdapter;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.fragment.MyPartakeAskFragment;
+import com.rulaibao.fragment.MyPartakeTopicFragment;
 import com.rulaibao.widget.TitleBar;
 
 /**
@@ -69,6 +70,29 @@ public class MyPartakeActivity extends BaseActivity {
 
         //将TabLayout和ViewPager关联起来
         sliding_tabs.setupWithViewPager(viewpager);
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    MyPartakeAskFragment myPartakeAskFragment = (MyPartakeAskFragment) myPartakeVpAdapter.getItem(position);
+                    myPartakeAskFragment.getCurrentTab(position);
+                } else if (position==1){
+                    MyPartakeTopicFragment myPartakeTopicFragment = (MyPartakeTopicFragment) myPartakeVpAdapter.getItem(position);
+                    myPartakeTopicFragment.getCurrentTab(position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 }

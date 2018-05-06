@@ -5,7 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.rulaibao.fragment.MyPartakeFragment;
+import com.rulaibao.fragment.MyPartakeAskFragment;
+import com.rulaibao.fragment.MyPartakeTopicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,8 @@ public class MyPartakeVpAdapter extends FragmentStatePagerAdapter {
 
     private void initFragments() {
         fragments = new ArrayList<>();
-        fragments.add(MyPartakeFragment.newInstance("提问"));
-        fragments.add(MyPartakeFragment.newInstance("话题"));
+        fragments.add(MyPartakeAskFragment.newInstance("提问"));
+        fragments.add(MyPartakeTopicFragment.newInstance("话题"));
     }
 
     @Override

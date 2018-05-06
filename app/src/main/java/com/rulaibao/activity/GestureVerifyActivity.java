@@ -284,7 +284,7 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 //					VerifyPassWordDialog dialog_phone = new VerifyPassWordDialog(GestureVerifyActivity.this, new VerifyPassWordDialog.OnVerifyPW() {
 //						@Override
 //						public void onConfirm(String input) {
-////							requestData(input,"splash");
+////							requestAskData(input,"splash");
 //						}
 //
 //						@Override
@@ -318,7 +318,7 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 //							@Override
 //							public void onConfim() {
 //								UserLoadout out = new UserLoadout(GestureVerifyActivity.this,userId);
-//								out.requestData();
+//								out.requestAskData();
 //							}
 //
 //							@Override
@@ -338,7 +338,7 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
                 break;
         }
     }
-	/*private void requestData(String password, final String from) {
+	/*private void requestAskData(String password, final String from) {
 
 		try {
 			HtmlRequest.getVerifyPassWord(GestureVerifyActivity.this, userId, password,token,

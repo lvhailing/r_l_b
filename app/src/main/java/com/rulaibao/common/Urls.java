@@ -272,6 +272,9 @@ public class Urls {
     // 我参与的（提问列表）
     public static final String URL_APPQUESTION_MYJOIN_LIST = EC_HOST + "appQuestion/myJoin/list";
 
+    //我参与的（话题列表）
+    public static final String URL_APPTOPIC_MYJOIN_LIST = EC_HOST + "appTopic/myJoin/list";
+
     // 我的话题列表
     public static final String URL_MY_TOPIC_LIST = EC_HOST + "appTopic/my/list";
 
@@ -280,6 +283,9 @@ public class Urls {
 
     // 联系客服
     public static final String URL_FEEDBACK_ADD = EC_HOST + "feedback/add";
+
+    // 我的收藏
+    public static final String URL_COLLECTION_LIST = EC_HOST + "collection/list";
 
 
 

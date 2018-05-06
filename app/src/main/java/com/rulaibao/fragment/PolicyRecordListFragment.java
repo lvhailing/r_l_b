@@ -63,6 +63,12 @@ public class PolicyRecordListFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         initView(view);
@@ -75,12 +81,13 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
+            Log.i("hh", "setUserVisibleHint-----" + this);
+
             requestData();
         }
     }
 
     private void initView(View view) {
-        context = getActivity();
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
@@ -141,7 +148,7 @@ public class PolicyRecordListFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("status", status);
 
-        Log.i("aaa", this + " requestData status: " + status);
+        Log.i("aaa", this + " requestAskData status: " + status);
 
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -157,7 +164,7 @@ public class PolicyRecordListFragment extends Fragment {
                 }
 
                 data = (PolicyRecordList1B) params.result;
-                ((PolicyRecordListActivity) getActivity()).refreshTabTitle(data);
+                ((PolicyRecordListActivity) context).refreshTabTitle(data);
                 MouldList<PolicyRecordList2B> everyList = data.getList();
                 if (everyList == null) {
                     return;

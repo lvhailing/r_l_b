@@ -61,7 +61,7 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-        titles = new String[]{"全部", "意外险", "重疾险", "年金险"};
+        titles = new String[]{"全部", "意外险", "重疾险", "年金险","医疗险","家财险","企业团体"};
         myCollectionVpAdapter = new MyCollectionVpAdapter(getSupportFragmentManager(), titles, this);
         viewpager.setAdapter(myCollectionVpAdapter);
 

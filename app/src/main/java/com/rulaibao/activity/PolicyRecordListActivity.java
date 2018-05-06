@@ -1,6 +1,5 @@
 package com.rulaibao.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -85,7 +84,7 @@ public class PolicyRecordListActivity extends BaseActivity {
         ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
         viewpager.setAdapter(vpAdapter);
         sliding_tabs.setupWithViewPager(viewpager);  //将TabLayout和ViewPager关联起来
-        chooseAppointedTab(currentTabPosition);
+        initTitleStyle();
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -95,8 +94,11 @@ public class PolicyRecordListActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                Log.i("hh", "onPageSelected-----" + this);
+//                currentTabPosition = position;
+//                refreshTitleStyle();
                 ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-//                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestData();
+//                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestAskData();
             }
 
             @Override
@@ -104,45 +106,78 @@ public class PolicyRecordListActivity extends BaseActivity {
 
             }
         });
+
+        sliding_tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //选中的view
+                View view = tab.getCustomView();
+                TextView tv_title = view.findViewById(R.id.tv_title);
+                tv_title.setTextColor(getResources().getColor(R.color.auxiliary_color_yellow));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //释放的view
+                View view = tab.getCustomView();
+                TextView tv_title = view.findViewById(R.id.tv_title);
+                tv_title.setTextColor(getResources().getColor(R.color.txt_black2));
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     /**
      *
      */
-    private void chooseAppointedTab(int position) {
-        for (int i = 0; i < sliding_tabs.getTabCount(); i++) {
-            TabLayout.Tab tab = sliding_tabs.getTabAt(i);
-            if (tab != null) {
-                tab.setCustomView(getTabView(i));
-            }
-        }
+    private void initTitleStyle() {
+        refreshTitleStyle();
 
         //设置1tab选中
         sliding_tabs.getTabAt(currentTabPosition).select();
-        viewpager.setCurrentItem(currentTabPosition);
+//        viewpager.setCurrentItem(currentTabPosition);
+    }
+
+    private void refreshTitleStyle() {
+        for (int i = 0; i < sliding_tabs.getTabCount(); i++) {
+            TabLayout.Tab tab = sliding_tabs.getTabAt(i);
+            if (tab != null) {
+                View view = getTabView(i);
+                tab.setCustomView(view);
+                Log.i("aaa", "refreshTitleStyle: " + tab);
+            }
+        }
     }
 
     public void refreshTabTitle(PolicyRecordList1B data) {
-        View titleView1 = (View) sliding_tabs.getTabAt(0).getCustomView();
-        TextView title1 = (TextView) titleView1.findViewById(R.id.tv_title);
-        title1.setText("全部（" + data.getAllTotal() + "）");
-
-        View titleView2 = (View) sliding_tabs.getTabAt(1).getCustomView();
-        TextView title2 = (TextView) titleView2.findViewById(R.id.tv_title);
-        title2.setText("待审核（" + data.getInitTotal() + "）");
-
-        View titleView3 = (View) sliding_tabs.getTabAt(2).getCustomView();
-        TextView title3 = (TextView) titleView3.findViewById(R.id.tv_title);
-        title3.setText("已承保（" + data.getPayedTotal() + "）");
-
-        View titleView4 = (View) sliding_tabs.getTabAt(3).getCustomView();
-        TextView title4 = (TextView) titleView4.findViewById(R.id.tv_title);
-        title4.setText("问题件（" + data.getRejectedTotal() + "）");
-
-        View titleView5 = (View) sliding_tabs.getTabAt(4).getCustomView();
-        TextView title5 = (TextView) titleView5.findViewById(R.id.tv_title);
-        title5.setText("回执签收（" + data.getReceiptSignedTotal() + "）");
-
+        if (data.getAllTotal() != null) {
+            View titleView1 = (View) sliding_tabs.getTabAt(0).getCustomView();
+            TextView title1 = (TextView) titleView1.findViewById(R.id.tv_title);
+            title1.setText("全部（" + data.getAllTotal() + "）");
+        }
+        if (data.getInitTotal() != null) {
+            View titleView2 = (View) sliding_tabs.getTabAt(1).getCustomView();
+            TextView title2 = (TextView) titleView2.findViewById(R.id.tv_title);
+            title2.setText("待审核（" + data.getInitTotal() + "）");
+        }
+        if (data.getPayedTotal() != null) {
+            View titleView3 = (View) sliding_tabs.getTabAt(2).getCustomView();
+            TextView title3 = (TextView) titleView3.findViewById(R.id.tv_title);
+            title3.setText("已承保（" + data.getPayedTotal() + "）");
+        }
+        if (data.getRejectedTotal() != null) {
+            View titleView4 = (View) sliding_tabs.getTabAt(3).getCustomView();
+            TextView title4 = (TextView) titleView4.findViewById(R.id.tv_title);
+            title4.setText("问题件（" + data.getRejectedTotal() + "）");
+        }
+        if (data.getReceiptSignedTotal() != null) {
+            View titleView5 = (View) sliding_tabs.getTabAt(4).getCustomView();
+            TextView title5 = (TextView) titleView5.findViewById(R.id.tv_title);
+            title5.setText("回执签收（" + data.getReceiptSignedTotal() + "）");
+        }
     }
 
     public View getTabView(int position) {
@@ -150,7 +185,7 @@ public class PolicyRecordListActivity extends BaseActivity {
         TextView title = (TextView) titleView.findViewById(R.id.tv_title);
         title.setText(titles[position]);
         if (position == currentTabPosition) {
-            title.setTextColor(this.getResources().getColor(R.color.txt_black1));
+            title.setTextColor(this.getResources().getColor(R.color.auxiliary_color_yellow));
         } else {
             title.setTextColor(this.getResources().getColor(R.color.txt_black2));
         }

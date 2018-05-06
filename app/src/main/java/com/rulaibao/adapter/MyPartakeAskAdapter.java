@@ -19,7 +19,7 @@ import com.rulaibao.network.types.MouldList;
 /**
  * 我参与的列表  RecyclerView的 Adapter 类
  */
-public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyPartakeAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<MyAskList2B> list;
     Context mContext;
@@ -38,7 +38,7 @@ public class MyPartakeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public MyPartakeRecycleAdapter(Context context, MouldList<MyAskList2B> list) {
+    public MyPartakeAskAdapter(Context context, MouldList<MyAskList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);

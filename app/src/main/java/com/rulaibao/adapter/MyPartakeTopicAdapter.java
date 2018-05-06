@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.bean.MyCollectionList2B;
+import com.rulaibao.activity.PolicyBookingDetailActivity;
+import com.rulaibao.bean.MyAskList2B;
+import com.rulaibao.bean.MyTopicList2B;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- * 收藏列表  RecyclerView的 Adapter 类
+ * 我参与的列表  RecyclerView的 Adapter 类
  */
-public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyPartakeTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<MyCollectionList2B> list;
+    private final MouldList<MyTopicList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,7 +39,7 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     private int mLoadMoreStatus = 0;
 
 
-    public MyCollectionRecycleAdapter(Context context, MouldList<MyCollectionList2B> list) {
+    public MyPartakeTopicAdapter(Context context, MouldList<MyTopicList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -45,8 +48,8 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_ITEM) { // 加载收藏列表 item 布局
-            View itemView = mInflater.inflate(R.layout.item_my_collection, parent, false);
+        if (viewType == TYPE_ITEM) { // 加载列表 item 布局
+            View itemView = mInflater.inflate(R.layout.item_my_partake, parent, false);
 
             return new ItemViewHolder(itemView);
         } else if (viewType == TYPE_FOOTER) {
@@ -61,7 +64,7 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_insurance_name.setText(list.get(position).getName());
+            itemViewHolder.tv_partake_title.setText(list.get(position).getTopicContent());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -101,11 +104,11 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tv_insurance_name; // 保险名称
+        private final TextView tv_partake_title; // 参与的标题
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
+            tv_partake_title = (TextView) itemView.findViewById(R.id.tv_partake_title);
 
             initListener(itemView);
         }
@@ -119,8 +122,8 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
                 @Override
                 public void onClick(View v) { // 跳转到保险产品详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -142,12 +145,12 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
 
-    public void AddHeaderItem(MouldList<MyCollectionList2B> items) {
+    public void AddHeaderItem(MouldList<MyTopicList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<MyCollectionList2B> items) {
+    public void AddFooterItem(MouldList<MyTopicList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

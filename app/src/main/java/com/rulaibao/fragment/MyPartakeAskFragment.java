@@ -7,19 +7,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.rulaibao.R;
-import com.rulaibao.activity.PolicyRecordListActivity;
-import com.rulaibao.adapter.MyPartakeRecycleAdapter;
+import com.rulaibao.adapter.MyPartakeAskAdapter;
 import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyAskList2B;
-import com.rulaibao.bean.PolicyRecordList1B;
-import com.rulaibao.bean.PolicyRecordList2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -28,28 +24,40 @@ import com.rulaibao.network.types.MouldList;
 import java.util.LinkedHashMap;
 
 /**
- *
+ * 我参与的 Fragment
  */
-public class MyPartakeFragment extends Fragment {
+public class MyPartakeAskFragment extends Fragment {
     private static final String KEY = "param1";
 
     private String mParam1;
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
-    private MyPartakeRecycleAdapter myPartakeRecycleAdapter;
+    private MyPartakeAskAdapter myPartakeAskAdapter;
     private MouldList<MyAskList2B> totalList = new MouldList<>();
     private int currentPage = 1;    //当前页
     private Context context;
+    private int currentPosition; // 当前tab位置（0：提问，1：话题）
 //    private MyAskList1B data;
 
 
-    public static MyPartakeFragment newInstance(String param1) {
-        MyPartakeFragment fragment = new MyPartakeFragment();
+    public static MyPartakeAskFragment newInstance(String param1) {
+        MyPartakeAskFragment fragment = new MyPartakeAskFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KEY, param1);
         fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //页面可见时调接口刷新数据
+            requestAskData();
+
+        }
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,6 @@ public class MyPartakeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         initView(view);
-        requestData();
         initListener();
 
         return view;
@@ -84,14 +91,14 @@ public class MyPartakeFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-            recycler_view.setLayoutManager(new LinearLayoutManager(context));
-            myPartakeRecycleAdapter = new MyPartakeRecycleAdapter(context, totalList);
-            recycler_view.setAdapter(myPartakeRecycleAdapter);
-            //添加动画
-            recycler_view.setItemAnimator(new DefaultItemAnimator());
+        recycler_view.setLayoutManager(new LinearLayoutManager(context));
+        myPartakeAskAdapter = new MyPartakeAskAdapter(context, totalList);
+        recycler_view.setAdapter(myPartakeAskAdapter);
+        //添加动画
+        recycler_view.setItemAnimator(new DefaultItemAnimator());
     }
 
-    public void requestData() {
+    public void requestAskData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", "18032709463185347076");
         param.put("page", currentPage + "");
@@ -117,7 +124,7 @@ public class MyPartakeFragment extends Fragment {
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
-                    myPartakeRecycleAdapter.changeMoreStatus(myPartakeRecycleAdapter.NO_LOAD_MORE);
+                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -125,9 +132,9 @@ public class MyPartakeFragment extends Fragment {
                 }
                 totalList.addAll(everyList);
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
-                    myPartakeRecycleAdapter.changeMoreStatus(myPartakeRecycleAdapter.PULLUP_LOAD_MORE);
+                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
                 } else {
-                    myPartakeRecycleAdapter.changeMoreStatus(myPartakeRecycleAdapter.NO_LOAD_MORE);
+                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
                 }
             }
         });
@@ -143,7 +150,7 @@ public class MyPartakeFragment extends Fragment {
             @Override
             public void onRefresh() {  // 下拉刷新
                 currentPage = 1;
-                requestData();
+                requestAskData();
             }
         });
     }
@@ -157,9 +164,9 @@ public class MyPartakeFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == myPartakeRecycleAdapter.getItemCount() && firstVisibleItem != 0) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == myPartakeAskAdapter.getItemCount() && firstVisibleItem != 0) {
                     currentPage++;
-                    requestData();
+                    requestAskData();
                 }
             }
 
@@ -171,5 +178,10 @@ public class MyPartakeFragment extends Fragment {
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
+    }
+
+    public void getCurrentTab(int position) {
+        this.currentPosition = position;
+
     }
 }
