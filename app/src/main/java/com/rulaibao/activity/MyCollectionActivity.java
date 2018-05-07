@@ -8,6 +8,8 @@ import android.view.View;
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyCollectionVpAdapter;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.fragment.MyCollectionFragment;
+import com.rulaibao.fragment.PolicyRecordListFragment;
 import com.rulaibao.widget.TitleBar;
 
 /**
@@ -67,6 +69,23 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
 
         //将TabLayout和ViewPager关联起来
         sliding_tabs.setupWithViewPager(viewpager);
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ((MyCollectionFragment) myCollectionVpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 

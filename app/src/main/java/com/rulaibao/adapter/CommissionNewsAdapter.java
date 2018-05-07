@@ -61,8 +61,8 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_commission_income.setText(list.get(position).getCommissionIncome());
-            itemViewHolder.tv_commission_title.setText(list.get(position).getContent());
+            itemViewHolder.tv_commission_income.setText(list.get(position).getContent());
+            itemViewHolder.tv_commission_title.setText(list.get(position).getTopic());
             itemViewHolder.tv_date.setText(list.get(position).getCreateTime());
 //            itemViewHolder.tv_time.setText(list.get(position).getIncomeTime());
 

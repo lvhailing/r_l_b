@@ -8,11 +8,29 @@ import com.rulaibao.network.types.IMouldType;
 
 public class CommissionNewsList2B implements IMouldType {
 
-    private String status;     //  状态：read:已读     undread：未读，
+    private String id;   //  消息id
+    private String topic;   //  消息标题
+    private String status;     //  状态：read:已读     unread：未读，
     private String createTime;     //  创建时间
     private String content;   //  消息内容
     private String busiType;     //  消息业务类型
     private String busiPriv;     //  存放佣金保单产品id
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
 
     public String getStatus() {
         return status;

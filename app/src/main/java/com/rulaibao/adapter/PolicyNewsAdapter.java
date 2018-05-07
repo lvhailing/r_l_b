@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.bean.CommissionNewsList2B;
 import com.rulaibao.bean.PolicyNewsList3B;
 import com.rulaibao.network.types.MouldList;
 
@@ -19,7 +20,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<PolicyNewsList3B> list;
+    private final MouldList<CommissionNewsList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -36,7 +37,7 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private int mLoadMoreStatus = 0;
 
 
-    public PolicyNewsAdapter(Context context, MouldList<PolicyNewsList3B> list) {
+    public PolicyNewsAdapter(Context context, MouldList<CommissionNewsList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -61,9 +62,9 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_product_name.setText(list.get(position).getProductName());
-            itemViewHolder.tv_date.setText(list.get(position).getDate());
-            itemViewHolder.tv_status.setText(list.get(position).getStatus());
+            itemViewHolder.tv_product_name.setText(list.get(position).getTopic());
+            itemViewHolder.tv_date.setText("["+list.get(position).getCreateTime()+"]");
+            itemViewHolder.tv_status.setText(list.get(position).getContent());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -148,12 +149,12 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    public void AddHeaderItem(MouldList<PolicyNewsList3B> items) {
+    public void AddHeaderItem(MouldList<CommissionNewsList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<PolicyNewsList3B> items) {
+    public void AddFooterItem(MouldList<CommissionNewsList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

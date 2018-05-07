@@ -94,11 +94,8 @@ public class PolicyRecordListActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("hh", "onPageSelected-----" + this);
-//                currentTabPosition = position;
-//                refreshTitleStyle();
+//                Log.i("hh", "onPageSelected-----" + this);
                 ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-//                ((PolicyRecordListFragment) vpAdapter.getItem(position)).requestAskData();
             }
 
             @Override
@@ -112,15 +109,15 @@ public class PolicyRecordListActivity extends BaseActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 //选中的view
                 View view = tab.getCustomView();
-                TextView tv_title = view.findViewById(R.id.tv_title);
-                tv_title.setTextColor(getResources().getColor(R.color.auxiliary_color_yellow));
+                TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
+                tv_title.setTextColor(getResources().getColor(R.color.txt_black1));
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 //释放的view
                 View view = tab.getCustomView();
-                TextView tv_title = view.findViewById(R.id.tv_title);
+                TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
                 tv_title.setTextColor(getResources().getColor(R.color.txt_black2));
             }
 
@@ -185,7 +182,7 @@ public class PolicyRecordListActivity extends BaseActivity {
         TextView title = (TextView) titleView.findViewById(R.id.tv_title);
         title.setText(titles[position]);
         if (position == currentTabPosition) {
-            title.setTextColor(this.getResources().getColor(R.color.auxiliary_color_yellow));
+            title.setTextColor(this.getResources().getColor(R.color.txt_black1));
         } else {
             title.setTextColor(this.getResources().getColor(R.color.txt_black2));
         }

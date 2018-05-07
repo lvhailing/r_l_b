@@ -18,6 +18,7 @@ import com.rulaibao.bean.MineData2B;
 import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyCollectionList1B;
 import com.rulaibao.bean.MyTopicList1B;
+import com.rulaibao.bean.NewMembersCircleList1B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.Plan2B;
 import com.rulaibao.bean.PlatformBulletinList1B;
@@ -1091,6 +1092,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
     /**
      *  获取佣金/保单消息列表
      * @param context
@@ -1099,7 +1101,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      */
     public static void getMessageListData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
-        final String url = Urls.URL_MESSAGE_LIST;
+        final String url = Urls.URL_MESSAGES_LIST;
 
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
@@ -1125,6 +1127,59 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Log.i("hh", "佣金/保单消息列表：" + data);
 
                     Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+    /**
+     *  获取圈子新成员列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getNemMembersCircleList(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_CIRCLE_APPLY_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "圈子新成员列表：" + data);
+
+                    Repo<NewMembersCircleList1B> b = json.fromJson(data, new TypeToken<Repo<NewMembersCircleList1B>>() {
                     }.getType());
 
                     return b.getData();

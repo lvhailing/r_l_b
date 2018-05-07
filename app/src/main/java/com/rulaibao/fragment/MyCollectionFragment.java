@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class MyCollectionFragment extends Fragment {
         param.put("userId", "18032709463185347076");
         param.put("page", currentPage + "");
         param.put("category", type);
-
+        Log.i("hh", "category------" + type);
 
         HtmlRequest.getCollectionListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -181,5 +182,25 @@ public class MyCollectionFragment extends Fragment {
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
+    }
+
+    public void getTabTitleCurrentPosition(int currentPosition) {
+        if (currentPosition == 0) {
+            type = "";  //默认请求"全部"的数据
+        } else if (currentPosition == 1) {
+            type = "accident";  //意外险
+        } else if (currentPosition == 2) {
+            type = "criticalIllness";  //重疾险
+        } else if (currentPosition == 3) {
+            type = "annuity";  //年金险
+        } else if (currentPosition == 4) {
+            type = "medical";  //医疗险
+        }else if (currentPosition == 5) {
+            type = "property";  //家财险
+        } else if (currentPosition == 6) {
+            type = "wholeLife";  //终身寿险
+        }else if (currentPosition == 7) {
+            type = "enterpriseGroup";  //企业团体
+        }
     }
 }

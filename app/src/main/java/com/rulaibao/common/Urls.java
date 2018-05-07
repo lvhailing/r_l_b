@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_SN;
+    private static String EC_HOST = URL_DEBUG;
 
 
     /**
@@ -236,8 +236,11 @@ public class Urls {
     // 我的模块 未读消息数
     public static final String URL_MESSAGE_TYPE_COUNT = EC_HOST + "message/type/count";
 
-    // 我的模块 消息列表
-    public static final String URL_MESSAGE_LIST = EC_HOST + "message/list";
+    // 我的模块 (佣金/保单)消息列表
+    public static final String URL_MESSAGES_LIST = EC_HOST + "messages/list";
+
+    // 圈子新成员列表
+    public static final String URL_CIRCLE_APPLY_LIST = EC_HOST + "appCircleApply/list";
 
     //上传图片
     public static final String URL_SUBMIT_PHOTO = EC_HOST + "android/account/photo/upload";

@@ -12,9 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TransactionDetailActivity;
-import com.rulaibao.bean.NewMembersCircleList3B;
+import com.rulaibao.bean.NewMembersCircleList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -23,7 +24,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<NewMembersCircleList3B> list;
+    private final MouldList<NewMembersCircleList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -40,7 +41,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public NewMembersCircleAdapter(Context context, MouldList<NewMembersCircleList3B> list) {
+    public NewMembersCircleAdapter(Context context, MouldList<NewMembersCircleList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -65,11 +66,20 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.iv_circle_photo.setImageURI(list.get(position).getCirclePhotoUrl());
-            itemViewHolder.tv_applicant_name.setText(list.get(position).getApplicantName());
-            itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName());
-            itemViewHolder.tv_status.setText(list.get(position).getStatus());
+            itemViewHolder.tv_applicant_name.setText(list.get(position).getApplyUserName());
+            String status = list.get(position).getAuditStatus();
+            if ("submit".equals(status)) {
+                itemViewHolder.tv_status.setText("待加入");
+            } else if ("agree".equals(status)) {
+                itemViewHolder.tv_status.setText("已加入");
+                itemViewHolder.tv_status.setBackgroundResource(R.drawable.shape_non_clickable);
+            } else if ("refuse".equals(status)) {
+                itemViewHolder.tv_status.setText("已拒绝");
+            }
+            itemViewHolder.tv_circle_name.setText(list.get(position).getApplyCircleName());
 
+            // 加载图片
+            ImageLoader.getInstance().displayImage(list.get(position).getApplyPhoto(), itemViewHolder.iv_circle_photo);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -124,7 +134,8 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         /**
-         *   item 点击监听
+         * item 点击监听
+         *
          * @param itemView
          */
         private void initListener(View itemView) {
@@ -132,8 +143,8 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View v) { // 跳转到交易明细
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
-                    mContext.startActivity(intent);
+//                    Intent intent = new Intent(mContext, TransactionDetailActivity.class);
+//                    mContext.startActivity(intent);
                 }
             });
         }
@@ -155,12 +166,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void AddHeaderItem( MouldList<NewMembersCircleList3B> items) {
+    public void AddHeaderItem(MouldList<NewMembersCircleList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<NewMembersCircleList3B> items) {
+    public void AddFooterItem(MouldList<NewMembersCircleList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }
