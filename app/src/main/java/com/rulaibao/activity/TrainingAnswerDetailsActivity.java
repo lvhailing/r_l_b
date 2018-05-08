@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingAnswerDetailsListAdapter;
 import com.rulaibao.adapter.TrainingAskDetailsListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
@@ -23,6 +24,7 @@ import com.rulaibao.bean.ResultAnswerDetailsBean;
 import com.rulaibao.bean.ResultAskDetailsBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentItemBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentListBean;
+import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
 import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
@@ -66,7 +68,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     private MouldList<ResultCircleDetailsTopicCommentItemBean> commentItemBeans;
     private String questionId = "";
     private String answerId = "";
-    private int page = 0;
+    private int page = 1;
 
     private String commentId = "";
     private String toUserId = "";
@@ -120,21 +122,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-                    if(arrayList.size()<30){
-                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    }else{
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
+                    page++;
+                    requestComment();
 
                 }
 
@@ -163,7 +152,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         map.put("answerId",answerId);
         map.put("userId",userId);
 
-
         HtmlRequest.getTrainingAnswerDetails(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -185,6 +173,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     public void requestComment(){
 
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
+
         map.put("page",page+"");
         map.put("userId",userId);
         map.put("answerId",answerId);
@@ -196,11 +185,20 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                 if(params.result!=null){
 
                     ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean)params.result;
+                    if(bean.getList().size()==0 && page!=1){
 
-                    commentItemBeans.addAll(bean.getList());
+                        page--;
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+
+                    }else{
+
+                        tv_answer_details_comment_count.setText(bean.getTotal()+"评论");
+                        commentItemBeans.addAll(bean.getList());
+                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+
+                    }
 
                     adapter.notifyDataSetChanged();
-
                 }else{
 
                 }
@@ -244,7 +242,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         ImageLoader.getInstance().displayImage(detailsBean.getAppAnswer().getAnswerPhoto(),iv_answer_detatils_manager);
         tv_answer_details_manager_name.setText(detailsBean.getAppAnswer().getAnswerName());
         tv_answer_details_time.setText(detailsBean.getAppAnswer().getAnswerTime());
-        tv_answer_details_content.setText(detailsBean.getAppAnswer().getContent());
+        tv_answer_details_content.setText(detailsBean.getAppAnswer().getAnswerContent());
 
         if(detailsBean.getAppAnswer().getLikeStatus().equals("yes")){
 
@@ -256,16 +254,10 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         }
 
-    }
 
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            arrayList.add(new TestBean("渣渣辉"+i));
-        }
 
     }
+
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
@@ -328,9 +320,23 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         String commentContent = etAnswerDetails.getText().toString();
 
         if(TextUtils.isEmpty(commentId)){       //  评论
+
             requestReplyData(commentContent);
+
         }else{              //  回复
+
+            ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+            itemBean.setReplyContent(commentContent);
+
+            itemBean.setReplyId("979797");
+            itemBean.setReplyToId("787878");
+            itemBean.setReplyName("123");
+            itemBean.setReplyToName(toUserId);
+
+            commentItemBeans.get(index).getReplys().add(itemBean);
+            adapter.notifyDataSetChanged();
             requestReplyData(commentContent);
+
         }
 
     }
@@ -368,17 +374,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 //                        fyTrainingTopicDetails.setVisibility(View.GONE);
 
                         if(!TextUtils.isEmpty(commentId)){      //  回复
-//                            ResultCircleDetailsTopicCommentReplyItemBean replyItemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
-//                            replyItemBean.setReplyContent(commentContent);
-//                            replyItemBean.setReplyId(replyId);
-//                            replyItemBean.setReplyToName(replyToName);
-//                            commentItemBeans.get(index).getReplys().add(replyItemBean);
+
                             commentId = "";
+
                         }else{          //  评论
 
                         }
-                        requestComment();
-                        adapter.notifyDataSetChanged();
+
                         etAnswerDetails.setText("");
                         etAnswerDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
 

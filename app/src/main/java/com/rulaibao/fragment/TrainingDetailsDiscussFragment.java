@@ -73,13 +73,16 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         this.vp = vp;
     }
 
+    public TrainingDetailsDiscussFragment() {
+    }
+
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_discuss, container, false);
-            vp.setObjectForPosition(mView,2);
+//            vp.setObjectForPosition(mView,2);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
@@ -106,7 +109,8 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
             @Override
             public boolean canScrollVertically() {
                 // 直接禁止垂直滑动
-                return false;
+//                return false;
+                return true;
             }
         };
 
@@ -235,7 +239,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
 
         }
 
-
         HtmlRequest.getClassDetailsDiscussReply(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -245,6 +248,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if(bean.getFlag().equals("true")){
 
+                        requestData();
 
                     }else{
 

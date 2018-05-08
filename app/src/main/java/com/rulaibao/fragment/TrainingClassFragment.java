@@ -38,7 +38,7 @@ public class TrainingClassFragment extends BaseFragment {
     private ArrayList arrayList = new ArrayList();
     private String string = "";
     private TrainingClassListAdapter adapter;
-    private int page = 0;
+    private int page = 1;
     private String typeCode = "";
     private MouldList<ResultClassIndexItemBean> courseList;
 
@@ -63,7 +63,6 @@ public class TrainingClassFragment extends BaseFragment {
         context = getActivity();
         typeCode = getArguments().getString(KEY);
         courseList = new MouldList<ResultClassIndexItemBean>();
-        test();
 
         initRecyclerView();
 
@@ -73,9 +72,11 @@ public class TrainingClassFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-//            if(context!=null){
-//                requestIndexData();//
-//            }
+            if(context!=null){
+                courseList.clear();
+            }
+            page = 1;
+
             requestIndexData();//
 //            scrollView.smoothScrollTo(0, 0);
         } else {
@@ -101,21 +102,15 @@ public class TrainingClassFragment extends BaseFragment {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-                    if(arrayList.size()<30){
-                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    }else{
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
-
-
+//                    if(arrayList.size()<30){
+////                        test();
+//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+//                    }else{
+//
+//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+//                    }
+                    page++;
+                    requestIndexData();
 
                 }
 
@@ -151,8 +146,15 @@ public class TrainingClassFragment extends BaseFragment {
                 if(params.result!=null){
 
                     ResultClassIndexBean bean = (ResultClassIndexBean)params.result;
-                    courseList.addAll(bean.getCourseList());
-                    adapter.notifyDataSetChanged();
+                    if(bean.getCourseList().size()==0&&page!=1){
+
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        page--;
+                    }else{
+                        courseList.addAll(bean.getCourseList());
+                        adapter.notifyDataSetChanged();
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+                    }
 
                 }else{
 
@@ -162,18 +164,6 @@ public class TrainingClassFragment extends BaseFragment {
         });
 
 
-
-    }
-
-
-    public void test(){
-
-        for(int i=0;i<10;i++){
-
-            String sd = string+"11"+i;
-            arrayList.add(sd);
-
-        }
 
     }
 

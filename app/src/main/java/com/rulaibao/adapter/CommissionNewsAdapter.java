@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.TransactionDetailActivity;
 import com.rulaibao.bean.CommissionNewsList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -21,6 +23,7 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private final MouldList<CommissionNewsList2B> list;
     Context mContext;
+    private String id;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -61,6 +64,7 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            id = list.get(position).getBusiPriv();
             itemViewHolder.tv_commission_income.setText(list.get(position).getContent());
             itemViewHolder.tv_commission_title.setText(list.get(position).getTopic());
             itemViewHolder.tv_date.setText(list.get(position).getCreateTime());
@@ -126,10 +130,10 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private void initListener(View itemView) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { // 跳转到?
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PlatformBulletinDetailActivity.class);
-//                    mContext.startActivity(intent);
+                public void onClick(View v) { // 跳转到交易明细
+                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
+                    intent.putExtra("id", id);
+                    mContext.startActivity(intent);
                 }
             });
         }

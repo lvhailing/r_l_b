@@ -11,7 +11,7 @@
         android:id="@+id/fragment_title"
         layout="@layout/fragment_titlebar"/>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_light"
@@ -328,7 +328,7 @@
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </RelativeLayout>

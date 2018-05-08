@@ -38,7 +38,10 @@
 
 
     <string name="training_class_details_discuss_comment">发表</string>
+    <string name="training_circle_topic_issue">发布话题</string>
     <string name="training_class_details_discuss_comment_hint">我也来说几句...(最多500字)</string>
+    <string name="training_toanswer">请认真输入您的回答...(1000字以内)</string>
+    <string name="training_commit">提交</string>
 
 
 

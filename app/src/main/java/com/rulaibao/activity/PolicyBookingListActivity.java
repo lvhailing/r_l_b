@@ -77,7 +77,7 @@ public class PolicyBookingListActivity extends BaseActivity{
         //将TabLayout和ViewPager关联起来
         tab_layout.setupWithViewPager(vp);
 
-        chooseAppointedTab(currentTabPosition);
+        initTitleStyle();
 
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -88,29 +88,57 @@ public class PolicyBookingListActivity extends BaseActivity{
             @Override
             public void onPageSelected(int position) {
                 ((PolicyBookingFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-                Log.i("hh", "onPageSelected------调的接口");
-                ((PolicyBookingFragment) vpAdapter.getItem(position)).requestData();
-
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //选中的view
+                View view = tab.getCustomView();
+                TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
+                tv_title.setTextColor(getResources().getColor(R.color.txt_black1));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //释放的view
+                View view = tab.getCustomView();
+                TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
+                tv_title.setTextColor(getResources().getColor(R.color.txt_black2));
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
     }
 
-    private void chooseAppointedTab(int position) {
-        for (int i = 0; i < tab_layout.getTabCount(); i++) {
-            TabLayout.Tab tab = tab_layout.getTabAt(i);
-            if (tab != null) {
-                tab.setCustomView(getTabView(i));
-            }
-        }
+    /**
+     * 初始化顶部的TabTitle
+     */
+    private void initTitleStyle() {
+        refreshTitleStyle();
 
         //设置1tab选中
         tab_layout.getTabAt(currentTabPosition).select();
-        vp.setCurrentItem(currentTabPosition);
+//        viewpager.setCurrentItem(currentTabPosition);
+    }
+
+    private void refreshTitleStyle() {
+        for (int i = 0; i < tab_layout.getTabCount(); i++) {
+            TabLayout.Tab tab = tab_layout.getTabAt(i);
+            if (tab != null) {
+                View view = getTabView(i);
+                tab.setCustomView(view);
+//                Log.i("aaa", "refreshTitleStyle: " + tab);
+            }
+        }
     }
 
     public View getTabView(int position) {

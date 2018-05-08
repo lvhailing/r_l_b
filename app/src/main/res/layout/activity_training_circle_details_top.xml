@@ -31,7 +31,7 @@
                 android:id="@+id/tv_circle_details_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="圈子名称"
+                android:text="--"
                 android:textColor="@color/white"
                 />
 

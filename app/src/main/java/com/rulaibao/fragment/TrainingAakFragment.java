@@ -46,6 +46,8 @@ public class TrainingAakFragment extends BaseFragment {
     private TrainingAskListAdapter adapter;
 //    private TrainingClassListAdapter adapter;
     private MouldList<ResultAskIndexItemBean> indexItemBeans;
+    private int page = 1;
+    private ResultAskTypeItemBean key;
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,15 +66,12 @@ public class TrainingAakFragment extends BaseFragment {
     @Override
     protected void initViews() {
 
-
         indexItemBeans = new MouldList<ResultAskIndexItemBean>();
-        test();
+        key = new ResultAskTypeItemBean();
+        key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
+        initRecyclerView();
 
-
-        ResultAskTypeItemBean key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
         requestAsk(key);
-
-
 
     }
 
@@ -99,8 +98,12 @@ public class TrainingAakFragment extends BaseFragment {
 //                            test();
 //                        }
 //                    }, 2000);
+                    page++;
+                    requestAsk(key);
+
+
                     if(arrayList.size()<30){
-                        test();
+//                        test();
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
                     }else{
 
@@ -133,7 +136,7 @@ public class TrainingAakFragment extends BaseFragment {
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
         map.put("appQuestionType",appQuestionType.getTypeCode());
-
+        map.put("page",page+"");
 
         HtmlRequest.getTrainingAskIndex(context, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -142,8 +145,19 @@ public class TrainingAakFragment extends BaseFragment {
                 if(params.result!=null){
 
                     ResultAskIndexBean b = (ResultAskIndexBean)params.result;
-                    indexItemBeans = b.getList();
-                    initRecyclerView();
+                    if(b.getList().size()==0 && page!=1){
+
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        page--;
+
+                    }else{
+
+                        indexItemBeans.addAll(b.getList());
+                        adapter.notifyDataSetChanged();
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+
+                    }
+
 
                 }else{
 
@@ -153,17 +167,6 @@ public class TrainingAakFragment extends BaseFragment {
         });
 
 
-
-    }
-
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            String sd = string + "11" + i;
-            arrayList.add(sd);
-
-        }
 
     }
 

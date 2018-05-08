@@ -66,9 +66,18 @@ public class ResultClassIndexBean implements IMouldType {
      */
 
     private ResultClassIndexRecommendBean courseRecommend;
-    private MouldList<ResultClassIndexQualityBean> qualityCourseList;
+    private MouldList<ResultClassIndexQualityBean> qualityCourseList;       //
     private MouldList<ResultClassIndexItemBean> courseList;     //  课程列表
     private MouldList<ResultClassIndexItemBean> courseTypeList;     //  课程类型列表
+    private int count;       //  精品课程数量
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public MouldList<ResultClassIndexItemBean> getCourseList() {
         return courseList;

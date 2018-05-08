@@ -8,8 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultHotAskItemBean;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.RlbActivityManager;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +71,7 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
 
     // 填充onCreateViewHolder方法返回的holder中的控件
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
 //        holder.tvHotTitle.setText(arrayList.get(position).toString());
 
@@ -79,6 +83,15 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
             itemViewHolder.tvHotContent.setText(arrayList.get(position).getDescript());
             itemViewHolder.tvHotName.setText(arrayList.get(position).getUserName());
             itemViewHolder.tvHotAskLeaveCount.setText(arrayList.get(position).getAnswerCount());
+
+            itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String,Object> map = new HashMap<String,Object>();
+                    map.put("questionId",arrayList.get(position).getQuestionId());
+                    RlbActivityManager.toTrainingAskDetailsActivity((BaseActivity) context,map, false);
+                }
+            });
 
 
         } else if (holder instanceof FooterViewHolder) {
@@ -141,13 +154,6 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
         }
     }

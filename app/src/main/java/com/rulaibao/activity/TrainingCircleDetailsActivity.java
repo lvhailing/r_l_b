@@ -62,7 +62,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
     @BindView(R.id.lv_circle_talk)
     MyListView lvCircleTalk;
     @BindView(R.id.btn_training_cirlce_details)     //  发布话题（仅限当前圈子成员可发布）
-            Button btnTrainingCirlceDetails;
+    Button btnTrainingCirlceDetails;
 
 
     private TrainingMyCircleDetailsTitleListAdapter myCircleAdapter;
@@ -140,6 +140,8 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
 
     }
 
+    //初始化顶部布局
+
     public void initTopAdapterData(ResultCircleDetailsItemBean itemBean) {
 
         setView(itemBean);
@@ -163,6 +165,8 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
 
     }
 
+    // 初始化话题列表
+
     public void initTopicAdapterData() {
 
         myCircleAdapterDetails = new TrainingMyCircleDetailsListAdapter(this, appTopics);
@@ -184,15 +188,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
 
     }
 
-
-    public void test() {
-
-        for (int i = 0; i < 3; i++) {
-
-            arrayList.add(new TestBean());
-        }
-
-    }
+    // 获取详情数据
 
     public void requestTopData() {
 
@@ -218,6 +214,8 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
             }
         });
     }
+
+    //  获取话题列表
 
     public void requestTopicData() {
 

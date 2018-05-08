@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.rulaibao">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.rulaibao">
 
     <!-- Push service 运行需要的权限 -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -25,6 +26,7 @@
 
     <application
         android:name="com.rulaibao.common.MyApplication"
+        tools:replace="android:name"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

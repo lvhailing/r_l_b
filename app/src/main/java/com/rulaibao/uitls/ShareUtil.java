@@ -20,9 +20,8 @@ import java.util.HashMap;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.wechat.favorite.WechatFavorite;
-import onekeyshare.OnekeyShare;
-import onekeyshare.ShareContentCustomizeCallback;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 
 /**
  *  分享时调用的方法
@@ -32,7 +31,7 @@ public final class ShareUtil {
         final OnekeyShare oks = new OnekeyShare();
 
         oks.disableSSOWhenAuthorize();// 关闭sso授权
-        oks.addHiddenPlatform(WechatFavorite.NAME); // 隐藏微信收藏；
+//        oks.addHiddenPlatform(WechatFavorite.NAME); // 隐藏微信收藏；
 
         oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
             @Override
@@ -156,7 +155,7 @@ public final class ShareUtil {
         // oks.setTitleUrl("http://www.vjinke.com");
 
         // 自定义分享按钮
-        Bitmap enableLogo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ssdk_logo_lianjie);
+        Bitmap enableLogo = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ssdk_logo_lianjie);
         String label = "复制链接";
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View v) {

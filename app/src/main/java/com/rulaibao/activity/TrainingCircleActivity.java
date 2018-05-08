@@ -3,11 +3,9 @@ package com.rulaibao.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.rulaibao.R;
-import com.rulaibao.adapter.TrainingAskDetailsListAdapter;
 import com.rulaibao.adapter.TrainingMyCircleListAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleIndexBean;
@@ -44,6 +42,13 @@ public class TrainingCircleActivity extends BaseActivity {
     public static final String JOIN = "join";
     public static final String RECOMMEND = "recommend";
 
+    @BindView(R.id.ll_mycircle)
+    LinearLayout llMycircle;
+    @BindView(R.id.ll_mycircle_join)
+    LinearLayout llMycircleJoin;
+    @BindView(R.id.ll_recommend_circle)
+    LinearLayout llRecommendCircle;
+
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
 
@@ -68,13 +73,13 @@ public class TrainingCircleActivity extends BaseActivity {
 
     }
 
-    public void initData(){
+    public void initData() {
 
         requestIndexData();
 
     }
 
-    public void initView(){
+    public void initView() {
 
         myAppCircle = new MouldList<ResultCircleIndexItemBean>();
         myJoinAppCircle = new MouldList<ResultCircleIndexItemBean>();
@@ -84,24 +89,42 @@ public class TrainingCircleActivity extends BaseActivity {
 
     }
 
-    public void initAdapterData(){
+    public void initAdapterData() {
 
-        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle,MINE);
+        if(myAppCircle.size()==0){
+            llMycircle.setVisibility(View.GONE);
+        }else{
+            llMycircle.setVisibility(View.VISIBLE);
+        }
+
+        if(myJoinAppCircle.size()==0){
+            llMycircleJoin.setVisibility(View.GONE);
+        }else{
+            llMycircleJoin.setVisibility(View.VISIBLE);
+        }
+
+        if(myRecomAppCircle.size()==0){
+            llRecommendCircle.setVisibility(View.GONE);
+        }else{
+            llRecommendCircle.setVisibility(View.VISIBLE);
+        }
+
+        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE);
         lvMycircle.setAdapter(myCircleAdapter);
 
-        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle,JOIN);
+        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN);
         lvMycircleJoin.setAdapter(joinAdapter);
 
-        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle,RECOMMEND);
+        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND);
         lvRecommendCircle.setAdapter(recommendAdapter);
 
         lvMycircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                HashMap<String,Object> map = new HashMap<String,Object>();
-                map.put("circleId",myAppCircle.get(position).getCircleId());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this,map,false);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("circleId", myAppCircle.get(position).getCircleId());
+                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
 
             }
         });
@@ -110,9 +133,9 @@ public class TrainingCircleActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                HashMap<String,Object> map = new HashMap<String,Object>();
-                map.put("circleId",myJoinAppCircle.get(position).getCircleId());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this,map,false);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("circleId", myJoinAppCircle.get(position).getCircleId());
+                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
 
             }
         });
@@ -121,9 +144,9 @@ public class TrainingCircleActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                HashMap<String,Object> map = new HashMap<String,Object>();
-                map.put("circleId",myRecomAppCircle.get(position).getCircleId());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this,map,false);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("circleId", myRecomAppCircle.get(position).getCircleId());
+                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
 
             }
         });
@@ -134,7 +157,7 @@ public class TrainingCircleActivity extends BaseActivity {
 
         for (int i = 0; i < 3; i++) {
 
-            arrayList.add(new TestBean("渣渣辉"+i));
+            arrayList.add(new TestBean("渣渣辉" + i));
         }
 
     }
@@ -161,33 +184,31 @@ public class TrainingCircleActivity extends BaseActivity {
     }
 
 
-    public void requestIndexData(){
+    public void requestIndexData() {
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-        map.put("userId",userId);
+        map.put("userId", userId);
         HtmlRequest.getTrainingCircleIndex(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
 
-                if(params.result!=null){
+                if (params.result != null) {
 
-                    ResultCircleIndexBean bean = (ResultCircleIndexBean)params.result;
+                    ResultCircleIndexBean bean = (ResultCircleIndexBean) params.result;
                     myAppCircle = bean.getMyAppCircle();
                     myJoinAppCircle = bean.getMyJoinAppCircle();
                     myRecomAppCircle = bean.getMyRecomAppCircle();
 
                     initAdapterData();
 
-                }else{
+                } else {
 
                 }
             }
         });
     }
-
-
 
 
     @Override

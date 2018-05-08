@@ -73,7 +73,11 @@ public class MyApplication extends Application {
 
         //3.X版本以上含3.X版本，ShareSDK 初始化
         // 通过代码注册你的AppKey和AppSecret
-        MobSDK.init(instance, "1ea86a798f5d6", "69d1ab82675b878c6061887a6ab49279");
+//        MobSDK.init(instance, "1ea86a798f5d6", "69d1ab82675b878c6061887a6ab49279");
+
+        //3.1.4版本 ShareSDK 初始化
+        MobSDK.init(this);
+
     }
 
     /****

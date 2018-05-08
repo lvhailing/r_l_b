@@ -132,6 +132,7 @@ public class RlbActivityManager {
         activity.finish();
     }
 
+    /************************************************ 研修模块start ***********************************************************/
 
 
     /**
@@ -337,5 +338,10 @@ public class RlbActivityManager {
             startActivity(activity,map, TrainingSetAuthorityActivity.class);
         }
     }
+
+    /************************************************ 研修模块end ***********************************************************/
+
+
+
 
 }

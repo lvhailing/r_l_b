@@ -50,6 +50,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
     private ViewPagerForScrollView vp;
 
+    public TrainingDetailsCatalogFragment( ) {
+    }
     public TrainingDetailsCatalogFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
@@ -60,7 +62,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_catalog, container, false);
-            vp.setObjectForPosition(mView,1);
+//            vp.setObjectForPosition(mView,1);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
@@ -100,7 +102,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
             @Override
             public boolean canScrollVertically() {
                 // 直接禁止垂直滑动
-                return false;
+//                return false;
+                return true;
             }
         };
 

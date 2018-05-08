@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,8 +12,16 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.OK2B;
+import com.rulaibao.bean.PolicyBookingDetail1B;
 import com.rulaibao.dialog.CancelBookingDialog;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  *  保单预约详情
@@ -40,6 +49,9 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
     private TextView tv_expected_policy; // 预计交单
     private TextView tv_remarks_description; // 备注内容
     private Button btn_cancel_booking; // 取消预约
+    private String id;
+    private PolicyBookingDetail1B data;
+    private String status;
 
 
     @Override
@@ -75,6 +87,8 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
     }
 
     private void initView() {
+        id = getIntent().getStringExtra("id");
+
         rl_audit_status = (RelativeLayout) findViewById(R.id.rl_audit_status);
         iv_delete = (ImageView) findViewById(R.id.iv_delete);
         tv_turn_down = (TextView) findViewById(R.id.tv_turn_down);
@@ -96,20 +110,97 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         btn_cancel_booking = (Button) findViewById(R.id.btn_cancel_booking);
 
         rl_insurance_name.setOnClickListener(this);
+        iv_delete.setOnClickListener(this);
+        rl_insurance_name.setOnClickListener(this);
         btn_cancel_booking.setOnClickListener(this);
     }
 
     /**
-     *  获取保单详情页数据
+     *  获取预约详情页数据
      */
     private void requestData() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("id", id);
 
+        HtmlRequest.getPolicyBookingDetailData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(PolicyBookingDetailActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                data = (PolicyBookingDetail1B) params.result;
+                setView();
+            }
+        });
+    }
+
+    private void setView() {
+        if (!TextUtils.isEmpty(data.getProductName())) {
+            tv_insurance_name.setText(data.getProductName());
+        }
+
+        if (!TextUtils.isEmpty( data.getAuditStatus())) {
+             status = data.getAuditStatus();
+        }
+        if ("confirmed".equals(status)) {
+            tv_policy_booking_status.setText("已确认");
+        } else if ("confirming".equals(status)) {
+            tv_policy_booking_status.setText("待确认");
+        } else if ("canceled".equals(status)) {
+            tv_policy_booking_status.setText("已取消");
+        } else if  ("refuse".equals(status)) {
+                tv_policy_booking_status.setText("已驳回");
+                rl_audit_status.setVisibility(View.VISIBLE);
+                tv_turn_down.setText(data.getRefuseReason());
+        }
+
+        if (!TextUtils.isEmpty(data.getCreateTime())) {
+            tv_policy_booking_time.setText(data.getCreateTime());
+        }
+        if (!TextUtils.isEmpty(data.getUserName())) {
+            tv_policy_booking_people.setText(data.getUserName());
+        }
+        if (!TextUtils.isEmpty(data.getMobile())) {
+            tv_policy_booking_phone.setText(data.getMobile());
+        }
+        if (!TextUtils.isEmpty(data.getCompanyName())) {
+            tv_insurance_company.setText(data.getCompanyName());
+        }
+        if (!TextUtils.isEmpty(data.getInsurancePlan())) {
+            tv_insurance_plan.setText(data.getInsurancePlan());
+        }
+        if (!TextUtils.isEmpty(data.getInsuranceAmount())) {
+            tv_insurance_amount.setText(data.getInsuranceAmount());
+        }
+        if (!TextUtils.isEmpty(data.getPeriodAmount())) {
+            tv_annual_premium.setText(data.getPeriodAmount());
+        }
+        if (!TextUtils.isEmpty(data.getInsurancePeriod())) {
+            tv_insurance_period.setText(data.getInsurancePeriod());
+        }
+        if (!TextUtils.isEmpty(data.getPaymentPeriod())) {
+            tv_payment_period.setText(data.getPaymentPeriod());
+        }
+        if (!TextUtils.isEmpty(data.getExceptSubmitTime())) {
+            tv_expected_policy.setText(data.getExceptSubmitTime());
+        }
+        if (!TextUtils.isEmpty(data.getRemark())) {
+            tv_remarks_description.setText(data.getRemark());
+        }
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.iv_delete: // 驳回原因的关闭
+                rl_audit_status.setVisibility(View.GONE);
+                break;
             case R.id.rl_insurance_name: //
                 // Todo  跳转保险产品详情页
 //                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
@@ -129,7 +220,8 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         CancelBookingDialog dialog = new CancelBookingDialog(this, new CancelBookingDialog.IsCancelBooking() {
             @Override
             public void onConfirm() {
-                Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+                    requestBookingCanceled();
+//                Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -139,4 +231,32 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
 
         dialog.show();
     }
+
+    /**
+     *  取消预约
+     */
+    private void requestBookingCanceled() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("id", data.getId());
+
+         HtmlRequest.getPolicyBookingCanceled(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(PolicyBookingDetailActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                    OK2B data = (OK2B) params.result;
+                if (data != null) {
+                    if (data.getFlag().equals("true")) {
+                        Toast.makeText(PolicyBookingDetailActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(PolicyBookingDetailActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+    }
+
 }

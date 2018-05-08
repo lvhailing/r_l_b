@@ -6,7 +6,10 @@ import com.rulaibao.network.types.IMouldType;
 // 未读消息
 public class UnreadNewsCount2B implements IMouldType {
 	private String insurance;// 保单消息
-	private String commission; // 佣金消息 互动消息（待定）；圈子新成员（待定）
+	private String commission; // 佣金消息
+	private String comment; // 互动消息
+	private String circle; // 圈子新成员
+
 
     public String getInsurance() {
         return insurance;
@@ -22,5 +25,21 @@ public class UnreadNewsCount2B implements IMouldType {
 
     public void setCommission(String commission) {
         this.commission = commission;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getCircle() {
+        return circle;
+    }
+
+    public void setCircle(String circle) {
+        this.circle = circle;
     }
 }

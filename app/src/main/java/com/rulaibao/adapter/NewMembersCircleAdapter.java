@@ -39,6 +39,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
+    private String status;
 
 
     public NewMembersCircleAdapter(Context context, MouldList<NewMembersCircleList2B> list) {
@@ -67,15 +68,17 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_applicant_name.setText(list.get(position).getApplyUserName());
-            String status = list.get(position).getAuditStatus();
-            if ("submit".equals(status)) {
-                itemViewHolder.tv_status.setText("待加入");
-            } else if ("agree".equals(status)) {
-                itemViewHolder.tv_status.setText("已加入");
-                itemViewHolder.tv_status.setBackgroundResource(R.drawable.shape_non_clickable);
-            } else if ("refuse".equals(status)) {
-                itemViewHolder.tv_status.setText("已拒绝");
-            }
+            status = list.get(position).getAuditStatus();
+//            if ("submit".equals(status)) {
+//                itemViewHolder.btn_status.setText("同意");
+//                itemViewHolder.btn_status.setBackgroundResource(R.drawable.shape_gradient_orange);
+//            } else if ("agree".equals(status)) {
+//                itemViewHolder.btn_status.setText("已加入");
+//                itemViewHolder.btn_status.setBackgroundResource(R.drawable.shape_non_clickable);
+//            }
+//            else if ("refuse".equals(status)) {
+//                itemViewHolder.tv_status.setText("已拒绝");
+//            }
             itemViewHolder.tv_circle_name.setText(list.get(position).getApplyCircleName());
 
             // 加载图片
@@ -121,15 +124,28 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         private final ImageView iv_circle_photo; // 圈子头像
         private final TextView tv_applicant_name; // 申请人姓名
         private final TextView tv_circle_name; // 圈子名
-        private final Button tv_status; // 状态
+        private final Button btn_status; // 状态
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             iv_circle_photo = (ImageView) itemView.findViewById(R.id.iv_circle_photo);
             tv_applicant_name = (TextView) itemView.findViewById(R.id.tv_applicant_name);
             tv_circle_name = (TextView) itemView.findViewById(R.id.tv_circle_name);
-            tv_status = (Button) itemView.findViewById(R.id.tv_status);
+            btn_status = (Button) itemView.findViewById(R.id.btn_status);
 
+            btn_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ("submit".equals(status)) {
+                         btn_status.setText("同意");
+                         btn_status.setBackgroundResource(R.drawable.shape_gradient_orange);
+                    } else if ("agree".equals(status)) {
+                        btn_status.setText("已加入");
+                        btn_status.setBackgroundResource(R.drawable.shape_non_clickable);
+                        btn_status.setPadding(0,5,0,5);
+                    }
+                }
+            });
             initListener(itemView);
         }
 
@@ -141,10 +157,17 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         private void initListener(View itemView) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) { // 跳转到交易明细
+                public void onClick(View v) { //
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(mContext, TransactionDetailActivity.class);
 //                    mContext.startActivity(intent);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
                 }
             });
         }

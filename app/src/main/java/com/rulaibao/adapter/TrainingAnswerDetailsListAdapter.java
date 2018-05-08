@@ -35,11 +35,13 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
     private Reply reply;
     private int index = 0;
     private ResultCircleDetailsTopicCommentReplyItemBean replyItemBean;
+    private ReplyAdapter replyAdapter;
 
     public TrainingAnswerDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList,Reply reply) {
         super(context);
         this.context = context;
         this.arrayList = arrayList;
+
         this.reply = reply;
     }
 
@@ -76,7 +78,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder holder1 = (ViewHolder) holder;
-        index = position;
+        int index = position;
         if(getmHeaderView()!=null){
             index = position-1;
         }
@@ -88,55 +90,18 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         holder1.tvAnswerDetailsDate.setText(arrayList.get(index).getCommentTime());
         holder1.tvAnswerDetailsContent.setText(arrayList.get(index).getCommentContent());
 
-        holder1.lvAnswerDetails.setAdapter(new BaseAdapter() {
+        replyAdapter = new ReplyAdapter(context,index);
+        replyAdapter.clearAll();
+        replyAdapter.addAll(arrayList.get(index).getReplys());
+
+        holder1.lvAnswerDetails.setAdapter(replyAdapter);
+
+        final int finalIndex = index;
+        holder1.tvAnswerDetailsReply.setOnClickListener(new View.OnClickListener() {
             @Override
-            public int getCount() {
-                return arrayList.get(index).getReplys().size();
-            }
+            public void onClick(View v) {
+                reply.reply(arrayList.get(finalIndex).getCid(),arrayList.get(finalIndex).getCommentId(),arrayList.get(finalIndex).getCommentName(), finalIndex);
 
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                ChildViewHolder holder1 = null;
-                if (convertView == null) {
-                    holder1 = new ChildViewHolder();
-                    convertView = layoutInflater.inflate(R.layout.activity_training_answer_details_item_child, null);
-                    holder1.tvCommit = (TextView) convertView.findViewById(R.id.tv_commit);
-                    convertView.setTag(holder1);
-                } else {
-
-                    holder1 = (ChildViewHolder) convertView.getTag();
-
-                }
-
-                replyItemBean = arrayList.get(index).getReplys().get(position);
-
-
-                holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        reply.reply(arrayList.get(index).getCid(),replyItemBean.getReplyId(),replyItemBean.getReplyName(),index);
-                    }
-                });
-
-                String str = "";
-                if(replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())){
-                    str = replyItemBean.getReplyName()+"："+replyItemBean.getReplyContent();
-                }else{
-                    str = replyItemBean.getReplyName()+"回复"+replyItemBean.getReplyToName()+"："+replyItemBean.getReplyContent();
-                }
-
-                holder1.tvCommit.setText(str);
-                return convertView;
             }
         });
 
@@ -169,12 +134,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            tvAnswerDetailsReply.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    reply.reply(arrayList.get(index).getCid(),arrayList.get(index).getCommentId(),arrayList.get(index).getCommentName(),index);
-                }
-            });
+
         }
     }
 
@@ -188,8 +148,84 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
         TextView tvCommit;
 
+    }
+
+    public void refresh(){
+//        replyAdapter.notifyDataSetChanged();
+    }
+
+    class ReplyAdapter extends BaseAdapter{
+
+        private Context context;
+        private MouldList<ResultCircleDetailsTopicCommentReplyItemBean> list;
+        private int index = 0;
 
 
+        public ReplyAdapter(Context context,int index) {
+            this.context = context;
+            list = new MouldList<ResultCircleDetailsTopicCommentReplyItemBean>();
+            this.index = index;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public void addAll(MouldList<ResultCircleDetailsTopicCommentReplyItemBean> list) {
+            this.list=list;
+            notifyDataSetChanged();
+        }
+
+        public void clearAll() {
+            this.list.clear();
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ChildViewHolder holder1 = null;
+            if (convertView == null) {
+                holder1 = new ChildViewHolder();
+                convertView = layoutInflater.inflate(R.layout.activity_training_answer_details_item_child, null);
+                holder1.tvCommit = (TextView) convertView.findViewById(R.id.tv_commit);
+                convertView.setTag(holder1);
+            } else {
+
+                holder1 = (ChildViewHolder) convertView.getTag();
+
+            }
+
+            replyItemBean = list.get(position);
+
+
+            holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reply.reply(arrayList.get(index).getCid(),replyItemBean.getReplyId(),replyItemBean.getReplyName(),index);
+                }
+            });
+
+            String str = "";
+            if(replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())){
+                str = replyItemBean.getReplyName()+"："+replyItemBean.getReplyContent();
+            }else{
+                str = replyItemBean.getReplyName()+" 回复 "+replyItemBean.getReplyToName()+"："+replyItemBean.getReplyContent();
+            }
+
+            holder1.tvCommit.setText(str);
+            return convertView;
+        }
 
     }
 }

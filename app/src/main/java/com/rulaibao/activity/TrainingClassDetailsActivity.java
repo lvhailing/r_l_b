@@ -55,8 +55,11 @@ public class TrainingClassDetailsActivity extends BaseActivity {
     WebView wvTrainingClassDetails;
     @BindView(R.id.tl_class_details)
     TabLayout tlClassDetails;
+//    @BindView(R.id.vp_class_details)
+//    ViewPagerForScrollView vpClassDetails;
+
     @BindView(R.id.vp_class_details)
-    ViewPagerForScrollView vpClassDetails;
+    ViewPager vpClassDetails;
 
     private String url = "http://player.youku.com/player.php/sid/XMzUxMzM5MzQyMA==/v.swf";
 
@@ -97,7 +100,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         fragments = new ArrayList<>();
         listTitles = new ArrayList<>();
 
-        introdutionFragment = new TrainingDetailsIntroductionFragment(vpClassDetails);
+        introdutionFragment = new TrainingDetailsIntroductionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id",id);
         bundle.putString("speechmakeId",speechmakeId);
@@ -106,15 +109,15 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         introdutionFragment.setArguments(bundle);
         fragments.add(introdutionFragment);
 
-        catalogFragment = new TrainingDetailsCatalogFragment(vpClassDetails);
+        catalogFragment = new TrainingDetailsCatalogFragment();
         catalogFragment.setArguments(bundle);
         fragments.add(catalogFragment);
 
-        discussFragment = new TrainingDetailsDiscussFragment(vpClassDetails);
+        discussFragment = new TrainingDetailsDiscussFragment();
         discussFragment.setArguments(bundle);
         fragments.add(discussFragment);
 
-        pptFragment = new TrainingDetailsPPTFragment(vpClassDetails);
+        pptFragment = new TrainingDetailsPPTFragment();
         pptFragment.setArguments(bundle);
         fragments.add(pptFragment);
 
@@ -159,11 +162,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                vpClassDetails.resetHeight(position);
-
-
-
-
+//                vpClassDetails.resetHeight(position);
 
             }
 
@@ -172,7 +171,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
             }
         });
-        vpClassDetails.resetHeight(0);
+//        vpClassDetails.resetHeight(0);
 
 
     }

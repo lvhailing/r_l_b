@@ -52,6 +52,8 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
     public TrainingDetailsPPTFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
+    public TrainingDetailsPPTFragment() {
+    }
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_ppt, container, false);
-            vp.setObjectForPosition(mView,3);
+//            vp.setObjectForPosition(mView,3);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
@@ -84,7 +86,8 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
             @Override
             public boolean canScrollVertically() {
                 // 直接禁止垂直滑动
-                return false;
+//                return false;
+                return true;
             }
         };
 

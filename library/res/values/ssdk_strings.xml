@@ -30,7 +30,7 @@
 	<string name="ssdk_renren">人人网</string>
 	<string name="ssdk_kaixin">开心网</string>
 	<string name="ssdk_email">邮件</string>
-	<string name="ssdk_shortmessage">信息</string>
+	<string name="ssdk_shortmessage">私信好友</string>
 	<string name="ssdk_sohumicroblog">搜狐微博</string>
 	<string name="ssdk_sohusuishenkan">搜狐随身看</string>
 	<string name="ssdk_neteasemicroblog">网易微博</string>
@@ -40,7 +40,7 @@
 	<string name="ssdk_linkedin">领英</string>
 	<string name="ssdk_googleplus">Google+</string>
 	<string name="ssdk_foursquare">FourSquare</string>
-	<string name="ssdk_qq">QQ</string>
+	<string name="ssdk_qq">QQ好友</string>
 	<string name="ssdk_pinterest">Pinterest</string>
 	<string name="ssdk_flickr">Flickr</string>
 	<string name="ssdk_tumblr">Tumblr</string>

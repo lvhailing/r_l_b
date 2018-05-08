@@ -44,7 +44,7 @@
             android:textSize="14sp"/>
 
         <Button
-            android:id="@+id/tv_status"
+            android:id="@+id/btn_status"
             android:layout_alignParentRight="true"
             android:layout_width="70dp"
             android:layout_height="30dp"

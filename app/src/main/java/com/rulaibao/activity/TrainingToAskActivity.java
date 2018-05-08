@@ -18,6 +18,7 @@ import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.widget.MyGridView;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
 public class TrainingToAskActivity extends BaseActivity {
 
     @BindView(R.id.gv_training_toask)
-    GridView gvTrainingToask;
+    MyGridView gvTrainingToask;
     @BindView(R.id.et_toask_title)
     EditText etToaskTitle;
     @BindView(R.id.et_toask_content)

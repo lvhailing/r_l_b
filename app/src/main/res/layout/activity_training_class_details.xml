@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,14 +40,20 @@
                     >
 
                 </android.support.design.widget.TabLayout>
-                <com.rulaibao.widget.ViewPagerForScrollView
+                <!--<com.rulaibao.widget.ViewPagerForScrollView
                     android:id="@+id/vp_class_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    />-->
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_class_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     />
 
         </LinearLayout>
 
 
-</ScrollView>
+</LinearLayout>

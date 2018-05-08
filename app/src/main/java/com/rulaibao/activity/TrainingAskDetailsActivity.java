@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingAskDetailsListAdapter;
 import com.rulaibao.adapter.TrainingAskListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
@@ -82,8 +84,9 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     private LinearLayout ll_ask_details_sort;
     private PopupWindow popupWindow;
     private String questionId = "";
-    private int page = 0;
+    private int page = 1;
     private MouldList<ResultAskDetailsAnswerItemBean> list;
+    private ResultAskDetailsBean detailsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     public void initView() {
 
         questionId = getIntent().getStringExtra("questionId");
+        detailsBean = new ResultAskDetailsBean();
         list = new MouldList<ResultAskDetailsAnswerItemBean>();
         test();
         initRecyclerView();
@@ -180,9 +184,9 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
                 if(params.result!=null){
 
-                    ResultAskDetailsBean b = (ResultAskDetailsBean)params.result;
+                    detailsBean = (ResultAskDetailsBean)params.result;
 //                    indexItemBeans = b.getList();
-                    setView(b);
+                    setView(detailsBean);
                 }else{
 
                 }
@@ -209,10 +213,24 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                 if(params.result!=null){
 
                     ResultAskDetailsAnswerBean b = (ResultAskDetailsAnswerBean)params.result;
-//                    indexItemBeans = b.getList();
-//                    setView(b);
-                    list.addAll(b.getList());
+
+                    if(b.getList().size()==0 && page!=1){     //  非首次的无数据情况
+
+                        page--;
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+
+                    }else{
+
+                        tv_ask_details_ask_count.setText(b.getTotal()+"回答");
+                        adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+
+                        list.addAll(b.getList());
+                    }
+
+
                     adapter.notifyDataSetChanged();
+
                 }else{
 
                 }
@@ -481,6 +499,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
             case R.id.tv_ask_details_answer:
                 HashMap<String,Object> map = new HashMap<>();
                 map.put("questionId",questionId);
+                map.put("title",detailsBean.getAppQuestion().getTitle());
                 RlbActivityManager.toTrainingAnswerActivity(this,map, false);
                 break;
 

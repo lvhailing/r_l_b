@@ -6,7 +6,7 @@ public class ResultAnswerDetailsItemBean implements IMouldType{
 
     public String title;        //  问题标题
     public String answerId;        //  回答id
-    public String content;        //  回答内容
+    public String answerContent;        //  回答内容
     public String answerTime;        //  回答时间
     public String answerName;        //  回答人姓名
     public String answerPhoto;        //  回答人头像
@@ -28,12 +28,12 @@ public class ResultAnswerDetailsItemBean implements IMouldType{
         this.answerId = answerId;
     }
 
-    public String getContent() {
-        return content;
+    public String getAnswerContent() {
+        return answerContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAnswerContent(String answerContent) {
+        this.answerContent = answerContent;
     }
 
     public String getAnswerTime() {

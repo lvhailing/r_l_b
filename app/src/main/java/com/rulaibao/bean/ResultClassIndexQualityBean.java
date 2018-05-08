@@ -20,6 +20,15 @@ public class ResultClassIndexQualityBean implements IMouldType{
     private String courseId;        //  课程id
     private String courseName;        //  课程姓名
     private String courseLogo;        //  课程封面
+    private String speechmakeId;        //  演讲人id
+
+    public String getSpeechmakeId() {
+        return speechmakeId;
+    }
+
+    public void setSpeechmakeId(String speechmakeId) {
+        this.speechmakeId = speechmakeId;
+    }
 
     public String getCourseLogo() {
         return courseLogo;

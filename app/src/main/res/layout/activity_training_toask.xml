@@ -42,14 +42,15 @@
                 android:layout_below="@id/gv_training_toask"
                 android:gravity="start"
                 android:layout_marginTop="15dip"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
+                android:paddingTop="10dip"
+                android:paddingBottom="10dip"
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip"
                 android:background="@color/white"
                 android:hint="输入您想要了解的问题的标题...(10-30字以内)"
                 android:textSize="14sp"
                 android:maxLength="30"
+                android:textColorHint="@color/txt_mark_gray"
 
                 />
 
@@ -69,6 +70,7 @@
                 android:hint="请对您的问题进行简单清楚的描述（500字以内）"
                 android:textSize="14sp"
                 android:maxLength="500"
+                android:textColorHint="@color/txt_mark_gray"
                 />
 
             <FrameLayout

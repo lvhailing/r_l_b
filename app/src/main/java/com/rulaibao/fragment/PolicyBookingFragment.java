@@ -29,7 +29,7 @@ import com.rulaibao.network.types.MouldList;
 import java.util.LinkedHashMap;
 
 /**
- *  预约列表
+ * 预约列表 Fragment
  */
 public class PolicyBookingFragment extends Fragment {
     private static final String KEY = "param1";
@@ -54,6 +54,15 @@ public class PolicyBookingFragment extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // 页面可见时调接口
+            requestData();
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -65,8 +74,6 @@ public class PolicyBookingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         initView(view);
-        Log.i("hh", "this------onCreateView调的接口");
-        requestData();
         initListener();
 
         return view;
@@ -90,7 +97,7 @@ public class PolicyBookingFragment extends Fragment {
     }
 
     /**
-     *  获取预约列表数据
+     * 获取预约列表数据
      */
     public void requestData() {
 

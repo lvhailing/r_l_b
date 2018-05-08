@@ -329,6 +329,8 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
                 }
                 result = (InsuranceDetail1B) params.result;
                 setData(result);
+                // 设置分享参数
+                titleBar.setActivityParameters(id, "测试分享标题", "测试分享内容");
             }
         });
     }

@@ -34,6 +34,7 @@ public class TrainingAnswerActivity extends BaseActivity {
     Button btnTrainingAnswer;
 
     private String questionId = "";
+    private String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,11 @@ public class TrainingAnswerActivity extends BaseActivity {
     }
 
     public void initView() {
+
         questionId = getIntent().getStringExtra("questionId");
+        title = getIntent().getStringExtra("title");
+
+        tvAnswerTitle.setText(title);
 
     }
 

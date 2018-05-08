@@ -35,7 +35,7 @@ import java.util.List;
  * Created by junde on 2018/4/20.
  */
 
-public class RecommendRecordActivity extends BaseActivity implements View.OnClickListener {
+public class RecommendRecordActivity extends BaseActivity{
 
     private TextView tv_amount_people;
     private SwipeRefreshLayout swipe_refresh;
@@ -83,12 +83,20 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
         initRecylerView();
+    }
+
+    private void initRecylerView() {
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        recommendRecordAdapter = new RecommendRecordAdapter(this, totalList);
+        recycler_view.setAdapter(recommendRecordAdapter);
+        //添加动画
+        recycler_view.setItemAnimator(new DefaultItemAnimator());
 
     }
 
     private void initListener() {
         initPullRefresh();
-//        initLoadMoreListener();
+        initLoadMoreListener();
     }
 
     private void initPullRefresh() {
@@ -99,7 +107,7 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
                 getRecommendRecordData();
 
                 //刷新完成
-                swipe_refresh.setRefreshing(false);
+//                swipe_refresh.setRefreshing(false);
 
             }
         });
@@ -115,14 +123,9 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==recommendRecordAdapter.getItemCount()&& firstVisibleItem != 0){
-
-                    //设置正在加载更多
-//                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.LOADING_MORE);
-
                     currentPage++;
                     getRecommendRecordData();
                 }
-
             }
 
             @Override
@@ -143,16 +146,6 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
         getRecommendRecordData();
     }
 
-
-    private void initRecylerView() {
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        recommendRecordAdapter = new RecommendRecordAdapter(this, totalList);
-        recycler_view.setAdapter(recommendRecordAdapter);
-        //添加动画
-        recycler_view.setItemAnimator(new DefaultItemAnimator());
-
-    }
-
     private void getRecommendRecordData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", "18042617666660552139");
@@ -161,6 +154,11 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
         HtmlRequest.getRecommendRecordData(RecommendRecordActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
                 if (params.result == null) {
                     Toast.makeText(RecommendRecordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
@@ -169,38 +167,25 @@ public class RecommendRecordActivity extends BaseActivity implements View.OnClic
                 RecommendRecordList1B  data = (RecommendRecordList1B) params.result;
                 tv_amount_people.setText(data.getTotal());
                 MouldList<RecommendRecordList2B> everyList = data.getRecommendList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
+                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                recommendRecordAdapter.notifyDataSetChanged();
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
-                //没有加载更多了
-                //mRefreshAdapter.changeMoreStatus(mRefreshAdapter.NO_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public void onClick(View v) {
-
-    }
 }

@@ -89,7 +89,6 @@ public class PolicyRecordListActivity extends BaseActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -128,7 +127,7 @@ public class PolicyRecordListActivity extends BaseActivity {
     }
 
     /**
-     *
+     * 初始化顶部的TabTitle
      */
     private void initTitleStyle() {
         refreshTitleStyle();

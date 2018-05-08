@@ -23,6 +23,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private final MouldList<PolicyBookingList2B> list;
     Context mContext;
+    private String id;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -64,7 +65,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
-
+            id = list.get(position).getId();
             String status = list.get(position).getAuditStatus();
             if ("confirming".equals(status)) {
             itemViewHolder.tv_status.setText("待确认");
@@ -138,6 +139,8 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
                 public void onClick(View v) { // 跳转到预约详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
+                    intent.putExtra("id", id);
+//                    intent.putExtra("status", status);
                     mContext.startActivity(intent);
                 }
             });

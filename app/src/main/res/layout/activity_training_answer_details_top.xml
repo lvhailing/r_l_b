@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:text="人生在世须尽欢，莫使金樽空对月"
+        android:text="---"
         android:textSize="16sp"
         android:textColor="@color/txt_black1"
         android:paddingLeft="15dip"
@@ -43,7 +43,7 @@
             android:layout_marginLeft="10dip"
             android:layout_toRightOf="@id/iv_answer_detatils_manager"
             android:layout_centerVertical="true"
-            android:text="渣渣辉"
+            android:text="---"
             />
         <TextView
             android:id="@+id/tv_answer_details_time"
@@ -52,7 +52,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dip"
-            android:text="2012-2-2"
+            android:text="1990-01-01"
             />
     </RelativeLayout>
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:padding="15dip"
         android:background="@color/white"
-        android:text="朝辞白帝彩月间，千里江陵一日还。两岸猿声啼不住，轻舟已过万重山。"
+        android:text="---"
         android:textSize="16sp"
         android:lineSpacingExtra="2dip"
 
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:src="@mipmap/img_answer_zan"
+            android:src="@mipmap/img_answer_zaned"
             android:layout_centerHorizontal="true"
             />
         <TextView
@@ -107,7 +107,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginTop="10dip"
             android:layout_marginBottom="10dip"
-            android:text="23评论"
+            android:text="0评论"
             />
 
     </RelativeLayout>

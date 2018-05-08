@@ -55,6 +55,8 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
     private Context context;
     private ViewPagerForScrollView vp;
 
+    public TrainingDetailsIntroductionFragment() {
+    }
 
     public TrainingDetailsIntroductionFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
@@ -66,7 +68,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_details_introduction, container, false);
-            vp.setObjectForPosition(mView,0);
+//            vp.setObjectForPosition(mView,0);
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);

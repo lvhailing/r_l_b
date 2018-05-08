@@ -45,7 +45,8 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
         initTopTitle();
         initView();
-        requesData();
+        initListener();
+        requestData();
     }
 
     private void initTopTitle() {
@@ -77,6 +78,46 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         initRecylerView();
     }
 
+    private void initListener() {
+        initPullRefresh();
+        initLoadMoreListener();
+    }
+
+    private void initPullRefresh() {
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {  // 下拉刷新
+                currentPage = 1;
+                requestData();
+            }
+        });
+    }
+
+    private void initLoadMoreListener() {
+        recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int firstVisibleItem = 0;
+            private int lastVisibleItem = 0;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == commissionNewsAdapter.getItemCount() && firstVisibleItem != 0) {
+                    currentPage++;
+                    requestData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         commissionNewsAdapter = new CommissionNewsAdapter(this, totalList);
@@ -86,7 +127,7 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
     }
 
-    private void requesData() {
+    private void requestData() {
 //        for(int i=0;i<10;i++){
 //            CommissionNewsList2B bean = new CommissionNewsList2B();
 //            bean.setCommissionIncome("中纪委发文谈落马：十九大后“首虎”");
@@ -98,6 +139,7 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", "18042709525931594357");
         param.put("busiType", "commission");
+        param.put("page", currentPage+"");
 
         HtmlRequest.getMessageListData(CommissionNewsActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override

@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +76,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
 
     private void initView() {
         id = getIntent().getStringExtra("id");
+//        Log.i("hh", "佣金消息列表传的id----" + id);
 
         tv_total_commission = (TextView) findViewById(R.id.tv_total_commission);
         tv_bill_type = (TextView) findViewById(R.id.tv_bill_type);
