@@ -83,6 +83,8 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             // 加载图片
             ImageLoader.getInstance().displayImage(list.get(position).getApplyPhoto(), itemViewHolder.iv_circle_photo);
+
+            initListener(itemViewHolder.itemView);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -137,40 +139,39 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View v) {
                     if ("submit".equals(status)) {
-                         btn_status.setText("同意");
-                         btn_status.setBackgroundResource(R.drawable.shape_gradient_orange);
+                        btn_status.setText("同意");
+                        btn_status.setBackgroundResource(R.drawable.shape_gradient_orange);
                     } else if ("agree".equals(status)) {
                         btn_status.setText("已加入");
                         btn_status.setBackgroundResource(R.drawable.shape_non_clickable);
-                        btn_status.setPadding(0,5,0,5);
+                        btn_status.setPadding(0, 5, 0, 5);
                     }
                 }
             });
-            initListener(itemView);
         }
+    }
 
-        /**
-         * item 点击监听
-         *
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { //
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { //
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(mContext, TransactionDetailActivity.class);
 //                    mContext.startActivity(intent);
-                }
-            });
+            }
+        });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return false;
-                }
-            });
-        }
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

@@ -31,8 +31,6 @@ import java.util.List;
 
 public class TrainingClassActivity extends BaseActivity {
 
-
-
     ViewPager zxVp;
 
     private TabLayout mTabLayout;
@@ -45,7 +43,6 @@ public class TrainingClassActivity extends BaseActivity {
     private List<Fragment> fragments;
     private List<TextView> listTextViews;
     private MouldList<ResultClassIndexItemBean> courseTypeList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

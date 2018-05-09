@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.TrainingAskDetailsActivity;
 import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  我的提问列表 Adapter 类
+ * 我的提问列表 Adapter 类
  */
 public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -65,6 +67,7 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemViewHolder.tv_ask_title.setText(list.get(position).getTitle());
             itemViewHolder.tv_answer_number.setText(list.get(position).getAnswerCount());
 
+            initListener(itemViewHolder.itemView,list.get(position).getQuestionId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -110,24 +113,23 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             tv_ask_title = (TextView) itemView.findViewById(R.id.tv_ask_title);
             tv_answer_number = (TextView) itemView.findViewById(R.id.tv_answer_number);
-
-            initListener(itemView);
         }
+    }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到话题详情
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PlatformBulletinDetailActivity.class);
-//                    mContext.startActivity(intent);
-                }
-            });
-        }
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到话题详情
+                Intent intent = new Intent(mContext, TrainingAskDetailsActivity.class);
+                intent.putExtra("questionId", id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

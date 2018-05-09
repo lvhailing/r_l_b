@@ -161,7 +161,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     }
 
-
     /**
      * 初始化参数、视图控件
      */
@@ -227,7 +226,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
 
         });
-
 
     }
 
@@ -320,16 +318,13 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
         }
 
-
     }
-
 
     public void requestIndexData() {
 
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
 
         HtmlRequest.getTrainingIndexClass(context, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -349,7 +344,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             }
         });
 
-
     }
 
     public void setView() {
@@ -361,25 +355,20 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
         setQualityView();
 
-
     }
 
     public void setQualityView() {
 
         tvTrainingBoutiqueFirst.setText(bean.getQualityCourseList().get(0).getCourseName());
-
         ivTrainingBoutiqueFirst.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(0).getCourseLogo()));
 
         tvTrainingBoutiqueSecond.setText(bean.getQualityCourseList().get(1).getCourseName());
-
         ivTrainingBoutiqueSecond.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(1).getCourseLogo()));
 
         tvTrainingBoutiqueThird.setText(bean.getQualityCourseList().get(2).getCourseName());
-
         ivTrainingBoutiqueThird.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(2).getCourseLogo()));
 
         tvTrainingBoutiqueForth.setText(bean.getQualityCourseList().get(3).getCourseName());
-
         ivTrainingBoutiqueForth.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(3).getCourseLogo()));
 
     }
@@ -483,7 +472,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             }
         });
 
-
     }
 
 
@@ -515,52 +503,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         hotPage++;
         requestHotAskData();
 
-//        Toast.makeText(context, "别点了，没有数据", Toast.LENGTH_SHORT).show();
-
     }
 
     public void initLoadMoreListener() {
-
-//        rsvFragmentTraining.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//
-//            }
-//        });
-
-        lvTrainingHotAsk.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastVisibleItem;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
-
-//                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-//
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-////                            test();
-//                        }
-//                    }, 2000);
-//
-//                    Toast.makeText(context, "我是底部", Toast.LENGTH_SHORT).show();
-//                    adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                }
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                //最后一个可见的ITEM
-//                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
-            }
-        });
 
         rsvFragmentTraining.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override

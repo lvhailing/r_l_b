@@ -40,7 +40,6 @@ public class TransactionRecordAdapter extends RecyclerView.Adapter<RecyclerView.
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
-    private String id;
 
 
     public TransactionRecordAdapter(Context context, MouldList<TrackingList2B> list) {
@@ -68,11 +67,11 @@ public class TransactionRecordAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            id = list.get(position).getId();
             itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
-            itemViewHolder.tv_commission.setText("+"+list.get(position).getCommissionGained());
+            itemViewHolder.tv_commission.setText("+" + list.get(position).getCommissionGained());
             itemViewHolder.tv_policy_number.setText(list.get(position).getOrderCode());
 
+            initListener( itemViewHolder.itemView,list.get(position).getId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -120,25 +119,24 @@ public class TransactionRecordAdapter extends RecyclerView.Adapter<RecyclerView.
             tv_commission = (TextView) itemView.findViewById(R.id.tv_commission);
             tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
             tv_policy_number = (TextView) itemView.findViewById(R.id.tv_policy_number);
-
-            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到交易明细
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
-                    intent.putExtra("id", id);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到交易明细
+                Intent intent = new Intent(mContext, TransactionDetailActivity.class);
+                intent.putExtra("id", id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

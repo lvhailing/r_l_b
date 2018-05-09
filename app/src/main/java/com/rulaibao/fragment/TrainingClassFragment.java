@@ -102,13 +102,6 @@ public class TrainingClassFragment extends BaseFragment {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-//                    if(arrayList.size()<30){
-////                        test();
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-//                    }else{
-//
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-//                    }
                     page++;
                     requestIndexData();
 

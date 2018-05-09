@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 
 /**
- *  我的话题列表 Adapter 类
+ * 我的话题列表 Adapter 类
  */
 public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -37,7 +37,6 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
-    private String topicId; // 话题
 
 
     public MyTopicAdapter(Activity activity, MouldList<MyTopicList2B> list) {
@@ -65,13 +64,13 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            topicId = list.get(position).getTopicId();
             itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName());
 //            itemViewHolder.tv_group_name.setText(list.get(position).getGroupName());
             itemViewHolder.tv_topic_title.setText(list.get(position).getCommentCount());
             itemViewHolder.tv_zan_number.setText(list.get(position).getLikeCount());
             itemViewHolder.tv_comment_number.setText(list.get(position).getCommentCount());
 
+            initListener( itemViewHolder.itemView,list.get(position).getTopicId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -111,7 +110,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tv_circle_name; // 圈子名
-//        private final TextView tv_group_name; // 小组名
+        //        private final TextView tv_group_name; // 小组名
         private final TextView tv_topic_title; // 话题标题
         private final TextView tv_zan_number; // 点赞数
         private final TextView tv_comment_number; // 评论数
@@ -124,26 +123,26 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tv_zan_number = (TextView) itemView.findViewById(R.id.tv_zan_number);
             tv_comment_number = (TextView) itemView.findViewById(R.id.tv_comment_number);
 
-            initListener(itemView);
         }
+    }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到话题详情
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到话题详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 
-                    HashMap<String,Object> map = new HashMap<String,Object>();
-                    map.put("appTopicId",topicId);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("appTopicId", id);
 //                    map.put("circleId","");
-                    RlbActivityManager.toTrainingTopicDetailsActivity(mContext,map,false);
-                }
-            });
-        }
+                RlbActivityManager.toTrainingTopicDetailsActivity(mContext, map, false);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

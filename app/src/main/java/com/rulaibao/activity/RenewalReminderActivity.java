@@ -75,16 +75,6 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-//        for (int i = 0; i < 10; i++) {
-//            PolicyRecordList2B bean = new PolicyRecordList2B();
-//            bean.setInsuranceName("国华人寿-盛世年年年金保险C款");
-//            bean.setStatus("待审核");
-//            bean.setCustomerName("王小金");
-//            bean.setInsurancPeremiums("8888.00元");
-//            bean.setInsurancePeriod("4年");
-//            totalList.add(bean);
-//
-//        }
             initRecylerView();
     }
 

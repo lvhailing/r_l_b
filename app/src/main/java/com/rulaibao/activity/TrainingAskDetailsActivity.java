@@ -56,7 +56,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  问题详情
+ * 问题详情
  */
 
 public class TrainingAskDetailsActivity extends BaseActivity {
@@ -95,11 +95,11 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         initTopTitle();
 
         initView();
-        initData();
 
     }
 
-    public void initData(){
+    public void initData() {
+        list.clear();
         request();
         requestAnswerList();
     }
@@ -114,10 +114,10 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
 
         lvAskDetails.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TrainingAskDetailsListAdapter(this,list,questionId);
+        adapter = new TrainingAskDetailsListAdapter(this, list, questionId);
 //        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvAskDetails.setAdapter(adapter);
 
@@ -129,6 +129,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
         lvAskDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -136,19 +137,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-//                    if(arrayList.size()<30){
-//                        test();
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-//                    }else{
-//
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-//                    }
                     page++;
                     requestAnswerList();
 
@@ -170,24 +158,24 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     }
 
     //获取数据
-    public void request(){
+    public void request() {
 
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
-        map.put("questionId",questionId);
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("questionId", questionId);
 
 
         HtmlRequest.getTrainingAskDetails(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
 
-                if(params.result!=null){
+                if (params.result != null) {
 
-                    detailsBean = (ResultAskDetailsBean)params.result;
+                    detailsBean = (ResultAskDetailsBean) params.result;
 //                    indexItemBeans = b.getList();
                     setView(detailsBean);
-                }else{
+                } else {
 
                 }
 
@@ -196,42 +184,39 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     }
 
     //回答列表
-    public void requestAnswerList(){
-
+    public void requestAnswerList() {
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
-        map.put("questionId",questionId);
-        map.put("page",page+"");
-        map.put("userId",userId);
-
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("questionId", questionId);
+        map.put("page", page + "");
+        map.put("userId", userId);
 
         HtmlRequest.getTrainingAskDetailsAnswer(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
 
-                if(params.result!=null){
+                if (params.result != null) {
 
-                    ResultAskDetailsAnswerBean b = (ResultAskDetailsAnswerBean)params.result;
+                    ResultAskDetailsAnswerBean b = (ResultAskDetailsAnswerBean) params.result;
 
-                    if(b.getList().size()==0 && page!=1){     //  非首次的无数据情况
+                    if (b.getList().size() == 0 && page != 1) {     //  非首次的无数据情况
 
                         page--;
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
-                    }else{
+                    } else {
 
-                        tv_ask_details_ask_count.setText(b.getTotal()+"回答");
+                        tv_ask_details_ask_count.setText(b.getTotal() + "回答");
                         adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
                         adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
 
                         list.addAll(b.getList());
                     }
 
-
                     adapter.notifyDataSetChanged();
 
-                }else{
+                } else {
 
                 }
 
@@ -239,10 +224,10 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         });
     }
 
-    public void setView(ResultAskDetailsBean bean){
+    public void setView(ResultAskDetailsBean bean) {
 
         tv_askdetails_title.setText(bean.getAppQuestion().getTitle());
-        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(),iv_ask_detatils_manager);
+        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager);
         tv_ask_details_manager_name.setText(bean.getAppQuestion().getUserName());
         tv_ask_details_time.setText(bean.getAppQuestion().getTime());
         tv_ask_details_content.setText(bean.getAppQuestion().getDescript());
@@ -251,11 +236,10 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     }
 
 
-
-    private void setHeaderView(RecyclerView view){
+    private void setHeaderView(RecyclerView view) {
         View header = LayoutInflater.from(this).inflate(R.layout.activity_training_ask_details_top, view, false);
 
-        ll_ask_details_sort = (LinearLayout)header.findViewById(R.id.ll_ask_details_sort);
+        ll_ask_details_sort = (LinearLayout) header.findViewById(R.id.ll_ask_details_sort);
 
         tv_ask_detais_sort = (TextView) header.findViewById(R.id.tv_ask_detais_sort);
         iv__ask_detais_sort = (ImageView) header.findViewById(R.id.iv__ask_detais_sort);
@@ -286,15 +270,13 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 //    }
 
 
-
-    public void initDialog(View view){
+    public void initDialog(View view) {
 
         Dialog customizeDialog =
-                new Dialog(this,R.style.SortDialog);
+                new Dialog(this, R.style.SortDialog);
         final View dialogView = LayoutInflater.from(this)
-                .inflate(R.layout.pw_sort,null);
+                .inflate(R.layout.pw_sort, null);
         customizeDialog.setContentView(dialogView);
-
 
 
         Window window = customizeDialog.getWindow();
@@ -304,8 +286,8 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         //设置窗口的属性，以便设设置
         WindowManager.LayoutParams layoutParams = window.getAttributes();
 
-        layoutParams.x =view.getWidth()+130;//x 位置设置
-        layoutParams.y=view.getHeight()-180;//y 位置设置
+        layoutParams.x = view.getWidth() + 130;//x 位置设置
+        layoutParams.y = view.getHeight() - 180;//y 位置设置
 
              /*  ViewGroup.LayoutParams params=new
              ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -324,16 +306,12 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
     }
 
-
-
-    public void showPopupWindow(View view){
-
+    public void showPopupWindow(View view) {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View itemView = inflater.inflate(R.layout.pw_sort, null);
         TextView tv_sort_default = (TextView) itemView.findViewById(R.id.tv_sort_default);
-        TextView tv_sort_times = (TextView)itemView.findViewById(R.id.tv_sort_times);
-
+        TextView tv_sort_times = (TextView) itemView.findViewById(R.id.tv_sort_times);
 
         tv_sort_default.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -370,8 +348,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         popupWindow.setAnimationStyle(R.style.Theme_PopupMenu);
 
 
-
-
         //设置PopupWindow消失监听
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -386,7 +362,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         popupWindow.showAsDropDown(view);
 
     }
-
 
 
     private void showPopupMenu(View view) {
@@ -424,19 +399,19 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
         for (int i = 0; i < 10; i++) {
 
-            arrayList.add(new TestBean("渣渣辉"+i));
+            arrayList.add(new TestBean("渣渣辉" + i));
         }
 
     }
 
-    public void initTabMenu(View view){
+    public void initTabMenu(View view) {
 
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View itemView = inflater.inflate(R.layout.pw_sort, null);
 
         tabMenu = new TabMenu(this, null, R.mipmap.ic_launcher, "设置",
-                10,R.color.blue,R.color.white,R.style.PopupAnimation);
+                10, R.color.blue, R.color.white, R.style.PopupAnimation);
 
 
         tabMenu.setContentView(itemView);
@@ -449,26 +424,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
 
     }
-
-   /* *//** 创建MENU *//*
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("menu");// 必须创建一项
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    *//** 拦截MENU *//*
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (tabMenu != null) {
-            if (tabMenu.isShowing())
-                tabMenu.dismiss();
-            else {
-                tabMenu.showAtLocation(findViewById(R.id.tv_sort), Gravity.BOTTOM, 0, 0);
-            }
-        }
-        return false;// 返回为true 则显示系统menu
-    }*/
-
-
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
@@ -494,21 +449,20 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     @OnClick(R.id.tv_ask_details_answer)
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.tv_ask_details_answer:
-                HashMap<String,Object> map = new HashMap<>();
-                map.put("questionId",questionId);
-                map.put("title",detailsBean.getAppQuestion().getTitle());
-                RlbActivityManager.toTrainingAnswerActivity(this,map, false);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("questionId", questionId);
+                map.put("title", detailsBean.getAppQuestion().getTitle());
+                RlbActivityManager.toTrainingAnswerActivity(this, map, false);
                 break;
 
-                default:
+            default:
 
-                    break;
+                break;
 
         }
-
 
     }
 
@@ -516,6 +470,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
     }
 
     @Override

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="8dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_marginTop="10dp"
+                android:paddingLeft="15dp"
                 android:background="@color/white">
 
                 <ImageView
@@ -388,7 +390,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@color/white"/>
-
         </LinearLayout>
 
     </ScrollView>
@@ -404,5 +405,6 @@
         android:gravity="center|center_vertical"
         android:text="@string/btn_cancel_booking"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:visibility="gone"/>
 </RelativeLayout>

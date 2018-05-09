@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingAskListAdapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
@@ -44,7 +45,6 @@ public class TrainingAakFragment extends BaseFragment {
     private ArrayList arrayList = new ArrayList();
     private String string = "";
     private TrainingAskListAdapter adapter;
-//    private TrainingClassListAdapter adapter;
     private MouldList<ResultAskIndexItemBean> indexItemBeans;
     private int page = 1;
     private ResultAskTypeItemBean key;
@@ -67,11 +67,27 @@ public class TrainingAakFragment extends BaseFragment {
     protected void initViews() {
 
         indexItemBeans = new MouldList<ResultAskIndexItemBean>();
-        key = new ResultAskTypeItemBean();
-        key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
+
         initRecyclerView();
 
-        requestAsk(key);
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if(context!=null){
+                indexItemBeans.clear();
+            }
+            key = new ResultAskTypeItemBean();
+            key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
+            page = 1;
+            requestAsk(key);
+
+        } else {
+
+        }
 
     }
 
@@ -79,9 +95,7 @@ public class TrainingAakFragment extends BaseFragment {
 
         lvTrainingAsk.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new TrainingAskListAdapter(getActivity(),indexItemBeans);
-//        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvTrainingAsk.setAdapter(adapter);
-
 
         lvTrainingAsk.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
@@ -92,23 +106,8 @@ public class TrainingAakFragment extends BaseFragment {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
                     page++;
                     requestAsk(key);
-
-
-                    if(arrayList.size()<30){
-//                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    }else{
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
 
                 }
 
@@ -147,15 +146,13 @@ public class TrainingAakFragment extends BaseFragment {
                     ResultAskIndexBean b = (ResultAskIndexBean)params.result;
                     if(b.getList().size()==0 && page!=1){
 
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         page--;
 
                     }else{
-
                         indexItemBeans.addAll(b.getList());
                         adapter.notifyDataSetChanged();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-
+                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
                     }
 
 

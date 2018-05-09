@@ -102,7 +102,7 @@ public class PolicyBookingFragment extends Fragment {
     public void requestData() {
 
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "11111111111111");
+        param.put("userId", "18042709525931594357");
         param.put("page", currentPage + "");
         param.put("auditStatus", status);
 
@@ -183,7 +183,7 @@ public class PolicyBookingFragment extends Fragment {
 
     public void getTabTitleCurrentPosition(int currentPosition) {
         if (currentPosition == 0) {
-            status = "all";  //保单列表中全部数量=待审核+已承保+问题件+回执签收
+            status = "all";  // 全部
         } else if (currentPosition == 1) {
             status = "confirming";  //待确认
         } else if (currentPosition == 2) {

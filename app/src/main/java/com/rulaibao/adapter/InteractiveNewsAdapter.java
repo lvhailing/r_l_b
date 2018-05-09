@@ -69,6 +69,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemViewHolder.tv_interactive_news_title.setText(list.get(position).getTitle());
             itemViewHolder.tv_interactive_news_reply.setText(list.get(position).getReply());
 
+            initListener(itemViewHolder.itemView);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -122,24 +123,23 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_interactive_news_date = (TextView) itemView.findViewById(R.id.tv_interactive_news_date);
             tv_interactive_news_title = (TextView) itemView.findViewById(R.id.tv_interactive_news_title);
             tv_interactive_news_reply = (TextView) itemView.findViewById(R.id.tv_interactive_news_reply);
-
-            initListener(itemView);
         }
+    }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { //
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { //
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
 //                    mContext.startActivity(intent);
-                }
-            });
-        }
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -158,7 +158,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public void AddHeaderItem( MouldList<InteractiveNewsList3B> items) {
+    public void AddHeaderItem(MouldList<InteractiveNewsList3B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }

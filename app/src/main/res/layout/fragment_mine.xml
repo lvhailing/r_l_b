@@ -32,6 +32,7 @@
                     android:scaleType="fitXY"
                     android:src="@mipmap/bg_mine_yellow"/>
 
+                <!--顶部的设置、消息-->
                 <RelativeLayout
                     android:id="@+id/rl_setting_top"
                     android:layout_width="match_parent"
@@ -58,6 +59,7 @@
                         android:src="@mipmap/icon_mine_news"/>
                 </RelativeLayout>
 
+                 <!--未读消息总数不为0时显示-->
                 <TextView
                     android:id="@+id/tv_message_total"
                     android:layout_width="15dp"
@@ -89,6 +91,7 @@
                         android:scaleType="fitXY"
                         android:src="@mipmap/icon_user_photo"/>
 
+                    <!--用户登录后显示的 布局-->
                     <LinearLayout
                         android:id="@+id/ll_user_name"
                         android:layout_width="match_parent"
@@ -97,7 +100,7 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <RelativeLayout
                             android:id="@+id/rl_user_name"
@@ -134,6 +137,7 @@
                             android:textSize="16sp"/>
                     </LinearLayout>
 
+                    <!--未登录时显示的 布局-->
                     <TextView
                         android:id="@+id/tv_mine_login"
                         android:layout_width="wrap_content"
@@ -150,6 +154,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <!--累计佣金 布局-->
         <RelativeLayout
             android:id="@+id/rl_total_commission"
             android:layout_width="match_parent"
@@ -207,6 +212,7 @@
                 android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
+        <!--我的保单 布局-->
         <RelativeLayout
             android:id="@+id/rl_my_policy"
             android:layout_width="match_parent"
@@ -243,6 +249,7 @@
             style="@style/v_line"
             android:layout_alignParentBottom="true"/>
 
+        <!--我的保单的四种状态 布局-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

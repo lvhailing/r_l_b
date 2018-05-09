@@ -73,14 +73,6 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-//        for (int i = 0; i < 10; i++) {
-//            NewMembersCircleList2B bean = new NewMembersCircleList2B();
-//            bean.setStatus("同意");
-//            bean.setApplicantName("王小金");
-//            bean.setCircleName("基金交流圈子100"+i);
-//            totalList.add(bean);
-//
-//        }
             initRecylerView();
     }
 

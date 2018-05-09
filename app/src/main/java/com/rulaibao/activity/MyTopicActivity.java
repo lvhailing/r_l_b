@@ -77,19 +77,6 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
         initRecylerView();
     }
 
-//    private void initData() {
-//        for(int i=0;i<10;i++){
-//            MyTopicList2B bean = new MyTopicList2B();
-//            bean.setCircleName("保险100"+i+"圈子");
-//            bean.setGroupName("财富小组"+i);
-//            bean.setTopicTitle("话题的标题"+i);
-//            bean.setZanNumber("10"+i);
-//            bean.setCommentNumber("20"+i);
-//
-//            totalList.add(bean);
-//        }
-//    }
-
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         myTopicAdapter = new MyTopicAdapter(this, totalList);

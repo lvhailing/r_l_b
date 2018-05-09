@@ -14,13 +14,20 @@ import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskDetailsAnswerItemBean;
+import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.bean.TestBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,7 +72,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
-        ViewHolder holder1 = (ViewHolder) holder;
+        final ViewHolder holder1 = (ViewHolder) holder;
         int index = position;
         if(getmHeaderView()!=null){
             index = position-1;
@@ -82,6 +89,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
             holder1.ivAskDetailsZan.setImageResource(R.mipmap.img_zan_icon);
         }
 
+
         final int finalIndex = index;
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +100,63 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
                 RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,map,false);
             }
         });
+        if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
+            holder1.llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
+                    requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
+                    holder1.llAskDetailsZan.setClickable(false);
+//                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
+                }
+            });
 
+        }
 
 
     }
+
+
+    //点赞
+    public void requestLikeData(String answerId, final int index) {
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        String userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        map.put("answerId", answerId);      //  问题id
+        map.put("userId", userId);
+//        map.put("likeStatus", likeStatus);
+
+        HtmlRequest.getTrainingAnswerZan(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultInfoBean bean = (ResultInfoBean) params.result;
+                    if(bean.getFlag().equals("true")){
+                        arrayList.get(index).setLikeStatus("yes");
+                        int count = Integer.parseInt(arrayList.get(index).getLikeCount());
+                        arrayList.get(index).setLikeCount((count+1)+"");
+                        notifyDataSetChanged();
+                    }else{
+
+                    }
+
+                } else {
+
+                }
+            }
+        });
+    }
+
 
     @Override
     public int getItem() {
@@ -132,21 +193,6 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-
-
-            llAskDetailsMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
-                    Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
-                }
-            });
 
         }
     }

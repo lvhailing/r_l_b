@@ -33,7 +33,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
     public static final int NO_LOAD_MORE = 2;
 
     //上拉加载更多状态-默认为0
-    protected int mLoadMoreStatus = 0;
+    protected int mLoadMoreStatus = 1;
 
 
     public View mHeaderView;

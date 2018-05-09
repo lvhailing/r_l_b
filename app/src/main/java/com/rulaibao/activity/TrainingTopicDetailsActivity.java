@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingAnswerDetailsListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.base.BaseActivity;
@@ -65,7 +66,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private TextView tv_answer_details_comment_count;       //  评论条数
     private ImageView iv_answer_detailas_zan;       //  点赞
 
-
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
     private String appTopicId = "";     //  话题id
@@ -74,7 +74,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private ResultCircleDetailsTopicDetailsItemBean appTopic;
 
     private MouldList<ResultCircleDetailsTopicCommentItemBean> commentItemBeans;
-    private int page = 0;
+    private int page = 1;
 
     private String commentId = "";
     private String toUserId = "";
@@ -96,13 +96,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
         requestTopicDetailsData();
 
-
     }
 
     public void initView() {
 
         appTopicId = getIntent().getStringExtra("appTopicId");
-//        circleId = getIntent().getStringExtra("circleId");
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
 //        test();
@@ -132,21 +130,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-                    if (arrayList.size() < 30) {
-                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    } else {
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
-
+                    page++;
+                    requestCircleCommentData();
                 }
 
             }
@@ -163,7 +148,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         });
 
         initHeadData();
-
 
     }
 
@@ -206,10 +190,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         iv_answer_detailas_zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(appTopic.getLikeStatus().equals("yes")){      //  已点赞     取消点赞
-                    requestLikeData("no");
+                if(appTopic.getLikeStatus().equals("yes")){      //  已点赞     不处理
+//                    requestLikeData();
                 }else{
-                    requestLikeData("yes");
+                    requestLikeData();
                 }
 
             }
@@ -245,16 +229,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     }
 
-
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            arrayList.add(new TestBean());
-        }
-
-    }
-
     // 获取详情主页信息
     public void requestTopicDetailsData() {
 
@@ -272,10 +246,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                     ResultCircleDetailsTopicDetailsBean bean = (ResultCircleDetailsTopicDetailsBean) params.result;
                     appTopic = bean.getAppTopic();
-
+                    page = 1;
                     requestCircleCommentData();
 //                    initRecyclerView();
-
+                    initRecyclerView();
                 } else {
 
                 }
@@ -300,9 +274,16 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean) params.result;
-                    commentItemBeans = bean.getList();
+                    if(bean.getList().size()==0&&page!=1){
+                        page--;
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                    }else{
+                        commentItemBeans.addAll(bean.getList());
+                        adapter.notifyDataSetChanged();
+                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                    }
 
-                    initRecyclerView();
+
 
                 } else {
 
@@ -399,7 +380,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                         }else{          //  评论
 
                         }
-                        requestCircleCommentData();
+//                        requestCircleCommentData();
                         adapter.notifyDataSetChanged();
                         etTopicDetails.setText("");
                         etTopicDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
@@ -416,7 +397,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     //点赞
-    public void requestLikeData(String likeStatus) {
+    public void requestLikeData() {
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
@@ -434,7 +415,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if(bean.getFlag().equals("true")){
                         if(appTopic.getLikeStatus().equals("yes")){
-                            iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zan);
+                            iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zaned);
                             appTopic.setLikeStatus("no");
                             int count = Integer.parseInt(appTopic.getLikeCount());
                             appTopic.setLikeCount((count-1)+"");
@@ -442,7 +423,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                         }else{
                             int count = Integer.parseInt(appTopic.getLikeCount());
                             appTopic.setLikeCount((count+1)+"");
-                            iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zaned);
+                            iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zan);
 //                            iv_answer_detailas_zan.setClickable(true);
                             appTopic.setLikeStatus("yes");
                         }

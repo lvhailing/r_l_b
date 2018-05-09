@@ -74,7 +74,6 @@ public class MyPartakeActivity extends BaseActivity {
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -90,7 +89,6 @@ public class MyPartakeActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

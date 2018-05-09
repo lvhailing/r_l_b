@@ -9,7 +9,7 @@ import com.rulaibao.network.types.IMouldType;
 
 public class PolicyBookingDetail1B implements IMouldType {
 
-    private String id; // 预约产品id
+    private String id; // 预约 id
     private String productName; // 预约产品名称
     private String auditStatus; // 预约状态(confirmed：已确认; confirming：待确认; refuse：已驳回; canceled：已取消;)
     private String createTime; // 预约时间
@@ -25,6 +25,7 @@ public class PolicyBookingDetail1B implements IMouldType {
     private String remark; // 备注说明
     private String  refuseReason; // 驳回原因
     private String  mobile; // 预约电话
+    private String  productId; // 产品id
 
     public String getId() {
         return id;
@@ -152,5 +153,13 @@ public class PolicyBookingDetail1B implements IMouldType {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

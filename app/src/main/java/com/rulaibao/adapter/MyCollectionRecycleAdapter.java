@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.InsuranceProductDetailActivity;
+import com.rulaibao.activity.PolicyBookingDetailActivity;
 import com.rulaibao.bean.MyCollectionList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -63,6 +66,8 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_insurance_name.setText(list.get(position).getName());
 
+            initListener(itemViewHolder.itemView,list.get(position).getProductId());
+
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -107,23 +112,24 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
             super(itemView);
             tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
 
-            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到保险产品详情
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
-//                    mContext.startActivity(intent);
-                }
-            });
-        }
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到产品详情
+                Intent intent = new Intent(mContext, InsuranceProductDetailActivity.class);
+                intent.putExtra("id", id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

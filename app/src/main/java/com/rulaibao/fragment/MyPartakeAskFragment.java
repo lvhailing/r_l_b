@@ -24,7 +24,7 @@ import com.rulaibao.network.types.MouldList;
 import java.util.LinkedHashMap;
 
 /**
- * 我参与的 Fragment
+ * 我参与的 提问列表 Fragment
  */
 public class MyPartakeAskFragment extends Fragment {
     private static final String KEY = "param1";

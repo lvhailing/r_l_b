@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.PolicyRecordDetailActivity;
 import com.rulaibao.bean.CommissionNewsList2B;
 import com.rulaibao.bean.PolicyNewsList3B;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  消息列表 Adapter 类
+ * 消息列表 Adapter 类
  */
 public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -63,9 +65,10 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_product_name.setText(list.get(position).getTopic());
-            itemViewHolder.tv_date.setText("["+list.get(position).getCreateTime()+"]");
+            itemViewHolder.tv_date.setText("[" + list.get(position).getCreateTime() + "]");
             itemViewHolder.tv_status.setText(list.get(position).getContent());
 
+            initListener(itemViewHolder.itemView,list.get(position).getBusiPriv());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -113,24 +116,23 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tv_product_name = (TextView) itemView.findViewById(R.id.tv_product_name);
             tv_date = (TextView) itemView.findViewById(R.id.tv_date);
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-
-            initListener(itemView);
         }
+    }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到?
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,PlatformBulletinDetailActivity.class);
-//                    mContext.startActivity(intent);
-                }
-            });
-        }
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView, final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到保单详情
+                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
+                intent.putExtra("orderId", id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

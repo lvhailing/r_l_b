@@ -34,6 +34,7 @@ import com.rulaibao.activity.SearchActivity;
 import com.rulaibao.activity.SearchForPlanActivity;
 import com.rulaibao.activity.WebActivity;
 import com.rulaibao.common.Urls;
+import com.rulaibao.dialog.ShareSDKDialog;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
@@ -840,18 +841,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
 //                        mContext.startActivity(intent);
 //                    }
                     if (flag.equals("1000")) {
-                      /*  if (!PreferenceUtil.isLogin()) { // 用户没登录
-                            shareUrl = Urls.URL_PROJECT_H5_DETAIL + "/" + shareId + "/0";
-                        } else {  // 用户登录,分享时要拼上用户的userId
-                            shareUrl = Urls.URL_PROJECT_H5_DETAIL + "/" + shareId + "/" + userId;
-                        }
-                    } else if (flag.equals("1001")) {
-
-                        if (!PreferenceUtil.isLogin()) { // 用户没登录
-                            shareUrl = Urls.URL_HOUSE_H5_DETAIL + "/" + shareId + "/0";
-                        } else { // 用户登录,分享时要拼上用户的userId
-                            shareUrl = Urls.URL_HOUSE_H5_DETAIL + "/" + shareId + "/" + userId;
-                        }*/
+                        shareUrl = Urls.URL_INSURANCE_DETAILS + "/" + shareId + "/" + userId;
                     }else if(flag.equals("2000")){//保险产品搜索
                         Intent intent = new Intent(mContext, SearchActivity.class);
                         mContext.startActivity(intent);
@@ -864,7 +854,18 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
                         mContext.startActivity(intent);
                     }
                     if (!TextUtils.isEmpty(shareId)) {
-                        ShareUtil.sharedSDK(mContext, shareTitle, shareText, shareUrl);
+                        ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
+                            @Override
+                            public void onConfirm(int position) {
+                                    ShareUtil.sharedSDK(mContext, position,shareTitle, shareText, shareUrl);
+                            }
+
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        });
+                        dialog.show();
                     }
                     break;
                 case R.id.rl_top_title_menu:

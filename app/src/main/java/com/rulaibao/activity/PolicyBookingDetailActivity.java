@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
- *  保单预约详情
+ *  预约详情
  * Created by junde on 2018/4/19.
  */
 
@@ -147,8 +148,10 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         if ("confirmed".equals(status)) {
             tv_policy_booking_status.setText("已确认");
         } else if ("confirming".equals(status)) {
+            btn_cancel_booking.setVisibility(View.VISIBLE);
             tv_policy_booking_status.setText("待确认");
         } else if ("canceled".equals(status)) {
+            btn_cancel_booking.setVisibility(View.GONE);
             tv_policy_booking_status.setText("已取消");
         } else if  ("refuse".equals(status)) {
                 tv_policy_booking_status.setText("已驳回");
@@ -201,10 +204,10 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
             case R.id.iv_delete: // 驳回原因的关闭
                 rl_audit_status.setVisibility(View.GONE);
                 break;
-            case R.id.rl_insurance_name: //
-                // Todo  跳转保险产品详情页
-//                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
-//                startActivity(intent);
+            case R.id.rl_insurance_name: // 跳转到产品详情页
+                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
+                intent.putExtra("id", data.getProductId());
+                startActivity(intent);
 
                 break;
             case R.id.btn_cancel_booking: // 取消预约

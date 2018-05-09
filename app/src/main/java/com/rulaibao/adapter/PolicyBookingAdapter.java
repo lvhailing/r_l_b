@@ -3,6 +3,7 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private final MouldList<PolicyBookingList2B> list;
     Context mContext;
-    private String id;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -65,18 +65,19 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
-            id = list.get(position).getId();
             String status = list.get(position).getAuditStatus();
             if ("confirming".equals(status)) {
-            itemViewHolder.tv_status.setText("待确认");
+                itemViewHolder.tv_status.setText("待确认");
             } else if ("confirmed".equals(status)) {
-            itemViewHolder.tv_status.setText("已确认");
-            }else if ("refuse".equals(status)) {
+                itemViewHolder.tv_status.setText("已确认");
+            } else if ("refuse".equals(status)) {
                 itemViewHolder.tv_status.setText("已驳回");
-            }else if ("canceled".equals(status)) {
+            } else if ("canceled".equals(status)) {
                 itemViewHolder.tv_status.setText("已取消");
             }
             itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount());
+
+            initListener(itemViewHolder.itemView, list.get(position).getId());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -126,25 +127,29 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
 
-            initListener(itemView);
+//            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到预约详情
+
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    public void initListener(View itemView, final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到预约详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
-                    intent.putExtra("id", id);
+                Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
+                intent.putExtra("id", id);
+                Log.i("hh", "当前item的id---" + id);
 //                    intent.putExtra("status", status);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

@@ -3,6 +3,7 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyBookingDetailActivity;
+import com.rulaibao.activity.TrainingAskDetailsActivity;
 import com.rulaibao.bean.MyAskList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -47,7 +49,7 @@ public class MyPartakeAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_ITEM) { // 加载列表 item 布局
+        if (viewType == TYPE_ITEM) { // 加载提问列表 item 布局
             View itemView = mInflater.inflate(R.layout.item_my_partake, parent, false);
 
             return new ItemViewHolder(itemView);
@@ -64,6 +66,8 @@ public class MyPartakeAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_partake_title.setText(list.get(position).getTitle());
+
+            initListener(itemViewHolder.itemView,list.get(position).getQuestionId());
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -109,23 +113,25 @@ public class MyPartakeAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             tv_partake_title = (TextView) itemView.findViewById(R.id.tv_partake_title);
 
-            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到保险产品详情
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,PolicyBookingDetailActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到问题详情
+                Intent intent = new Intent(mContext, TrainingAskDetailsActivity.class);
+                intent.putExtra("questionId", id);
+                Log.i("hh","我参与的---提问列表Item的questionId:"+id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

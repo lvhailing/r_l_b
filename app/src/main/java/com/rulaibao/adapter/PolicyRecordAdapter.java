@@ -38,7 +38,6 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 2;
-    private String orderId; // 保单编号
 
 
     public PolicyRecordAdapter(Context context, MouldList<PolicyRecordList2B> list) {
@@ -64,7 +63,6 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            orderId = list.get(position).getOrderId();
             itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
@@ -73,6 +71,7 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // 加载图片
             ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
+            initListener(itemViewHolder.itemView,list.get(position).getOrderId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -132,26 +131,24 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
             tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
             iv_company_logo = (ImageView) itemView.findViewById(R.id.iv_company_logo);
-
-            initListener(itemView);
         }
+    }
 
-        /**
-         * item 点击监听
-         *
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到保险详情
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String orderId) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到保险详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
+                intent.putExtra("orderId", orderId);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

@@ -11,16 +11,19 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.LoginActivity;
 import com.rulaibao.activity.MyAskActivity;
 import com.rulaibao.activity.MyCollectionActivity;
 import com.rulaibao.activity.MyInfoActivity;
@@ -64,6 +67,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private ImageView iv_status; // 认证状态
     private ImageView iv_eye; //
 
+    private LinearLayout ll_user_name; // 登录后显示 的布局
     private RelativeLayout rl_total_commission; // 累计佣金布局
     private RelativeLayout rl_my_policy; // 我的保单
     private RelativeLayout rl_renewal_reminder; // 续保提醒
@@ -85,7 +89,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private TextView tv_renewal_numbers; // 续保提醒 数量
     private Intent intent;
     private Context context;
-    private String userId = "18032709463185347077"; // 测试userId
+    private String userId = ""; // 测试userId 18032709463185347077
     private MineData2B data;
     private int messageTotal;
 
@@ -99,6 +103,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        Log.i("hh", this+"----onCreateView");
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_mine, container, false);
             try {
@@ -116,15 +121,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView(View mView) {
-        context = getActivity();
-
-        try {
-//            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        context = getActivity();
 
         iv_settings = (ImageView) mView.findViewById(R.id.iv_settings);
         iv_news = (ImageView) mView.findViewById(R.id.iv_news);
@@ -132,6 +129,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         iv_status = (ImageView) mView.findViewById(R.id.iv_status);
         iv_eye = (ImageView) mView.findViewById(R.id.iv_eye);
 
+        ll_user_name = (LinearLayout) mView.findViewById(R.id.ll_user_name);
         rl_total_commission = (RelativeLayout) mView.findViewById(R.id.rl_total_commission);
         rl_my_policy = (RelativeLayout) mView.findViewById(R.id.rl_my_policy);
         rl_renewal_reminder = (RelativeLayout) mView.findViewById(R.id.rl_renewal_reminder);
@@ -176,24 +174,50 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (context != null) {
-                requestData();
+//            Log.i("hh", this+" ----setUserVisibleHint");
+            if (!PreferenceUtil.isFirst()) { // 非首次进入应用
+                if (!PreferenceUtil.isLogin()) { // 未登录状态
+                    tv_mine_login.setVisibility(View.VISIBLE);
+                } else { // 登录状态
+                    ll_user_name.setVisibility(View.VISIBLE);
+                    requestData();
+
+                }
             }
+
+            if (PreferenceUtil.isFirst()) { // 首次进入应用
+                PreferenceUtil.setLogin(false);  // 未登录
+                tv_mine_login.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
     @Override
     public void onResume() {
-        requestData();
+//        Log.i("hh", this+"----onResume");
         super.onResume();
-//        Log.i("hh", "我的---Fragment----onResume");
     }
 
     //我的主页面数据
     private void requestData() {
+
+        try {
+//            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
@@ -249,7 +273,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         // 获取用户姓名、手机号、佣金总额
         tv_user_name.setText(data.getRealName());
         tv_user_phone.setText(data.getMobile());
-        tv_total_commission.setText(data.getTotalCommission()+"元");
+        tv_total_commission.setText(data.getTotalCommission() + "元");
 
         String url = data.getHeadPhoto();
         if (!TextUtils.isEmpty(url)) {
@@ -353,65 +377,68 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.rl_total_commission: // 累计佣金
-                intent = new Intent(context,TransactionRecordActivity.class);
+                intent = new Intent(context, TransactionRecordActivity.class);
                 intent.putExtra("totalCommission", data.getTotalCommission());
                 startActivity(intent);
                 break;
             case R.id.tv_mine_login: // 登录
+                intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_my_policy: // 我的保单
-                intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("position",0);
+                intent = new Intent(context, PolicyRecordListActivity.class);
+                intent.putExtra("position", 0);
                 startActivity(intent);
 
                 break;
             case R.id.tv_check_pending: // 待审核
-                intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("position",1);
+                intent = new Intent(context, PolicyRecordListActivity.class);
+                intent.putExtra("position", 1);
                 startActivity(intent);
 
                 break;
             case R.id.tv_underwriting: // 已承保
-                intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("position",2);
+                intent = new Intent(context, PolicyRecordListActivity.class);
+                intent.putExtra("position", 2);
                 startActivity(intent);
                 break;
             case R.id.tv_problem_parts: // 问题件
-                intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("position",3);
+                intent = new Intent(context, PolicyRecordListActivity.class);
+                intent.putExtra("position", 3);
                 startActivity(intent);
                 break;
             case R.id.tv_return_receipt: // 回执签收
-                intent = new Intent(context,PolicyRecordListActivity.class);
-                intent.putExtra("position",4);
+                intent = new Intent(context, PolicyRecordListActivity.class);
+                intent.putExtra("position", 4);
                 startActivity(intent);
                 break;
             case R.id.rl_renewal_reminder: // 续保提醒
-                intent = new Intent(context,RenewalReminderActivity.class);
+                intent = new Intent(context, RenewalReminderActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_my_bookings: // 我的预约
-                intent = new Intent(context,PolicyBookingListActivity.class);
-                intent.putExtra("position",0);
+                intent = new Intent(context, PolicyBookingListActivity.class);
+                intent.putExtra("position", 0);
                 startActivity(intent);
                 break;
             case R.id.rl_my_ask: // 我的提问
-                intent = new Intent(context,MyAskActivity.class);
+                intent = new Intent(context, MyAskActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_my_topic: // 我的话题
-                intent = new Intent(context,MyTopicActivity.class);
+                intent = new Intent(context, MyTopicActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_my_participation: // 我的参与
-                intent = new Intent(context,MyPartakeActivity.class);
-                intent.putExtra("position",0);
+                intent = new Intent(context, MyPartakeActivity.class);
+                intent.putExtra("position", 0);
                 startActivity(intent);
                 break;
             case R.id.rl_my_collection: // 我的收藏
-                intent = new Intent(context,MyCollectionActivity.class);
+                intent = new Intent(context, MyCollectionActivity.class);
                 startActivity(intent);
 
                 break;
-        }   }
+        }
+    }
 }

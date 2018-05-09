@@ -129,7 +129,6 @@ public class MyCollectionFragment extends Fragment {
 //            MyCollectionList2B bean = new MyCollectionList2B();
 //            bean.setInsuranceName("盛世年年年金保险C款" + "10" + i);
 //            totalList.add(bean);
-//
 //        }
 
         initRecyclerView();

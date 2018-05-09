@@ -38,10 +38,9 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
-    private String orderId;
 
 
-    public RenewalReminderAdapter(Context context,  MouldList<RenewalReminderList2B> list) {
+    public RenewalReminderAdapter(Context context, MouldList<RenewalReminderList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -66,13 +65,13 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            orderId = list.get(position).getOrderId();
             itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
             itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancPeremiums());
             itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
 
+            initListener(itemViewHolder.itemView,list.get(position).getOrderId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -124,25 +123,25 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
             tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
-
-            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到保单详情页
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView,final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到保单详情页
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,PolicyRecordDetailActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
+                intent.putExtra("orderId", id);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -161,7 +160,7 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public void AddHeaderItem( MouldList<RenewalReminderList2B> items) {
+    public void AddHeaderItem(MouldList<RenewalReminderList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }

@@ -30,6 +30,7 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.CustomerLogo;
 import cn.sharesdk.onekeyshare.OnekeySharePage;
 import cn.sharesdk.onekeyshare.OnekeyShareThemeImpl;
+import utils.ViewUtils;
 
 import com.handmark.pulltorefresh.library.R;
 import com.mob.tools.gui.MobViewPager;
@@ -94,16 +95,16 @@ public abstract class PlatformPage extends OnekeySharePage {
 		mvp.setAdapter(adapter);
 
 		///////////////增加取消按钮layout
-		lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,110);
+		lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, ViewUtils.dip2px(getContext(),60));
 		lp.setMargins(0,0,0,0);
 		LinearLayout buttonLayout2 = new LinearLayout(activity);
 		buttonLayout2.setBackgroundColor(Color.WHITE);
 		buttonLayout2.setOrientation(LinearLayout.VERTICAL);
 
-		LinearLayout.LayoutParams lp22 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,80);
-		lp22.setMargins(0, 5, 0, 0);
+		LinearLayout.LayoutParams lp22 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,ViewUtils.dip2px(getContext(),40));
+		lp22.setMargins(0, 0, 0, 0);
 
-		LinearLayout.LayoutParams lp33 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,20);
+		LinearLayout.LayoutParams lp33 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,ViewUtils.dip2px(getContext(),10));
 		TextView textView=new TextView(activity);
 		textView.setBackgroundColor(activity.getResources().getColor(R.color.gray_light));
 

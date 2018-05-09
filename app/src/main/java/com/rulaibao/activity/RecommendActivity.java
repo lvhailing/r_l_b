@@ -25,9 +25,11 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.rulaibao.R;
 import com.rulaibao.bean.Recommend1B;
 import com.rulaibao.common.Urls;
+import com.rulaibao.dialog.ShareSDKDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.ShareUtil;
 import com.rulaibao.widget.TitleBar;
 
 import java.io.File;
@@ -151,7 +153,23 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_recommend: // 推荐App给朋友
-                sharedSDK();
+                final String shareTitle=getString(R.string.login_title);
+                final String shareText=getString(R.string.shared_message);
+                final String shareUrl = Urls.URL + "register/" + recommendCode + "/recommend";;
+
+                ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
+                    @Override
+                    public void onConfirm(int position) {
+                        ShareUtil.sharedSDK(mContext, position,shareTitle, shareText, shareUrl);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+                dialog.show();
+         //       sharedSDK();
                 break;
             case R.id.tv_recommend_record: // 邀请记录
                 Intent intent = new Intent(this, RecommendRecordActivity.class);
@@ -188,7 +206,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
 //                    paramsToShare.setExtInfo("应用信息");
 //                    paramsToShare.setFilePath("xxxxx.apk");
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
+                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
 //                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
                 }
 
@@ -199,7 +217,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     paramsToShare.setText(getString(R.string.shared_message) + url);
                     paramsToShare.setUrl(url);
                     paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
+                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
                 }
 
                 //点击QQ空间
@@ -208,14 +226,14 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     paramsToShare.setText(getString(R.string.shared_message) + url);
                     paramsToShare.setTitleUrl(url);
                     paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
+                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
                 }
 
                 //点击QQ
                 if ("QQ".equals(platform.getName())) {
                     paramsToShare.setText(getString(R.string.shared_message) + url);
                     paramsToShare.setTitle(getString(R.string.login_title));
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
+                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
                     paramsToShare.setTitleUrl(url);
                     paramsToShare.setUrl(url);
                     paramsToShare.setSite(context.getString(R.string.app_name));
