@@ -2,10 +2,12 @@ package com.rulaibao.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,9 +21,11 @@ import com.rulaibao.fragment.HomeFragment;
 import com.rulaibao.fragment.MineFragment;
 import com.rulaibao.fragment.PolicyPlanFragment;
 import com.rulaibao.fragment.TrainingFragment;
+import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -53,16 +57,77 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MineFragment tab_mine; // 我的
 
     private int selectPage = 0;
+
+    private String type = "";       //  answer：回答问题详情页  question：问题详情;  course:课程详情;  product:产品详情
+    private String id = "";     //
+    private String questionId = "";     //
+    private String answerId = "";     //
+    private String speechmakeId = "";     //
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_main);
         selectPage = getIntent().getIntExtra("selectPage", 0);
+
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (uri != null) {
+            type = uri.getQueryParameter("type");
+            id = uri.getQueryParameter("id");
+            questionId = uri.getQueryParameter("questionId");
+            answerId = uri.getQueryParameter("answerId");
+            speechmakeId = uri.getQueryParameter("speechmakeId");
+        }
+
+        if(!TextUtils.isEmpty(type)){
+            fromH5();
+        }
+
+
         initTopTitle();
         initView();
         initVP();
         setSelect(selectPage);
         initData();
+    }
+
+    public void fromH5(){
+
+        if(type.equals("answer")){          //  回答问题详情页
+
+
+            HashMap<String,Object> map = new HashMap<String,Object>();
+            map.put("questionId",questionId);
+            map.put("answerId",answerId);
+            RlbActivityManager.toTrainingAnswerDetailsActivity(this,map,false);
+
+
+        }else if(type.equals("question")){      //  问题详情
+            HashMap<String,Object> map = new HashMap<String,Object>();
+            map.put("questionId",id);
+            RlbActivityManager.toTrainingAskDetailsActivity(this,map, false);
+        }else if(type.equals("course")){        //  课程详情
+
+            HashMap<String, Object> classMap = new HashMap<>();
+            classMap.put("id", id);
+            classMap.put("speechmakeId", speechmakeId);
+            classMap.put("courseId", id);
+            RlbActivityManager.toTrainingClassDetailsActivity(this, classMap, false);
+
+        }else if(type.equals("product")){       //  产品详情
+            Intent intent = new Intent(this, InsuranceProductDetailActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+
+        }else {
+
+
+        }
+
+
+
     }
 
     @Override

@@ -17,6 +17,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+/**
+ *
+ * 课程详情 --- PPT adapter
+ *
+ */
+
 public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;

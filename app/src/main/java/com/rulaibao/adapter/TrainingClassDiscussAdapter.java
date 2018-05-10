@@ -27,6 +27,12 @@ import java.util.LinkedHashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *
+ * 课程详情--研讨列表adapter
+ *
+ */
+
 public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;

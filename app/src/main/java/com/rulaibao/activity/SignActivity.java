@@ -180,7 +180,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.signup_web: //国恒保险
                 /*Intent i_service = new Intent(SignActivity.this,WebActivity.class);
-                i_service.putExtra("type", WebActivity.WEBTYPE_SIGN_AGREEMENT);
+                i_service.putExtra("type", WebActivity.WEB_TYPE_SIGN_AGREEMENT);
                 i_service.putExtra("title", getResources().getString(R.string.setting_sign_agreement));
                 i_service.putExtra("url", Urls.URL_SIGNUP_WEB_AGREEMENT);
                 startActivity(i_service);*/

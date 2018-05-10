@@ -32,6 +32,10 @@ import java.util.LinkedHashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *  问题详情 adapter
+ *
+ */
 public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
     private MouldList<ResultAskDetailsAnswerItemBean> arrayList;

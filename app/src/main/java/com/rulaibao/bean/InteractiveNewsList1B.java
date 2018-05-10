@@ -1,25 +1,26 @@
 package com.rulaibao.bean;
 
-
 import com.rulaibao.network.types.IMouldType;
 import com.rulaibao.network.types.MouldList;
 
-// 问答详情
-public class ResultAskDetailsBean implements IMouldType {
+/**
+ *  互动消息 实体类
+ * Created by junde on 2018/5/10.
+ */
 
+public class InteractiveNewsList1B implements IMouldType {
 
-	private String total;
-	private String flag;
-	private String message;
-	private ResultAskDetailsItemBean appQuestion;
-	private String code;
+    private MouldList<InteractiveNewsList2B> list;
+    private String total; //  总数
+    private String flag;
+    private String message;
 
-    public String getCode() {
-        return code;
+    public MouldList<InteractiveNewsList2B> getList() {
+        return list;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setList(MouldList<InteractiveNewsList2B> list) {
+        this.list = list;
     }
 
     public String getTotal() {
@@ -44,13 +45,5 @@ public class ResultAskDetailsBean implements IMouldType {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ResultAskDetailsItemBean getAppQuestion() {
-        return appQuestion;
-    }
-
-    public void setAppQuestion(ResultAskDetailsItemBean appQuestion) {
-        this.appQuestion = appQuestion;
     }
 }

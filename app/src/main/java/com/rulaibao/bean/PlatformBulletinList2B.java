@@ -10,7 +10,8 @@ public class PlatformBulletinList2B implements IMouldType {
 
     private String id;   // 公告id
     private String topic;       //  公告名称
-    private String content;     // 公告内容
+    private String description;     // 公告内容
+    private String content;     //
     private String publisherName; // 公告发布者
     private String publishTime; // 公告发布时间
     private String readState;          //  是否阅读（yes:已阅读；no:未阅读）
@@ -30,6 +31,14 @@ public class PlatformBulletinList2B implements IMouldType {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContent() {

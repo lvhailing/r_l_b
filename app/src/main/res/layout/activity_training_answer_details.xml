@@ -9,7 +9,7 @@
     android:background="@color/gray_light"
     android:orientation="vertical"
     >
-    <android.support.v7.widget.RecyclerView
+    <com.rulaibao.widget.MyRecyclerView
         android:id="@+id/lv_answer_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,9 +20,10 @@
         >
 
 
-    </android.support.v7.widget.RecyclerView>
+    </com.rulaibao.widget.MyRecyclerView>
 
     <FrameLayout
+        android:id="@+id/fl_answer_details"
         android:layout_width="match_parent"
         android:layout_height="42dip"
         android:layout_alignParentBottom="true"

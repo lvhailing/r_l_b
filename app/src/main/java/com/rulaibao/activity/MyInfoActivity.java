@@ -68,7 +68,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private TextView tv_phone;
     private String realName;
     private String headPhoto;
-    private String userId = "18032709463185347077"; // 测试userId
+    private String userId = ""; // 测试userId  18032709463185347077
 
     /**
      * 表示选择的是相册--2
@@ -132,7 +132,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_my_info)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+             .setCenterText(getResources().getString(R.string.title_my_info)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -561,6 +562,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         return bitmap;
     }
 
+    /**
+     *  调接口，上传图片
+     * @param bm
+     */
     private void sendImage(Bitmap bm) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);

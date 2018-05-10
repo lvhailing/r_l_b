@@ -93,12 +93,36 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private MineData2B data;
     private int messageTotal;
 
+    private boolean isLogin = false;
+
     /**
      * 图片保存SD卡位置
      */
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";
     private int insuranceWarning;
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (PreferenceUtil.isLogin()) { // 登录状态
+                Log.i("hh", this + " ----setUserVisibleHint---" + PreferenceUtil.isLogin());
+                isLogin = true;
+                requestData();
+            } else { //未登录状态
+                Log.i("hh", this + " ----setUserVisibleHint---" + PreferenceUtil.isLogin());
+                isLogin = false;
+            }
+
+        }
+    }
 
     @Nullable
     @Override
@@ -150,6 +174,19 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         tv_problem_parts = (TextView) mView.findViewById(R.id.tv_problem_parts);
         tv_return_receipt = (TextView) mView.findViewById(R.id.tv_return_receipt);
 
+        if (isLogin) {
+            isLogin = true;
+            Log.i("hh", "initView---isLogin状态1：--- isLogin=" + isLogin);
+            ll_user_name.setVisibility(View.VISIBLE);
+            rl_total_commission.setVisibility(View.VISIBLE);
+            tv_mine_login.setVisibility(View.GONE);
+        } else {
+            isLogin = false;
+            Log.i("hh", "initView---isLogin状态2：--- isLogin=" + isLogin);
+            tv_mine_login.setVisibility(View.VISIBLE);
+            ll_user_name.setVisibility(View.GONE);
+            rl_total_commission.setVisibility(View.GONE);
+        }
 
         iv_settings.setOnClickListener(this); // icon_mine_setting
         iv_news.setOnClickListener(this); // icon_mine_news
@@ -174,38 +211,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-//            Log.i("hh", this+" ----setUserVisibleHint");
-            if (!PreferenceUtil.isFirst()) { // 非首次进入应用
-                if (!PreferenceUtil.isLogin()) { // 未登录状态
-                    tv_mine_login.setVisibility(View.VISIBLE);
-                } else { // 登录状态
-                    ll_user_name.setVisibility(View.VISIBLE);
-                    requestData();
-
-                }
-            }
-
-            if (PreferenceUtil.isFirst()) { // 首次进入应用
-                PreferenceUtil.setLogin(false);  // 未登录
-                tv_mine_login.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    @Override
     public void onResume() {
-//        Log.i("hh", this+"----onResume");
         super.onResume();
+
+        if (PreferenceUtil.isLogin()) {
+            isLogin = true;
+            Log.i("hh", this + "----onResume--11--" + isLogin);
+            ll_user_name.setVisibility(View.VISIBLE);
+            rl_total_commission.setVisibility(View.VISIBLE);
+            tv_mine_login.setVisibility(View.GONE);
+            requestData();
+        } else {
+            isLogin = false;
+            Log.i("hh", this + "----onResume--22--" + isLogin);
+            tv_mine_login.setVisibility(View.VISIBLE);
+            ll_user_name.setVisibility(View.GONE);
+            rl_total_commission.setVisibility(View.GONE);
+        }
     }
 
     //我的主页面数据
@@ -214,6 +236,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+            Log.i("hh", "用户的userId---" + userId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -369,12 +392,24 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.iv_news:  // 消息
-                intent = new Intent(context, NewsActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, NewsActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_user_photo: // 用户头像（跳转到个人信息页）
-                intent = new Intent(context, MyInfoActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, MyInfoActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_total_commission: // 累计佣金
                 intent = new Intent(context, TransactionRecordActivity.class);
@@ -413,32 +448,72 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.rl_renewal_reminder: // 续保提醒
-                intent = new Intent(context, RenewalReminderActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, RenewalReminderActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_my_bookings: // 我的预约
-                intent = new Intent(context, PolicyBookingListActivity.class);
-                intent.putExtra("position", 0);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, PolicyBookingListActivity.class);
+                    intent.putExtra("position", 0);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_my_ask: // 我的提问
-                intent = new Intent(context, MyAskActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, MyAskActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_my_topic: // 我的话题
-                intent = new Intent(context, MyTopicActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, MyTopicActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_my_participation: // 我的参与
-                intent = new Intent(context, MyPartakeActivity.class);
-                intent.putExtra("position", 0);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, MyPartakeActivity.class);
+                    intent.putExtra("position", 0);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_my_collection: // 我的收藏
-                intent = new Intent(context, MyCollectionActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, MyCollectionActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+                    intent = new Intent(context, LoginActivity.class);
+                    startActivity(intent);
+                }
 
                 break;
         }
     }
+
 }

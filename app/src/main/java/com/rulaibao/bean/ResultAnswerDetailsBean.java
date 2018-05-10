@@ -10,8 +10,16 @@ public class ResultAnswerDetailsBean implements IMouldType {
 	private String total;
 	private String flag;
 	private String message;
+	private String code;
 	private ResultAnswerDetailsItemBean appAnswer;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getTotal() {
         return total;

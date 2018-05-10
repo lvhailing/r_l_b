@@ -16,6 +16,12 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *
+ * 我要提问 问题类型adapter
+ *
+ */
+
 public class TrainingToAskListAdapter extends BaseAdapter {
 
     private Context context;

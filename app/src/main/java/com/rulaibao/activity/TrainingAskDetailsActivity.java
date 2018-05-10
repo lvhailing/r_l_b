@@ -109,7 +109,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         questionId = getIntent().getStringExtra("questionId");
         detailsBean = new ResultAskDetailsBean();
         list = new MouldList<ResultAskDetailsAnswerItemBean>();
-        test();
         initRecyclerView();
 
     }
@@ -165,7 +164,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("questionId", questionId);
 
-
         HtmlRequest.getTrainingAskDetails(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -174,7 +172,19 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
                     detailsBean = (ResultAskDetailsBean) params.result;
 //                    indexItemBeans = b.getList();
-                    setView(detailsBean);
+                    if(detailsBean.getFlag().equals("true")){
+                        setView(detailsBean);
+                    }else{
+                        if(detailsBean.getCode().equals("1001")){      //  参数错误
+
+
+                        }else if(detailsBean.getCode().equals("1002")){        //  该问题已删除
+
+                            Toast.makeText(TrainingAskDetailsActivity.this,"该问题已删除",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+
                 } else {
 
                 }
@@ -395,14 +405,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         popupMenu.show();
     }
 
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            arrayList.add(new TestBean("渣渣辉" + i));
-        }
-
-    }
 
     public void initTabMenu(View view) {
 

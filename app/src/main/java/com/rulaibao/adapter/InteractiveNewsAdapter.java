@@ -10,8 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.bean.InteractiveNewsList3B;
+import com.rulaibao.bean.InteractiveNewsList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -20,7 +21,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<InteractiveNewsList3B> list;
+    private final MouldList<InteractiveNewsList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -37,7 +38,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int mLoadMoreStatus = 0;
 
 
-    public InteractiveNewsAdapter(Context context, MouldList<InteractiveNewsList3B> list) {
+    public InteractiveNewsAdapter(Context context, MouldList<InteractiveNewsList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -62,12 +63,14 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.iv_interactive_news_photo.setImageURI(list.get(position).getCirclePhotoUrl());
-            itemViewHolder.tv_interactive_news_name.setText(list.get(position).getName());
-            itemViewHolder.tv_interactive_news_time.setText(list.get(position).getTime());
-            itemViewHolder.tv_interactive_news_date.setText(list.get(position).getDate());
-            itemViewHolder.tv_interactive_news_title.setText(list.get(position).getTitle());
-            itemViewHolder.tv_interactive_news_reply.setText(list.get(position).getReply());
+
+            // 加载头像
+            ImageLoader.getInstance().displayImage(list.get(position).getReplyPhoto(),  itemViewHolder.iv_interactive_news_photo);
+
+            itemViewHolder.tv_interactive_news_name.setText(list.get(position).getTargetName());
+            itemViewHolder.tv_interactive_news_date.setText(list.get(position).getCreateTime());
+            itemViewHolder.tv_interactive_news_title.setText(list.get(position).getThemeContent());
+            itemViewHolder.tv_interactive_news_reply.setText(list.get(position).getReplyContent());
 
             initListener(itemViewHolder.itemView);
         } else if (holder instanceof FooterViewHolder) {
@@ -110,7 +113,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final ImageView iv_interactive_news_photo; // 头像
         private final TextView tv_interactive_news_name; // 姓名
-        private final TextView tv_interactive_news_time; // 时间
+//        private final TextView tv_interactive_news_time; // 时间
         private final TextView tv_interactive_news_date; // 日期
         private final TextView tv_interactive_news_title; // 互动消息标题
         private final TextView tv_interactive_news_reply; // 回复内容
@@ -119,7 +122,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             iv_interactive_news_photo = (ImageView) itemView.findViewById(R.id.iv_interactive_news_photo);
             tv_interactive_news_name = (TextView) itemView.findViewById(R.id.tv_interactive_news_name);
-            tv_interactive_news_time = (TextView) itemView.findViewById(R.id.tv_interactive_news_time);
+//            tv_interactive_news_time = (TextView) itemView.findViewById(R.id.tv_interactive_news_time);
             tv_interactive_news_date = (TextView) itemView.findViewById(R.id.tv_interactive_news_date);
             tv_interactive_news_title = (TextView) itemView.findViewById(R.id.tv_interactive_news_title);
             tv_interactive_news_reply = (TextView) itemView.findViewById(R.id.tv_interactive_news_reply);
@@ -158,12 +161,12 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    public void AddHeaderItem(MouldList<InteractiveNewsList3B> items) {
+    public void AddHeaderItem(MouldList<InteractiveNewsList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<InteractiveNewsList3B> items) {
+    public void AddFooterItem(MouldList<InteractiveNewsList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

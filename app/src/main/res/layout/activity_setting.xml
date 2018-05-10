@@ -7,130 +7,145 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:background="@color/bg_gray_new">
+        android:background="@color/bg_gray_new"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="155dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="155dp">
 
-            <RelativeLayout
-                android:id="@+id/rl_setting_gesture_password"
+            <LinearLayout
+                android:id="@+id/ll_show_after_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingBottom="17dp"
-                android:paddingTop="17dp">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rl_setting_gesture_password"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:text="@string/txt_setting_gesture_password"
-                    android:textColor="@color/txt_black1"
-                    android:textSize="16sp"/>
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="17dp"
+                    android:paddingTop="17dp">
 
-                <ImageButton
-                    android:id="@+id/ib_setting_gesture"
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
-                    android:background="@null"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/img_set_on"/>
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/txt_setting_gesture_password"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"/>
 
-            <RelativeLayout
-                android:id="@+id/rl_setting_change_gesture_password"
+                    <ImageButton
+                        android:id="@+id/ib_setting_gesture"
+                        android:layout_width="40dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:background="@null"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/img_set_on"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_setting_change_gesture_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="17dp"
+                    android:paddingTop="17dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/setting_change_gesture_password"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dip"
+                        android:src="@mipmap/img_arrow_right"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_setting_change_login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="17dp"
+                    android:paddingTop="17dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/setting_change_login_password"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/img_arrow_right"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_setting_invite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="17dp"
+                    android:paddingTop="17dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/setting_invite"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/img_arrow_right"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_show_no_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingBottom="17dp"
-                android:paddingTop="17dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:text="@string/setting_change_gesture_password"
-                    android:textColor="@color/txt_black1"
-                    android:textSize="16sp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dip"
-                    android:src="@mipmap/img_arrow_right"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_setting_change_login_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingBottom="17dp"
-                android:paddingTop="17dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:text="@string/setting_change_login_password"
-                    android:textColor="@color/txt_black1"
-                    android:textSize="16sp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/img_arrow_right"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_setting_invite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingBottom="17dp"
-                android:paddingTop="17dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:text="@string/setting_invite"
-                    android:textColor="@color/txt_black1"
-                    android:textSize="16sp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/img_arrow_right"/>
-            </RelativeLayout>
+                android:layout_height="10dp"
+                android:background="@color/bg_gray_new"/>
 
             <RelativeLayout
                 android:id="@+id/rl_setting_contact_customer_service"
@@ -261,12 +276,13 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:gravity="center|center_vertical"
             android:layout_marginLeft="26dp"
             android:layout_marginRight="26dp"
             android:background="@drawable/shape_gradient_orange"
+            android:gravity="center|center_vertical"
             android:text="@string/setting_logout"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:visibility="gone"/>
     </RelativeLayout>
 </ScrollView>

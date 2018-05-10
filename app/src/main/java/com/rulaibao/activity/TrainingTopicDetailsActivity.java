@@ -245,11 +245,22 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicDetailsBean bean = (ResultCircleDetailsTopicDetailsBean) params.result;
-                    appTopic = bean.getAppTopic();
-                    page = 1;
-                    requestCircleCommentData();
+                    if(bean.getFlag().equals("true")){
+                        appTopic = bean.getAppTopic();
+                        page = 1;
+                        requestCircleCommentData();
 //                    initRecyclerView();
-                    initRecyclerView();
+                        initRecyclerView();
+                    }else{
+                        if(bean.getCode().equals("1001")){      //  参数错误
+
+
+                        }else if(bean.getCode().equals("1002")){        //  该话题已删除
+                            finish();
+                        }
+
+                    }
+
                 } else {
 
                 }
@@ -399,6 +410,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     //点赞
     public void requestLikeData() {
 
+        iv_answer_detailas_zan.setClickable(false);
+
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
@@ -427,7 +440,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //                            iv_answer_detailas_zan.setClickable(true);
                             appTopic.setLikeStatus("yes");
                         }
-
+                        iv_answer_detailas_zan.setClickable(true);
                         tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
 
                     }else{

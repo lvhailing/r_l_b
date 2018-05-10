@@ -28,21 +28,20 @@
             android:text="渣渣辉"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/tv_interactive_news_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="00:00"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_interactive_news_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:text="00:00"/>-->
 
         <TextView
             android:id="@+id/tv_interactive_news_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/tv_interactive_news_time"
+            android:layout_alignParentRight="true"
             android:text="07-17"/>
     </RelativeLayout>
 

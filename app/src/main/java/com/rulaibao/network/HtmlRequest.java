@@ -14,6 +14,7 @@ import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.InsuranceDetail1B;
 import com.rulaibao.bean.InsuranceProduct1B;
 import com.rulaibao.bean.InsuranceProduct2B;
+import com.rulaibao.bean.InteractiveNewsList1B;
 import com.rulaibao.bean.MineData2B;
 import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyCollectionList1B;
@@ -1147,6 +1148,58 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
+    /**
+     *  获取互动消息列表
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getInteractiveNewsList(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_USER_INTERACT_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "互动消息列表：" + data);
+
+                    Repo<InteractiveNewsList1B> b = json.fromJson(data, new TypeToken<Repo<InteractiveNewsList1B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
     /**
      *  获取圈子新成员列表
      * @param context

@@ -38,10 +38,10 @@ public class WebActivity extends Activity implements View.OnClickListener {
     public static final String WEBTYPE_BANNER = "banner";            //轮播图
     public static final String WEBTYPE_PLAN_BOOK = "plan_book";            //计划书
     public static final String WEBTYPE_BUY = "buy";            //购买链接
-    public static final String WEBTYPE_NOTICE = "noticedetail "; // 公告详情/其他消息详情
+    public static final String WEB_TYPE_NOTICE = "notice_detail "; // 公告详情/其他消息详情
     public static final String WEBTYPE_SERVICE_AGREEMENT = "service_agreement "; // 服务协议
-    public static final String WEBTYPE_SIGN_AGREEMENT = "sign_agreement "; // 国恒保险协议
-    public static final String WEBTYPE_ABOUT_US = "about_us "; // 关于我们
+    public static final String WEB_TYPE_SIGN_AGREEMENT = "sign_agreement "; // 国恒保险协议
+    public static final String WEB_TYPE_ABOUT_US = "about_us "; // 关于我们
     public static final String WEBTYPE_VERSION = "version "; // 版本号
     public static final String WEBTYPE_PROJECT_MATERIAL_DETAIL = "project_material_detail "; //项目材料
 
@@ -110,14 +110,14 @@ public class WebActivity extends Activity implements View.OnClickListener {
 
         if (type.equals(WEBTYPE_BANNER)) {// 轮播图
             tv_web_title.setText(getIntent().getExtras().getString("title"));
-        }else if (type.equals(WEBTYPE_NOTICE)) { // 公告详情
+        }else if (type.equals(WEB_TYPE_NOTICE)) { // 公告详情
             tv_web_title.setText(getIntent().getExtras().getString("title"));
         } else if (type.equals(WEBTYPE_SERVICE_AGREEMENT)) {
             tv_web_title.setText(getIntent().getExtras().getString("title"));
-        } else if (type.equals(WEBTYPE_ABOUT_US)) { // 关于我们
+        } else if (type.equals(WEB_TYPE_ABOUT_US)) { // 关于我们
             tv_web_title.setText(getIntent().getExtras().getString("title"));
 
-        } else if (type.equals(WEBTYPE_SIGN_AGREEMENT)) { // 国恒保险协议
+        } else if (type.equals(WEB_TYPE_SIGN_AGREEMENT)) { // 国恒保险协议
             tv_web_title.setText(getIntent().getExtras().getString("title"));
         } else if (type.equals(WEBTYPE_VERSION)) { // 版本号
             tv_web_title.setText(getIntent().getExtras().getString("title"));

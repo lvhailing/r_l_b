@@ -182,6 +182,7 @@ public class SplashActivity extends FragmentActivity {
 
 
     private void initView(boolean is) {
+
         ImageView iv = (ImageView) findViewById(R.id.splash_img);
         mViewPager = (ViewPager) findViewById(R.id.splashviewpager);
         mViewPager.setVisibility(View.GONE);

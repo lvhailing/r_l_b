@@ -16,12 +16,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.PolicyRecordDetail1B;
-import com.rulaibao.bean.PolicyRecordList1B;
-import com.rulaibao.bean.PolicyRecordList2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
-import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.LinkedHashMap;

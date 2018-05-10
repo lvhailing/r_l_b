@@ -14,6 +14,11 @@ import com.rulaibao.network.types.MouldList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 圈子详情置顶话题列表adapter
+ *
+ */
+
 public class TrainingMyCircleDetailsTitleListAdapter extends BaseAdapter {
 
     private Context context;

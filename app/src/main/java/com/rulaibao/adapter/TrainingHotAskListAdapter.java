@@ -18,6 +18,12 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+/**
+ * 热门问答列表  adapter
+ *
+ */
+
 public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 

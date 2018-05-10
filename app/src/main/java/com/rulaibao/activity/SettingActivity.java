@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.rulaibao.widget.TitleBar;
  */
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton ib_setting_gesture; // 手势密码 开关
+    private LinearLayout ll_show_after_login; // 登录后显示的布局
     private RelativeLayout rl_setting_change_gesture_password; // 修改手势密码
     private RelativeLayout rl_setting_change_login_password; // 修改登录密码
     private RelativeLayout rl_setting_invite; // 推荐app给好友
@@ -77,6 +79,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         stack.addActivity(this);
 
         ib_setting_gesture = (ImageButton) findViewById(R.id.ib_setting_gesture);
+        ll_show_after_login = (LinearLayout) findViewById(R.id.ll_show_after_login);
         rl_setting_change_gesture_password = (RelativeLayout) findViewById(R.id.rl_setting_change_gesture_password);
         rl_setting_change_login_password = (RelativeLayout) findViewById(R.id.rl_setting_change_login_password);
         rl_setting_invite = (RelativeLayout) findViewById(R.id.rl_setting_invite);
@@ -85,8 +88,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         rl_setting_service_agreement = (RelativeLayout) findViewById(R.id.rl_setting_service_agreement);
         rl_setting_about = (RelativeLayout) findViewById(R.id.rl_setting_about);
 
+        View v_show_no_login = findViewById(R.id.v_show_no_login);
         tv_setting_version_code = (TextView) findViewById(R.id.tv_setting_version_code);
         btn_setting_logout = (Button) findViewById(R.id.btn_setting_logout);
+
+        if (PreferenceUtil.isLogin()) { // 登录后显示的
+            ll_show_after_login.setVisibility(View.VISIBLE);
+            v_show_no_login.setVisibility(View.GONE);
+            btn_setting_logout.setVisibility(View.VISIBLE);
+        }else { // 未登录时显示的
+            ll_show_after_login.setVisibility(View.GONE);
+            v_show_no_login.setVisibility(View.VISIBLE);
+            btn_setting_logout.setVisibility(View.GONE);
+        }
 
         ib_setting_gesture.setOnClickListener(this);
         rl_setting_change_gesture_password.setOnClickListener(this);
@@ -183,7 +197,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.rl_setting_service_agreement:  // 服务协议
                 intent = new Intent(SettingActivity.this, WebActivity.class);
-                intent.putExtra("type", WebActivity.WEBTYPE_SIGN_AGREEMENT);
+                intent.putExtra("type", WebActivity.WEB_TYPE_SIGN_AGREEMENT);
                 intent.putExtra("title", getResources().getString(R.string.setting_service_agreement));
                 intent.putExtra("url", Urls.URL_SERVICE_AGREEMENT);
                 startActivity(intent);
@@ -191,11 +205,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.rl_setting_about: // 关于国恒保险
-//              intent = new Intent(SettingActivity.this, WebActivity.class);
-//                intent.putExtra("type", WebActivity.WEBTYPE_ABOUT_US);
-//                intent.putExtra("title", getResources().getString(R.string.setting_version));
-//                intent.putExtra("url", Urls.URL_VERSION + SystemInfo.sVersionName);
-//                startActivity(intent);
+              intent = new Intent(SettingActivity.this, WebActivity.class);
+                intent.putExtra("type", WebActivity.WEB_TYPE_ABOUT_US);
+                intent.putExtra("title", getResources().getString(R.string.setting_about));
+                intent.putExtra("url", Urls.URL_ABOUT_US /*+ SystemInfo.sVersionName*/);
+                startActivity(intent);
                 break;
 
             case R.id.btn_setting_logout: // 退出登录

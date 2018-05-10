@@ -61,7 +61,7 @@ public class Urls {
     public static final String URL_LOGIN = EC_HOST + "android/login";
 
     // icon_mine_setting--服务协议
-    public static final String URL_SERVICE_AGREEMENT = EC_HOST + "register/agreement";
+//    public static final String URL_SERVICE_AGREEMENT = EC_HOST + "register/agreement";
 
 
     /**
@@ -239,6 +239,9 @@ public class Urls {
     // 我的模块 (佣金/保单)消息列表
     public static final String URL_MESSAGES_LIST = EC_HOST + "messages/list";
 
+    // 互动消息列表
+    public static final String URL_USER_INTERACT_LIST = EC_HOST + "userInteract/list";
+
     // 圈子新成员列表
     public static final String URL_CIRCLE_APPLY_LIST = EC_HOST + "appCircleApply/list";
 
@@ -289,6 +292,15 @@ public class Urls {
 
     // 平台公告 列表
     public static final String URL_BULLETIN_LIST = EC_HOST + "bulletin/list";
+
+    // 平台公告 详情
+    public static final String URL_BULLETIN_DETAIL = EC_HOST + "bulletin/detail";
+
+    // 关于国恒保险
+    public static final String URL_ABOUT_US = EC_HOST + "app/about/us";
+
+    // 服务协议
+    public static final String URL_SERVICE_AGREEMENT = EC_HOST + "app/service/agreement";
 
     // 联系客服
     public static final String URL_FEEDBACK_ADD = EC_HOST + "feedback/add";

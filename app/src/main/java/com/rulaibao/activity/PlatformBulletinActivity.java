@@ -77,7 +77,7 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
 
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        platformBulletinAdapter = new PlatformBulletinAdapter(this, totalList);
+        platformBulletinAdapter = new PlatformBulletinAdapter(this,userId,totalList);
         recycler_view.setAdapter(platformBulletinAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -86,7 +86,7 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
 
     private void requestData() {
       LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "123456");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
 
 

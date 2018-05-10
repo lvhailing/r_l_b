@@ -6,13 +6,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.InteractiveNewsAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.InteractiveNewsList3B;
+import com.rulaibao.bean.InteractiveNewsList1B;
+import com.rulaibao.bean.InteractiveNewsList2B;
+import com.rulaibao.bean.NewMembersCircleList1B;
+import com.rulaibao.bean.NewMembersCircleList2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.HashMap;
 
 /**
  *  互动消息
@@ -24,7 +33,8 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private InteractiveNewsAdapter interactiveNewsAdapter;
-    private MouldList<InteractiveNewsList3B> totalList = new MouldList<>();
+    private MouldList<InteractiveNewsList2B> totalList = new MouldList<>();
+    private int currentPage = 1; // 当前页
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +43,8 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
 
         initTopTitle();
         initView();
-//        initData();
+        initListener();
+        requestData();
     }
 
     private void initTopTitle() {
@@ -62,18 +73,16 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-        for (int i = 0; i < 10; i++) {
-            InteractiveNewsList3B bean = new InteractiveNewsList3B();
-//            bean.setPhotoUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524549050350&di=c08e4e280aacd82629613bfddd3a84a9&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F18d8bc3eb13533fadbe6ea08a2d3fd1f41345b47.jpg");
-            bean.setName("小意忆");
-            bean.setTitle("财富精灵PC端开发测试沟通，财富精灵APP功能规划原型设计制作");
-            bean.setDate("04-05");
-            bean.setTime("12:10");
-            bean.setReply("王小小回复：基金交流圈子基金交流圈子基金交流圈子");
-            totalList.add(bean);
-
+//        for (int i = 0; i < 10; i++) {
+//            InteractiveNewsList2B bean = new InteractiveNewsList2B();
+//            bean.setName("小意忆");
+//            bean.setTitle("财富精灵PC端开发测试沟通，财富精灵APP功能规划原型设计制作");
+//            bean.setDate("04-05");
+//            bean.setTime("12:10");
+//            bean.setReply("王小小回复：基金交流圈子基金交流圈子基金交流圈子");
+//            totalList.add(bean);
+//        }
             initRecylerView();
-        }
     }
 
     private void initRecylerView() {
@@ -85,6 +94,89 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
 
     }
 
+    private void initListener() {
+        initPullRefresh();
+        initLoadMoreListener();
+    }
+
+    private void initPullRefresh() {
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                currentPage = 1;
+                requestData();
+            }
+        });
+    }
+
+    private void initLoadMoreListener() {
+        recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int lastVisibleItem = 0;
+            private int firstVisibleItem = 0;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+                if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==interactiveNewsAdapter.getItemCount()&& firstVisibleItem != 0){
+
+                    currentPage++;
+                    requestData();
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem=layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
+    private void requestData() {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("userId",userId);
+        param.put("page", currentPage+"");
+
+        HtmlRequest.getInteractiveNewsList(InteractiveNewsActivity.this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
+                if (params.result == null) {
+                    Toast.makeText(InteractiveNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                InteractiveNewsList1B data = (InteractiveNewsList1B) params.result;
+                MouldList<InteractiveNewsList2B> everyList = data.getList();
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
+                    Toast.makeText(InteractiveNewsActivity.this, "已显示全部", Toast.LENGTH_SHORT).show();
+                    interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.NO_LOAD_MORE);
+                }
+                if (currentPage == 1) {
+                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
+                    totalList.clear();
+                }
+                totalList.addAll(everyList);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.NO_LOAD_MORE);
+                }
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultClassIndexItemBean;
 import com.rulaibao.network.types.MouldList;
@@ -22,90 +23,76 @@ import butterknife.ButterKnife;
 
 import static com.rulaibao.uitls.ImageUtils.getClassImgIndex;
 
-public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+/**
+ *
+ * 课程列表
+ *
+ */
 
+public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
-    private Context context;
 
     private MouldList<ResultClassIndexItemBean> arrayList;
-    private LayoutInflater layoutInflater;
-
-    private static final int TYPE_ITEM = 0;     // item布局
-    private static final int TYPE_FOOTER = 1;   //  footer布局
-
-
-    //上拉加载更多
-    public static final int PULLUP_LOAD_MORE = 0;
-    //正在加载中
-    public static final int LOADING_MORE = 1;
-    //没有加载更多 隐藏
-    public static final int NO_LOAD_MORE = 2;
-
-    //上拉加载更多状态-默认为0
-    private int mLoadMoreStatus = 0;
-
-    private TrainingHotAskListAdapter.LoadMoreData loadMoreData;
-
+    private LoadMoreData loadMoreData;
 
     public TrainingClassListAdapter(Context context, MouldList<ResultClassIndexItemBean> arrayList) {
+        super(context);
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
     }
 
+    @Override
+    public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
+        View view = layoutInflater.inflate(R.layout.activity_training_class_item, parent,false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType == TYPE_ITEM) {
-            // 填充布局
-
-            View view = layoutInflater.inflate(R.layout.activity_training_class_item, null);
-            Holder holder = new Holder(view);
-            return holder;
-        } else if (viewType == TYPE_FOOTER) {
-            View view = layoutInflater.inflate(R.layout.activity_training_hot_ask_footer, parent, false);
-            FooterViewHolder holder = new FooterViewHolder(view);
-            return holder;
+    public void initHolderData(RecyclerView.ViewHolder holder, int position) {
+        ViewHolder holder1 = (ViewHolder) holder;
+        int index = position;
+        if(getmHeaderView()!=null){
+            index = position-1;
         }
+        holder1.tvTrainingName.setText(arrayList.get(index).getTypeName());
+        holder1.tvTrainingClassTime.setText(arrayList.get(index).getCourseTime());
+        holder1.ivTrainingRecommend.setImageResource(getClassImgIndex(arrayList.get(index).getCourseLogo()));
 
+        holder1.tvTrainingRecommendManager.setText(arrayList.get(index).getCourseName());
+        holder1.tvTrainingRecommendManagerName.setText(arrayList.get(index).getSpeechmakeName()+" "+arrayList.get(position).getPosition());
 
-        return null;
+        final int finalIndex = index;
+        holder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("id",arrayList.get(finalIndex).getCourseId());
+                map.put("speechmakeId",arrayList.get(finalIndex).getSpeechmakeId());
+                map.put("courseId",arrayList.get(finalIndex).getCourseId());
+                RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context,map, false);
+            }
+        });
+    }
+
+    @Override
+    public int getItem() {
+        if(mHeaderView!=null){
+            return arrayList.size() + 2;
+        }else{
+            return arrayList.size() + 1;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-
-        if (holder instanceof Holder) {
-
-            Holder holder1 = (Holder) holder;
-
-            holder1.tvTrainingName.setText(arrayList.get(position).getTypeName());
-            holder1.tvTrainingClassTime.setText(arrayList.get(position).getCourseTime());
-
-            holder1.ivTrainingRecommend.setImageResource(getClassImgIndex(arrayList.get(position).getCourseLogo()));
-
-
-            holder1.tvTrainingRecommendManager.setText(arrayList.get(position).getCourseName());
-            holder1.tvTrainingRecommendManagerName.setText(arrayList.get(position).getSpeechmakeName()+" "+arrayList.get(position).getPosition());
-
-            holder1.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HashMap<String,Object> map = new HashMap<>();
-                    map.put("id",arrayList.get(position).getCourseId());
-                    map.put("speechmakeId",arrayList.get(position).getSpeechmakeId());
-                    map.put("courseId",arrayList.get(position).getCourseId());
-                    RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context,map, false);
-                }
-            });
-
-
-
+        super.onBindViewHolder(holder, position);
+        if (holder instanceof ViewHolder) {
+            initHolderData(holder, position);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
                     footerViewHolder.tvFooterMore.setText("上拉加载更多...");
@@ -117,24 +104,12 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                     break;
-
             }
         }
 
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return arrayList.size() + 1;
-    }
-
-
-    class Holder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_training_name)
         TextView tvTrainingName;
@@ -150,8 +125,7 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
         FrameLayout rsvFragmentTraining;
 
 
-
-        public Holder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 //            tv_training_name = (TextView) itemView.findViewById(R.id.tv_training_name);
@@ -169,25 +143,6 @@ public class TrainingClassListAdapter extends RecyclerView.Adapter<RecyclerView.
         } else {
             return TYPE_ITEM;
         }
-    }
-
-    class FooterViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_footer_more)
-        TextView tvFooterMore;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    loadMoreData.getMoreData();
-
-                }
-            });
-        }
-
     }
 
     /**

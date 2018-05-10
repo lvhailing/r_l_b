@@ -11,6 +11,15 @@ public class ResultCircleDetailsTopicDetailsBean implements IMouldType {
     private String flag;
     private String message;
     private ResultCircleDetailsTopicDetailsItemBean appTopic;
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getFlag() {
         return flag;

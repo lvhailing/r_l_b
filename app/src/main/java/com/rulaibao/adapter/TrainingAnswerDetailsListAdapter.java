@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 话题详情  问题详情adapter
+ * 话题详情  问题详情 adapter
  */
 
 public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {

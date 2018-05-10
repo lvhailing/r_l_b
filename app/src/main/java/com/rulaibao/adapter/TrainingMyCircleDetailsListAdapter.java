@@ -26,6 +26,12 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *
+ * 圈子详情--话题列表 adapter
+ *
+ */
+
 public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
 

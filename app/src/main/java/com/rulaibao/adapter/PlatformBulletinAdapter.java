@@ -12,16 +12,19 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PlatformBulletinDetailActivity;
+import com.rulaibao.activity.WebActivity;
 import com.rulaibao.bean.PlatformBulletinList2B;
+import com.rulaibao.common.Urls;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  平台公告列表 Adapter 类
+ * 平台公告列表 Adapter 类
  */
 public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<PlatformBulletinList2B> list;
+    private final String userId;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -38,8 +41,9 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 0;
 
 
-    public PlatformBulletinAdapter(Context context,MouldList<PlatformBulletinList2B> list) {
+    public PlatformBulletinAdapter(Context context, String userId, MouldList<PlatformBulletinList2B> list) {
         mContext = context;
+        this.userId = userId;
         this.list = list;
         mInflater = LayoutInflater.from(context);
     }
@@ -65,8 +69,9 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_bulletin_title.setText(list.get(position).getTopic());
             itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
-            itemViewHolder.tv_bulletin_content.setText(list.get(position).getContent());
+            itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
 
+            initListener(itemViewHolder.itemView, list.get(position).getId());
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -114,24 +119,26 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
             tv_bulletin_time = (TextView) itemView.findViewById(R.id.tv_bulletin_time);
             tv_bulletin_title = (TextView) itemView.findViewById(R.id.tv_bulletin_title);
             tv_bulletin_content = (TextView) itemView.findViewById(R.id.tv_bulletin_content);
-
-            initListener(itemView);
         }
 
-        /**
-         *   item 点击监听
-         * @param itemView
-         */
-        private void initListener(View itemView) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { // 跳转到公告详情
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext,PlatformBulletinDetailActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
-        }
+    }
+
+    /**
+     * item 点击监听
+     *
+     * @param itemView
+     */
+    private void initListener(View itemView, final String id) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // 跳转到公告详情
+                Intent intent = new Intent(mContext, WebActivity.class);
+                intent.putExtra("type", WebActivity.WEB_TYPE_NOTICE);
+                intent.putExtra("title", "公告详情");
+                intent.putExtra("url", Urls.URL_BULLETIN_DETAIL + "?id=" + id + "&userId=" + userId);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
