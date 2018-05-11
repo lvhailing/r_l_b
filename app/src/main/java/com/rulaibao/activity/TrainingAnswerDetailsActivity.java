@@ -30,6 +30,8 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.InputMethodUtils;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyRecyclerView;
 import com.rulaibao.widget.TitleBar;
@@ -118,6 +120,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans, TrainingAnswerDetailsActivity.this);
 //        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvAnswerDetails.setOnResizeListener(this);
+
         lvAnswerDetails.setAdapter(adapter);
 
 
@@ -354,10 +357,18 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
             ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
             itemBean.setReplyContent(commentContent);
 
-            itemBean.setReplyId("979797");
-            itemBean.setReplyToId("787878");
-            itemBean.setReplyName("123");
-            itemBean.setReplyToName(toUserId);
+            itemBean.setReplyId(userId);      //      回复人id
+            itemBean.setReplyToId(toUserId);    //  被回复人id
+
+            String realName = "";
+            try {
+                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            itemBean.setReplyName(realName);       //  回复人姓名
+            itemBean.setReplyToName(replyToName);      //  被回复人姓名
 
             commentItemBeans.get(index).getReplys().add(itemBean);
             adapter.notifyDataSetChanged();
@@ -372,22 +383,17 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
         if (TextUtils.isEmpty(commentId)) {
-
             map.put("answerId", answerId);      //  话题id
             map.put("commentContent", commentContent);
             map.put("userId", userId);
-
         } else {
-
             map.put("commentId", commentId);      //  话题id
             map.put("answerId", answerId);
             map.put("commentContent", commentContent);
             map.put("toUserId", toUserId);          //  被回复人id
             map.put("userId", userId);
         }
-
 
         HtmlRequest.getTrainingAnswerReply(this, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -402,15 +408,15 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                         if (!TextUtils.isEmpty(commentId)) {      //  回复
 
                             commentId = "";
-
+                            hiddenInputLayout();
                         } else {          //  评论
+                            hiddenInputLayout();
                             page = 1;
                             commentItemBeans.clear();
                             requestComment();
                         }
 
-                        etAnswerDetails.setText("");
-                        etAnswerDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+
 
                     } else {
 
@@ -467,8 +473,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     public void setBottomOffset(int position) {
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvAnswerDetails.getLayoutManager();
+        int index = layoutManager.findFirstVisibleItemPosition();
+//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if(index > position){
+            index = position;
+        }
 
-        bottomOffset = lvAnswerDetails.getChildAt(position - layoutManager.findFirstVisibleItemPosition()).getBottom();
+        bottomOffset = lvAnswerDetails.getChildAt(position - index).getBottom();
         if (!deal(position)) showInputLyaout();
     }
 
@@ -505,19 +516,24 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         oldPosition = position;
     }
 
+
+
+    //  隐藏键盘
+
+    private void hiddenInputLayout() {
+        isShowComment.set(false);
+        etAnswerDetails.setText("");
+        etAnswerDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+//        flAnswerDetails.setVisibility(View.GONE);
+        InputMethodUtils.hiddenSoftKeyboard(this);
+    }
+
     @Override
     public void OnResize(int w, int h, int oldw, int oldh) {
         if (oldh > h) {
             int offset = (oldh - h + flAnswerDetails.getHeight()) - (oldh - bottomOffset);
             putOffset(offset);
         }
-    }
-
-    private void hiddenInputLayout() {
-        etAnswerDetails.setText("");
-        isShowComment.set(false);
-//        flAnswerDetails.setVisibility(View.GONE);
-        InputMethodUtils.hiddenSoftKeyboard(this);
     }
 
 }

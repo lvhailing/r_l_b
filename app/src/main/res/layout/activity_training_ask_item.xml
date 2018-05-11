@@ -20,7 +20,7 @@
             android:id="@+id/tv_training_ask_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="故人西辞黄鹤楼，烟花三月下扬州"
+            android:text=""
             android:textSize="16sp"
             android:textColor="@color/txt_black2"
             />
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="10分钟前"
+                android:text="0分钟前"
                 android:textSize="12sp"
                 android:textColor="@color/txt_mark_gray"
                 />
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
-                android:text="渣渣辉"
+                android:text=""
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
 
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:text="答：床前明月光，疑是地上霜，举头望明月，低头思故乡"
+            android:text=""
             />
     </LinearLayout>
     <TextView

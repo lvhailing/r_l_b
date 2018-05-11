@@ -7,16 +7,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingCircleActivity;
+import com.rulaibao.activity.TrainingCircleDetailsActivity;
 import com.rulaibao.bean.ResultCircleIndexItemBean;
+import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.bean.TestBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,11 +39,13 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
     private MouldList<ResultCircleIndexItemBean> arrayList;
     private LayoutInflater layoutInflater;
     private String type = "";
+    private String userId = "";
 
-    public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type) {
+    public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type,String userId) {
         this.context = context;
         this.arrayList = arrayList;
         this.type = type;
+        this.userId = userId;
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -56,7 +65,7 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
 
         if (convertView == null) {
@@ -80,6 +89,14 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
 
         if(type.equals(TrainingCircleActivity.RECOMMEND)){
 
+            holder.tvCircleJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    requestAddCircle(arrayList.get(position).getCircleId(),userId);
+
+                }
+            });
 
 
         }else{
@@ -106,4 +123,37 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
+
+    //加入圈子
+    public void requestAddCircle(String circleId,String userId) {
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("circleId", circleId);
+        map.put("userId", userId);
+
+        HtmlRequest.getTrainingAddCircle(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultInfoBean bean = (ResultInfoBean) params.result;
+                    if (bean.getFlag().equals("true")) {
+
+                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+
+                }
+            }
+        });
+    }
+
 }

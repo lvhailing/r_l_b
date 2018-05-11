@@ -190,7 +190,7 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
      */
     private void requestTrackingRecordData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18032709463185347076");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
 
         HtmlRequest.getTradeRecordData(TransactionRecordActivity.this, param, new BaseRequester.OnRequestListener() {

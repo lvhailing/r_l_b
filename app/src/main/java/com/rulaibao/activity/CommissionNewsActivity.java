@@ -128,16 +128,9 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
     }
 
     private void requestData() {
-//        for(int i=0;i<10;i++){
-//            CommissionNewsList2B bean = new CommissionNewsList2B();
-//            bean.setCommissionIncome("中纪委发文谈落马：十九大后“首虎”");
-//            bean.setIncomeDate("04-1"+i);
-//            bean.setIncomeTime("08:10"+"--"+i);
-//            totalList.add(bean);
-//        }
-
+// userId: "18042709525931594357"
         HashMap<String, Object> param = new HashMap<>();
-        param.put("userId", "18042709525931594357");
+        param.put("userId",userId);
         param.put("busiType", "commission");
         param.put("page", currentPage+"");
 

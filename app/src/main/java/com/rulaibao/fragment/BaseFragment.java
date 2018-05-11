@@ -11,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
+
 public abstract class BaseFragment extends Fragment {
 
 
     protected View mView;
     protected Context context;
+    public String userId = "";
 
     /**
      * 绑定布局文件
@@ -43,6 +47,15 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = attachLayoutRes(inflater, container, savedInstanceState);
         ButterKnife.bind(this, mView);
+
+
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+//            token = DESUtil.decrypt(PreferenceUtil.getToken());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         initViews();
         return mView;
     }

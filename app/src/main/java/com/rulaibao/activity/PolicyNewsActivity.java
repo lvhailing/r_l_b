@@ -75,16 +75,9 @@ public class PolicyNewsActivity extends BaseActivity {
     }
 
     private void requesData() {
-//        for (int i = 0; i < 10; i++) {
-//            PolicyNewsList3B bean = new PolicyNewsList3B();
-//            bean.setProductName("国华盛世年年年金险保险C款" + i);
-//            bean.setDate("[04-12 12:12]" + "--10" + i);
-//            bean.setStatus("保单状态更改为已承保" + "--100" + i);
-//            totalList.add(bean);
-//        }
 
         HashMap<String, Object> param = new HashMap<>();
-        param.put("userId", "18042709525931594357");
+        param.put("userId", userId);
         param.put("busiType", "insurance ");
 
         HtmlRequest.getMessageListData(PolicyNewsActivity.this, param, new BaseRequester.OnRequestListener() {

@@ -109,13 +109,13 @@ public class TrainingCircleActivity extends BaseActivity {
             llRecommendCircle.setVisibility(View.VISIBLE);
         }
 
-        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE);
+        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE,userId);
         lvMycircle.setAdapter(myCircleAdapter);
 
-        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN);
+        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN,userId);
         lvMycircleJoin.setAdapter(joinAdapter);
 
-        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND);
+        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND,userId);
         lvRecommendCircle.setAdapter(recommendAdapter);
 
         lvMycircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,6 +124,7 @@ public class TrainingCircleActivity extends BaseActivity {
 
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("circleId", myAppCircle.get(position).getCircleId());
+                map.put("isApply", myAppCircle.get(position).getIsApply());
                 RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
 
             }

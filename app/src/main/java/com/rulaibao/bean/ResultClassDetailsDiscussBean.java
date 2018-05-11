@@ -20,4 +20,28 @@ public class ResultClassDetailsDiscussBean implements IMouldType {
     public void setList(MouldList<ResultClassDetailsDiscussItemBean> list) {
         this.list = list;
     }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 }

@@ -90,21 +90,23 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             holder1.tvTrainingDiscussName.setText(arrayList.get(position).getCommentName());
             ImageLoader.getInstance().displayImage(arrayList.get(position).getCommentPhoto(),holder1.ivTrainingDiscuss);
             holder1.tvTrainingDiscussDate.setText(arrayList.get(position).getCommentTime());
+
             holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());
+
             if(arrayList.get(position).getReplys()==null||arrayList.get(position).getReplys().size()==0){
                 holder1.tvDiscussReply.setVisibility(View.VISIBLE);
                 holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
                 holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName());
+                        discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName(),position);
                     }
                 });
 
             }else{
                 holder1.tvDiscussReply.setVisibility(View.GONE);
                 holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
-                holder1.tvTrainingDiscussRepayContent.setText(arrayList.get(position).getReplys().get(0).getReplyContent());
+                holder1.tvTrainingDiscussRepayContent.setText(arrayList.get(position).getReplys().get(0).getReplyName()+" 回复 "+arrayList.get(position).getReplys().get(0).getReplyContent());
             }
 
 
@@ -161,7 +163,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public interface DiscussReply{
 
-        public void reply(String toUserId,String commentId,String commentName);
+        public void reply(String toUserId,String commentId,String commentName,int index);
 
     }
 

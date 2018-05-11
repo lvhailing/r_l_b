@@ -87,6 +87,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     private int page = 1;
     private MouldList<ResultAskDetailsAnswerItemBean> list;
     private ResultAskDetailsBean detailsBean;
+    private String sortType = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     }
 
     public void initData() {
+        page = 1;
         list.clear();
         request();
         requestAnswerList();
@@ -199,6 +201,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("questionId", questionId);
+        map.put("sortType", sortType);
         map.put("page", page + "");
         map.put("userId", userId);
 
@@ -327,7 +330,11 @@ public class TrainingAskDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 tv_ask_detais_sort.setText("默认排序");
-                Toast.makeText(getApplicationContext(), "默认排序", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "默认排序", Toast.LENGTH_SHORT).show();
+                sortType = "default";
+                list.clear();
+                page = 1;
+                requestAnswerList();
                 popupWindow.dismiss();
             }
         });
@@ -336,7 +343,11 @@ public class TrainingAskDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 tv_ask_detais_sort.setText("最新排序");
-                Toast.makeText(getApplicationContext(), "最新排序", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "最新排序", Toast.LENGTH_SHORT).show();
+                list.clear();
+                page = 1;
+                sortType = "new";
+                requestAnswerList();
                 popupWindow.dismiss();
             }
         });

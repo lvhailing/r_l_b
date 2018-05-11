@@ -70,11 +70,21 @@ public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.View
 
         ViewHolder holder1 = (ViewHolder) holder;
         holder1.tvTrainingAskTitle.setText(arrayList.get(position).getTitle());
-        ImageLoader.getInstance().displayImage(arrayList.get(position).getAnswerPhoto(),holder1.ivTrainingAsk);
-        holder1.tvTrainingAskAnswer.setText(arrayList.get(position).getAnswerContent());
         holder1.tvTrainingAskCount.setText(arrayList.get(position).getAnswerCount()+"回答");
         holder1.tvTrainingAskTime.setText(arrayList.get(position).getTime());
-        holder1.tvTrainingAskManager.setText(arrayList.get(position).getAnswerName());
+
+        if(Integer.parseInt(arrayList.get(position).getAnswerCount())==0){
+            holder1.ivTrainingAsk.setVisibility(View.GONE);
+            holder1.tvTrainingAskAnswer.setVisibility(View.GONE);
+            holder1.tvTrainingAskManager.setVisibility(View.GONE);
+        }else{
+            holder1.ivTrainingAsk.setVisibility(View.VISIBLE);
+            holder1.tvTrainingAskAnswer.setVisibility(View.VISIBLE);
+            holder1.tvTrainingAskManager.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(arrayList.get(position).getAnswerPhoto(),holder1.ivTrainingAsk);
+            holder1.tvTrainingAskAnswer.setText(arrayList.get(position).getAnswerContent());
+            holder1.tvTrainingAskManager.setText(arrayList.get(position).getAnswerName());
+        }
 
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -78,7 +78,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        newMembersCircleAdapter = new NewMembersCircleAdapter(this, totalList);
+        newMembersCircleAdapter = new NewMembersCircleAdapter(this, userId,totalList);
         recycler_view.setAdapter(newMembersCircleAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -96,10 +96,6 @@ public class NewMembersOfCircleActivity extends BaseActivity {
             public void onRefresh() {
                 currentPage = 1;
                 requestData();
-
-                //刷新完成
-//                swipe_refresh.setRefreshing(false);
-
             }
         });
     }
@@ -134,7 +130,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
     private void requestData() {
         HashMap<String, Object> param = new HashMap<>();
-        param.put("userId", "18032709463185347076");
+        param.put("userId", userId);
         param.put("page", currentPage+"");
 
         HtmlRequest.getNemMembersCircleList(NewMembersOfCircleActivity.this, param, new BaseRequester.OnRequestListener() {

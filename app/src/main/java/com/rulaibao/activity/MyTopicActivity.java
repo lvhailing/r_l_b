@@ -88,7 +88,7 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
 
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18032709463185347076"); // 这个测试Id 不能用
+        param.put("userId",userId);
         param.put("page", currentPage+"");
 
         HtmlRequest.getMyTopicListData(this, param, new BaseRequester.OnRequestListener() {

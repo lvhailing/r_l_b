@@ -9,7 +9,7 @@ import com.rulaibao.network.types.IMouldType;
 
 public class InteractiveNewsList2B implements IMouldType {
 
-    private String type;       // 消息类型
+    private String type;       // 消息类型 question：跳转到提问详情；answer：跳转到回答详情；topic：跳转到话题详情；course：跳转到课程详情；
     private String createTime;  // 创建时间
     private String isRead;  // 已读状态（yes:已读；no:未读）
     private String themeContent;  // 被回复的主题内容

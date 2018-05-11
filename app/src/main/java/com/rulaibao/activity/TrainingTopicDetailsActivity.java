@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -31,24 +32,30 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.InputMethodUtils;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
+import com.rulaibao.widget.MyRecyclerView;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 /**
  * 话题详情
  */
 
-public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply {
+public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply,MyRecyclerView.OnResizeListener {
 
 
     @BindView(R.id.lv_topic_details)
-    RecyclerView lvTopicDetails;
+    MyRecyclerView lvTopicDetails;
     @BindView(R.id.btn_topic_details)
     Button btnTopicDetails;
     @BindView(R.id.et_topic_details)
@@ -81,6 +88,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private String replyToName = "";
     private int index = 0;
 
+    private int oldPosition = 0;
+    private int bottomOffset = 0;
+    private int position;
+    private View header;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +116,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
 //        test();
-
+        initRecyclerView();
 
     }
 
@@ -112,7 +124,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
         lvTopicDetails.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans,TrainingTopicDetailsActivity.this);
+
 //        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
+        lvTopicDetails.setOnResizeListener(this);
+
         lvTopicDetails.setAdapter(adapter);
 
 
@@ -147,13 +162,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             }
         });
 
-        initHeadData();
-
     }
 
     private void setHeaderView(RecyclerView view) {
 
-        View header = LayoutInflater.from(this).inflate(R.layout.activity_training_topic_details_top, view, false);
+        header = LayoutInflater.from(this).inflate(R.layout.activity_training_topic_details_top, view, false);
 
         iv_answer_detatils_manager = (CircularImage) header.findViewById(R.id.iv_answer_detatils_manager);
         tv_answer_details_manager_name = (TextView) header.findViewById(R.id.tv_answer_details_manager_name);
@@ -167,6 +180,18 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
 
         adapter.setmHeaderView(header);
+
+    }
+
+    public void initHeadData() {
+
+        ImageLoader.getInstance().displayImage(appTopic.getCreatorPhoto(), iv_answer_detatils_manager);
+        tv_answer_details_manager_name.setText(appTopic.getCreatorName());
+        tv_answer_details_content.setText(appTopic.getTopicContent());
+        tv_training_topic_detils_name.setText(appTopic.getCircleName());
+        tv_training_topic_detils_time.setText(appTopic.getCreateTime());
+        tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
+        tv_answer_details_comment_count.setText(appTopic.getCommentCount() + "评论");
 
         if(appTopic.getIsManager().equals("yes")){
             tv_answer_details_settop.setVisibility(View.VISIBLE);
@@ -198,18 +223,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
             }
         });
-
-    }
-
-    public void initHeadData() {
-
-        ImageLoader.getInstance().displayImage(appTopic.getCreatorPhoto(), iv_answer_detatils_manager);
-        tv_answer_details_manager_name.setText(appTopic.getCreatorName());
-        tv_answer_details_content.setText(appTopic.getTopicContent());
-        tv_training_topic_detils_name.setText(appTopic.getCircleName());
-        tv_training_topic_detils_time.setText(appTopic.getCreateTime());
-        tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
-        tv_answer_details_comment_count.setText(appTopic.getCommentCount() + "评论");
 
         if(appTopic.getLikeStatus().equals("yes")){
             iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zan);
@@ -250,7 +263,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                         page = 1;
                         requestCircleCommentData();
 //                    initRecyclerView();
-                        initRecyclerView();
+                        initHeadData();
+
                     }else{
                         if(bean.getCode().equals("1001")){      //  参数错误
 
@@ -335,6 +349,26 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if(TextUtils.isEmpty(commentId)){       //  评论
                     requestReplyData(commentContent);
                 }else{              //  回复
+
+                    ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+                    itemBean.setReplyContent(commentContent);
+
+                    itemBean.setReplyId(userId);      //      回复人id
+                    itemBean.setReplyToId(toUserId);    //  被回复人id
+
+                    String realName = "";
+                    try {
+                        realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    itemBean.setReplyName(realName);       //  回复人姓名
+                    itemBean.setReplyToName(replyToName);      //  被回复人姓名
+
+                    commentItemBeans.get(index).getReplys().add(itemBean);
+                    adapter.notifyDataSetChanged();
+
                     requestReplyData(commentContent);
                 }
 
@@ -388,13 +422,14 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //                            replyItemBean.setReplyToName(replyToName);
 //                            commentItemBeans.get(index).getReplys().add(replyItemBean);
                             commentId = "";
+                            hiddenInputLayout();
                         }else{          //  评论
-
+                            hiddenInputLayout();
+                            page = 1;
+                            commentItemBeans.clear();
+                            requestCircleCommentData();
                         }
-//                        requestCircleCommentData();
-                        adapter.notifyDataSetChanged();
-                        etTopicDetails.setText("");
-                        etTopicDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+
 
                     }else{
 
@@ -533,16 +568,78 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         this.index = index;
         etTopicDetails.setHint("回复"+replyToName+"：");
 
+        setBottomOffset(index);
+
     }
 
-    /**
-     * EditText获取焦点并显示软键盘
-     */
-    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
-        editText.setFocusable(true);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+    //  弹出键盘
+
+    public void setBottomOffset(int position) {
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) lvTopicDetails.getLayoutManager();
+        int index = layoutManager.findFirstVisibleItemPosition();
+//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
+//        int index = 0;
+        if(index > position){
+            index = position;
+        }
+        bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
+        if (!deal(position))
+            showInputLyaout();
     }
 
+    private AtomicBoolean isShowComment = new AtomicBoolean(false);
+
+    private boolean deal(int position) {
+        if (isShowComment.get()) {
+            if (oldPosition != position) {
+                int offset = -(lvTopicDetails.getHeight() - bottomOffset - fyTrainingTopicDetails.getHeight() );
+                putOffset(offset);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @OnTouch(R.id.lv_topic_details)
+    boolean onTouch(View v, MotionEvent event) {
+        if (MotionEvent.ACTION_MOVE == event.getAction()) {
+            hiddenInputLayout();
+        }
+        return false;
+    }
+
+
+    private void showInputLyaout() {
+        isShowComment.set(true);
+//        flAnswerDetails.setVisibility(View.VISIBLE);
+        InputMethodUtils.showSoftKeyboard(etTopicDetails);
+    }
+
+    private void putOffset(int offset) {
+        lvTopicDetails.smoothScrollBy(offset, 1000);
+        oldPosition = position;
+    }
+
+
+
+    //  隐藏键盘
+
+    private void hiddenInputLayout() {
+        isShowComment.set(false);
+        etTopicDetails.setText("");
+        etTopicDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+//        flAnswerDetails.setVisibility(View.GONE);
+        InputMethodUtils.hiddenSoftKeyboard(this);
+    }
+
+
+    @Override
+    public void OnResize(int w, int h, int oldw, int oldh) {
+        if (oldh > h) {
+            int offset = (oldh - h + fyTrainingTopicDetails.getHeight()) - (oldh - bottomOffset);
+            putOffset(offset);
+        }
+    }
 }

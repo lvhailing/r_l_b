@@ -9,7 +9,7 @@
     android:background="@color/gray_light"
     android:orientation="vertical"
     >
-    <android.support.v7.widget.RecyclerView
+    <com.rulaibao.widget.MyRecyclerView
         android:id="@+id/lv_topic_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,7 +20,7 @@
         >
 
 
-    </android.support.v7.widget.RecyclerView>
+    </com.rulaibao.widget.MyRecyclerView>
 
     <FrameLayout
         android:id="@+id/fy_training_topic_details"

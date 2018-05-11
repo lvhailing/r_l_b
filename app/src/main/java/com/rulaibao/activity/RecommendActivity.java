@@ -118,7 +118,7 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
     private void getRecommendData() {
        HashMap<String, Object> param = new  HashMap<>();
-        param.put("userId", "18042617666660552139");
+        param.put("userId",userId);
 
         HtmlRequest.getRecommendInfo(RecommendActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override

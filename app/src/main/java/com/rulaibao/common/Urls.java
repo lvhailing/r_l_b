@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DEBUG;
+    private static String EC_HOST = URL_ZYL;
 
 
     /**
@@ -244,6 +244,12 @@ public class Urls {
 
     // 圈子新成员列表
     public static final String URL_CIRCLE_APPLY_LIST = EC_HOST + "appCircleApply/list";
+
+    // 同意新成员加入申请
+    public static final String URL_CIRCLE_APPLY_AGREE = EC_HOST + "appCircleApply/agree";
+
+    // 删除成员申请信息
+    public static final String URL_CIRCLE_APPLY_DELETE = EC_HOST + "appCircleApply/delete";
 
     //上传图片
     public static final String URL_SUBMIT_PHOTO = EC_HOST + "android/account/photo/upload";

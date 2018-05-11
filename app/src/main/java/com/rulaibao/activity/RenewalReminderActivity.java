@@ -92,7 +92,7 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
      */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042513234098822058");
+        param.put("userId", userId);
         param.put("page", currentPage+"");
 
         HtmlRequest.getRenewalReminderData(this, param, new BaseRequester.OnRequestListener() {

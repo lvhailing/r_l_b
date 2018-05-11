@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.activity.TrainingAnswerDetailsActivity;
+import com.rulaibao.activity.TrainingAskDetailsActivity;
+import com.rulaibao.activity.TrainingClassDetailsActivity;
+import com.rulaibao.activity.TrainingTopicDetailsActivity;
 import com.rulaibao.bean.InteractiveNewsList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -67,12 +72,12 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             // 加载头像
             ImageLoader.getInstance().displayImage(list.get(position).getReplyPhoto(),  itemViewHolder.iv_interactive_news_photo);
 
-            itemViewHolder.tv_interactive_news_name.setText(list.get(position).getTargetName());
+            itemViewHolder.tv_interactive_news_name.setText(list.get(position).getReplyName());
             itemViewHolder.tv_interactive_news_date.setText(list.get(position).getCreateTime());
-            itemViewHolder.tv_interactive_news_title.setText(list.get(position).getThemeContent());
-            itemViewHolder.tv_interactive_news_reply.setText(list.get(position).getReplyContent());
+            itemViewHolder.tv_interactive_news_title.setText("回复我："+list.get(position).getReplyContent());
+            itemViewHolder.tv_interactive_news_reply.setText("我的评论："+list.get(position).getThemeContent());
 
-            initListener(itemViewHolder.itemView);
+            initListener(itemViewHolder.itemView,list.get(position).getType(),position);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -111,8 +116,8 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView iv_interactive_news_photo; // 头像
-        private final TextView tv_interactive_news_name; // 姓名
+        private final ImageView iv_interactive_news_photo; // 回复人的头像
+        private final TextView tv_interactive_news_name; // 回复人的姓名
 //        private final TextView tv_interactive_news_time; // 时间
         private final TextView tv_interactive_news_date; // 日期
         private final TextView tv_interactive_news_title; // 互动消息标题
@@ -131,16 +136,34 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     /**
      * item 点击监听
-     *
+     *  消息类型：question：跳转到提问详情；answer：跳转到回答详情；
+                  topic：跳转到话题详情；  course：跳转到课程详情；
+
      * @param itemView
      */
-    private void initListener(View itemView) {
+    private void initListener(View itemView, String type, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext,TransactionDetailActivity.class);
-//                    mContext.startActivity(intent);
+                if ("question".equals(list.get(position).getType())) { // 跳转到提问详情
+                    Intent intent = new Intent(mContext,TrainingAskDetailsActivity.class);
+                    intent.putExtra("questionId", "");
+                    mContext.startActivity(intent);
+                } else if ("answer".equals(list.get(position).getType())) { //跳转到回答详情
+                    Intent intent = new Intent(mContext,TrainingAnswerDetailsActivity.class);
+                    intent.putExtra("questionId", "");
+                    mContext.startActivity(intent);
+                }else if ("answer".equals(list.get(position).getType())) { //跳转到话题详情
+                    Intent intent = new Intent(mContext,TrainingTopicDetailsActivity.class);
+                    intent.putExtra("appTopicId", "");
+                    mContext.startActivity(intent);
+                }else if ("answer".equals(list.get(position).getType())) { //跳转到课程详情
+                    Intent intent = new Intent(mContext,TrainingClassDetailsActivity.class);
+                    intent.putExtra("id", "");
+                    intent.putExtra("speechmakeId", "");
+                    intent.putExtra("courseId", "");
+                    mContext.startActivity(intent);
+                }
             }
         });
     }

@@ -87,7 +87,7 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
 
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18032709463185347076");
+        param.put("userId", userId);
         param.put("page", currentPage+"");
 
         HtmlRequest.getMyAskListData(this, param, new BaseRequester.OnRequestListener() {

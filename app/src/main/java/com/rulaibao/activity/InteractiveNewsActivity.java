@@ -73,16 +73,7 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-//        for (int i = 0; i < 10; i++) {
-//            InteractiveNewsList2B bean = new InteractiveNewsList2B();
-//            bean.setName("小意忆");
-//            bean.setTitle("财富精灵PC端开发测试沟通，财富精灵APP功能规划原型设计制作");
-//            bean.setDate("04-05");
-//            bean.setTime("12:10");
-//            bean.setReply("王小小回复：基金交流圈子基金交流圈子基金交流圈子");
-//            totalList.add(bean);
-//        }
-            initRecylerView();
+        initRecylerView();
     }
 
     private void initRecylerView() {

@@ -77,6 +77,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
     private String circleId = "";
+    private String isApply = "";
 
     private MouldList<ResultCircleDetailsTopItemBean> topAppTopics;
     private MouldList<ResultCircleDetailsTopicItemBean> appTopics;
@@ -140,6 +141,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
     public void initView() {
 
         circleId = getIntent().getStringExtra("circleId");
+        isApply = getIntent().getStringExtra("isApply");
         topAppTopics = new MouldList<ResultCircleDetailsTopItemBean>();
         appTopics = new MouldList<ResultCircleDetailsTopicItemBean>();
         appCircle = new ResultCircleDetailsItemBean();
@@ -381,7 +383,8 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
 
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入
 
-                    requestAddCircle();
+                        requestAddCircle();
+
                 }
 
 

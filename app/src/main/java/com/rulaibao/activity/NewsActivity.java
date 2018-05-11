@@ -92,9 +92,8 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener{
      *  获取消息的未读数
      */
     private void requestData() {
-        // userId:1234561
         HashMap<String, Object> param = new HashMap<>();
-        param.put("userId", "18042709525931594357");
+        param.put("userId", userId);
 
         HtmlRequest.getUnreadNewsCount(this, param, new BaseRequester.OnRequestListener() {
             @Override
