@@ -32,7 +32,7 @@
             android:layout_marginLeft="10dip"
             android:layout_toRightOf="@id/iv_answer_detatils_manager"
             android:layout_centerVertical="true"
-            android:text="渣渣辉"
+            android:text="--"
             />
         <TextView
             android:id="@+id/tv_answer_details_settop"
@@ -44,7 +44,7 @@
             android:paddingLeft="10dip"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="设为置顶"
+            android:text=""
             android:textColor="@color/txt_black1"
             android:textSize="14sp"
             />
@@ -59,7 +59,7 @@
         android:paddingRight="15dip"
         android:paddingBottom="15dip"
         android:background="@color/white"
-        android:text="朝辞白帝彩月间，千里江陵一日还。两岸猿声啼不住，轻舟已过万重山。"
+        android:text="---"
         android:textSize="16sp"
         android:lineSpacingExtra="2dip"
 
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_toRightOf="@id/tv_training_topic_detils"
-            android:text="圈子名称"
+            android:text="--"
             android:textColor="@color/txt_black1"
             android:textSize="12sp"
             />
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="4-12 20:00"
+            android:text="0-01 20:00"
             android:textSize="12sp"
             android:layout_marginRight="15dip"
             android:textColor="@color/txt_mark_gray"

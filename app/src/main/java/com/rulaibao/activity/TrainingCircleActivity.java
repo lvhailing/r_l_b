@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -29,7 +30,7 @@ import butterknife.BindView;
  * 圈子
  */
 
-public class TrainingCircleActivity extends BaseActivity {
+public class TrainingCircleActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.lv_mycircle)
     MyListView lvMycircle;
@@ -48,6 +49,8 @@ public class TrainingCircleActivity extends BaseActivity {
     LinearLayout llMycircleJoin;
     @BindView(R.id.ll_recommend_circle)
     LinearLayout llRecommendCircle;
+    @BindView(R.id.swipe_circle)
+    SwipeRefreshLayout swipeCircle;
 
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
@@ -84,38 +87,44 @@ public class TrainingCircleActivity extends BaseActivity {
         myAppCircle = new MouldList<ResultCircleIndexItemBean>();
         myJoinAppCircle = new MouldList<ResultCircleIndexItemBean>();
         myRecomAppCircle = new MouldList<ResultCircleIndexItemBean>();
-
+        //为SwipeRefreshLayout设置监听事件
+        swipeCircle.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+        swipeCircle.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 //        test();
 
     }
 
     public void initAdapterData() {
 
-        if(myAppCircle.size()==0){
+        if (myAppCircle.size() == 0) {
             llMycircle.setVisibility(View.GONE);
-        }else{
+        } else {
             llMycircle.setVisibility(View.VISIBLE);
         }
 
-        if(myJoinAppCircle.size()==0){
+        if (myJoinAppCircle.size() == 0) {
             llMycircleJoin.setVisibility(View.GONE);
-        }else{
+        } else {
             llMycircleJoin.setVisibility(View.VISIBLE);
         }
 
-        if(myRecomAppCircle.size()==0){
+        if (myRecomAppCircle.size() == 0) {
             llRecommendCircle.setVisibility(View.GONE);
-        }else{
+        } else {
             llRecommendCircle.setVisibility(View.VISIBLE);
         }
 
-        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE,userId);
+        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE, userId);
         lvMycircle.setAdapter(myCircleAdapter);
 
-        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN,userId);
+        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN, userId);
         lvMycircleJoin.setAdapter(joinAdapter);
 
-        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND,userId);
+        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND, userId);
         lvRecommendCircle.setAdapter(recommendAdapter);
 
         lvMycircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,15 +160,6 @@ public class TrainingCircleActivity extends BaseActivity {
 
             }
         });
-
-    }
-
-    public void test() {
-
-        for (int i = 0; i < 3; i++) {
-
-            arrayList.add(new TestBean("渣渣辉" + i));
-        }
 
     }
 
@@ -203,7 +203,7 @@ public class TrainingCircleActivity extends BaseActivity {
                     myRecomAppCircle = bean.getMyRecomAppCircle();
 
                     initAdapterData();
-
+                    swipeCircle.setRefreshing(false);
                 } else {
 
                 }
@@ -235,5 +235,10 @@ public class TrainingCircleActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        initData();
     }
 }

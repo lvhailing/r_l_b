@@ -1,83 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_circle_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light"
-    tools:context="com.rulaibao.activity.MainActivity">
-
-    <FrameLayout
-        android:id="@+id/fl_issue_topic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        >
-        <Button
-            android:id="@+id/btn_training_cirlce_details"
-            android:layout_width="match_parent"
-            android:layout_height="40dip"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="30dip"
-            android:layout_marginRight="30dip"
-            android:background="@drawable/shape_ellipse_orange_btn"
-            android:text="@string/training_circle_topic_issue"
-            android:textColor="@color/bg_white"
-            android:textSize="16sp"
-            android:visibility="visible"
-            />
-
-    </FrameLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/sv_circle_details"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_light"
-        android:fillViewport="true"
-        android:orientation="vertical"
-        android:layout_above="@+id/fl_issue_topic"
-        android:scrollbars="none">
-
-
-        <LinearLayout
+        tools:context="com.rulaibao.activity.MainActivity">
+        <FrameLayout
+            android:id="@+id/fl_issue_topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/activity_training_circle_details_top" />
-
-
-            <com.rulaibao.widget.MyListView
-                android:id="@+id/lv_circle_title"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+            <Button
+                android:id="@+id/btn_training_cirlce_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingLeft="10dip"
-                android:paddingRight="10dip">
-
-            </com.rulaibao.widget.MyListView>
-
+                android:layout_height="40dip"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="30dip"
+                android:layout_marginRight="30dip"
+                android:background="@drawable/shape_ellipse_orange_btn"
+                android:text="@string/training_circle_topic_issue"
+                android:textColor="@color/bg_white"
+                android:textSize="16sp"
+                android:visibility="visible" />
+        </FrameLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sv_circle_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fl_issue_topic"
+            android:background="@color/gray_light"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:scrollbars="none">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/lv_circle_talk"
+                android:orientation="vertical">
+                <include layout="@layout/activity_training_circle_details_top" />
+                <com.rulaibao.widget.MyListView
+                    android:id="@+id/lv_circle_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dip"
-                    android:divider="@color/white"
-                    android:dividerHeight="0dip">
-
-                </android.support.v7.widget.RecyclerView>
-
-
+                    android:background="@color/white"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip">
+                </com.rulaibao.widget.MyListView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/lv_circle_talk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dip"
+                        android:divider="@color/white"
+                        android:dividerHeight="0dip">
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
             </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
 
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
 
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
+
+

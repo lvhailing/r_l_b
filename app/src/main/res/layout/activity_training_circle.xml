@@ -1,116 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.rulaibao.activity.MainActivity"
+    android:id="@+id/swipe_circle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.rulaibao.activity.MainActivity"
-    android:background="@color/gray_light"
-    android:fillViewport="true"
-    android:scrollbars="none"
     >
+    <ScrollView
 
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/gray_light"
+        android:fillViewport="true"
+        android:scrollbars="none"
         >
-        <LinearLayout
-            android:id="@+id/ll_mycircle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/training_mycircle"
-                android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginBottom="10dip"
-                />
-            <com.rulaibao.widget.MyListView
-                android:id="@+id/lv_mycircle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray_light"
-                android:dividerHeight="0.5dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-
-                >
-
-            </com.rulaibao.widget.MyListView>
-
-        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_mycircle_join"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/white"
-            android:visibility="gone"
+            android:background="@color/gray_light"
             >
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_mycircle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/training_mycircle_join"
-                android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginBottom="10dip"
-                />
-            <com.rulaibao.widget.MyListView
-                android:id="@+id/lv_mycircle_join"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray_light"
-                android:dividerHeight="0.5dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-
+                android:layout_marginTop="10dip"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="gone"
                 >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/training_mycircle"
+                    android:layout_marginTop="15dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginBottom="10dip"
+                    />
+                <com.rulaibao.widget.MyListView
+                    android:id="@+id/lv_mycircle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/gray_light"
+                    android:dividerHeight="0.5dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
 
-            </com.rulaibao.widget.MyListView>
+                    >
+
+                </com.rulaibao.widget.MyListView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_mycircle_join"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/training_mycircle_join"
+                    android:layout_marginTop="15dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginBottom="10dip"
+                    />
+                <com.rulaibao.widget.MyListView
+                    android:id="@+id/lv_mycircle_join"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/gray_light"
+                    android:dividerHeight="0.5dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+
+                    >
+
+                </com.rulaibao.widget.MyListView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_recommend_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/training_recommend_circle"
+                    android:layout_marginTop="15dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginBottom="10dip"
+
+                    />
+                <com.rulaibao.widget.MyListView
+                    android:id="@+id/lv_recommend_circle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/gray_light"
+                    android:dividerHeight="0.5dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+
+                    >
+                </com.rulaibao.widget.MyListView>
+            </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_recommend_circle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/training_recommend_circle"
-                android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginBottom="10dip"
-
-                />
-            <com.rulaibao.widget.MyListView
-                android:id="@+id/lv_recommend_circle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray_light"
-                android:dividerHeight="0.5dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-
-                >
-            </com.rulaibao.widget.MyListView>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>

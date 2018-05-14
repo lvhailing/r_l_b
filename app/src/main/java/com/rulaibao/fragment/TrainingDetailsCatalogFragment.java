@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultClassDetailsCatalogBean;
@@ -45,7 +46,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     private TrainingClassListAdapter adapter;
     private MouldList<ResultClassIndexItemBean> courseList;
     private String speechmakeId = "";
-    private int page = 0;
+    private int page = 1;
 
 
     private ViewPagerForScrollView vp;
@@ -75,7 +76,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-
+            page = 1;
+            requestData();
 
 //            scrollView.smoothScrollTo(0, 0);
         } else {
@@ -91,7 +93,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
         test();
         courseList = new MouldList<ResultClassIndexItemBean>();
         initRecyclerView();
-        requestData();
+
 
 
     }
@@ -121,21 +123,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
                     adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-                    if(arrayList.size()<30){
-                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    }else{
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
-
-
+                    page++;
+                    requestData();
 
                 }
 
@@ -171,7 +160,17 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                 if (params.result != null) {
 
                     ResultClassDetailsCatalogBean bean = (ResultClassDetailsCatalogBean) params.result;
-                    courseList.addAll(bean.getCourseList());
+
+                    if(bean.getCourseList().size()==0){
+                        if(page!=1){
+                            page--;
+                        }
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                    }else{
+                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        courseList.addAll(bean.getCourseList());
+                    }
+
                     adapter.notifyDataSetChanged();
 //                    course = bean.getCourse();
 //                    setView();

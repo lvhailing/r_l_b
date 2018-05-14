@@ -55,13 +55,22 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
     private int mLoadMoreStatus = 0;
 
     private DiscussReply discussReply;
+    private String speechmakeId = "";
+    private String userId = "";
 
 
-    public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList,DiscussReply discussReply) {
+    public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList,DiscussReply discussReply,String speechmakeId) {
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
         this.discussReply = discussReply;
+        this.speechmakeId = speechmakeId;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -94,14 +103,18 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());
 
             if(arrayList.get(position).getReplys()==null||arrayList.get(position).getReplys().size()==0){
-                holder1.tvDiscussReply.setVisibility(View.VISIBLE);
+
                 holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
-                holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName(),position);
-                    }
-                });
+                if(speechmakeId.equals(userId)){
+                    holder1.tvDiscussReply.setVisibility(View.VISIBLE);
+
+                    holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName(),position);
+                        }
+                    });
+                }
 
             }else{
                 holder1.tvDiscussReply.setVisibility(View.GONE);

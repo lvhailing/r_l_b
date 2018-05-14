@@ -1,19 +1,19 @@
 package com.rulaibao.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
@@ -51,7 +51,7 @@ import butterknife.OnTouch;
  * 话题详情
  */
 
-public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply,MyRecyclerView.OnResizeListener {
+public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener, SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.lv_topic_details)
@@ -62,6 +62,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     EditText etTopicDetails;
     @BindView(R.id.fy_training_topic_details)
     FrameLayout fyTrainingTopicDetails;
+    @BindView(R.id.swipe_topic_details)
+    SwipeRefreshLayout swipeTopicDetails;
 
     private CircularImage iv_answer_detatils_manager;
     private TextView tv_answer_details_manager_name;
@@ -115,6 +117,16 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         appTopicId = getIntent().getStringExtra("appTopicId");
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
+
+
+        //为SwipeRefreshLayout设置监听事件
+        swipeTopicDetails.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+        swipeTopicDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
 //        test();
         initRecyclerView();
 
@@ -123,7 +135,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     public void initRecyclerView() {
 
         lvTopicDetails.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans,TrainingTopicDetailsActivity.this);
+        adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans, TrainingTopicDetailsActivity.this);
 
 //        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvTopicDetails.setOnResizeListener(this);
@@ -193,19 +205,19 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
         tv_answer_details_comment_count.setText(appTopic.getCommentCount() + "评论");
 
-        if(appTopic.getIsManager().equals("yes")){
+        if (appTopic.getIsManager().equals("yes")) {
             tv_answer_details_settop.setVisibility(View.VISIBLE);
 
-        }else{
+        } else {
             tv_answer_details_settop.setVisibility(View.GONE);
         }
 
         tv_answer_details_settop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(appTopic.getIsTop().equals("yes")){      //  已置顶     取消置顶
+                if (appTopic.getIsTop().equals("yes")) {      //  已置顶     取消置顶
                     requestTopData("no");
-                }else{
+                } else {
                     requestTopData("yes");
                 }
 
@@ -215,27 +227,27 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         iv_answer_detailas_zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(appTopic.getLikeStatus().equals("yes")){      //  已点赞     不处理
+                if (appTopic.getLikeStatus().equals("yes")) {      //  已点赞     不处理
 //                    requestLikeData();
-                }else{
+                } else {
                     requestLikeData();
                 }
 
             }
         });
 
-        if(appTopic.getLikeStatus().equals("yes")){
+        if (appTopic.getLikeStatus().equals("yes")) {
             iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zan);
 //            iv_answer_detailas_zan.setClickable(false);
-        }else{
+        } else {
             iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zaned);
 //            iv_answer_detailas_zan.setClickable(true);
         }
 
-        if(appTopic.getIsTop().equals("yes")){
+        if (appTopic.getIsTop().equals("yes")) {
             tv_answer_details_settop.setText("取消置顶");
 
-        }else{
+        } else {
 
             tv_answer_details_settop.setText("设为置顶");
         }
@@ -258,18 +270,18 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicDetailsBean bean = (ResultCircleDetailsTopicDetailsBean) params.result;
-                    if(bean.getFlag().equals("true")){
+                    if (bean.getFlag().equals("true")) {
                         appTopic = bean.getAppTopic();
                         page = 1;
                         requestCircleCommentData();
 //                    initRecyclerView();
                         initHeadData();
 
-                    }else{
-                        if(bean.getCode().equals("1001")){      //  参数错误
+                    } else {
+                        if (bean.getCode().equals("1001")) {      //  参数错误
 
 
-                        }else if(bean.getCode().equals("1002")){        //  该话题已删除
+                        } else if (bean.getCode().equals("1002")) {        //  该话题已删除
                             finish();
                         }
 
@@ -299,17 +311,19 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean) params.result;
-                    if(bean.getList().size()==0&&page!=1){
-                        page--;
+                    if (bean.getList().size() == 0) {
+                        if(page != 1){
+                            page--;
+                        }
+
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                    }else{
+                    } else {
                         commentItemBeans.addAll(bean.getList());
                         adapter.notifyDataSetChanged();
                         adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
                     }
 
-
-
+                    swipeTopicDetails.setRefreshing(false);
                 } else {
 
                 }
@@ -340,44 +354,52 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     @OnClick(R.id.btn_topic_details)
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btn_topic_details:
 
                 String commentContent = etTopicDetails.getText().toString();
 
-                if(TextUtils.isEmpty(commentId)){       //  评论
-                    requestReplyData(commentContent);
-                }else{              //  回复
+                if(TextUtils.isEmpty(userId)){
 
-                    ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
-                    itemBean.setReplyContent(commentContent);
+                    Toast.makeText(TrainingTopicDetailsActivity.this,"未登录",Toast.LENGTH_SHORT).show();
 
-                    itemBean.setReplyId(userId);      //      回复人id
-                    itemBean.setReplyToId(toUserId);    //  被回复人id
+                }else{
 
-                    String realName = "";
-                    try {
-                        realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (TextUtils.isEmpty(commentId)) {       //  评论
+                        hiddenInputLayout();
+                        requestReplyData(commentContent);
+                    } else {              //  回复
+
+                        ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+                        itemBean.setReplyContent(commentContent);
+
+                        itemBean.setReplyId(userId);      //      回复人id
+                        itemBean.setReplyToId(toUserId);    //  被回复人id
+
+                        String realName = "";
+                        try {
+                            realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        itemBean.setReplyName(realName);       //  回复人姓名
+                        itemBean.setReplyToName(replyToName);      //  被回复人姓名
+
+                        commentItemBeans.get(index).getReplys().add(itemBean);
+                        adapter.notifyDataSetChanged();
+                        hiddenInputLayout();
+                        requestReplyData(commentContent);
                     }
 
-                    itemBean.setReplyName(realName);       //  回复人姓名
-                    itemBean.setReplyToName(replyToName);      //  被回复人姓名
-
-                    commentItemBeans.get(index).getReplys().add(itemBean);
-                    adapter.notifyDataSetChanged();
-
-                    requestReplyData(commentContent);
                 }
-
 
                 break;
 
-                default:
+            default:
 
-                    break;
+                break;
 
         }
 
@@ -389,13 +411,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-        if(TextUtils.isEmpty(commentId)){
+        if (TextUtils.isEmpty(commentId)) {
 
             map.put("appTopicId", appTopicId);      //  话题id
             map.put("commentContent", commentContent);
             map.put("userId", userId);
 
-        }else{
+        } else {
 
             map.put("appTopicId", appTopicId);      //  话题id
             map.put("commentId", commentId);
@@ -412,26 +434,25 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
-                    if(bean.getFlag().equals("true")){
+                    if (bean.getFlag().equals("true")) {
 //                        fyTrainingTopicDetails.setVisibility(View.GONE);
 
-                        if(!TextUtils.isEmpty(commentId)){      //  回复
+                        if (!TextUtils.isEmpty(commentId)) {      //  回复
 //                            ResultCircleDetailsTopicCommentReplyItemBean replyItemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
 //                            replyItemBean.setReplyContent(commentContent);
 //                            replyItemBean.setReplyId(replyId);
 //                            replyItemBean.setReplyToName(replyToName);
 //                            commentItemBeans.get(index).getReplys().add(replyItemBean);
                             commentId = "";
-                            hiddenInputLayout();
-                        }else{          //  评论
-                            hiddenInputLayout();
+
+                        } else {          //  评论
                             page = 1;
                             commentItemBeans.clear();
                             requestCircleCommentData();
                         }
 
 
-                    }else{
+                    } else {
 
                     }
 
@@ -461,16 +482,16 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
-                    if(bean.getFlag().equals("true")){
-                        if(appTopic.getLikeStatus().equals("yes")){
+                    if (bean.getFlag().equals("true")) {
+                        if (appTopic.getLikeStatus().equals("yes")) {
                             iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zaned);
                             appTopic.setLikeStatus("no");
                             int count = Integer.parseInt(appTopic.getLikeCount());
-                            appTopic.setLikeCount((count-1)+"");
+                            appTopic.setLikeCount((count - 1) + "");
 //                            iv_answer_detailas_zan.setClickable(false);
-                        }else{
+                        } else {
                             int count = Integer.parseInt(appTopic.getLikeCount());
-                            appTopic.setLikeCount((count+1)+"");
+                            appTopic.setLikeCount((count + 1) + "");
                             iv_answer_detailas_zan.setImageResource(R.mipmap.img_answer_zan);
 //                            iv_answer_detailas_zan.setClickable(true);
                             appTopic.setLikeStatus("yes");
@@ -478,7 +499,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                         iv_answer_detailas_zan.setClickable(true);
                         tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
 
-                    }else{
+                    } else {
 
                     }
 
@@ -509,17 +530,17 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
-                    if(bean.getFlag().equals("true")){
-                        if(appTopic.getIsTop().equals("yes")){
+                    if (bean.getFlag().equals("true")) {
+                        if (appTopic.getIsTop().equals("yes")) {
                             tv_answer_details_settop.setText("设为置顶");
 
                             appTopic.setIsTop("no");
-                        }else{
+                        } else {
                             tv_answer_details_settop.setText("取消置顶");
                             appTopic.setIsTop("yes");
                         }
 
-                    }else{
+                    } else {
 
                     }
 
@@ -530,7 +551,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             }
         });
     }
-
 
 
     @Override
@@ -561,12 +581,12 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     // 回复回调
     @Override
-    public void reply(String commentId,String toUserId,String replyToName,int index) {
+    public void reply(String commentId, String toUserId, String replyToName, int index) {
         this.commentId = commentId;
         this.toUserId = toUserId;
         this.replyToName = replyToName;
         this.index = index;
-        etTopicDetails.setHint("回复"+replyToName+"：");
+        etTopicDetails.setHint("回复" + replyToName + "：");
 
         setBottomOffset(index);
 
@@ -581,7 +601,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         int index = layoutManager.findFirstVisibleItemPosition();
 //        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
 //        int index = 0;
-        if(index > position){
+        if (index > position) {
             index = position;
         }
         bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
@@ -594,7 +614,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private boolean deal(int position) {
         if (isShowComment.get()) {
             if (oldPosition != position) {
-                int offset = -(lvTopicDetails.getHeight() - bottomOffset - fyTrainingTopicDetails.getHeight() );
+                int offset = -(lvTopicDetails.getHeight() - bottomOffset);
                 putOffset(offset);
             }
             return true;
@@ -618,10 +638,9 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     private void putOffset(int offset) {
-        lvTopicDetails.smoothScrollBy(offset, 1000);
+        lvTopicDetails.smoothScrollBy(0, offset);
         oldPosition = position;
     }
-
 
 
     //  隐藏键盘
@@ -630,16 +649,33 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         isShowComment.set(false);
         etTopicDetails.setText("");
         etTopicDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+        commentId = "";
 //        flAnswerDetails.setVisibility(View.GONE);
         InputMethodUtils.hiddenSoftKeyboard(this);
+    }
+
+    public int getItemHeight(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) lvTopicDetails.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition()-1;
+//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if (position > index) {
+            position = index;
+        }
+        int set = lvTopicDetails.getChildAt(index - position).getHeight();
+        return set;
     }
 
 
     @Override
     public void OnResize(int w, int h, int oldw, int oldh) {
         if (oldh > h) {
-            int offset = (oldh - h + fyTrainingTopicDetails.getHeight()) - (oldh - bottomOffset);
+            int offset = (oldh - h + getItemHeight()) - (oldh - bottomOffset);
             putOffset(offset);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        initData();
     }
 }

@@ -1,15 +1,12 @@
 package com.rulaibao.activity;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,13 +24,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingAskDetailsListAdapter;
-import com.rulaibao.adapter.TrainingAskListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskDetailsAnswerBean;
 import com.rulaibao.bean.ResultAskDetailsAnswerItemBean;
 import com.rulaibao.bean.ResultAskDetailsBean;
-import com.rulaibao.bean.ResultAskIndexBean;
 import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -59,13 +50,15 @@ import butterknife.OnClick;
  * 问题详情
  */
 
-public class TrainingAskDetailsActivity extends BaseActivity {
+public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
 
     @BindView(R.id.lv_ask_details)
     RecyclerView lvAskDetails;
     @BindView(R.id.tv_ask_details_answer)
     TextView tvAskDetailsAnswer;
+    @BindView(R.id.swipe_ask_details)
+    SwipeRefreshLayout swipeAskDetails;
 
 
     private TextView tv_ask_detais_sort;        //
@@ -111,6 +104,15 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         questionId = getIntent().getStringExtra("questionId");
         detailsBean = new ResultAskDetailsBean();
         list = new MouldList<ResultAskDetailsAnswerItemBean>();
+
+        //为SwipeRefreshLayout设置监听事件
+        swipeAskDetails.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+        swipeAskDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         initRecyclerView();
 
     }
@@ -174,15 +176,15 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
                     detailsBean = (ResultAskDetailsBean) params.result;
 //                    indexItemBeans = b.getList();
-                    if(detailsBean.getFlag().equals("true")){
+                    if (detailsBean.getFlag().equals("true")) {
                         setView(detailsBean);
-                    }else{
-                        if(detailsBean.getCode().equals("1001")){      //  参数错误
+                    } else {
+                        if (detailsBean.getCode().equals("1001")) {      //  参数错误
 
 
-                        }else if(detailsBean.getCode().equals("1002")){        //  该问题已删除
+                        } else if (detailsBean.getCode().equals("1002")) {        //  该问题已删除
 
-                            Toast.makeText(TrainingAskDetailsActivity.this,"该问题已删除",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TrainingAskDetailsActivity.this, "该问题已删除", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
@@ -213,9 +215,10 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
                     ResultAskDetailsAnswerBean b = (ResultAskDetailsAnswerBean) params.result;
 
-                    if (b.getList().size() == 0 && page != 1) {     //  非首次的无数据情况
-
-                        page--;
+                    if (b.getList().size() == 0) {     //
+                        if (page != 1) {          //  非首次的无数据情况
+                            page--;
+                        }
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     } else {
@@ -228,7 +231,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                     }
 
                     adapter.notifyDataSetChanged();
-
+                    swipeAskDetails.setRefreshing(false);
                 } else {
 
                 }
@@ -504,5 +507,10 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        initData();
     }
 }

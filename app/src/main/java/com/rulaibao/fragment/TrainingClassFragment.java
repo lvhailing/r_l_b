@@ -139,10 +139,13 @@ public class TrainingClassFragment extends BaseFragment {
                 if(params.result!=null){
 
                     ResultClassIndexBean bean = (ResultClassIndexBean)params.result;
-                    if(bean.getCourseList().size()==0&&page!=1){
+                    if(bean.getCourseList().size()==0){
 
+                        if(page!=1){
+                            page--;
+                        }
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                        page--;
+
                     }else{
                         courseList.addAll(bean.getCourseList());
                         adapter.notifyDataSetChanged();

@@ -144,10 +144,12 @@ public class TrainingAakFragment extends BaseFragment {
                 if(params.result!=null){
 
                     ResultAskIndexBean b = (ResultAskIndexBean)params.result;
-                    if(b.getList().size()==0 && page!=1){
-
+                    if(b.getList().size()==0){
+                        if(page!=1){
+                            page--;
+                        }
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        page--;
+
 
                     }else{
                         indexItemBeans.addAll(b.getList());

@@ -47,7 +47,7 @@ import butterknife.OnTouch;
  */
 
 @SuppressLint("ValidFragment")
-public class TrainingDetailsDiscussFragment extends BaseFragment implements TrainingClassDiscussAdapter.DiscussReply,MyRecyclerView.OnResizeListener {
+public class TrainingDetailsDiscussFragment extends BaseFragment implements TrainingClassDiscussAdapter.DiscussReply, MyRecyclerView.OnResizeListener {
 
 
     @BindView(R.id.tv_introduction_discuss_count)
@@ -69,6 +69,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
 
     private String string = "";
     private String courseId = "";
+    private String speechmakeId = "";
     private String toUserId = "";
     private String commentId = "";
     private int page = 1;
@@ -129,7 +130,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         };
 
         lvDiscuss.setLayoutManager(layoutManager);
-        adapter = new TrainingClassDiscussAdapter(getActivity(), list, TrainingDetailsDiscussFragment.this);
+        adapter = new TrainingClassDiscussAdapter(getActivity(), list, TrainingDetailsDiscussFragment.this, speechmakeId);
         lvDiscuss.setOnResizeListener(this);
         lvDiscuss.setAdapter(adapter);
 
@@ -170,10 +171,11 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             courseId = getArguments().getString("courseId");
-            if(list!=null){
+            speechmakeId = getArguments().getString("courseId");
+            if (list != null) {
                 list.clear();
             }
-            page=1;
+            page = 1;
             requestData();
 //            scrollView.smoothScrollTo(0, 0);
         } else {
@@ -198,11 +200,14 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                 if (params.result != null) {
 
                     ResultClassDetailsDiscussBean bean = (ResultClassDetailsDiscussBean) params.result;
-                    if(bean.getList().size()==0&&page!=1){
-                        page--;
+                    if (bean.getList().size() == 0) {
+                        if (page != 1) {
+                            page--;
+                        }
+
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }else{
-                        tvIntroductionDiscussCount.setText("总共"+bean.getTotal()+"条研讨");
+                    } else {
+                        tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
                         list.addAll(bean.getList());
                         adapter.notifyDataSetChanged();
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
@@ -310,7 +315,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
             requestReply(commentContent);
 
         }
-
 
 
     }

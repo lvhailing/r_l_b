@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -48,7 +49,7 @@ import butterknife.OnTouch;
  * 回答详情
  */
 
-public class TrainingAnswerDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply,MyRecyclerView.OnResizeListener {
+public class TrainingAnswerDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener,SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.lv_answer_details)
@@ -59,6 +60,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     EditText etAnswerDetails;
     @BindView(R.id.fl_answer_details)
     FrameLayout flAnswerDetails;
+    @BindView(R.id.swipe_answer_details)
+    SwipeRefreshLayout swipeAnswerDetails;
 
     private TextView tv_answer_details_title;       //  标题
     private CircularImage iv_answer_detatils_manager;       //  touxiang
@@ -79,7 +82,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     private String commentId = "";
     private String toUserId = "";
     private String replyToName = "";
-    private int index = 0;
+    private int index = 0;      //  当前item的位置
     private ResultAnswerDetailsBean detailsBean;
 
     private int oldPosition = 0;
@@ -110,6 +113,17 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         answerId = getIntent().getStringExtra("answerId");
         detailsBean = new ResultAnswerDetailsBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
+
+
+
+        //为SwipeRefreshLayout设置监听事件
+        swipeAnswerDetails.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+        swipeAnswerDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         initRecyclerView();
 
     }
@@ -212,9 +226,11 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean) params.result;
-                    if (bean.getList().size() == 0 && page != 1) {
+                    if (bean.getList().size() == 0) {
+                        if (page != 1) {
+                            page--;
+                        }
 
-                        page--;
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     } else {
@@ -226,6 +242,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                     }
 
                     adapter.notifyDataSetChanged();
+                    swipeAnswerDetails.setRefreshing(false);
+
                 } else {
 
                 }
@@ -348,31 +366,38 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         String commentContent = etAnswerDetails.getText().toString();
 
-        if (TextUtils.isEmpty(commentId)) {       //  评论
+        if(TextUtils.isEmpty(userId)){
 
-            requestReplyData(commentContent);
+            Toast.makeText(TrainingAnswerDetailsActivity.this,"未登录",Toast.LENGTH_SHORT).show();
 
-        } else {              //  回复
+        }else{
+            if (TextUtils.isEmpty(commentId)) {       //  评论
 
-            ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
-            itemBean.setReplyContent(commentContent);
+                requestReplyData(commentContent);
+                hiddenInputLayout();
+            } else {              //  回复
 
-            itemBean.setReplyId(userId);      //      回复人id
-            itemBean.setReplyToId(toUserId);    //  被回复人id
+                ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+                itemBean.setReplyContent(commentContent);
 
-            String realName = "";
-            try {
-                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-            } catch (Exception e) {
-                e.printStackTrace();
+                itemBean.setReplyId(userId);      //      回复人id
+                itemBean.setReplyToId(toUserId);    //  被回复人id
+
+                String realName = "";
+                try {
+                    realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                itemBean.setReplyName(realName);       //  回复人姓名
+                itemBean.setReplyToName(replyToName);      //  被回复人姓名
+
+                commentItemBeans.get(index).getReplys().add(itemBean);
+                adapter.notifyDataSetChanged();
+                requestReplyData(commentContent);
+                hiddenInputLayout();
             }
-
-            itemBean.setReplyName(realName);       //  回复人姓名
-            itemBean.setReplyToName(replyToName);      //  被回复人姓名
-
-            commentItemBeans.get(index).getReplys().add(itemBean);
-            adapter.notifyDataSetChanged();
-            requestReplyData(commentContent);
 
         }
 
@@ -408,17 +433,17 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                         if (!TextUtils.isEmpty(commentId)) {      //  回复
 
                             commentId = "";
-                            hiddenInputLayout();
+
                         } else {          //  评论
-                            hiddenInputLayout();
                             page = 1;
                             commentItemBeans.clear();
                             requestComment();
                         }
 
 
-
                     } else {
+
+                        Toast.makeText(TrainingAnswerDetailsActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -474,13 +499,12 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvAnswerDetails.getLayoutManager();
         int index = layoutManager.findFirstVisibleItemPosition();
-//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
-        if(index > position){
+        if (index > position) {
             index = position;
         }
 
         bottomOffset = lvAnswerDetails.getChildAt(position - index).getBottom();
-        if (!deal(position)) showInputLyaout();
+         if (!deal(position)) showInputLyaout();
     }
 
     private AtomicBoolean isShowComment = new AtomicBoolean(false);
@@ -488,7 +512,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     private boolean deal(int position) {
         if (isShowComment.get()) {
             if (oldPosition != position) {
-                int offset = -(lvAnswerDetails.getHeight() - bottomOffset - flAnswerDetails.getHeight());
+                int height = lvAnswerDetails.getHeight();
+                int offset = -(height - bottomOffset);
                 putOffset(offset);
             }
             return true;
@@ -507,15 +532,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
     private void showInputLyaout() {
         isShowComment.set(true);
-//        flAnswerDetails.setVisibility(View.VISIBLE);
         InputMethodUtils.showSoftKeyboard(etAnswerDetails);
     }
 
     private void putOffset(int offset) {
-        lvAnswerDetails.smoothScrollBy(offset, 1000);
-        oldPosition = position;
+        lvAnswerDetails.smoothScrollBy(0, offset);
+        oldPosition = index;
     }
-
 
 
     //  隐藏键盘
@@ -524,16 +547,32 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         isShowComment.set(false);
         etAnswerDetails.setText("");
         etAnswerDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+        commentId = "";
 //        flAnswerDetails.setVisibility(View.GONE);
         InputMethodUtils.hiddenSoftKeyboard(this);
+    }
+
+    public int getItemHeight(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) lvAnswerDetails.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition()-1;
+//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if (position > index) {
+            position = index;
+        }
+        int set = lvAnswerDetails.getChildAt(index - position).getHeight();
+        return set;
     }
 
     @Override
     public void OnResize(int w, int h, int oldw, int oldh) {
         if (oldh > h) {
-            int offset = (oldh - h + flAnswerDetails.getHeight()) - (oldh - bottomOffset);
+            int offset = (oldh - h + getItemHeight()) - (oldh - bottomOffset);
             putOffset(offset);
         }
     }
 
+    @Override
+    public void onRefresh() {
+        initData();
+    }
 }

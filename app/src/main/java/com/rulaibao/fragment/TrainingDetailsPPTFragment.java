@@ -103,24 +103,6 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            test();
-//                        }
-//                    }, 2000);
-                    if(arrayList.size()<30){
-                        test();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
-                    }else{
-
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-                    }
-
-
-
                 }
 
             }
@@ -155,6 +137,9 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
                 if (params.result != null) {
 
                     ResultClassDetailsPPTBean bean = (ResultClassDetailsPPTBean) params.result;
+
+                    adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+
                     pptImgs.addAll(bean.getPptImgs());
                     adapter.notifyDataSetChanged();
 

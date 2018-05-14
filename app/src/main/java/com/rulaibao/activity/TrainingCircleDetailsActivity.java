@@ -2,6 +2,7 @@ package com.rulaibao.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,13 +44,15 @@ import butterknife.OnClick;
  * 圈子详情
  */
 
-public class TrainingCircleDetailsActivity extends BaseActivity {
+public class TrainingCircleDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
 
     @BindView(R.id.tv_circle_details_name)
     TextView tvCircleDetailsName;
     @BindView(R.id.sv_circle_details)
     NestedScrollView svCircleDetails;
+    @BindView(R.id.swipe_circle_details)
+    SwipeRefreshLayout swipeCircleDetails;
     private String status = "";      //  当前圈子状态  other 其他圈子    mine  我的圈子   join 我加入的圈子
     private static final String authority = "";
 
@@ -145,6 +148,16 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
         topAppTopics = new MouldList<ResultCircleDetailsTopItemBean>();
         appTopics = new MouldList<ResultCircleDetailsTopicItemBean>();
         appCircle = new ResultCircleDetailsItemBean();
+
+
+
+        //为SwipeRefreshLayout设置监听事件
+        swipeCircleDetails.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+        swipeCircleDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         initTopicAdapterData();
     }
@@ -271,9 +284,10 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicListBean bean = (ResultCircleDetailsTopicListBean) params.result;
-                    if (bean.getAppTopics().size() == 0 && page != 1) {     //  非首次的无数据情况
-
-                        page--;
+                    if (bean.getAppTopics().size() == 0) {     //  无数据情况
+                        if(page != 1){      //  非首次的处理
+                            page--;
+                        }
                         myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     } else {
@@ -283,7 +297,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
                         appTopics.addAll(bean.getAppTopics());
 
                     }
-
+                    swipeCircleDetails.setRefreshing(false);
 
                 } else {
 
@@ -383,7 +397,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
 
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入
 
-                        requestAddCircle();
+                    requestAddCircle();
 
                 }
 
@@ -428,5 +442,10 @@ public class TrainingCircleDetailsActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        initData();
     }
 }
