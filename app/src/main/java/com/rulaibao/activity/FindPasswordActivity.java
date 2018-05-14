@@ -3,7 +3,6 @@ package com.rulaibao.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,7 +11,6 @@ import android.text.InputType;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,8 +30,6 @@ import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.LinkedHashMap;
-
-import static android.graphics.Typeface.*;
 
 /**
  * 密码找回
@@ -99,7 +95,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null))
                 .setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
-                .setCenterText(getResources().getString(R.string.findpassword_titile))
+                .setCenterText(getResources().getString(R.string.find_password_title))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override

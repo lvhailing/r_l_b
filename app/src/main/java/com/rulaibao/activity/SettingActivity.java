@@ -180,7 +180,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.rl_setting_change_login_password: // 修改登录密码
-                intent = new Intent(SettingActivity.this, FindPasswordActivity.class);
+                intent = new Intent(SettingActivity.this, ModifyPasswordActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rl_setting_invite: //  推荐app给好友

@@ -111,18 +111,25 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void setData(UnreadNewsCount2B data) {
+        // 佣金消息
         if (!TextUtils.isEmpty(data.getCommission()) && Integer.parseInt(data.getCommission())!=0) {
             tv_commission_news_number.setVisibility(View.VISIBLE);
             tv_commission_news_number.setText(data.getCommission());
         }
+
+        // 保单消息
         if (!TextUtils.isEmpty(data.getInsurance()) && Integer.parseInt(data.getInsurance())!=0) {
             tv_policy_news_number.setVisibility(View.VISIBLE);
             tv_policy_news_number.setText(data.getInsurance());
         }
+
+        // 互动消息
         if (!TextUtils.isEmpty(data.getComment()) && Integer.parseInt(data.getComment())!=0) {
             tv_interaction_news_number.setVisibility(View.VISIBLE);
             tv_interaction_news_number.setText(data.getComment());
         }
+
+        // 圈子新成员
         if (!TextUtils.isEmpty(data.getCircle()) && Integer.parseInt(data.getCircle())!=0) {
             tv_circle_news_number.setVisibility(View.VISIBLE);
             tv_circle_news_number.setText(data.getCircle());
@@ -136,19 +143,31 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener{
             case R.id.rl_commission: // 佣金消息
                 intent = new Intent(this, CommissionNewsActivity.class);
                 startActivity(intent);
+                if (!TextUtils.isEmpty(data.getCommission())) {
+                    tv_commission_news_number.setVisibility(View.GONE);
+                }
                 tv_commission_news_number.setVisibility(View.GONE);
                 break;
             case R.id.rl_policy: // 保单消息
                 intent = new Intent(this,PolicyNewsActivity.class);
                 startActivity(intent);
+                if (!TextUtils.isEmpty(data.getInsurance()) && Integer.parseInt(data.getInsurance())!=0) {
+                    tv_policy_news_number.setVisibility(View.GONE);
+                }
                 break;
             case R.id.rl_interaction: // 互动消息
                 intent = new Intent(this, InteractiveNewsActivity.class);
                 startActivity(intent);
+                if (!TextUtils.isEmpty(data.getComment()) && Integer.parseInt(data.getComment())!=0) {
+                    tv_interaction_news_number.setVisibility(View.GONE);
+                }
                 break;
             case R.id.rl_new_members_circle: // 圈子新成员消息
                 intent = new Intent(this, NewMembersOfCircleActivity.class);
                 startActivity(intent);
+                if (!TextUtils.isEmpty(data.getCircle()) && Integer.parseInt(data.getCircle())!=0) {
+                    tv_circle_news_number.setVisibility(View.GONE);
+                }
                 break;
         }
     }

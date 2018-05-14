@@ -75,7 +75,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
     private String post; // 从业岗位
     private String status; // 认证状态
     private String headPhoto;
-    private String userId = "18032709463185347077"; // 测试userId
+    private String userId = ""; // 测试userId:18032709463185347077
 
     private static int GALLERY_REQUEST_CODE = 2; // 表示选择的是相册--2
     private static int CROP_REQUEST_CODE = 3; // 表示选择的是裁剪--3
@@ -112,7 +112,8 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_sales_certification)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_sales_certification))
+             .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -147,7 +148,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         btn_submit = (Button) findViewById(R.id.btn_submit);
 
         tv_name.setText(realName);
-        et_id_number.setText("110103198005080086");
+        et_id_number.setText(idNo);
         et_employment_post.setText(post);
 
         if ("fail".equals(status)) {

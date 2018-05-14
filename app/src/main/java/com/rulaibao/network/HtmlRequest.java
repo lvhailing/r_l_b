@@ -2256,6 +2256,59 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
+    /**
+     *  修改登录密码
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void modifyPassword(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_SET_PASSWORD_MODIFY;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "修改登录密码：" + data);
+
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+
+                    return b.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
 
     /************************************************* 研修模块start *****************************************************************/
 

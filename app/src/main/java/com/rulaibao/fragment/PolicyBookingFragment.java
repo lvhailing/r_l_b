@@ -43,6 +43,7 @@ public class PolicyBookingFragment extends Fragment {
     private String status;
     private Context context;
     private PolicyBookingList1B data;
+    private String userId = "";
 
 
     public static PolicyBookingFragment newInstance(String param1) {
@@ -102,7 +103,7 @@ public class PolicyBookingFragment extends Fragment {
     public void requestData() {
 
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042709525931594357");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
         param.put("auditStatus", status);
 
@@ -193,5 +194,10 @@ public class PolicyBookingFragment extends Fragment {
         } else if (currentPosition == 4) {
             status = "canceled";  // 已取消
         }
+    }
+
+    public String setUserId(String userId) {
+        this.userId = userId;
+        return userId;
     }
 }

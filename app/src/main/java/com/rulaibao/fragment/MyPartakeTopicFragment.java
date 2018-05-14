@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class MyPartakeTopicFragment extends Fragment {
     private int currentPage = 1;    //当前页
     private Context context;
     private int currentPosition; // 当前tab位置（0：提问，1：话题）
+    private String userId;
 //    private MyAskList1B data;
 
 
@@ -101,9 +103,9 @@ public class MyPartakeTopicFragment extends Fragment {
 
     private void requestTopicData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18032709463185347076");
+        param.put("userId",userId);
         param.put("page", currentPage + "");
-
+        Log.i("hh", this +"--- userId:" + userId);
 
         HtmlRequest.getMyPartakeTopicListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -183,6 +185,10 @@ public class MyPartakeTopicFragment extends Fragment {
 
     public void getCurrentTab(int position) {
         this.currentPosition = position;
+    }
 
+    public String setUserId(String userId) {
+        this.userId = userId;
+        return userId;
     }
 }

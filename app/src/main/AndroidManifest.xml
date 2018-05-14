@@ -325,6 +325,10 @@
             android:name="com.rulaibao.activity.InteractiveNewsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name="com.rulaibao.activity.ModifyPasswordActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

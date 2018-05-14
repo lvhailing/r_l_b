@@ -74,8 +74,8 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             itemViewHolder.tv_interactive_news_name.setText(list.get(position).getReplyName());
             itemViewHolder.tv_interactive_news_date.setText(list.get(position).getCreateTime());
-            itemViewHolder.tv_interactive_news_title.setText("回复我："+list.get(position).getReplyContent());
-            itemViewHolder.tv_interactive_news_reply.setText("我的评论："+list.get(position).getThemeContent());
+            itemViewHolder.tv_interactive_news_title.setText(list.get(position).getReplyContent());
+            itemViewHolder.tv_interactive_news_reply.setText(list.get(position).getThemeContent());
 
             initListener(itemViewHolder.itemView,list.get(position).getType(),position);
         } else if (holder instanceof FooterViewHolder) {
@@ -147,21 +147,22 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View v) { //
                 if ("question".equals(list.get(position).getType())) { // 跳转到提问详情
                     Intent intent = new Intent(mContext,TrainingAskDetailsActivity.class);
-                    intent.putExtra("questionId", "");
+                    intent.putExtra("questionId", list.get(position).getParam1());
                     mContext.startActivity(intent);
                 } else if ("answer".equals(list.get(position).getType())) { //跳转到回答详情
                     Intent intent = new Intent(mContext,TrainingAnswerDetailsActivity.class);
-                    intent.putExtra("questionId", "");
+                    intent.putExtra("questionId", list.get(position).getParam1());
+                    intent.putExtra("answerId", list.get(position).getParam2());
                     mContext.startActivity(intent);
-                }else if ("answer".equals(list.get(position).getType())) { //跳转到话题详情
+                }else if ("topic".equals(list.get(position).getType())) { //跳转到话题详情
                     Intent intent = new Intent(mContext,TrainingTopicDetailsActivity.class);
-                    intent.putExtra("appTopicId", "");
+                    intent.putExtra("appTopicId", list.get(position).getParam1());
                     mContext.startActivity(intent);
-                }else if ("answer".equals(list.get(position).getType())) { //跳转到课程详情
+                }else if ("course".equals(list.get(position).getType())) { //跳转到课程详情
                     Intent intent = new Intent(mContext,TrainingClassDetailsActivity.class);
-                    intent.putExtra("id", "");
-                    intent.putExtra("speechmakeId", "");
-                    intent.putExtra("courseId", "");
+                    intent.putExtra("id", list.get(position).getParam1());
+                    intent.putExtra("speechmakeId", list.get(position).getParam2());
+                    intent.putExtra("courseId", list.get(position).getParam1());
                     mContext.startActivity(intent);
                 }
             }

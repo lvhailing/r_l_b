@@ -82,6 +82,7 @@ public class PolicyRecordListActivity extends BaseActivity {
         titles = new String[]{"全部（）", "待审核（）", "已承保（）", "问题件（）", "回执签收（）"};
         vpAdapter = new PolicyRrcordListVPAdapter(getSupportFragmentManager(), titles, this);
         ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
+        ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).setUserId(userId);
         viewpager.setAdapter(vpAdapter);
         sliding_tabs.setupWithViewPager(viewpager);  //将TabLayout和ViewPager关联起来
         initTitleStyle();
@@ -93,7 +94,7 @@ public class PolicyRecordListActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-//                Log.i("hh", "onPageSelected-----" + this);
+                ((PolicyRecordListFragment) vpAdapter.getItem(position)).setUserId(userId);
                 ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 
@@ -143,7 +144,7 @@ public class PolicyRecordListActivity extends BaseActivity {
             if (tab != null) {
                 View view = getTabView(i);
                 tab.setCustomView(view);
-                Log.i("aaa", "refreshTitleStyle: " + tab);
+//                Log.i("aaa", "refreshTitleStyle: " + tab);
             }
         }
     }

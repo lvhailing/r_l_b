@@ -68,12 +68,14 @@
 
 
     <!-- 找回密码 -->
-    <string name="findpassword_titile">密码找回</string>
-    <string name="findpassword_phone">注册的手机号</string>
-    <string name="findpassword_verify_code_mess">请输入注册手机号收到的短信验证码。</string>
-    <string name="findpassword_password">新密码</string>
-    <string name="findpassword_password_new">确认密码</string>
-    <string name="findpassword_btn">密码重置</string>
+    <string name="find_password_title">密码找回</string>
+    <string name="find_password_phone">注册的手机号</string>
+    <string name="find_password_verify_code_mess">请输入注册手机号收到的短信验证码。</string>
+    <string name="new_password">新密码</string>
+    <string name="old_password">旧密码</string>
+    <string name="find_password_password_new">确认密码</string>
+    <string name="find_password_btn">密码重置</string>
+    <string name="btn_sure">确定</string>
 
 
     <!-- 手势密码 -->
@@ -139,6 +141,7 @@
     <string name="setting_title">设置</string>
     <string name="txt_setting_gesture_password">手势密码</string>
     <string name="setting_change_login_password">修改登录密码</string>
+    <string name="setting_modify_password">修改密码</string>
     <string name="setting_invite">推荐APP给好友</string>
     <string name="setting_contact_customer_service">联系客服</string>
     <string name="setting_platform_bulletin">平台公告</string>

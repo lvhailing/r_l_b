@@ -44,6 +44,7 @@ public class PolicyRecordListFragment extends Fragment {
     private Context context;
     private PolicyRecordList1B data;
     private String status = "";
+    private String userId = "";
 
 
     public static PolicyRecordListFragment newInstance(String param1) {
@@ -81,8 +82,6 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
-            Log.i("hh", "setUserVisibleHint-----" + this);
-
             requestData();
         }
     }
@@ -144,11 +143,12 @@ public class PolicyRecordListFragment extends Fragment {
 
     public void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042513234098822058");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
         param.put("status", status);
 
-        Log.i("aaa", this + " requestAskData status: " + status);
+        Log.i("hh", this + " requestAskData userId: " + userId);
+        Log.i("hh", this + " requestAskData status: " + status);
 
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -201,5 +201,8 @@ public class PolicyRecordListFragment extends Fragment {
         }
     }
 
-
+    public String setUserId(String userId) {
+        this.userId = userId;
+        return userId;
+    }
 }

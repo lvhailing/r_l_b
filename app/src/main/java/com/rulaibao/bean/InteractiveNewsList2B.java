@@ -17,6 +17,8 @@ public class InteractiveNewsList2B implements IMouldType {
     private String replyPhoto;  //回复人头像
     private String replyName;  //回复人姓名
     private String targetName;  //被回复人姓名
+    private String param1;  //跳转参数1
+    private String param2;  //跳转参数2(详情接口如不需要则为空白字符串)
 
     public String getType() {
         return type;
@@ -80,5 +82,21 @@ public class InteractiveNewsList2B implements IMouldType {
 
     public void setTargetName(String targetName) {
         this.targetName = targetName;
+    }
+
+    public String getParam1() {
+        return param1;
+    }
+
+    public void setParam1(String param1) {
+        this.param1 = param1;
+    }
+
+    public String getParam2() {
+        return param2;
+    }
+
+    public void setParam2(String param2) {
+        this.param2 = param2;
     }
 }

@@ -148,7 +148,7 @@ public class RecommendRecordActivity extends BaseActivity{
 
     private void getRecommendRecordData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042617666660552139");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
 
         HtmlRequest.getRecommendRecordData(RecommendRecordActivity.this, param, new BaseRequester.OnRequestListener() {

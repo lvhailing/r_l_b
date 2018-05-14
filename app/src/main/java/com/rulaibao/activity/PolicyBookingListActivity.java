@@ -72,6 +72,7 @@ public class PolicyBookingListActivity extends BaseActivity{
 
         vpAdapter = new PolicyBookingVpAdapter(getSupportFragmentManager(), titles, this);
         ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
+        ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).setUserId(userId);
         vp.setAdapter(vpAdapter);
 
         //将TabLayout和ViewPager关联起来

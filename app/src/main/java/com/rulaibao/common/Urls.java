@@ -314,13 +314,8 @@ public class Urls {
     // 我的收藏
     public static final String URL_COLLECTION_LIST = EC_HOST + "collection/list";
 
-
-
-
-
-
-
-
+    // 修改登录密码
+    public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "account/set/password/modify";
 
 
 //==================================================== 我的模块接口 =======================================================

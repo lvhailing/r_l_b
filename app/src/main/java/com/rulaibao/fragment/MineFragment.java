@@ -108,26 +108,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         this.context = context;
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//            if (PreferenceUtil.isLogin()) { // 登录状态
-//                Log.i("hh", this + " ----setUserVisibleHint---" + PreferenceUtil.isLogin());
-//                isLogin = true;
-//                requestData();
-//            } else { //未登录状态
-//                Log.i("hh", this + " ----setUserVisibleHint---" + PreferenceUtil.isLogin());
-//                isLogin = false;
-//            }
-//
-//        }
-//    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        Log.i("hh", this+"----onCreateView");
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_mine, container, false);
             try {
@@ -173,20 +156,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         tv_problem_parts = (TextView) mView.findViewById(R.id.tv_problem_parts);
         tv_return_receipt = (TextView) mView.findViewById(R.id.tv_return_receipt);
 
-//        if (isLogin) {
-//            isLogin = true;
-//            Log.i("hh", "initView---isLogin状态1：--- isLogin=" + isLogin);
-//            ll_user_name.setVisibility(View.VISIBLE);
-//            rl_total_commission.setVisibility(View.VISIBLE);
-//            tv_mine_login.setVisibility(View.GONE);
-//        } else {
-//            isLogin = false;
-//            Log.i("hh", "initView---isLogin状态2：--- isLogin=" + isLogin);
-//            tv_mine_login.setVisibility(View.VISIBLE);
-//            ll_user_name.setVisibility(View.GONE);
-//            rl_total_commission.setVisibility(View.GONE);
-//        }
-
         iv_settings.setOnClickListener(this); // icon_mine_setting
         iv_news.setOnClickListener(this); // icon_mine_news
 
@@ -215,17 +184,18 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         if (PreferenceUtil.isLogin()) {
             isLogin = true;
-            Log.i("hh", this + "----onResume--11--" + isLogin);
+//            Log.i("hh", this + "----onResume--11--" + isLogin);
             ll_user_name.setVisibility(View.VISIBLE);
             rl_total_commission.setVisibility(View.VISIBLE);
             tv_mine_login.setVisibility(View.GONE);
             requestData();
         } else {
             isLogin = false;
-            Log.i("hh", this + "----onResume--22--" + isLogin);
+//            Log.i("hh", this + "----onResume--22--" + isLogin);
             tv_mine_login.setVisibility(View.VISIBLE);
             ll_user_name.setVisibility(View.GONE);
             rl_total_commission.setVisibility(View.GONE);
+            iv_user_photo.setImageResource(R.mipmap.icon_user_photo);
         }
     }
 

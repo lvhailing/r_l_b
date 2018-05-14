@@ -66,6 +66,8 @@ public class MyPartakeActivity extends BaseActivity {
     private void initData() {
         titles = new String[]{"提问", "话题"};
         myPartakeVpAdapter = new MyPartakeVpAdapter(getSupportFragmentManager(), titles, this);
+        ((MyPartakeAskFragment) myPartakeVpAdapter.getItem(0)).setUserId(userId);
+        ((MyPartakeTopicFragment) myPartakeVpAdapter.getItem(1)).setUserId(userId);
         viewpager.setAdapter(myPartakeVpAdapter);
 
         //将TabLayout和ViewPager关联起来
@@ -79,9 +81,11 @@ public class MyPartakeActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    ((MyPartakeAskFragment) myPartakeVpAdapter.getItem(position)).setUserId(userId);
                     MyPartakeAskFragment myPartakeAskFragment = (MyPartakeAskFragment) myPartakeVpAdapter.getItem(position);
                     myPartakeAskFragment.getCurrentTab(position);
                 } else if (position==1){
+                    ((MyPartakeTopicFragment) myPartakeVpAdapter.getItem(position)).setUserId(userId);
                     MyPartakeTopicFragment myPartakeTopicFragment = (MyPartakeTopicFragment) myPartakeVpAdapter.getItem(position);
                     myPartakeTopicFragment.getCurrentTab(position);
                 }

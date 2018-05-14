@@ -65,6 +65,7 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
     private void initData() {
         titles = new String[]{"全部", "意外险", "重疾险", "年金险","医疗险","家财险","企业团体"};
         myCollectionVpAdapter = new MyCollectionVpAdapter(getSupportFragmentManager(), titles, this);
+        ((MyCollectionFragment) myCollectionVpAdapter.getItem(0)).setUserId(userId);
         viewpager.setAdapter(myCollectionVpAdapter);
 
         //将TabLayout和ViewPager关联起来
@@ -78,6 +79,7 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onPageSelected(int position) {
+                ((MyCollectionFragment) myCollectionVpAdapter.getItem(position)).setUserId(userId);
                 ((MyCollectionFragment) myCollectionVpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 

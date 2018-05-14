@@ -38,6 +38,7 @@ public class MyCollectionFragment extends Fragment {
     private Context context;
     private int currentPage = 1;
     private String type;
+    private String userId;
 
 
     public static MyCollectionFragment newInstance(String param1) {
@@ -64,10 +65,12 @@ public class MyCollectionFragment extends Fragment {
 
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18032709463185347076");
+        param.put("userId", userId);
         param.put("page", currentPage + "");
         param.put("category", type);
-        Log.i("hh", "category------" + type);
+
+        Log.i("hh", this+"userId------" + userId);
+        Log.i("hh", this+"category------" + type);
 
         HtmlRequest.getCollectionListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -201,5 +204,10 @@ public class MyCollectionFragment extends Fragment {
         }else if (currentPosition == 7) {
             type = "enterpriseGroup";  //企业团体
         }
+    }
+
+    public String setUserId(String userId) {
+        this.userId = userId;
+        return userId;
     }
 }
