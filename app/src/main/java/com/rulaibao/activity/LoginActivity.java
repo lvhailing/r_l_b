@@ -1,32 +1,26 @@
 package com.rulaibao.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.Login2B;
-import com.rulaibao.bean.OK2B;
 import com.rulaibao.net.UserLogin;
 import com.rulaibao.uitls.PreferenceUtil;
-import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.widget.TitleBar;
 
-import java.security.PrivateKey;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -201,7 +195,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     // 使光标始终在最后位置
                     Editable etable = et_login_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isOpen = true;
                 } else {
                     isOpen = false;
@@ -210,7 +204,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     // 使光标始终在最后位置
                     Editable etable = et_login_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
 
                 break;

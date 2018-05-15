@@ -138,11 +138,13 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
 
         switch (v.getId()) {
             case R.id.btn_submit: // 提交
+                if (TextUtils.isEmpty(et_consulting_questions.getText().toString())||TextUtils.isEmpty(et_phone.getText().toString())) {
+                    btn_submit.setClickable(false);
+                    return;
+                }
                 if (StringUtil.isMobileNO(et_phone.getText().toString())) {
-                    btn_submit.setClickable(true);
                     requestData();
                 } else {
-                    btn_submit.setClickable(false);
                     Toast.makeText(ContactCustomerServiceActivity.this, "您输入的手机号格式不正确", Toast.LENGTH_SHORT).show();
                 }
                 break;

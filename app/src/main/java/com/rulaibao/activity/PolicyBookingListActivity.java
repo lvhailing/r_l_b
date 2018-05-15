@@ -89,6 +89,7 @@ public class PolicyBookingListActivity extends BaseActivity{
             @Override
             public void onPageSelected(int position) {
                 ((PolicyBookingFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
+                ((PolicyBookingFragment) vpAdapter.getItem(position)).setUserId(userId);
             }
 
             @Override

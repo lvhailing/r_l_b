@@ -37,7 +37,7 @@
                     android:id="@+id/rl_setting_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="14dp"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp"
                     android:paddingTop="14dp">
@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:padding="5dp"
                         android:src="@mipmap/icon_mine_setting"/>
 
                     <ImageView
@@ -56,10 +57,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:padding="5dp"
                         android:src="@mipmap/icon_mine_news"/>
                 </RelativeLayout>
 
-                 <!--未读消息总数不为0时显示-->
+                <!--未读消息总数不为0时显示-->
                 <TextView
                     android:id="@+id/tv_message_total"
                     android:layout_width="15dp"
@@ -91,7 +93,7 @@
                         android:scaleType="fitXY"
                         android:src="@mipmap/icon_user_photo"/>
 
-                    <!--用户登录后显示的 布局-->
+                    <!--用户登录后显示的姓名、手机号等 布局-->
                     <LinearLayout
                         android:id="@+id/ll_user_name"
                         android:layout_width="match_parent"
@@ -165,33 +167,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:orientation="vertical"
                 android:paddingBottom="30dp"
                 android:paddingTop="30dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tv_total_commission"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_centerHorizontal="true"
                         android:text="0.00"
                         android:textColor="@color/main_color_yellow"
                         android:textSize="32sp"/>
 
                     <ImageView
-                        android:id="@+id/iv_eye"
+                        android:id="@+id/iv_show_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/tv_total_commission"
-                        android:src="@mipmap/iv_open_password"
-                        android:layout_marginLeft="15dp"/>
+                        android:padding="15dp"
+                        android:src="@mipmap/icon_open_password"
+                        />
                 </RelativeLayout>
 
                 <TextView
@@ -205,7 +206,12 @@
             </LinearLayout>
 
             <ImageView
-                style="@style/iv_right_arrow"/>
+                android:id="@+id/iv_commission_right_arrow"
+                style="@style/iv_right_arrow"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp"/>
+
 
             <View
                 style="@style/v_line"

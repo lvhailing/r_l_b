@@ -98,12 +98,22 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
         HtmlRequest.getRenewalReminderData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
                 if (params.result == null) {
                     Toast.makeText(RenewalReminderActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 RenewalReminderList1B data = (RenewalReminderList1B) params.result;
                 MouldList<RenewalReminderList2B> everyList = data.getList();
+                if (everyList == null) {
+                    return;
+                }
+
                 if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
 
@@ -115,11 +125,11 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                renewalReminderAdapter.notifyDataSetChanged();
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    renewalReminderAdapter.changeMoreStatus(renewalReminderAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    renewalReminderAdapter.changeMoreStatus(renewalReminderAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }

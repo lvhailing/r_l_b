@@ -162,7 +162,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                     // 使光标始终在最后位置
                     Editable etable = et_sign_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isOpen = true;
                 } else {
                     isOpen = false;
@@ -171,7 +171,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                     // 使光标始终在最后位置
                     Editable etable = et_sign_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
 
                 break;

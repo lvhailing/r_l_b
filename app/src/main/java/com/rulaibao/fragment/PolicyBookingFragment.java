@@ -107,7 +107,7 @@ public class PolicyBookingFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("auditStatus", status);
 
-
+        Log.i("hh", "预约列表用户Id:-- " + userId);
         HtmlRequest.getPolicyBookingListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {

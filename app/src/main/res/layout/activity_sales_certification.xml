@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_gray"
+    android:background="@color/bg_gray_new"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,23 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/red3"
-       android:padding="12dp"
+        android:padding="12dp"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
+            android:layout_alignParentRight="true"
             android:src="@drawable/icon_delete"/>
 
         <TextView
             android:id="@+id/tv_certification_status"
-            android:layout_toLeftOf="@id/iv_delete"
-            android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/iv_delete"
+            android:gravity="left"
             android:text=""
             android:textColor="@color/white"
             android:textSize="16sp"/>
@@ -99,6 +99,7 @@
             android:inputType="number"
             android:maxLength="18"
             android:textColor="@color/txt_black1"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp"
             />
     </RelativeLayout>
@@ -136,11 +137,12 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="85dp"
             android:background="@color/transparent"
-            android:hint="请输入您的从业岗位"
             android:gravity="right"
-            android:text=""
+            android:hint="请输入您的从业岗位"
             android:inputType="text"
+            android:text=""
             android:textColor="@color/txt_black1"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp"/>
     </RelativeLayout>
 
@@ -199,4 +201,10 @@
         android:text=" 提交认证"
         android:textColor="@color/white"
         android:textSize="16sp"/>
+
+    <!--占位的View,为了解决部分手机按钮下面区域不能填充父布局背景色-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray_new"/>
 </LinearLayout>

@@ -2,6 +2,8 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,13 @@ import com.rulaibao.activity.TrainingClassDetailsActivity;
 import com.rulaibao.activity.TrainingTopicDetailsActivity;
 import com.rulaibao.bean.InteractiveNewsList2B;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -96,6 +105,26 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         }
 
+    }
+
+    private Bitmap getImageBitmap(String url) {
+        URL imgUrl = null;
+        Bitmap bitmap = null;
+        try {
+            imgUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
+            is.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
     @Override

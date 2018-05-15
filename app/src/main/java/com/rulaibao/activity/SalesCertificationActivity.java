@@ -64,7 +64,7 @@ import java.util.HashMap;
  */
 public class SalesCertificationActivity extends BaseActivity implements View.OnClickListener {
     private RelativeLayout rl_certification_status; // 审核状态
-    private ImageView img_business_card;
+    private ImageView img_business_card; // 名片
     private RelativeLayout rl_business_card; // 名片 布局
     private TextView tv_name; // 真实姓名
     private EditText et_id_number; // 身份证号
@@ -151,16 +151,23 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         et_id_number.setText(idNo);
         et_employment_post.setText(post);
 
-        if ("fail".equals(status)) {
+        if ("fail".equals(status)) { // 认证失败
             rl_certification_status.setVisibility(View.VISIBLE);
             tv_certification_status.setText("认证失败，请提交您的真实信息！");
-            btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
-        } else if ("submit".equals(status)) {
+            btn_submit.setBackgroundResource(R.drawable.shape_gradient_orange);
+            btn_submit.setClickable(true);
+        } else if ("submit".equals(status)) { // 待认证(提交认证信息待审核)
             rl_certification_status.setVisibility(View.VISIBLE);
             tv_certification_status.setText("认证审核中，请您耐心等待我们的反馈！");
             btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
-        } else {
-            rl_certification_status.setVisibility(View.GONE);
+            btn_submit.setClickable(false);
+        } else if ("init".equals(status)) { // 未认证
+            btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
+            btn_submit.setClickable(true);
+        } else if("success".equals(status)){
+            btn_submit.setBackgroundResource(R.drawable.shape_gradient_orange);
+            btn_submit.setText("已认证");
+            btn_submit.setClickable(false);
         }
 
 //        if (!TextUtils.isEmpty(headPhoto)) {
@@ -179,6 +186,71 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         iv_delete.setOnClickListener(this);
         rl_business_card.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_delete: // 关闭状态条布局
+                rl_certification_status.setVisibility(View.GONE);
+                break;
+            case R.id.rl_business_card: // 名片
+                selectPhoto();
+                break;
+            case R.id.btn_submit:  // 提交认证
+                if (TextUtils.isEmpty(realName)) {
+                    btn_submit.setClickable(false);
+                    btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
+                    Toast.makeText(SalesCertificationActivity.this,"真实姓名不能为空",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(idNo)) {
+                    btn_submit.setClickable(false);
+                    btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
+                   Toast.makeText(SalesCertificationActivity.this,"身份证号不能为空",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(post)) {
+                    btn_submit.setClickable(false);
+                    btn_submit.setBackgroundResource(R.drawable.shape_non_clickable);
+                    Toast.makeText(SalesCertificationActivity.this,"从业岗位不能为空",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                requestData();
+                break;
+        }
+    }
+
+    private void requestData() {
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("userId", userId);
+        param.put("position", post);
+        param.put("idNo",idNo);
+        param.put("realName", realName);
+
+        HtmlRequest.UserInfoSubmit(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data != null) {
+                    if (data.getFlag().equals("true")) {
+                        Toast.makeText(SalesCertificationActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(SalesCertificationActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -248,21 +320,6 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
             return null;
         }
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_delete: // 关闭状态条布局
-                rl_certification_status.setVisibility(View.GONE);
-                break;
-            case R.id.rl_business_card: // 上传头像
-                selectPhoto();
-                break;
-            case R.id.btn_submit:  // 提交认证
-                requestData();
-                break;
-        }
     }
 
     private void selectPhoto() {
@@ -469,7 +526,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
             picPath = cursor.getString(columnIndex);
             cursor.close();
         }
-        Log.i(TAG, "imagePath = " + picPath);
+//        Log.i(TAG, "imagePath = " + picPath);
 
         if (picPath != null && (picPath.endsWith(".png") || picPath.endsWith(".PNG") || picPath.endsWith(".jpg") || picPath.endsWith(".JPG"))) {
             Bitmap bm = BitmapFactory.decodeFile(picPath);
@@ -605,35 +662,5 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
     }
 
-    private void requestData() {
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("userId", userId);
-        param.put("position", post);
-        param.put("idNo", "110103198005080086");
-        param.put("realName", realName);
-        HtmlRequest.UserInfoSubmit(this, param, new BaseRequester.OnRequestListener() {
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                OK2B data = (OK2B) params.result;
-                if (data != null) {
-                    if (data.getFlag().equals("true")) {
-                        Toast.makeText(SalesCertificationActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(SalesCertificationActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-    }
 }

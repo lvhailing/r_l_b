@@ -1,6 +1,5 @@
 package com.rulaibao.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,8 +18,6 @@ import com.rulaibao.bean.OK2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
-import com.rulaibao.uitls.StringUtil;
-import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.LinkedHashMap;
@@ -154,7 +151,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_new_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isOpenOne = true;
                 } else {
                     isOpenOne = false;
@@ -163,7 +160,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_new_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.iv_hide_password: //隐藏密码
@@ -177,7 +174,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isOpenTwo = true;
                 } else {
                     isOpenTwo = false;
@@ -186,7 +183,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.btn_sure: // 确定

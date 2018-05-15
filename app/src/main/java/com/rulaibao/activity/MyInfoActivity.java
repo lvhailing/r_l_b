@@ -36,6 +36,7 @@ import com.rulaibao.network.http.AsyncHttpResponseHandler;
 import com.rulaibao.network.http.RequestParams;
 import com.rulaibao.uitls.ImageUtils;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.SelectPhotoDialog;
@@ -249,6 +250,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
     }
 
+    /**
+     *  获取个人信息
+     */
     private void requestUserInfo() {
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
@@ -276,7 +280,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
     private void setData(UserInfo2B data) {
         if (data.getMobile() != null) {
-            tv_phone.setText(data.getMobile());
+            tv_phone.setText(StringUtil.replaceSubString(data.getMobile()));
         }
 
         String url = data.getHeadPhoto();

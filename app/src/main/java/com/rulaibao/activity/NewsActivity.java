@@ -34,7 +34,6 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener{
     private TextView tv_policy_news_number; // 保单消息数
     private TextView tv_interaction_news_number; // 互动消息数
     private TextView tv_circle_news_number; // 圈子新成员数
-    private Intent intent;
     private String newsType;
     private UnreadNewsCount2B data;
 
@@ -139,6 +138,7 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.rl_commission: // 佣金消息
                 intent = new Intent(this, CommissionNewsActivity.class);

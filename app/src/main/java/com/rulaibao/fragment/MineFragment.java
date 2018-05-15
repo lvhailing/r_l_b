@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,6 +40,7 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageUtils;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 
 import java.io.File;
@@ -65,7 +65,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private ImageView iv_news; // icon_mine_news
     private ImageView iv_user_photo; // 用户头像
     private ImageView iv_status; // 认证状态
-    private ImageView iv_eye; //
+    private ImageView iv_show_money; // 显示佣金
+    private ImageView iv_commission_right_arrow; // 点击跳转到交易记录
 
     private LinearLayout ll_user_name; // 登录后显示 的布局
     private RelativeLayout rl_total_commission; // 累计佣金布局
@@ -94,12 +95,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private int messageTotal;
 
     private boolean isLogin = false;
+    private boolean isShowMoney = true; // 默认显示佣金额
 
     /**
      * 图片保存SD卡位置
      */
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";
     private int insuranceWarning;
+    private String totalCommission;
 
 
     @Override
@@ -133,7 +136,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         iv_news = (ImageView) mView.findViewById(R.id.iv_news);
         iv_user_photo = (ImageView) mView.findViewById(R.id.iv_user_photo);
         iv_status = (ImageView) mView.findViewById(R.id.iv_status);
-        iv_eye = (ImageView) mView.findViewById(R.id.iv_eye);
+        iv_show_money = (ImageView) mView.findViewById(R.id.iv_show_money);
+        iv_commission_right_arrow = (ImageView) mView.findViewById(R.id.iv_commission_right_arrow);
 
         ll_user_name = (LinearLayout) mView.findViewById(R.id.ll_user_name);
         rl_total_commission = (RelativeLayout) mView.findViewById(R.id.rl_total_commission);
@@ -161,7 +165,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         tv_mine_login.setOnClickListener(this); // 登录
         iv_user_photo.setOnClickListener(this);  // 用户头像
-        rl_total_commission.setOnClickListener(this);  // 累计佣金
+        iv_show_money.setOnClickListener(this);
+        iv_commission_right_arrow.setOnClickListener(this);  // 累计佣金
         rl_my_policy.setOnClickListener(this); // 我的保单
 
         tv_check_pending.setOnClickListener(this); // 待审核
@@ -205,7 +210,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-            Log.i("hh", "用户的userId---" + userId);
+            Log.i("hh", "当前登录用户的userId --- " + userId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,8 +269,10 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         // 获取用户姓名、手机号、佣金总额
         tv_user_name.setText(data.getRealName());
-        tv_user_phone.setText(data.getMobile());
-        tv_total_commission.setText(data.getTotalCommission() + "元");
+        tv_user_phone.setText(StringUtil.replaceSubString(data.getMobile()));
+
+        totalCommission = data.getTotalCommission();
+        tv_total_commission.setText(totalCommission);
 
         String url = data.getHeadPhoto();
         if (!TextUtils.isEmpty(url)) {
@@ -366,7 +373,20 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             case R.id.iv_user_photo: // 用户头像（跳转到个人信息页）
                 toWhichActivity( MyInfoActivity.class);
                 break;
-            case R.id.rl_total_commission: // 累计佣金
+            case R.id.iv_show_money: // 显示佣金金额
+                if (isShowMoney) {
+                    iv_show_money.setImageResource(R.mipmap.icon_open_password);
+                    if (!TextUtils.isEmpty(totalCommission)) {
+                        tv_total_commission.setText(totalCommission);
+                    }
+                    isShowMoney = false;
+                }else {
+                    isShowMoney = true;
+                    iv_show_money.setImageResource(R.mipmap.icon_hide_password);
+                    tv_total_commission.setText("****");
+                }
+                break;
+            case R.id.iv_commission_right_arrow: // 累计佣金
                 intent = new Intent(context, TransactionRecordActivity.class);
                 intent.putExtra("totalCommission", data.getTotalCommission());
                 startActivity(intent);
@@ -376,45 +396,27 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.rl_my_policy: // 我的保单
-                intent = new Intent(context, PolicyRecordListActivity.class);
-                intent.putExtra("position", 0);
-                startActivity(intent);
+                needPositionToWhichActivity(PolicyRecordListActivity.class,0);
 
                 break;
             case R.id.tv_check_pending: // 待审核
-                intent = new Intent(context, PolicyRecordListActivity.class);
-                intent.putExtra("position", 1);
-                startActivity(intent);
+                needPositionToWhichActivity(PolicyRecordListActivity.class,1);
 
                 break;
             case R.id.tv_underwriting: // 已承保
-                intent = new Intent(context, PolicyRecordListActivity.class);
-                intent.putExtra("position", 2);
-                startActivity(intent);
+                needPositionToWhichActivity(PolicyRecordListActivity.class,2);
                 break;
             case R.id.tv_problem_parts: // 问题件
-                intent = new Intent(context, PolicyRecordListActivity.class);
-                intent.putExtra("position", 3);
-                startActivity(intent);
+                needPositionToWhichActivity(PolicyRecordListActivity.class,3);
                 break;
             case R.id.tv_return_receipt: // 回执签收
-                intent = new Intent(context, PolicyRecordListActivity.class);
-                intent.putExtra("position", 4);
-                startActivity(intent);
+                needPositionToWhichActivity(PolicyRecordListActivity.class,4);
                 break;
             case R.id.rl_renewal_reminder: // 续保提醒
               toWhichActivity(RenewalReminderActivity.class);
                 break;
             case R.id.rl_my_bookings: // 我的预约
-                if (PreferenceUtil.isLogin()) {
-                    intent = new Intent(context, PolicyBookingListActivity.class);
-                    intent.putExtra("position", 0);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
-                    intent = new Intent(context, LoginActivity.class);
-                    startActivity(intent);
-                }
+                needPositionToWhichActivity(PolicyRecordListActivity.class,0);
                 break;
             case R.id.rl_my_ask: // 我的提问
                toWhichActivity(MyAskActivity.class);
@@ -422,16 +424,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             case R.id.rl_my_topic: // 我的话题
                toWhichActivity(MyTopicActivity.class);
                 break;
-            case R.id.rl_my_participation: // 我的参与
-                if (PreferenceUtil.isLogin()) {
-                    intent = new Intent(context, MyPartakeActivity.class);
-                    intent.putExtra("position", 0);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
-                    intent = new Intent(context, LoginActivity.class);
-                    startActivity(intent);
-                }
+            case R.id.rl_my_participation: // 我参与的
+                needPositionToWhichActivity(PolicyRecordListActivity.class,0);
                 break;
             case R.id.rl_my_collection: // 我的收藏
                toWhichActivity( MyCollectionActivity.class);
@@ -440,9 +434,30 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *  未登录时跳转页面调此方法
+     * @param cls
+     */
     private void toWhichActivity(Class cls) {
         if (PreferenceUtil.isLogin()) {
             intent = new Intent(context,cls);
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
+            intent = new Intent(context, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     *  未登录时，跳转需要传位置时调此方法
+     * @param cls
+     * @param pos
+     */
+    private void needPositionToWhichActivity(Class cls, int pos) {
+        if (PreferenceUtil.isLogin()) {
+            intent = new Intent(context,cls);
+            intent.putExtra("position", pos);
             startActivity(intent);
         } else {
             Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();

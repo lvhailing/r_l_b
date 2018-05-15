@@ -154,7 +154,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                     // 使光标始终在最后位置
                     Editable etable = et_findpassword_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isOpenOne = true;
                 } else {
                     isOpenOne = false;
@@ -163,7 +163,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                     // 使光标始终在最后位置
                     Editable etable = et_findpassword_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.iv_hide_password_again: // 隐藏密码
@@ -177,7 +177,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                     // 使光标始终在最后位置
                     Editable etable = et_findpassword_password_again.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password_again.setImageResource(R.mipmap.iv_open_password);
+                    iv_hide_password_again.setImageResource(R.mipmap.icon_open_password);
                     isOpenTwo = true;
                 } else {
                     isOpenTwo = false;
@@ -186,7 +186,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                     // 使光标始终在最后位置
                     Editable etable = et_findpassword_password_again.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password_again.setImageResource(R.mipmap.ic_hide_password);
+                    iv_hide_password_again.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.btn_findpassword: // 密码重置
