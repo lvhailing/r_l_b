@@ -73,7 +73,7 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
                 itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
                 itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
 
-                itemViewHolder.tv_bulletin_title.setTextColor(getResources().getColor(R.color.main_color_yellow));
+//                itemViewHolder.tv_bulletin_title.setTextColor(getResources().getColor(R.color.main_color_yellow));
             } else if ("no".equals(status)) {
                 itemViewHolder.tv_bulletin_title.setText(list.get(position).getTopic());
                 itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
