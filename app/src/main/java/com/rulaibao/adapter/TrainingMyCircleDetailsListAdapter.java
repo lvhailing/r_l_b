@@ -5,40 +5,44 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.activity.TrainingCircleDetailsActivity;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleDetailsTopicItemBean;
-import com.rulaibao.bean.TestBean;
+import com.rulaibao.bean.ResultInfoBean;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
  * 圈子详情--话题列表 adapter
- *
  */
 
 public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
 
+
     private MouldList<ResultCircleDetailsTopicItemBean> arrayList;
     private String circleId = "";
 
-    public TrainingMyCircleDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicItemBean> arrayList,String circleId) {
+    public TrainingMyCircleDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicItemBean> arrayList, String circleId) {
         super(context);
         this.arrayList = arrayList;
         this.circleId = circleId;
@@ -52,9 +56,9 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 
     @Override
     public int getItem() {
-        if(mHeaderView!=null){
+        if (mHeaderView != null) {
             return arrayList.size() + 2;
-        }else{
+        } else {
             return arrayList.size() + 1;
         }
 
@@ -78,6 +82,15 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                     break;
+                case NO_LOAD_BLACK:
+                    //隐藏加载更多  留空白
+                    footerViewHolder.tvFooterMore.setText("");
+                    ViewGroup.LayoutParams lp = footerViewHolder.tvFooterMore.getLayoutParams();
+                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    lp.height = ViewUtils.dip2px(context, 40);//lp.height=LayoutParams.WRAP_CONTENT;
+                    footerViewHolder.tvFooterMore.setLayoutParams(lp);
+//                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
             }
         }
     }
@@ -85,7 +98,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
     @Override
     public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
 
-        View view = layoutInflater.inflate(R.layout.activity_my_circle_details_item, parent,false);
+        View view = layoutInflater.inflate(R.layout.activity_my_circle_details_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -93,13 +106,13 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, int position) {
 
-        ViewHolder holder1 = (ViewHolder) holder;
+        final ViewHolder holder1 = (ViewHolder) holder;
         int index = position;
-        if(getmHeaderView()!=null){
-            index = position-1;
+        if (getmHeaderView() != null) {
+            index = position - 1;
         }
 
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getCreatorPhoto(),holder1.ivTrainingCircleDetailsManager);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getCreatorPhoto(), holder1.ivTrainingCircleDetailsManager);
 
         holder1.tvTrainingCircleDetailsManagerName.setText(arrayList.get(index).getCreatorName());
         holder1.tvCircleDetailsContent.setText(arrayList.get(index).getTopicContent());
@@ -115,19 +128,77 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
                 map.put("appTopicId", arrayList.get(finalIndex).getTopicId());
                 map.put("circleId", circleId);
 
-                RlbActivityManager.toTrainingTopicDetailsActivity((BaseActivity)context, map, false);
+                RlbActivityManager.toTrainingTopicDetailsActivity((BaseActivity) context, map, false);
             }
         });
 
-        if(arrayList.get(index).getLikeStatus().equals("yes")){
+        if (arrayList.get(index).getLikeStatus().equals("yes")) {
             holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zaned_icon);
-        }else {
+        } else {
             holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zan_icon);
         }
 
+        holder1.llCircleDetailsZan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
+
+                if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
+                    requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
+                    holder1.llCircleDetailsZan.setClickable(false);
+                }
+
+//                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+
+    //点赞
+    public void requestLikeData(String appTopicId, final int index) {
+
+        String userId = null;
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+        map.put("appTopicId", appTopicId);      //  话题id
+        map.put("userId", userId);
+//        map.put("likeStatus", likeStatus);
+
+        HtmlRequest.getTrainingCircleZan(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultInfoBean bean = (ResultInfoBean) params.result;
+                    if(bean.getFlag().equals("true")){
+                        arrayList.get(index).setLikeStatus("yes");
+                        int count = Integer.parseInt(arrayList.get(index).getLikeCount());
+                        arrayList.get(index).setLikeCount((count+1)+"");
+                        notifyDataSetChanged();
+                    }else{
+
+                    }
+
+
+                } else {
+
+                }
+            }
+        });
+    }
+
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_training_circle_details_manager)
         CircularImage ivTrainingCircleDetailsManager;
         @BindView(R.id.tv_training_circle_details_manager_name)
@@ -142,7 +213,8 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
         ImageView ivCircleDetailsZan;
         @BindView(R.id.tv_circle_details_zan_count)
         TextView tvCircleDetailsZanCount;
-
+        @BindView(R.id.ll_circle_details_zan)
+        LinearLayout llCircleDetailsZan;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

@@ -100,6 +100,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         fragments = new ArrayList<>();
         listTitles = new ArrayList<>();
 
+//        introdutionFragment = new TrainingDetailsIntroductionFragment(vpClassDetails);
         introdutionFragment = new TrainingDetailsIntroductionFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id",id);
@@ -109,14 +110,17 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         introdutionFragment.setArguments(bundle);
         fragments.add(introdutionFragment);
 
+//        catalogFragment = new TrainingDetailsCatalogFragment(vpClassDetails);
         catalogFragment = new TrainingDetailsCatalogFragment();
         catalogFragment.setArguments(bundle);
         fragments.add(catalogFragment);
 
+//        discussFragment = new TrainingDetailsDiscussFragment(vpClassDetails);
         discussFragment = new TrainingDetailsDiscussFragment();
         discussFragment.setArguments(bundle);
         fragments.add(discussFragment);
 
+//        pptFragment = new TrainingDetailsPPTFragment(vpClassDetails);
         pptFragment = new TrainingDetailsPPTFragment();
         pptFragment.setArguments(bundle);
         fragments.add(pptFragment);
@@ -240,6 +244,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
+        title.setVisibility(View.GONE);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
                 .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_class_details))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {

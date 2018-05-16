@@ -29,7 +29,7 @@ import java.util.LinkedHashMap;
  * Created by junde on 2018/4/16.
  */
 
-public class PlatformBulletinActivity extends BaseActivity implements View.OnClickListener {
+public class PlatformBulletinActivity extends BaseActivity {
 
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
@@ -45,6 +45,7 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
         initTopTitle();
         initView();
         requestData();
+        initListener();
     }
 
     private void initTopTitle() {
@@ -126,10 +127,49 @@ public class PlatformBulletinActivity extends BaseActivity implements View.OnCli
         });
     }
 
-
-    @Override
-    public void onClick(View v) {
-
+    private void initListener() {
+        initPullRefresh();
+        initLoadMoreListener();
     }
 
+    private void initPullRefresh() {
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {  // 下拉刷新
+                currentPage = 1;
+                requestData();
+
+                //刷新完成
+//                swipe_refresh.setRefreshing(false);
+            }
+        });
+    }
+
+    private void initLoadMoreListener() {
+        recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int firstVisibleItem;
+            private int lastVisibleItem;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+                if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==platformBulletinAdapter.getItemCount()&& firstVisibleItem != 0){
+
+                    currentPage ++;
+                    requestData();
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem=layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
 }

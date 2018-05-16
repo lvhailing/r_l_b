@@ -101,7 +101,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     }
 
     public void initData() {
-
+        commentItemBeans.clear();
         page = 1;
         request();
         requestComment();
@@ -237,7 +237,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
                         tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
                         commentItemBeans.addAll(bean.getList());
-                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+
+                        if(commentItemBeans.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
 
                     }
 

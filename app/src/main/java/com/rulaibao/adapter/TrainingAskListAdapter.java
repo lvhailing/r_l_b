@@ -16,6 +16,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskIndexItemBean;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
@@ -54,6 +55,15 @@ public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.View
                 case NO_LOAD_MORE:
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+                case NO_LOAD_BLACK:
+                    //隐藏加载更多  留空白
+                    footerViewHolder.tvFooterMore.setText("");
+                    ViewGroup.LayoutParams lp = footerViewHolder.tvFooterMore.getLayoutParams();
+                    lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    lp.height= ViewUtils.dip2px(context,40);//lp.height=LayoutParams.WRAP_CONTENT;
+                    footerViewHolder.tvFooterMore.setLayoutParams(lp);
+//                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                     break;
             }
         }

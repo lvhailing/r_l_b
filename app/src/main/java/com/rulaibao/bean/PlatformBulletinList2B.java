@@ -14,7 +14,7 @@ public class PlatformBulletinList2B implements IMouldType {
     private String content;     //
     private String publisherName; // 公告发布者
     private String publishTime; // 公告发布时间
-    private String readState;          //  是否阅读（yes:已阅读；no:未阅读）
+    private String readState;  //  是否阅读（yes:已阅读；no:未阅读）
     private String topMark;  // 是否置顶：yes是，no否
 
     public String getId() {

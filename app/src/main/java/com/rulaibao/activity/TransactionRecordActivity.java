@@ -196,6 +196,10 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
         HtmlRequest.getTradeRecordData(TransactionRecordActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
                 if (params.result == null) {
                     Toast.makeText(TransactionRecordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
@@ -204,10 +208,11 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
                 TrackingList1B data = (TrackingList1B) params.result;
                 tv_total_commission.setText(data.getTotalCommission());
                 MouldList<TrackingList2B> everyList = data.getRecordList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if ((everyList.size() == 0) && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
-
-                //没有加载更多了
                     transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
@@ -215,11 +220,11 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                transactionRecordAdapter.notifyDataSetChanged();
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }

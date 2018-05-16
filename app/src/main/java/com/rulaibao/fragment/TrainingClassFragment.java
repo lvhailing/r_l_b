@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultClassIndexBean;
@@ -100,7 +101,7 @@ public class TrainingClassFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
                     page++;
                     requestIndexData();
@@ -144,12 +145,18 @@ public class TrainingClassFragment extends BaseFragment {
                         if(page!=1){
                             page--;
                         }
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     }else{
                         courseList.addAll(bean.getCourseList());
                         adapter.notifyDataSetChanged();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+
+                        if(courseList.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
                     }
 
                 }else{

@@ -96,7 +96,7 @@
             android:layout_centerVertical="true"
             android:background="@color/transparent"
             android:hint="请输入您的身份证号"
-            android:inputType="number"
+            android:inputType="none"
             android:maxLength="18"
             android:textColor="@color/txt_black1"
             android:textCursorDrawable="@drawable/color_cursor"

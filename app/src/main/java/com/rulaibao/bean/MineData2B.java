@@ -7,7 +7,7 @@ public class MineData2B implements IMouldType {
     private String realName; // 用户姓名
     private String mobile; // 手机号
     private String headPhoto; // 头像
-    private String checkStatus; // 认证状态  1.init未认证（未填写认证信息）,2.submit待认证(提交认证信息待审核),3.submit待认证(提交认证信息待审核),4.fail - 认证失败
+    private String checkStatus; // 认证状态  1.init未认证（未填写认证信息）,2.submit待认证(提交认证信息待审核),3.success 认证成功,4.fail - 认证失败
     private String totalCommission; // 累计佣金(元)
     private String messageTotal; // 消息总数
     private String insuranceWarning; // 续保提醒数量

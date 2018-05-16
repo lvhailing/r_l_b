@@ -218,7 +218,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
     }
 
     private void productapponitment() {
-        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("productId", id);
         param.put("productName", name);
         param.put("mobile", phone);
@@ -238,12 +238,19 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
 
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (params==null || params.result==null){
+                    Toast.makeText(ProductAppointmentActivity.this, "加载失败，请确认网络通畅",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {
                         Toast.makeText(ProductAppointmentActivity.this,
                                 b.getMessage(), Toast.LENGTH_LONG)
                                 .show();
+                        Intent intent = new Intent();
+                        setResult(2, intent);
                         finish();
                     } else {
                         Toast.makeText(ProductAppointmentActivity.this,

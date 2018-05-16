@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dip"
             android:layout_toRightOf="@id/iv_training_discuss"
-            android:text="渣渣辉"
+            android:text="---"
             android:textSize="16sp"
             />
         <TextView

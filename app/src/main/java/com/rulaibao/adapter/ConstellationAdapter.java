@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConstellationAdapter extends BaseAdapter {
 
     private Context context;
-    private List<String> list;
+    private ArrayList<String> list;
     private int checkItemPosition = 0;
 
     public void setCheckItem(int position) {
@@ -22,7 +23,7 @@ public class ConstellationAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public ConstellationAdapter(Context context, List<String> list) {
+    public ConstellationAdapter(Context context, ArrayList<String> list) {
         this.context = context;
         this.list = list;
     }

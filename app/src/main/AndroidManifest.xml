@@ -110,65 +110,52 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.rulaibao.activity.TrainingClassActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.rulaibao.activity.TrainingAskActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.rulaibao.activity.TrainingCircleActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.rulaibao.activity.TrainingPromoteActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingClassDetailsActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingToAskActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingAnswerActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingAskDetailsActivity"
 
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <!--android:theme="@style/Theme.InCallScreen"-->
         <activity
             android:name="com.rulaibao.activity.TrainingAnswerDetailsActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingCircleDetailsActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingIssueTopicActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingTopicDetailsActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.rulaibao.activity.TrainingSetAuthorityActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity

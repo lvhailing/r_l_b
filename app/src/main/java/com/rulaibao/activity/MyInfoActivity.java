@@ -153,7 +153,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-//        realName = getIntent().getStringExtra("realName");
 //        headPhoto = getIntent().getStringExtra("headPhoto");
 
         rl_layout_photo = (RelativeLayout) findViewById(R.id.rl_layout_photo);
@@ -263,6 +262,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         }
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
+
         HtmlRequest.getAppUserInfoData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -668,6 +668,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("idNo",data.getIdNo());
                 intent.putExtra("post",data.getPosition());
                 intent.putExtra("status",data.getCheckStatus());
+                intent.putExtra("businessCard",data.getBusiCardPhoto());
                 startActivity(intent);
                 break;
 //            case R.id.layout_name:

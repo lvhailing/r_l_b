@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
@@ -143,7 +144,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
                     page++;
                     requestData();
@@ -205,12 +206,18 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                             page--;
                         }
 
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                     } else {
                         tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
                         list.addAll(bean.getList());
                         adapter.notifyDataSetChanged();
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+
+                        if(list.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
                     }
 
                 } else {

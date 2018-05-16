@@ -3,6 +3,7 @@ package com.rulaibao.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,15 +18,25 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.ResultCheckVersionContentBean;
+import com.rulaibao.common.MyApplication;
+import com.rulaibao.dialog.CheckVersionDialog;
 import com.rulaibao.fragment.HomeFragment;
 import com.rulaibao.fragment.MineFragment;
 import com.rulaibao.fragment.PolicyPlanFragment;
 import com.rulaibao.fragment.TrainingFragment;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.service.AppUpgradeService;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.SystemInfo;
 import com.rulaibao.widget.TitleBar;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -63,6 +74,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private String questionId = "";     //
     private String answerId = "";     //
     private String speechmakeId = "";     //
+
+    private File destDir = null;
 
 
     @Override
@@ -219,7 +232,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData() {
-//        requestData(); //检查版本更新
+        requestData(); //检查版本更新
     }
 
     private void setTab(int pos) {
@@ -308,5 +321,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             lastTime = currentTime;
         }
+    }
+    //检查版本更新
+    private void requestData() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("type", "android");
+        HtmlRequest.checkVersion(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result != null) {
+                    final ResultCheckVersionContentBean b = (ResultCheckVersionContentBean) params.result;
+                    if (!TextUtils.isEmpty(b.getVersion())) {
+                        if (!b.getVersion().equals(SystemInfo.sVersionName)) {
+                            CheckVersionDialog dialog = new CheckVersionDialog(MainActivity.this, new CheckVersionDialog.OnCheckVersion() {
+                                @Override
+                                public void onConfim() {
+                                    Intent updateIntent = new Intent(MainActivity.this, AppUpgradeService.class);
+                                    updateIntent.putExtra("titleId", R.string.app_chinesename);
+                                    updateIntent.putExtra("downloadUrl", b.getUrl());
+                                    MainActivity.this.startService(updateIntent);
+                                }
+
+                                @Override
+                                public void onCancel() {
+                                }
+                            }, "发现新版本,是否更新", "false");
+                            dialog.setCancelable(false);
+                            dialog.show();
+                        } else {
+                            if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+                                if (destDir == null) {
+                                    destDir = new File(Environment.getExternalStorageDirectory().getPath() + MyApplication.mDownloadPath);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        });
     }
 }

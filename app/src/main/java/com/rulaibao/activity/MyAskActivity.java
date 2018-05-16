@@ -93,16 +93,22 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
         HtmlRequest.getMyAskListData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
                 if (params.result == null) {
-                    Toast.makeText(MyAskActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 MyAskList1B data = (MyAskList1B) params.result;
                 MouldList<MyAskList2B> everyList = data.getList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
-
-                    //没有加载更多了
                     myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
@@ -110,11 +116,11 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                myAskAdapter.notifyDataSetChanged();
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }
@@ -130,24 +136,6 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
             public void onRefresh() {  // 下拉刷新
                 currentPage = 1;
                 requestData();
-
-                //刷新完成
-                swipe_refresh.setRefreshing(false);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        List<String> headDatas = new ArrayList<String>();
-//                        for (int i = 20; i <30 ; i++) {
-//                            headDatas.add("Heard Item "+i);
-//                        }
-//                        transactionRecordAdapter.AddHeaderItem(headDatas);
-//
-//                        //刷新完成
-//                        swipe_refresh.setRefreshing(false);
-//                        Toast.makeText(TransactionRecordActivity.this, "更新了 "+headDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, 3000);
-
             }
         });
     }
@@ -162,30 +150,8 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==myAskAdapter.getItemCount()&& firstVisibleItem != 0){
-
-                    //设置正在加载更多
-//                    transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.LOADING_MORE);
-
                     currentPage ++;
                     requestData();
-
-                    //改为网络请求
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //
-//                            List<String> footerDatas = new ArrayList<String>();
-//                            for (int i = 0; i< 10; i++) {
-//                                footerDatas.add("footer  item" + i);
-//                            }
-//                            transactionRecordAdapter.AddFooterItem(footerDatas);
-//                            //设置回到上拉加载更多
-//                            transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
-//                            //没有加载更多了
-//                            //mRefreshAdapter.changeMoreStatus(mRefreshAdapter.NO_LOAD_MORE);
-//                            Toast.makeText(TransactionRecordActivity.this, "更新了 "+footerDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 3000);
                 }
 
             }

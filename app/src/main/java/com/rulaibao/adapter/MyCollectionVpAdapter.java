@@ -32,11 +32,12 @@ public class MyCollectionVpAdapter extends FragmentStatePagerAdapter {
     private void initFragments() {
         fragments = new ArrayList<>();
         fragments.add(MyCollectionFragment.newInstance("全部"));
-        fragments.add(MyCollectionFragment.newInstance("意外险"));
         fragments.add(MyCollectionFragment.newInstance("重疾险"));
         fragments.add(MyCollectionFragment.newInstance("年金险"));
+        fragments.add(MyCollectionFragment.newInstance("终身寿险"));
+        fragments.add(MyCollectionFragment.newInstance("意外险"));
         fragments.add(MyCollectionFragment.newInstance("医疗险"));
-        fragments.add(MyCollectionFragment.newInstance("家财险"));
+        fragments.add(MyCollectionFragment.newInstance("一老一小"));
         fragments.add(MyCollectionFragment.newInstance("企业团体"));
     }
 

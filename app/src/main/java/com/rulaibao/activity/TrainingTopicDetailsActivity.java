@@ -107,7 +107,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     public void initData() {
-
+        page = 1;
+        commentItemBeans.clear();
         requestTopicDetailsData();
 
     }
@@ -318,9 +319,16 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                     } else {
+
                         commentItemBeans.addAll(bean.getList());
                         adapter.notifyDataSetChanged();
-                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+
+                        if(commentItemBeans.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
                     }
 
                     swipeTopicDetails.setRefreshing(false);

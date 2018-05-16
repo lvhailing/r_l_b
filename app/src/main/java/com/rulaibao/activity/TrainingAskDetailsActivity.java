@@ -224,10 +224,15 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                     } else {
 
                         tv_ask_details_ask_count.setText(b.getTotal() + "回答");
-                        adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
-                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
 
                         list.addAll(b.getList());
+
+                        if(list.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
                     }
 
                     adapter.notifyDataSetChanged();

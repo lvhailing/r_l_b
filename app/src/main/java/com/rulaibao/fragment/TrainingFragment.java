@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.LoginActivity;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultAskTypeBean;
 import com.rulaibao.bean.ResultClassIndexBean;
@@ -274,8 +275,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
 //                RlbActivityManager.toTrainingPromoteActivity(getActivity(), false);
 
-                Intent i_login = new Intent(getActivity(), LoginActivity.class);
-                startActivity(i_login);
+                Toast.makeText(context,"该功能暂未开放",Toast.LENGTH_SHORT).show();
+
+//                Intent i_login = new Intent(getActivity(), LoginActivity.class);
+//                startActivity(i_login);
 
 
                 break;
@@ -452,13 +455,20 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 //                    if(){}
                     if (bean.getList().size() == 0 && hotPage != 1) {     //  非首次的无数据情况
                         hotPage--;
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     } else {
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
+//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
 
                         list.addAll(bean.getList());
+
+                        if(list.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
                     }
                     swipeTraining.setRefreshing(false);
                     adapter.notifyDataSetChanged();
@@ -556,6 +566,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                 }
 
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+
+                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
+
                     // 底部
                     hotPage++;
                     requestHotAskData();

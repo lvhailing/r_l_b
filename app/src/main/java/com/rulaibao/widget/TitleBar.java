@@ -108,7 +108,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         rl_top_title_menu = (RelativeLayout) findViewById(R.id.rl_top_title_menu);
         iv_top_title_menu = (ImageView) findViewById(R.id.iv_top_title_menu);
         tv_center = (TextView) findViewById(R.id.title_center);// 中间文字
-        iv_right_btn = (ImageView) findViewById(R.id.iv_right_btn);// 右侧分享按钮
+        iv_right_btn = (ImageView) findViewById(R.id.iv_right_btn);
 
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.move_rightlittle);
         animation.setFillAfter(true);
@@ -829,29 +829,10 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
 //                        } else { // 用户登录,分享时要拼上用户的userId
 //                            shareUrl = Urls.URL_HOUSE_H5_DETAIL + "/" + shareId + "/" + userId;
 //                        }
-//                    }else if(flag.equals("2000")){//保险产品搜索
-//                        Intent intent = new Intent(mContext, SearchActivity.class);
-//                        mContext.startActivity(intent);
-//                    } else if(flag.equals("3000")){//计划书搜索
-//                        Intent intent = new Intent(mContext, SearchForPlanActivity.class);
-//                        mContext.startActivity(intent);
 //                    }
-//                    else if(flag.equals("6000")){//产品预约分享
-//                        Intent intent = new Intent(mContext, SearchForPlanActivity.class);
-//                        mContext.startActivity(intent);
-//                    }
+//
                     if (flag.equals("1000")) {
                         shareUrl = Urls.URL_INSURANCE_DETAILS + "/" + shareId + "/" + userId;
-                    }else if(flag.equals("2000")){//保险产品搜索
-                        Intent intent = new Intent(mContext, SearchActivity.class);
-                        mContext.startActivity(intent);
-                    } else if(flag.equals("3000")){//计划书搜索
-                        Intent intent = new Intent(mContext, SearchForPlanActivity.class);
-                        mContext.startActivity(intent);
-                    }
-                    else if(flag.equals("6000")){//产品预约分享
-                        Intent intent = new Intent(mContext, SearchForPlanActivity.class);
-                        mContext.startActivity(intent);
                     }
                     if (!TextUtils.isEmpty(shareId)) {
                         ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {

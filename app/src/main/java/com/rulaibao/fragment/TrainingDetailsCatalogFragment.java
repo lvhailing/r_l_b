@@ -167,8 +167,15 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                         }
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                     }else{
-                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
                         courseList.addAll(bean.getCourseList());
+
+                        if(courseList.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }
+
+
                     }
 
                     adapter.notifyDataSetChanged();

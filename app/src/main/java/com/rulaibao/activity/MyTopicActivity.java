@@ -94,13 +94,20 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
         HtmlRequest.getMyTopicListData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
                 if (params.result == null) {
                     Toast.makeText(MyTopicActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 MyTopicList1B data = (MyTopicList1B) params.result;
                 MouldList<MyTopicList2B> everyList = data.getList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if ((everyList.size() == 0) && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
 
                     //没有加载更多了
@@ -111,11 +118,11 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                //刷新数据
-                myTopicAdapter.notifyDataSetChanged();
-
-                //设置回到上拉加载更多
-//                recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                    myTopicAdapter.changeMoreStatus(myTopicAdapter.PULLUP_LOAD_MORE);
+                } else {
+                    myTopicAdapter.changeMoreStatus(myTopicAdapter.NO_LOAD_MORE);
+                }
             }
         });
     }

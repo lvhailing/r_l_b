@@ -43,10 +43,11 @@
     <string name="training_toanswer">请认真输入您的回答...(1000字以内)</string>
     <string name="training_commit">提交</string>
 
-
+    <string name="simple_view_behavior">com.rulaibao.test.SimpleViewBehavior</string>
+    <string name="translate_up_down_behavior">com.rulaibao.test.TranslateUpDownBehavior</string>
 
     <!-- 登录 -->
-    <string name="login_title">中国财富领航者！</string>
+    <string name="login_title">道德 专业 平等 利它</string>
     <string name="login_phone">手机号：</string>
     <string name="login_password">密码：</string>
     <string name="login_forget_password">忘记密码？</string>
@@ -113,6 +114,7 @@
     <string name="product_appointment_pay_year_edit">请输入年缴保费</string>
     <string name="product_appointment_insurance_limit_edit">请输入保险期限</string>
     <string name="product_appointment_pay_limit_edit">请输入缴费期限</string>
+    <string name="product_appointment_remark_edit">请输入备注说明</string>
     <string name="product_appointment_btn">提交预约</string>
 
     <!-- 邀请好友内容 -->

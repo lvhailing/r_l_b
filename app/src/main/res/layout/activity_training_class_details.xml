@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="false"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="false"
+        app:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="168dip"
+            app:contentScrim="@color/colorPrimary"
+            app:expandedTitleMarginStart="100dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="@android:color/transparent"
+            app:titleEnabled="false">
+
+            <WebView
+                android:id="@+id/wv_training_class_details"
+                android:layout_width="match_parent"
+                android:layout_height="168dip"
+                android:layerType="hardware">
+            </WebView>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <WebView
-            android:id="@+id/wv_training_class_details"
-            android:layout_width="match_parent"
-            android:layout_height="168dip"
-            android:layerType="hardware">
-        </WebView>
-
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
         <android.support.design.widget.TabLayout
             android:id="@+id/tl_class_details"
             android:layout_width="match_parent"
@@ -37,6 +60,7 @@
             >
 
         </android.support.design.widget.TabLayout>
+
         <!--<com.rulaibao.widget.ViewPagerForScrollView
             android:id="@+id/vp_class_details"
             android:layout_width="match_parent"
@@ -52,4 +76,5 @@
     </LinearLayout>
 
 
-</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

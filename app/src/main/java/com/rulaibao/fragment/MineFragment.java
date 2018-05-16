@@ -226,6 +226,15 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
                 data = (MineData2B) params.result;
+
+                // 认证状态保存到sp
+                if(!TextUtils.isEmpty(data.getCheckStatus())){
+                    try {
+                        PreferenceUtil.setCheckStatus(data.getCheckStatus());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 if (data != null) {
                     setData(data);
                 }

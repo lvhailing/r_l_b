@@ -28,9 +28,12 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DEBUG;
+    private static String EC_HOST = URL_XYJ;
 
-
+    /**
+     * 版本更新
+     */
+    public static final String URL_VERSION_CHECK = EC_HOST + "version/check";
     /**
      * 注册
      */
@@ -227,7 +230,7 @@ public class Urls {
     //获取我的信息
     public static final String URL_MINE_DATA = EC_HOST + "account/index";
 
-    //获取个人信息/销售认证等两个页面数据
+    //获取个人信息 页面数据
     public static final String URL_APP_USER_INFO = EC_HOST + "account/appUserInfo";
 
     //(销售认证页)提交认证
@@ -315,7 +318,13 @@ public class Urls {
     public static final String URL_COLLECTION_LIST = EC_HOST + "collection/list";
 
     // 修改登录密码
-    public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "account/set/password/modify";
+    public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "accountt/password/modify";
+
+
+
+
+
+
 
 
 //==================================================== 我的模块接口 =======================================================

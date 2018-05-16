@@ -147,14 +147,22 @@ public class TrainingAakFragment extends BaseFragment {
                     if(b.getList().size()==0){
                         if(page!=1){
                             page--;
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-
 
                     }else{
                         indexItemBeans.addAll(b.getList());
                         adapter.notifyDataSetChanged();
-                        adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+
+                        if(indexItemBeans.size()%10==0){
+                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        }else{
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
+                        }
+
+
                     }
 
 

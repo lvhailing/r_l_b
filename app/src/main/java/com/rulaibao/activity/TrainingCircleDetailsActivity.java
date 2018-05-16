@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,7 @@ import butterknife.OnClick;
  * 圈子详情
  */
 
-public class TrainingCircleDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class TrainingCircleDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.tv_circle_details_name)
@@ -53,6 +55,10 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
     NestedScrollView svCircleDetails;
     @BindView(R.id.swipe_circle_details)
     SwipeRefreshLayout swipeCircleDetails;
+    @BindView(R.id.fl_issue_topic)
+    FrameLayout flIssueTopic;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
     private String status = "";      //  当前圈子状态  other 其他圈子    mine  我的圈子   join 我加入的圈子
     private static final String authority = "";
 
@@ -71,7 +77,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
     @BindView(R.id.lv_circle_talk)
     RecyclerView lvCircleTalk;
     @BindView(R.id.btn_training_cirlce_details)     //  发布话题（仅限当前圈子成员可发布）
-    Button btnTrainingCirlceDetails;
+            Button btnTrainingCirlceDetails;
 
 
     private TrainingMyCircleDetailsTitleListAdapter myCircleAdapter;
@@ -99,6 +105,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
     public void initData() {
         page = 1;
+        appTopics.clear();
         requestTopData();
         requestTopicData();
     }
@@ -122,20 +129,20 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
         if (status.equals("mine")) {      //  我的圈子
 
             tvCircleJoin.setText("设置权限");
-            btnTrainingCirlceDetails.setVisibility(View.VISIBLE);
+            flIssueTopic.setVisibility(View.VISIBLE);
         } else if (status.equals("join")) {        //  我加入的圈子
 
             tvCircleJoin.setText("退出圈子");
-            btnTrainingCirlceDetails.setVisibility(View.VISIBLE);
+            flIssueTopic.setVisibility(View.VISIBLE);
         } else if (status.equals("other")) {       //  其他圈子
 
             tvCircleJoin.setText("+ 加入");
-            btnTrainingCirlceDetails.setVisibility(View.GONE);
+            flIssueTopic.setVisibility(View.GONE);
 
         } else {
 
             tvCircleJoin.setText("+ 加入");
-            btnTrainingCirlceDetails.setVisibility(View.GONE);
+            flIssueTopic.setVisibility(View.GONE);
         }
 
 
@@ -148,7 +155,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
         topAppTopics = new MouldList<ResultCircleDetailsTopItemBean>();
         appTopics = new MouldList<ResultCircleDetailsTopicItemBean>();
         appCircle = new ResultCircleDetailsItemBean();
-
 
 
         //为SwipeRefreshLayout设置监听事件
@@ -256,6 +262,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                 if (params.result != null) {
 
                     ResultCircleDetailsBean bean = (ResultCircleDetailsBean) params.result;
+                    appCircle = bean.getAppCircle();
                     topAppTopics = bean.getTopAppTopics();
                     initTopAdapterData(bean.getAppCircle());
 
@@ -285,16 +292,25 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                     ResultCircleDetailsTopicListBean bean = (ResultCircleDetailsTopicListBean) params.result;
                     if (bean.getAppTopics().size() == 0) {     //  无数据情况
-                        if(page != 1){      //  非首次的处理
+
+                        if (page != 1) {      //  非首次的处理
                             page--;
+                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
+                        } else {
+                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-                        myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
                     } else {
 
-                        myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        myCircleAdapterDetails.notifyDataSetChanged();
+
                         appTopics.addAll(bean.getAppTopics());
+                        myCircleAdapterDetails.notifyDataSetChanged();
+                        if (appTopics.size() % 10 == 0) {
+                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                        } else {
+                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
+                        }
+
 
                     }
                     swipeCircleDetails.setRefreshing(false);
@@ -370,7 +386,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
     }
 
 
-    @OnClick({R.id.btn_training_cirlce_details, R.id.tv_circle_join})
+    @OnClick({R.id.btn_training_cirlce_details, R.id.tv_circle_join,R.id.iv_back})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -401,6 +417,12 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                 }
 
+
+                break;
+
+            case R.id.iv_back:
+
+                finish();
 
                 break;
 

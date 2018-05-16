@@ -359,7 +359,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="4"
                     android:layout_height="match_parent"
-                    android:hint="@string/product_appointment_pay_limit_edit"
+                    android:hint="@string/product_appointment_remark_edit"
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:textColor="@color/gray_dark"

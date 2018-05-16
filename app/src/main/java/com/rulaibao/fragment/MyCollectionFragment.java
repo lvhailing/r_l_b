@@ -128,12 +128,6 @@ public class MyCollectionFragment extends Fragment {
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-//        for (int i = 0; i < 10; i++) {
-//            MyCollectionList2B bean = new MyCollectionList2B();
-//            bean.setInsuranceName("盛世年年年金保险C款" + "10" + i);
-//            totalList.add(bean);
-//        }
-
         initRecyclerView();
     }
 
@@ -190,17 +184,17 @@ public class MyCollectionFragment extends Fragment {
         if (currentPosition == 0) {
             type = "";  //默认请求"全部"的数据
         } else if (currentPosition == 1) {
-            type = "accident";  //意外险
-        } else if (currentPosition == 2) {
             type = "criticalIllness";  //重疾险
-        } else if (currentPosition == 3) {
+        } else if (currentPosition == 2) {
             type = "annuity";  //年金险
-        } else if (currentPosition == 4) {
-            type = "medical";  //医疗险
-        }else if (currentPosition == 5) {
-            type = "property";  //家财险
-        } else if (currentPosition == 6) {
+        } else if (currentPosition == 3) {
             type = "wholeLife";  //终身寿险
+        } else if (currentPosition == 4) {
+            type = "accident";  //意外险
+        }else if (currentPosition == 5) {
+            type = "medical";  //医疗险
+        } else if (currentPosition == 6) {
+            type = "oldSmall";  //一老一小
         }else if (currentPosition == 7) {
             type = "enterpriseGroup";  //企业团体
         }

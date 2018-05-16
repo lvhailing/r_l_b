@@ -104,18 +104,22 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
                 RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,map,false);
             }
         });
-        if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
+
             holder1.llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
-                    requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
-                    holder1.llAskDetailsZan.setClickable(false);
+
+                    if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
+                        requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
+                        holder1.llAskDetailsZan.setClickable(false);
+                    }
+
 //                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
                 }
             });
 
-        }
+
 
 
     }

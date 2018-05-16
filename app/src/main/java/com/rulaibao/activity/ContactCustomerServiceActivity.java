@@ -71,7 +71,9 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
         btn_submit = (Button) findViewById(R.id.btn_submit);
 
         btn_submit.setOnClickListener(this);
-        et_consulting_questions.addTextChangedListener(new TextWatcher() { // 咨询问题文本的监听
+
+        // 咨询问题文本的监听
+        et_consulting_questions.addTextChangedListener(new TextWatcher() {
             public int editEnd;
             public int editStart;
             public CharSequence temp;
@@ -108,7 +110,8 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
             }
         });
 
-        et_phone.addTextChangedListener(new TextWatcher() { // 手机号 文本监听
+        // 手机号 文本监听
+        et_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

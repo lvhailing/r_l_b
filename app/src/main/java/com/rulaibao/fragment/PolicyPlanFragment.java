@@ -5,22 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.rulaibao.R;
-import com.rulaibao.activity.InsuranceProductDetailActivity;
+import com.rulaibao.activity.LoginActivity;
 import com.rulaibao.activity.SearchForPolicyPlanActivity;
-import com.rulaibao.adapter.PolicyPlanAdapter;
+import com.rulaibao.adapter.PolicyPlanListAdapter;
+import com.rulaibao.adapter.TrainingHotAskListAdapter;
+import com.rulaibao.bean.Login2B;
 import com.rulaibao.bean.PolicyPlan2B;
 import com.rulaibao.bean.PolicyPlan3B;
 import com.rulaibao.network.BaseParams;
@@ -28,28 +30,38 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.PreferenceUtil;
-import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Observer;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 保单规划
  */
 
-public class PolicyPlanFragment extends Fragment {
+public class PolicyPlanFragment extends Fragment implements View.OnClickListener {
+    @BindView(R.id.lv_policy_plan)
+    RecyclerView lvPolicyPlan;
+
     private View mView;
     private Context context;
     private ImageView iv_right_btn;
-    private PullToRefreshListView listView;
-    private PolicyPlanAdapter mAdapter;
+    private PolicyPlanListAdapter adapter;
     private MouldList<PolicyPlan3B> totalList = new MouldList<>();
     private ViewSwitcher vs;
+    private FrameLayout fl_nologin;
+    private Button btn_login;
+    private Intent intent;
+    private Login2B bean;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_policy_plan, container, false);
+            ButterKnife.bind(this, mView);
             try {
                 initView(mView);
             } catch (Exception e) {
@@ -63,49 +75,82 @@ public class PolicyPlanFragment extends Fragment {
 
         return mView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (PreferenceUtil.isLogin()) {
+            fl_nologin.setVisibility(View.GONE);
+            vs.setVisibility(View.VISIBLE);
+            requestListData();
+
+        } else {
+            fl_nologin.setVisibility(View.VISIBLE);
+            vs.setVisibility(View.GONE);
+        }
+    }
+
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(context!=null){
-                requestListData();
+            if (context != null) {
+                totalList.clear();
+                if (PreferenceUtil.isLogin()) {
+                    fl_nologin.setVisibility(View.GONE);
+                    vs.setVisibility(View.VISIBLE);
+                    requestListData();
+
+                } else {
+                    fl_nologin.setVisibility(View.VISIBLE);
+                    vs.setVisibility(View.GONE);
+                }
             }
+
         } else {
 
         }
 
-     }
+    }
+
     private void initView(View mView) {
         context = getActivity();
-        iv_right_btn= (ImageView) mView.findViewById(R.id.iv_right_btn);
-        iv_right_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SearchForPolicyPlanActivity.class);
-                context.startActivity(intent);
-            }
-        });
-        vs = (ViewSwitcher)mView.findViewById(R.id.vs);
-        TextView tv_empty = (TextView)mView.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView)mView.findViewById(R.id.img_empty);
+        iv_right_btn = (ImageView) mView.findViewById(R.id.iv_right_btn);
+        iv_right_btn.setOnClickListener(this);
+        vs = (ViewSwitcher) mView.findViewById(R.id.vs);
+        TextView tv_empty = (TextView) mView.findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) mView.findViewById(R.id.img_empty);
         tv_empty.setText("暂无保单规划");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
-        listView = (PullToRefreshListView)mView.findViewById(R.id.listview);
-        //PullToRefreshListView  上滑加载更多及下拉刷新
-        ViewUtils.slideAndDropDown(listView);
-        mAdapter = new PolicyPlanAdapter(context, totalList);
-        listView.setAdapter(mAdapter);
 
-        requestListData();
+        fl_nologin = (FrameLayout) mView.findViewById(R.id.fl_nologin);
+        btn_login = (Button) mView.findViewById(R.id.btn_login);
+        btn_login.setOnClickListener(this);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
+        lvPolicyPlan.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new PolicyPlanListAdapter(getActivity(), totalList);
+        lvPolicyPlan.setAdapter(adapter);
+
+
+        lvPolicyPlan.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastVisibleItem;
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
-                //      intent.putExtra("hid", totalList.get(position - 1).getHid());
-                startActivity(intent);
-                Toast.makeText(context, "dianji"+position, Toast.LENGTH_LONG).show();
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                //最后一个可见的ITEM
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
+
             }
         });
+
     }
 
     /**
@@ -126,19 +171,13 @@ public class PolicyPlanFragment extends Fragment {
             HtmlRequest.getPolicyPlanData(context, param, new BaseRequester.OnRequestListener() {
                 @Override
                 public void onRequestFinished(BaseParams params) {
-                    if (params.result == null) {
+                    if (params == null || params.result == null) {
                         vs.setDisplayedChild(1);
                         Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                        listView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                listView.onRefreshComplete();
-                            }
-                        }, 1000);
                         return;
                     }
                     PolicyPlan2B data = (PolicyPlan2B) params.result;
-                    if ("true".equals(data.getFlag())){
+                    if ("true".equals(data.getFlag())) {
                         MouldList<PolicyPlan3B> everyList = data.getList();
 
                         totalList.clear();
@@ -148,18 +187,11 @@ public class PolicyPlanFragment extends Fragment {
                         } else {
                             vs.setDisplayedChild(0);
                         }
-                        //刷新数据
-                        mAdapter.notifyDataSetChanged();
-
-                        listView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                listView.onRefreshComplete();
-                            }
-                        }, 1000);
-                    }else{
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                        adapter.notifyDataSetChanged();
+                    } else {
                         vs.setDisplayedChild(1);
-                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                        //            Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -168,4 +200,25 @@ public class PolicyPlanFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_right_btn:
+                if (PreferenceUtil.isLogin()) {
+                    intent = new Intent(context, SearchForPolicyPlanActivity.class);
+                    context.startActivity(intent);
+                }else{
+                    intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                }
+
+                break;
+            case R.id.btn_login:
+                intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
+                break;
+        }
+    }
+
 }

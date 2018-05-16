@@ -32,6 +32,9 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
     //没有加载更多 隐藏
     public static final int NO_LOAD_MORE = 2;
 
+    //没有加载更多 留空白布局
+    public static final int NO_LOAD_BLACK = 3;
+
     //上拉加载更多状态-默认为0
     protected int mLoadMoreStatus = 1;
 

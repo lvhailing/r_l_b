@@ -33,6 +33,8 @@ import com.rulaibao.bean.RecommendRecordList1B;
 import com.rulaibao.bean.RecommendRecordList2B;
 import com.rulaibao.bean.RenewalReminderList1B;
 import com.rulaibao.bean.Repo;
+import com.rulaibao.bean.ResultCheckVersionBean;
+import com.rulaibao.bean.ResultCheckVersionContentBean;
 import com.rulaibao.bean.TrackingDetail1B;
 import com.rulaibao.bean.TrackingList1B;
 import com.rulaibao.bean.ResultAnswerDetailsBean;
@@ -461,6 +463,59 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.sendResult();
             }
 
+        });
+    }
+    /**
+     * 版本检查更新
+     *
+     * @param context  上线文
+     * @param listener 监听事件
+     */
+    public static void checkVersion(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_VERSION_CHECK;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+            //    String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+            //        data = DESUtil.decrypt(result);
+
+                    Repo<ResultCheckVersionContentBean> b = json.fromJson(result, new TypeToken<Repo<ResultCheckVersionContentBean>>() {
+                    }.getType());
+
+                    return b.getData();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                } finally {
+
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
         });
     }
     // 首页---保险产品数据
@@ -937,7 +992,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取个人信息/销售认证等两个页面数据
+     *  获取个人信息 页面数据
      * @param context
      * @param param
      * @param listener

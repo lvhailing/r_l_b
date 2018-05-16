@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -32,15 +33,15 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private EditText et_new_password; // 新密码
     private EditText et_confirm_password; // 确认密码
 
-    private ImageView iv_show_password; //显示密码
-    private ImageView iv_hide_password; //隐藏密码
+    private ImageView iv_old_hide_password; //旧密码 显示的图标
+    private ImageView iv_new_hide_password; //新密码 显示的图标
+    private ImageView iv_confirm_hide_password; //确认密码 显示的图标
 
     private Button btn_sure; // 确定
     private String oldPassword;
     private String newPassword;
     private String confirmPassword;
-    private boolean isOpenOne=true;
-    private boolean isOpenTwo=false;
+    private boolean isShowPassword=false; // 默认密码都不显示
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +79,15 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         et_new_password = (EditText) findViewById(R.id.et_new_password);
         et_confirm_password = (EditText) findViewById(R.id.et_confirm_password);
 
-        iv_show_password = (ImageView) findViewById(R.id.iv_show_password);
-        iv_hide_password = (ImageView) findViewById(R.id.iv_hide_password);
+        iv_old_hide_password = (ImageView) findViewById(R.id.iv_old_hide_password);
+        iv_new_hide_password = (ImageView) findViewById(R.id.iv_new_hide_password);
+        iv_confirm_hide_password = (ImageView) findViewById(R.id.iv_confirm_hide_password);
 
         btn_sure = (Button) findViewById(R.id.btn_sure);
 
-        iv_show_password.setOnClickListener(this);
-        iv_hide_password.setOnClickListener(this);
+        iv_old_hide_password.setOnClickListener(this);
+        iv_new_hide_password.setOnClickListener(this);
+        iv_confirm_hide_password.setOnClickListener(this);
         btn_sure.setOnClickListener(this);
 
         //  监听输入密码变化
@@ -139,51 +142,74 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_show_password: // 显示密码
+            case R.id.iv_old_hide_password: // 旧密码
+                oldPassword = et_old_password.getText().toString();
+                if (TextUtils.isEmpty(oldPassword)){
+                    return;
+                }
+
+                if (!isShowPassword) {
+                    // 显示为普通文本
+                    et_old_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    // 使光标始终在最后位置
+                    Editable etable = et_old_password.getText();
+                    Selection.setSelection(etable, etable.length());
+                    iv_old_hide_password.setImageResource(R.mipmap.icon_open_password);
+                    isShowPassword = true;
+                } else {
+                    isShowPassword = false;
+                    // 显示为密码
+                    et_old_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    // 使光标始终在最后位置
+                    Editable etable = et_old_password.getText();
+                    Selection.setSelection(etable, etable.length());
+                    iv_old_hide_password.setImageResource(R.mipmap.icon_hide_password);
+                }
+                break;
+            case R.id.iv_new_hide_password: //新密码
                 newPassword = et_new_password.getText().toString();
                 if (TextUtils.isEmpty(newPassword)){
                     return;
                 }
-
-                if (!isOpenOne) {
+                if (!isShowPassword) {
                     // 显示为普通文本
                     et_new_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_new_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
-                    isOpenOne = true;
+                    iv_new_hide_password.setImageResource(R.mipmap.icon_open_password);
+                    isShowPassword = true;
                 } else {
-                    isOpenOne = false;
+                    isShowPassword = false;
                     // 显示为密码
                     et_new_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_new_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
+                    iv_new_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
-            case R.id.iv_hide_password: //隐藏密码
+            case R.id.iv_confirm_hide_password: // 确认密码
                 confirmPassword = et_confirm_password.getText().toString();
-                if (TextUtils.isEmpty(confirmPassword)){
+                if (TextUtils.isEmpty(confirmPassword)) {
                     return;
                 }
-                if (!isOpenTwo) {
+                if (!isShowPassword) {
                     // 显示为普通文本
                     et_confirm_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.icon_open_password);
-                    isOpenTwo = true;
+                    iv_new_hide_password.setImageResource(R.mipmap.icon_open_password);
+                    isShowPassword = true;
                 } else {
-                    isOpenTwo = false;
+                    isShowPassword = false;
                     // 显示为密码
                     et_confirm_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_hide_password.setImageResource(R.mipmap.icon_hide_password);
+                    iv_new_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.btn_sure: // 确定
@@ -222,9 +248,6 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         modifyPassword();
     }
 
-
-
-
     /**
      *  重新修改密码后调接口
      */
@@ -244,6 +267,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     if (Boolean.parseBoolean(b.getFlag())) {
                         Toast.makeText(ModifyPasswordActivity.this,b.getMessage(), Toast.LENGTH_LONG).show();
                         finish();
+                        Intent intent = new Intent(mContext,LoginActivity.class);
+                        intent.putExtra("GOTOMAIN",LoginActivity.GOTOMAIN);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(ModifyPasswordActivity.this,b.getMessage(), Toast.LENGTH_LONG).show();
                     }

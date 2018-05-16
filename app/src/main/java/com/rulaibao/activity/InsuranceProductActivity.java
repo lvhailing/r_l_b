@@ -31,6 +31,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
@@ -60,6 +61,9 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
     private int currentPage = 1;    //当前页
     private ViewSwitcher vs;
     private ArrayList<View> newview;
+    private ImageView iv_right_btn;
+    private ImageView iv_back;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,40 +73,30 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
         addViewPagerView();
         initData();
     }
-
-    private void initTopTitle() {
-        TitleBar titleBar = (TitleBar) findViewById(R.id.rl_title);
-        titleBar.showLeftImg(true);
-        titleBar.setFromActivity("2000");//搜索跳转
-        titleBar.setTitle(getResources().getString(R.string.title_null))
-                .setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back)
-                .setTitleRightButton(R.mipmap.ic_search)
-                .setCenterText(getResources().getString(R.string.title_insurance_product))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
-
-            @Override
-            public void onMenu(int id) {
-
-            }
-
-            @Override
-            public void onBack() {
-                finish();
-            }
-
-            @Override
-            public void onAction(int id) {
-
-
-            }
-        });
+    public void initTopTitle() {
+        TitleBar title = (TitleBar) findViewById(R.id.rl_title);
+        title.setVisibility(View.GONE);
     }
 
     private void initView() {
         category = getIntent().getStringExtra("category");
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewGroup = (ViewGroup) findViewById(R.id.viewgroup);
+        iv_right_btn= (ImageView) findViewById(R.id.iv_right_insurance);
+        iv_back= (ImageView) findViewById(R.id.iv_back);
+        iv_right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    intent = new Intent(mContext, SearchActivity.class);
+                    mContext.startActivity(intent);
+            }
+        });
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     //初始化点击分类的tabbar以及viewpager
     private void addViewPagerView() {
