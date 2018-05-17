@@ -37,10 +37,14 @@
 
                 <TextView
                     android:id="@+id/tv_turn_down"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
                     android:layout_marginRight="15dp"
+                   android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@id/iv_delete"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text=""
                     android:textColor="@color/txt_black1"
                     android:textSize="16sp"/>
@@ -154,7 +158,9 @@
                         android:id="@+id/tv_policy_booking_people"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
                         android:layout_weight="4"
+                        android:text=""
                         android:textColor="@color/txt_black2"
                         android:textSize="16sp"/>
                 </LinearLayout>
@@ -380,7 +386,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:lineSpacingExtra="6dp"
-                    android:text="时间真像是一个不可理喻的疯子，坐在光线暗淡的角落里将我们一页页已经发生的往事撕碎，然后将碎片随地乱抛，让记忆的旋风卷进大脑的垃圾场里。我们好像已经习惯了时间的疯癫与残酷，在日升日落里忙碌旋转，在四季轮回中生老病死。"
+                    android:text=""
                     android:textColor="@color/txt_black2"
                     android:textSize="14sp"/>
 

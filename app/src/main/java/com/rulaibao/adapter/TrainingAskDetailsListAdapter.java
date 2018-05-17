@@ -2,6 +2,7 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
@@ -20,6 +22,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.uitls.encrypt.DESUtil;
@@ -40,11 +43,18 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 
     private MouldList<ResultAskDetailsAnswerItemBean> arrayList;
     private String questionId = "";
-
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
+    private String userId = null;
     public TrainingAskDetailsListAdapter(Context context, MouldList<ResultAskDetailsAnswerItemBean> arrayList,String questionId) {
         super(context);
         this.arrayList = arrayList;
         this.questionId = questionId;
+
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -82,7 +92,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
             index = position-1;
         }
         holder1.tvTrainingAskDetailsManagerName.setText(arrayList.get(index).getAnswerName());
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getAnswerPhoto(),holder1.ivTrainingAskDetailsManager);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getAnswerPhoto(),holder1.ivTrainingAskDetailsManager,displayImageOptions);
         holder1.tvAskDetailsContent.setText(arrayList.get(index).getAnswerContent());
         holder1.tvAskDetailsTime.setText(arrayList.get(index).getAnswerTime());
         holder1.tvAskDetailsMessageCount.setText(arrayList.get(index).getCommentCount());
@@ -110,10 +120,23 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
                 public void onClick(View v) {
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
 
-                    if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
-                        requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
-                        holder1.llAskDetailsZan.setClickable(false);
+
+                    if(TextUtils.isEmpty(userId)){
+                        Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(!PreferenceUtil.getCheckStatus().equals("success")){
+                            Toast.makeText(context, "请认证", Toast.LENGTH_SHORT).show();
+                        }else{
+
+                            if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
+                                requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
+                                holder1.llAskDetailsZan.setClickable(false);
+                            }
+
+
+                        }
                     }
+
 
 //                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
                 }
@@ -131,12 +154,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-        String userId = null;
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         map.put("answerId", answerId);      //  问题id
         map.put("userId", userId);

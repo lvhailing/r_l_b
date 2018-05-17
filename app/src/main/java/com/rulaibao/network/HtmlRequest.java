@@ -868,7 +868,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 try {
                     data = DESUtil.decrypt(result);
 
-                    Repo<Collection2B> b = json.fromJson(data, new TypeToken<Repo<Collection2B>>() {
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
 
                     return b.getData();

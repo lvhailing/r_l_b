@@ -6,7 +6,7 @@ public class ResultCircleDetailsTopicDetailsItemBean implements IMouldType{
 
     private String topicId;      //     话题id
     private String topicContent;      //     话题内容
-    private String commentCount;      //     话题id
+    private String commentCount;      //
     private String likeCount;      //     点赞总数
     private String createTime;      //     话题创建时间
     private String creatorName;      //     话题发表人

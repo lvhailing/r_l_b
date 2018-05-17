@@ -1,10 +1,13 @@
 package com.rulaibao.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.RecyclerBaseAapter;
@@ -30,6 +34,8 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyListView;
@@ -48,6 +54,7 @@ import butterknife.OnClick;
 
 public class TrainingCircleDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
 
     @BindView(R.id.tv_circle_details_name)
     TextView tvCircleDetailsName;
@@ -112,7 +119,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
     public void setView(ResultCircleDetailsItemBean detailsItemBean) {
 
-        ImageLoader.getInstance().displayImage(detailsItemBean.getCirclePhoto(), ivCirclePhoto);
+        ImageLoader.getInstance().displayImage(detailsItemBean.getCirclePhoto(), ivCirclePhoto,displayImageOptions);
         tvCircleDetailsName.setText(detailsItemBean.getCircleName());
         tvCircleDetailsPersonNum.setText(detailsItemBean.getMemberCount());
         tvCircleDetailsTalkNum.setText(detailsItemBean.getTopicCount());
@@ -339,7 +346,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if (bean.getFlag().equals("true")) {
-
+                        initData();
                         Toast.makeText(TrainingCircleDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -370,7 +377,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if (bean.getFlag().equals("true")) {
-
+                        initData();
                         Toast.makeText(TrainingCircleDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -391,9 +398,22 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
         switch (view.getId()) {
             case R.id.btn_training_cirlce_details:
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("circleId", circleId);
-                RlbActivityManager.toTrainingIssueTopicActivity(this, map, false);
+                if(TextUtils.isEmpty(userId)){
+                    Toast.makeText(TrainingCircleDetailsActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(!PreferenceUtil.getCheckStatus().equals("success")){
+                        Toast.makeText(TrainingCircleDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(status.equals("other")){
+                            Toast.makeText(TrainingCircleDetailsActivity.this, "请您加入该圈子后在进行相关操作", Toast.LENGTH_SHORT).show();
+                        }else{
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("circleId", circleId);
+                            RlbActivityManager.toTrainingIssueTopicActivity(this, map, false);
+                        }
+                    }
+                }
+
                 break;
             case R.id.tv_circle_join:
 
@@ -408,7 +428,30 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                 } else if (status.equals("join")) {        //  我加入的圈子   -----    退出
 
-                    requestOutCircle();
+                    new AlertDialog.Builder(this)
+
+                            .setMessage("确认退出“圈子名称”吗？")
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+//                                Intent i_recharge = new Intent();
+//                                i_recharge.setClass(context, ReChargeActivity.class);
+//                                context.startActivity(i_recharge);
+//                                        requestCancelData();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    requestOutCircle();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+
+
 
 
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入

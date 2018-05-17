@@ -115,6 +115,7 @@ public class TrainingToAskActivity extends BaseActivity {
         map.put("questionDesc",questionDesc);
         map.put("typeCode",typeList.get(position).getTypeCode());
 
+        btnTrainingToask.setClickable(false);
 
         HtmlRequest.getTrainingToAsk(this, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -130,6 +131,7 @@ public class TrainingToAskActivity extends BaseActivity {
                         Toast.makeText(TrainingToAskActivity.this,b.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
+                    btnTrainingToask.setClickable(true);
 //                    indexItemBeans = b.getList();
 //                    initRecyclerView();
 

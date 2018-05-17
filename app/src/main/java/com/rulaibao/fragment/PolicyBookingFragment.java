@@ -40,10 +40,10 @@ public class PolicyBookingFragment extends Fragment {
     private PolicyBookingAdapter policyBookingAdapter;
     private MouldList<PolicyBookingList2B> totalList = new MouldList<>();
     private int currentPage = 1;    //当前页
-    private String status;
     private Context context;
     private PolicyBookingList1B data;
-    private String userId = "";
+    private String status;
+    private String userId;
 
 
     public static PolicyBookingFragment newInstance(String param1) {
@@ -58,6 +58,7 @@ public class PolicyBookingFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            Log.i("hh", this + "-- setUserVisibleHint --");
             // 页面可见时调接口
             requestData();
         }
@@ -92,9 +93,17 @@ public class PolicyBookingFragment extends Fragment {
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
         policyBookingAdapter = new PolicyBookingAdapter(getActivity(), totalList);
+        policyBookingAdapter.setMyBookingFragment(this);
         recycler_view.setAdapter(policyBookingAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Log.i("hh","--- onResume --- ");
+//        requestData();
     }
 
     /**
@@ -107,7 +116,8 @@ public class PolicyBookingFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("auditStatus", status);
 
-        Log.i("hh", "预约列表用户Id:-- " + userId);
+        Log.i("hh", "预约列表userId:-- " + userId);
+        Log.i("hh", "预约列表状态：-- " + status);
         HtmlRequest.getPolicyBookingListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -124,9 +134,12 @@ public class PolicyBookingFragment extends Fragment {
                 data = (PolicyBookingList1B) params.result;
                 ((PolicyBookingListActivity) getActivity()).refreshTabTitle(data);
                 MouldList<PolicyBookingList2B> everyList = data.getList();
-                if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
-
+                    policyBookingAdapter.changeMoreStatus(policyBookingAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -200,4 +213,5 @@ public class PolicyBookingFragment extends Fragment {
         this.userId = userId;
         return userId;
     }
+
 }

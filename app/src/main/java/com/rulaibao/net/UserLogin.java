@@ -130,7 +130,7 @@ public class UserLogin extends Observable {
 										PreferenceUtil.setUserRealName(DESUtil.encrypt(b.getData().getRealName()));
 									}
 									if(!TextUtils.isEmpty(b.getData().getCheckStatus())){
-										PreferenceUtil.setCheckStatus(DESUtil.encrypt(b.getData().getCheckStatus()));
+										PreferenceUtil.setCheckStatus(b.getData().getCheckStatus());
 									}
 									PreferenceUtil.setLogin(true);
 								} catch (Exception e) {

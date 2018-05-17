@@ -36,7 +36,6 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
     private TextView tv_turn_down; // 驳回原因
     private RelativeLayout rl_insurance_name; // 保险产品名布局
     private TextView tv_insurance_name; // 保险产品名字
-    private ImageView iv_arrow;
     private TextView tv_policy_booking_status; // 预约状态
     private TextView tv_policy_booking_time; // 预约时间
     private TextView tv_policy_booking_people; // 预约人
@@ -94,7 +93,6 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         iv_delete = (ImageView) findViewById(R.id.iv_delete);
         tv_turn_down = (TextView) findViewById(R.id.tv_turn_down);
         rl_insurance_name = (RelativeLayout) findViewById(R.id.rl_insurance_name);
-        iv_arrow = (ImageView) findViewById(R.id.iv_arrow);
         tv_insurance_name = (TextView) findViewById(R.id.tv_insurance_name);
         tv_policy_booking_status = (TextView) findViewById(R.id.tv_policy_booking_status);
         tv_policy_booking_time = (TextView) findViewById(R.id.tv_policy_booking_time);
@@ -138,7 +136,7 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
     }
 
     private void setView() {
-        if (!TextUtils.isEmpty(data.getProductName())) {
+        if (!TextUtils.isEmpty(data.getProductName())) { // 保险产品名字
             tv_insurance_name.setText(data.getProductName());
         }
 
@@ -156,40 +154,40 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         } else if  ("refuse".equals(status)) {
                 tv_policy_booking_status.setText("已驳回");
                 rl_audit_status.setVisibility(View.VISIBLE);
-                tv_turn_down.setText(data.getRefuseReason());
+                tv_turn_down.setText("报单驳回："+data.getRefuseReason()+"。{"+data.getAuditTime()+"}");
         }
 
-        if (!TextUtils.isEmpty(data.getCreateTime())) {
+        if (!TextUtils.isEmpty(data.getCreateTime())) {  // 预约时间
             tv_policy_booking_time.setText(data.getCreateTime());
         }
-        if (!TextUtils.isEmpty(data.getUserName())) {
+        if (!TextUtils.isEmpty(data.getUserName())) { // 预约人
             tv_policy_booking_people.setText(data.getUserName());
         }
-        if (!TextUtils.isEmpty(data.getMobile())) {
+        if (!TextUtils.isEmpty(data.getMobile())) {  // 预约电话
             tv_policy_booking_phone.setText(data.getMobile());
         }
-        if (!TextUtils.isEmpty(data.getCompanyName())) {
+        if (!TextUtils.isEmpty(data.getCompanyName())) { // 保险公司
             tv_insurance_company.setText(data.getCompanyName());
         }
-        if (!TextUtils.isEmpty(data.getInsurancePlan())) {
+        if (!TextUtils.isEmpty(data.getInsurancePlan())) { // 保险计划
             tv_insurance_plan.setText(data.getInsurancePlan());
         }
-        if (!TextUtils.isEmpty(data.getInsuranceAmount())) {
-            tv_insurance_amount.setText(data.getInsuranceAmount());
+        if (!TextUtils.isEmpty(data.getInsuranceAmount())) { // 保险金额
+            tv_insurance_amount.setText(data.getInsuranceAmount()+"元");
         }
-        if (!TextUtils.isEmpty(data.getPeriodAmount())) {
-            tv_annual_premium.setText(data.getPeriodAmount());
+        if (!TextUtils.isEmpty(data.getPeriodAmount())) { // 年缴保费
+            tv_annual_premium.setText(data.getPeriodAmount()+"元");
         }
-        if (!TextUtils.isEmpty(data.getInsurancePeriod())) {
-            tv_insurance_period.setText(data.getInsurancePeriod());
+        if (!TextUtils.isEmpty(data.getInsurancePeriod())) { // 保险期限
+            tv_insurance_period.setText(data.getInsurancePeriod()+"年");
         }
-        if (!TextUtils.isEmpty(data.getPaymentPeriod())) {
-            tv_payment_period.setText(data.getPaymentPeriod());
+        if (!TextUtils.isEmpty(data.getPaymentPeriod())) { // 缴费期限
+            tv_payment_period.setText(data.getPaymentPeriod()+"天");
         }
-        if (!TextUtils.isEmpty(data.getExceptSubmitTime())) {
+        if (!TextUtils.isEmpty(data.getExceptSubmitTime())) { // 预计交单
             tv_expected_policy.setText(data.getExceptSubmitTime());
         }
-        if (!TextUtils.isEmpty(data.getRemark())) {
+        if (!TextUtils.isEmpty(data.getRemark())) { // 备注内容
             tv_remarks_description.setText(data.getRemark());
         }
     }

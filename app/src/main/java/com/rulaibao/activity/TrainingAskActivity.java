@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.TitleBar;
 
@@ -138,9 +140,22 @@ public class TrainingAskActivity extends BaseActivity {
     @OnClick(R.id.btn_training_ask)
     public void onClick(){
 
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("type",typeBean);
-        RlbActivityManager.toTrainingToAskActivity(this,map,false);
+        if(TextUtils.isEmpty(userId)){
+            Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+        }else{
+            String checkStatus = PreferenceUtil.getCheckStatus();
+            if(!checkStatus.equals("success")){
+                Toast.makeText(context, "请认证", Toast.LENGTH_SHORT).show();
+            }else{
+
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("type",typeBean);
+                RlbActivityManager.toTrainingToAskActivity(this,map,false);
+
+            }
+        }
+
+
 
     }
 

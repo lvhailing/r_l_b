@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
@@ -18,6 +19,7 @@ import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.ViewPagerForScrollView;
 
@@ -34,6 +36,9 @@ import butterknife.ButterKnife;
 
 @SuppressLint("ValidFragment")
 public class TrainingDetailsIntroductionFragment extends BaseFragment {
+
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
+
 
     @BindView(R.id.iv_introduction)
     CircularImage ivIntroduction;
@@ -133,7 +138,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
     public void setView(){
 
-        ImageLoader.getInstance().displayImage(course.getHeadPhoto(),ivIntroduction);
+        ImageLoader.getInstance().displayImage(course.getHeadPhoto(),ivIntroduction,displayImageOptions);
         tvIntroductionManager.setText(course.getPosition());
         tvIntroductionManagerName.setText(course.getRealName());
         tvIntroductionClassName.setText(course.getCourseName());

@@ -88,8 +88,9 @@ public class PolicyBookingListActivity extends BaseActivity{
 
             @Override
             public void onPageSelected(int position) {
-                ((PolicyBookingFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
-                ((PolicyBookingFragment) vpAdapter.getItem(position)).setUserId(userId);
+//                Log.i("hh", this + "-- onPageSelected --"+position);
+//                ((PolicyBookingFragment) vpAdapter.getItem(position)).setUserId(userId);
+//                ((PolicyBookingFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 
             @Override
@@ -100,6 +101,10 @@ public class PolicyBookingListActivity extends BaseActivity{
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+//                Log.i("hh", this + "-- onTabSelected --" +tab.getPosition());
+                ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).setUserId(userId);
+                ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).getTabTitleCurrentPosition(tab.getPosition());
+
                 //选中的view
                 View view = tab.getCustomView();
                 TextView tv_title = (TextView) view.findViewById(R.id.tv_title);

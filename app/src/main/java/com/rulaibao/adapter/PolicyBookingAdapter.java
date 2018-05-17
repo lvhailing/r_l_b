@@ -1,5 +1,6 @@
 package com.rulaibao.adapter;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyBookingDetailActivity;
 import com.rulaibao.bean.PolicyBookingList2B;
+import com.rulaibao.fragment.PolicyBookingFragment;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -37,6 +39,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
+    private PolicyBookingFragment policyBookingFragment;
 
 
     public PolicyBookingAdapter(Context context, MouldList<PolicyBookingList2B> list) {
@@ -75,9 +78,9 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else if ("canceled".equals(status)) {
                 itemViewHolder.tv_status.setText("已取消");
             }
-            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount());
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount() + "元");
 
-            initListener(itemViewHolder.itemView, list.get(position).getId());
+            initListener(itemViewHolder.itemView, position);
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -138,18 +141,29 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
      *
      * @param itemView
      */
-    public void initListener(View itemView, final String id) {
+    public void initListener(View itemView, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到预约详情
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
-                intent.putExtra("id", id);
-                Log.i("hh", "当前item的id---" + id);
-//                    intent.putExtra("status", status);
-                mContext.startActivity(intent);
+
+                if (list.get(position).getAuditStatus().equals("confirming")) {
+                    Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
+                    intent.putExtra("id", list.get(position).getId());
+                    mContext.startActivity(intent);
+                    policyBookingFragment.requestData();
+                    notifyDataSetChanged();
+                } else {
+                    Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
+                    intent.putExtra("id", list.get(position).getId());
+                    mContext.startActivity(intent);
+                }
             }
         });
+    }
+
+    public PolicyBookingFragment setMyBookingFragment(PolicyBookingFragment policyBookingFragment) {
+        this.policyBookingFragment = policyBookingFragment;
+        return policyBookingFragment;
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

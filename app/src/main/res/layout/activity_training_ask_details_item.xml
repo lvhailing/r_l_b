@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
-            android:text="渣渣辉"
+            android:text="---"
             android:layout_gravity="center_vertical"
             />
 
@@ -37,7 +37,7 @@
         android:layout_marginTop="10dip"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
-        android:text="日照香炉生紫烟，李白来到烤鸭店"
+        android:text="---"
         />
 
     <LinearLayout
@@ -54,7 +54,7 @@
             android:layout_marginTop="15dip"
             android:layout_marginLeft="15dip"
             android:layout_marginBottom="10dip"
-            android:text="4-4 12:12"
+            android:text="01-01 00:00"
             android:textSize="12sp"
             />
 

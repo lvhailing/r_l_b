@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingCircleActivity;
@@ -20,6 +21,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private String type = "";
     private String userId = "";
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_training_class,R.mipmap.img_training_class,R.mipmap.img_training_class);
 
     public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type,String userId) {
         this.context = context;
@@ -83,7 +86,7 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
         holder.tvMycircleName.setText(arrayList.get(position).getCircleName());
         holder.tvMycircleDescription.setText(arrayList.get(position).getCircleName());
 
-        ImageLoader.getInstance().displayImage(arrayList.get(position).getCirclePhoto(),holder.ivMycircleSign);
+        ImageLoader.getInstance().displayImage(arrayList.get(position).getCirclePhoto(),holder.ivMycircleSign,displayImageOptions);
 
 //        holder.tvCircleJoin.setText(arrayList.get(position).getCircleName());
 

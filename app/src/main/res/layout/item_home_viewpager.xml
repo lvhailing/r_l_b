@@ -14,6 +14,17 @@
         android:layout_gravity="center"
         android:textSize="30dp"
         android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        android:textColor="@color/main_color_yellow"/>
+    <TextView
+        android:id="@+id/tv_home_promotionMoney_no"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:layout_marginLeft="20dp"
+        android:text="认证可见"
         android:textColor="@color/main_color_yellow"/>
     <ImageView
         android:layout_width="1dp"
@@ -31,7 +42,9 @@
             android:id="@+id/tv_home_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="中荣信托-兴创美林湖"
+            android:text=""
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="16sp"
             android:textColor="@color/gray_dark"/>
         <TextView
@@ -39,8 +52,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="兴创美林湖推荐语兴创美林湖推荐语兴创美林湖推荐语"
+            android:text=""
             android:lineSpacingExtra="3dp"
+            android:lines="2"
+            android:ellipsize="end"
             android:textColor="@color/gray_d"/>
     </LinearLayout>
 </LinearLayout>

@@ -23,9 +23,10 @@ public class PolicyBookingDetail1B implements IMouldType {
     private String paymentPeriod; //缴费期限
     private String exceptSubmitTime; // 预计交单时间
     private String remark; // 备注说明
-    private String  refuseReason; // 驳回原因
-    private String  mobile; // 预约电话
-    private String  productId; // 产品id
+    private String refuseReason; // 驳回原因
+    private String mobile; // 预约电话
+    private String productId; // 产品id
+    private String auditTime; // 驳回时间
 
     public String getId() {
         return id;
@@ -161,5 +162,13 @@ public class PolicyBookingDetail1B implements IMouldType {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(String auditTime) {
+        this.auditTime = auditTime;
     }
 }

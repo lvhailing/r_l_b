@@ -9,12 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskIndexItemBean;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.CircularImage;
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
 
 public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
     private MouldList<ResultAskIndexItemBean> arrayList;
-
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
     public TrainingAskListAdapter(Context context, MouldList<ResultAskIndexItemBean> arrayList) {
         super(context);
         this.arrayList = arrayList;
@@ -91,7 +93,7 @@ public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.View
             holder1.ivTrainingAsk.setVisibility(View.VISIBLE);
             holder1.tvTrainingAskAnswer.setVisibility(View.VISIBLE);
             holder1.tvTrainingAskManager.setVisibility(View.VISIBLE);
-            ImageLoader.getInstance().displayImage(arrayList.get(position).getAnswerPhoto(),holder1.ivTrainingAsk);
+            ImageLoader.getInstance().displayImage(arrayList.get(position).getAnswerPhoto(),holder1.ivTrainingAsk,displayImageOptions);
             holder1.tvTrainingAskAnswer.setText(arrayList.get(position).getAnswerContent());
             holder1.tvTrainingAskManager.setText(arrayList.get(position).getAnswerName());
         }

@@ -8,6 +8,7 @@ public class HomeViewPager2B implements IMouldType {
     private String recommendations;
     private String promotionMoney;
     private String recommenCover;
+    private String checkStatus; //认证状态
 
     public String getId() {
         return id;
@@ -31,6 +32,14 @@ public class HomeViewPager2B implements IMouldType {
 
     public void setRecommendations(String recommendations) {
         this.recommendations = recommendations;
+    }
+
+    public String getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(String checkStatus) {
+        this.checkStatus = checkStatus;
     }
 
     public String getPromotionMoney() {

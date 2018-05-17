@@ -126,6 +126,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             public void onSelected(Set<Integer> selectPosSet)
             {
                 category=stringBuilder(selectPosSet);
+                Toast.makeText(mContext,category , Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -133,7 +134,9 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
         StringBuilder stringBuilder=new StringBuilder();
 
         for(Integer integer: selectPosSet){
+            stringBuilder.append("\'");
             stringBuilder.append(data.getCompanyList().get(integer));
+            stringBuilder.append("\'");
             stringBuilder.append(",");
         }
         String sb=stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
@@ -216,8 +219,8 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
      */
     private void requestListData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("companyName", category);
         param.put("page", currentPage + "");
-        param.put("name", category);
 
         try {
             HtmlRequest.getPlanData(mContext, param, new BaseRequester.OnRequestListener() {
@@ -297,7 +300,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.tv_reset:  // 重置
                 category="";
-
+                tagAdapter.setSelectedList();
                 break;
             case R.id.tv_ok:  // 确定
                 //点确定时，请求接口

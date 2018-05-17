@@ -297,7 +297,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
                 intent.putExtra("companyName", result.getCompanyName());
                 intent.putExtra("name", result.getName());
                 intent.putExtra("category", result.getCategory());
-                startActivityForResult(intent, 2000);
+                startActivity(intent);
                 break;
             case R.id.btn_planbook://计划书
                 if (!PreferenceUtil.isLogin()) {
@@ -511,6 +511,8 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
 
     private void setWebView(String html, WebView webView) {
         webView.getSettings().setJavaScriptEnabled(true);
+        //支持屏幕缩放
+        webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
@@ -537,13 +539,4 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         return doc.toString();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 2) {
-            if (requestCode == 2000) {
-                requestData();
-            }
-        }
-    }
 }

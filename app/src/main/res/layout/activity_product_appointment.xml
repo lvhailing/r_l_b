@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light"
-    android:orientation="vertical">
+    android:background="@color/gray_light">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/white">
             <TextView
@@ -153,7 +152,7 @@
                     android:textColor="@color/gray_dark"
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:maxLength="30"
+                    android:maxLength="50"
                     android:background="@color/white" />
             </LinearLayout>
             <ImageView
@@ -190,7 +189,7 @@
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:layout_centerVertical="true"
-                    android:maxLength="30"
+                    android:maxLength="50"
                     android:inputType="number"
                     android:background="@color/white" />
             </LinearLayout>
@@ -228,7 +227,7 @@
                     android:layout_centerVertical="true"
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:maxLength="30"
+                    android:maxLength="50"
                     android:inputType="number"
                     android:background="@color/white" />
             </LinearLayout>
@@ -264,7 +263,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/gray_dark"
                     android:textColorHint="@color/gray_d"
-                    android:maxLength="30"
+                    android:maxLength="50"
                     android:inputType="number"
                     android:layout_centerVertical="true"
                     android:textCursorDrawable="@drawable/color_cursor"
@@ -304,7 +303,7 @@
                     android:textColor="@color/gray_dark"
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:maxLength="30"
+                    android:maxLength="50"
                     android:inputType="number"
                     android:background="@color/white" />
             </LinearLayout>
@@ -364,7 +363,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/gray_dark"
                     android:textColorHint="@color/gray_d"
-                    android:maxLength="100"
+                    android:maxLength="50"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:background="@color/white" />
             </LinearLayout>

@@ -86,7 +86,7 @@ public class InsuranceProductAdapter extends BaseAdapter {
             holder.tv_promotionMoney_unlogin.setVisibility(View.GONE);
             holder.tv_promotionMoney.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(promotionMoney)) {
-                holder.tv_promotionMoney.setText(promotionMoney);
+                holder.tv_promotionMoney.setText(promotionMoney+"%");
             } else {
                 holder.tv_promotionMoney.setText("--");
             }

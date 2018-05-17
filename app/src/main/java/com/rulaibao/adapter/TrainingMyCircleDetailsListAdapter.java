@@ -2,13 +2,16 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
@@ -19,6 +22,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.uitls.ViewUtils;
@@ -41,12 +45,19 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 
     private MouldList<ResultCircleDetailsTopicItemBean> arrayList;
     private String circleId = "";
-
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
+    private String userId = null;
     public TrainingMyCircleDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicItemBean> arrayList, String circleId) {
         super(context);
         this.arrayList = arrayList;
         this.circleId = circleId;
         layoutInflater = LayoutInflater.from(context);
+
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -112,7 +123,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
             index = position - 1;
         }
 
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getCreatorPhoto(), holder1.ivTrainingCircleDetailsManager);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getCreatorPhoto(), holder1.ivTrainingCircleDetailsManager,displayImageOptions);
 
         holder1.tvTrainingCircleDetailsManagerName.setText(arrayList.get(index).getCreatorName());
         holder1.tvCircleDetailsContent.setText(arrayList.get(index).getTopicContent());
@@ -143,10 +154,22 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
             public void onClick(View v) {
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
 
-                if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
-                    requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
-                    holder1.llCircleDetailsZan.setClickable(false);
+                if(TextUtils.isEmpty(userId)){
+                    Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(!PreferenceUtil.getCheckStatus().equals("success")){
+                        Toast.makeText(context, "请认证", Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
+                            requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
+                            holder1.llCircleDetailsZan.setClickable(false);
+                        }
+
+                    }
                 }
+
+
 
 //                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
             }
@@ -159,12 +182,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
     //点赞
     public void requestLikeData(String appTopicId, final int index) {
 
-        String userId = null;
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();

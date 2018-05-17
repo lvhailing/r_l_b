@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
@@ -17,6 +18,7 @@ import com.rulaibao.bean.ResultCircleDetailsTopicCommentItemBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
 import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyListView;
 
@@ -36,6 +38,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
     private int index = 0;
     private ResultCircleDetailsTopicCommentReplyItemBean replyItemBean;
     private ReplyAdapter replyAdapter;
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
 
     public TrainingAnswerDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList,Reply reply) {
         super(context);
@@ -85,7 +88,8 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 //        holder1.tvAnswerDetailsName.setText(arrayList.get(index).getTitle());
 
 
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(),holder1.ivAnswerDetails);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(),holder1.ivAnswerDetails,displayImageOptions);
+
         holder1.tvAnswerDetailsName.setText(arrayList.get(index).getCommentName());
         holder1.tvAnswerDetailsDate.setText(arrayList.get(index).getCommentTime());
         holder1.tvAnswerDetailsContent.setText(arrayList.get(index).getCommentContent());

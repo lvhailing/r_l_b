@@ -91,6 +91,8 @@ public class TrainingIssueTopicActivity extends BaseActivity {
         map.put("userId",userId);
         map.put("content",content);
 
+        btnTrainingIssueTopic.setClickable(false);
+
         HtmlRequest.getTrainingCircleAddTopic(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -102,14 +104,16 @@ public class TrainingIssueTopicActivity extends BaseActivity {
                     if(bean.getFlag().equals("true")){
 
                         Toast.makeText(TrainingIssueTopicActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
+                        finish();
 
-                        HashMap<String,Object> map = new HashMap<String,Object>();
-                        map.put("circleId",circleId);
-                        RlbActivityManager.toTrainingCircleDetailsActivity(TrainingIssueTopicActivity.this,map,true);
+//                        HashMap<String,Object> map = new HashMap<String,Object>();
+//                        map.put("circleId",circleId);
+//                        RlbActivityManager.toTrainingCircleDetailsActivity(TrainingIssueTopicActivity.this,map,true);
 
                     }else{
-
+                        Toast.makeText(TrainingIssueTopicActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     }
+                    btnTrainingIssueTopic.setClickable(true);
 //                    appTopics = bean.getAppTopics();
 //                    initTopicAdapterData();
 

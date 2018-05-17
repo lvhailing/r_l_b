@@ -86,6 +86,8 @@ public class TrainingAnswerActivity extends BaseActivity {
         map.put("questionId",questionId);
         map.put("answerContent",answerContent);
 
+        btnTrainingAnswer.setClickable(false);
+
         HtmlRequest.getTrainingToAnswer(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -100,6 +102,7 @@ public class TrainingAnswerActivity extends BaseActivity {
                         Toast.makeText(TrainingAnswerActivity.this,b.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
+                    btnTrainingAnswer.setClickable(true);
 //                    indexItemBeans = b.getList();
 //                    initRecyclerView();
 

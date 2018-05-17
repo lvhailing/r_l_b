@@ -45,7 +45,7 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //设置状态栏为透明
+       /* //设置状态栏为透明
         initSystemBarTint();
         //设置状态栏为字体黑色
         OSUtils.ROM_TYPE romType =  OSUtils.getRomType();
@@ -55,7 +55,7 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
             StatusBarUtil.statusBarDarkMode(this,FLYME);
         }else if (romType== OSUtils.ROM_TYPE.ANDROID_M){
             StatusBarUtil.statusBarDarkMode(this,ANDROID_M);
-        }
+        }*/
         setContentView(R.layout.base);
 
         MyApplication apl = (MyApplication) getApplicationContext();

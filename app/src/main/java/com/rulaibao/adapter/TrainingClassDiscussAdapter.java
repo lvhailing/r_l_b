@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.bean.ResultClassDetailsDiscussBean;
@@ -17,6 +18,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
@@ -42,7 +44,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private static final int TYPE_ITEM = 0;     // item布局
     private static final int TYPE_FOOTER = 1;   //  footer布局
-
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
 
     //上拉加载更多
     public static final int PULLUP_LOAD_MORE = 0;
@@ -97,7 +99,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             ViewHolder holder1 = (ViewHolder) holder;
 
             holder1.tvTrainingDiscussName.setText(arrayList.get(position).getCommentName());
-            ImageLoader.getInstance().displayImage(arrayList.get(position).getCommentPhoto(),holder1.ivTrainingDiscuss);
+            ImageLoader.getInstance().displayImage(arrayList.get(position).getCommentPhoto(),holder1.ivTrainingDiscuss,displayImageOptions);
             holder1.tvTrainingDiscussDate.setText(arrayList.get(position).getCommentTime());
 
             holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());

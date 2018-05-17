@@ -249,8 +249,6 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
                         Toast.makeText(ProductAppointmentActivity.this,
                                 b.getMessage(), Toast.LENGTH_LONG)
                                 .show();
-                        Intent intent = new Intent();
-                        setResult(2, intent);
                         finish();
                     } else {
                         Toast.makeText(ProductAppointmentActivity.this,

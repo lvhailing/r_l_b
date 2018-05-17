@@ -53,7 +53,7 @@ public class WebActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //设置状态栏为透明
+       /* //设置状态栏为透明
         initSystemBarTint();
         //设置状态栏为字体黑色
         OSUtils.ROM_TYPE romType =  OSUtils.getRomType();
@@ -63,7 +63,7 @@ public class WebActivity extends Activity implements View.OnClickListener {
             StatusBarUtil.statusBarDarkMode(this,FLYME);
         }else if (romType== OSUtils.ROM_TYPE.ANDROID_M){
             StatusBarUtil.statusBarDarkMode(this,ANDROID_M);
-        }
+        }*/
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_web);
         type = getIntent().getStringExtra("type");

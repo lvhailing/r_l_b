@@ -2,6 +2,7 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,19 +69,25 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             String status = list.get(position).getReadState();
-            if ("yes".equals(status)) {
+            if ("yes".equals(status)) { // 已读状态
                 itemViewHolder.tv_bulletin_title.setText(list.get(position).getTopic());
                 itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
                 itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
 
-//                itemViewHolder.tv_bulletin_title.setTextColor(getResources().getColor(R.color.main_color_yellow));
-            } else if ("no".equals(status)) {
+                itemViewHolder.tv_bulletin_title.setTextColor(mContext.getResources().getColor(R.color.txt_mark_gray));
+                itemViewHolder.tv_bulletin_time.setTextColor(mContext.getResources().getColor(R.color.txt_mark_gray));
+                itemViewHolder.tv_bulletin_content.setTextColor(mContext.getResources().getColor(R.color.txt_mark_gray));
+            } else if ("no".equals(status)) { // 未读状态
                 itemViewHolder.tv_bulletin_title.setText(list.get(position).getTopic());
                 itemViewHolder.tv_bulletin_time.setText(list.get(position).getPublishTime());
                 itemViewHolder.tv_bulletin_content.setText(list.get(position).getDescription());
+
+                itemViewHolder.tv_bulletin_title.setTextColor(mContext.getResources().getColor(R.color.txt_black1));
+                itemViewHolder.tv_bulletin_time.setTextColor(mContext.getResources().getColor(R.color.txt_black1));
+                itemViewHolder.tv_bulletin_content.setTextColor(mContext.getResources().getColor(R.color.txt_black1));
             }
 
-            initListener(itemViewHolder.itemView, list.get(position).getId());
+            initListener(itemViewHolder.itemView, list.get(position).getId(),position);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -137,7 +144,7 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
      *
      * @param itemView
      */
-    private void initListener(View itemView, final String id) {
+    private void initListener(View itemView, final String id, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到公告详情
@@ -146,6 +153,8 @@ public class PlatformBulletinAdapter extends RecyclerView.Adapter<RecyclerView.V
                 intent.putExtra("title", "公告详情");
                 intent.putExtra("url", Urls.URL_BULLETIN_DETAIL + "?id=" + id + "&userId=" + userId);
                 mContext.startActivity(intent);
+                list.get(position).setReadState("yes");
+                notifyDataSetChanged();
             }
         });
     }

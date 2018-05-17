@@ -3,6 +3,7 @@ package com.rulaibao.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,7 @@ import com.rulaibao.activity.InsuranceProductActivity;
 import com.rulaibao.activity.InsuranceProductDetailActivity;
 import com.rulaibao.activity.LoginActivity;
 import com.rulaibao.activity.PlanActivity;
+import com.rulaibao.activity.PlatformBulletinDetailActivity;
 import com.rulaibao.activity.ProductAppointmentActivity;
 import com.rulaibao.activity.WebActivity;
 import com.rulaibao.adapter.HomeAdapter;
@@ -33,6 +35,7 @@ import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.HomeViewPager2B;
 import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.bean.InsuranceProduct3B;
+import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -52,11 +55,10 @@ import java.util.List;
  * 首页模块
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
     private View mView;
     private Context context;
     private Intent intent;
-    private String userId;
     private SwipeRefreshLayout swipe_refresh;
     private ScrollView scrollView;
     private LinearLayout ll_vp; //顶部轮播图
@@ -90,6 +92,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private InsuranceProductAdapter mAdapter;
     private MouldList<InsuranceProduct2B> totalList = new MouldList<>();
 
+    private String userId;
  //   private HomeIndex2B homeIndexData;
 
     @Override
@@ -98,7 +101,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             mView = inflater.inflate(R.layout.fragment_home, container, false);
             try {
                 initView(mView);
-                initData();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,6 +116,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        initView(mView);
         requestHomeData();// 请求首页数据
     }
     @Override
@@ -121,6 +124,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(context!=null){
+                initView(mView);
                 requestHomeData();// 请求首页数据
             }
         } else {
@@ -131,7 +135,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private void initView(View mView) {
         context = getActivity();
         swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
-        swipe_refresh.setEnabled(false);
+        swipe_refresh.setColorSchemeResources(R.color.main_color_yellow);
+
         scrollView= (ScrollView) mView.findViewById(R.id.scrollView);
         picList = new MouldList<CycleIndex2B>();
         ll_vp = (LinearLayout) mView.findViewById(R.id.ll_vp);
@@ -149,46 +154,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
-                /**
-                 *
-                 * 跳转到公告详情
-                 *
-                 *
-                 */
-                Toast.makeText(getContext(), String.valueOf(marqueeView.getPosition()) + ". " + textView.getText(), Toast.LENGTH_SHORT).show();
+
+                try {
+                    userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(context, WebActivity.class);
+                intent.putExtra("type", WebActivity.WEB_TYPE_NOTICE);
+                intent.putExtra("title", "公告详情");
+                intent.putExtra("url", Urls.URL_BULLETIN_DETAIL + "?id=" + bulletinlist.get(position).getBulletinId() + "&userId=" + userId);
+                startActivity(intent);
             }
         });
         //热销精品
         listView= (MyListView) mView.findViewById(R.id.home_listview);
         mAdapter = new InsuranceProductAdapter(context, totalList);
         listView.setAdapter(mAdapter);
-       /* swipe_refresh.setColorScheme(getResources().getColor(R.color.orange));
-        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
 
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-						resetScrollViewSmooth();
-
-                    }
-                }, 0);
-
-            }
-        });*/
-       //重磅推荐
-        mViewPager = (ViewPager) mView.findViewById(R.id.home_viewpager);
-        vIndicator = mView.findViewById(R.id.home_indicator);// 线性水平布局，负责动态调整导航图标
-    }
-    private void initData() {
-        userId = null;
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        swipe_refresh.setOnRefreshListener(this);
         tv_project_plan.setOnClickListener(this);
         tv_disease_guarantee.setOnClickListener(this);
         tv_pension_guarantee.setOnClickListener(this);
@@ -201,6 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
                 Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
                 intent.putExtra("id", totalList.get(position).getId());
                 startActivity(intent);
@@ -209,6 +194,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
     //重磅推荐
     public void initViewPageData(final MouldList<HomeViewPager2B> homeVpList) {
+        //重磅推荐
+        mViewPager = (ViewPager) mView.findViewById(R.id.home_viewpager);
+        vIndicator = mView.findViewById(R.id.home_indicator);// 线性水平布局，负责动态调整导航图标
+
         ImageView imgView;
         viewList = new ArrayList<>();
         ((ViewGroup) vIndicator).removeAllViews();
@@ -288,7 +277,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
      * 获取首页数据
      */
     private void requestHomeData() {
-        String userId = null;
         try {
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
         } catch (Exception e) {
@@ -324,7 +312,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 }
                 marqueeView.startWithList(info);
 
-                //重磅推荐
                 indicator_imgs.clear();
                 homeVpList.clear();
                 homeVpList.addAll(homeIndex2B.getRecommendlist());
@@ -336,7 +323,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 totalList.addAll(homeIndex2B.getSellList());
                 mAdapter.notifyDataSetChanged();
                 scrollView.smoothScrollTo(0, 0);
-  //              swipe_refresh.setRefreshing(false);
+
+                swipe_refresh.setRefreshing(false);
             }
 
         });
@@ -357,11 +345,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_MOVE:
-           //                 swipe_refresh.setEnabled(false);
+                            swipe_refresh.setEnabled(false);
                             break;
                         case MotionEvent.ACTION_UP:
                         case MotionEvent.ACTION_CANCEL:
-           //                 swipe_refresh.setEnabled(true);
+                            swipe_refresh.setEnabled(true);
                             break;
                     }
                     return false;
@@ -393,6 +381,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             rollViewPager.reStartRoll();
         }
     }
+
+    @Override
+    public void onRefresh() {
+        requestHomeData();// 请求首页数据
+    }
+
     /**
      * 动作监听器，可异步加载图片
      */
@@ -422,12 +416,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-        marqueeView.startFlipping();
+        if (marqueeView!=null){
+
+            marqueeView.startFlipping();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        marqueeView.stopFlipping();
+        if (marqueeView!=null){
+
+            marqueeView.stopFlipping();
+        }
     }
 }

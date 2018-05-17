@@ -5,9 +5,7 @@
     </style>-->
     <!-- Base application theme. -->
    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">@android:color/transparent</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
     </style>
     <style name="AppThemeSplah">
         <item name="android:windowNoTitle">true</item>

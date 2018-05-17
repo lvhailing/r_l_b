@@ -3,6 +3,7 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -34,11 +35,25 @@ public class HomeAdapter extends PagerAdapter {
 	public Object instantiateItem(ViewGroup collection, final int position) {
 		HomeViewPager2B bean=homeVpList.get(position);
 		View view = viewList.get(position);
+		String checkStatus = bean.getCheckStatus();
+		String promotionMoney = bean.getCheckStatus();
 		TextView tv_home_promotionMoney= (TextView) view.findViewById(R.id.tv_home_promotionMoney);
+		TextView tv_home_promotionMoney_no= (TextView) view.findViewById(R.id.tv_home_promotionMoney_no);
 		TextView tv_home_name= (TextView) view.findViewById(R.id.tv_home_name);
 		TextView tv_home_recommendations= (TextView) view.findViewById(R.id.tv_home_recommendations);
-		tv_home_promotionMoney.setText(bean.getPromotionMoney());
-	//	tv_home_promotionMoney.setText(setTextStyle1(context, bean.getRate1()).append(setTextStyle2(context, bean.getRate2())));
+		if ("success".equals(checkStatus)){
+			tv_home_promotionMoney_no.setVisibility(View.GONE);
+			tv_home_promotionMoney.setVisibility(View.VISIBLE);
+			if (!TextUtils.isEmpty(promotionMoney)) {
+				tv_home_promotionMoney.setText(promotionMoney+"%");
+			} else {
+				tv_home_promotionMoney.setText("--");
+			}
+
+		}else{
+			tv_home_promotionMoney_no.setVisibility(View.VISIBLE);
+			tv_home_promotionMoney.setVisibility(View.GONE);
+		}
 		tv_home_name.setText(bean.getName());
 		tv_home_recommendations.setText(bean.getRecommendations());
 		 view.setOnClickListener(new View.OnClickListener() {

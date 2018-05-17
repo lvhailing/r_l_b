@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.RecyclerBaseAapter;
@@ -30,6 +31,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
@@ -62,6 +64,9 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     FrameLayout flAnswerDetails;
     @BindView(R.id.swipe_answer_details)
     SwipeRefreshLayout swipeAnswerDetails;
+
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
+
 
     private TextView tv_answer_details_title;       //  标题
     private CircularImage iv_answer_detatils_manager;       //  touxiang
@@ -291,7 +296,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     public void setView() {
 
         tv_answer_details_title.setText(detailsBean.getAppAnswer().getTitle());
-        ImageLoader.getInstance().displayImage(detailsBean.getAppAnswer().getAnswerPhoto(), iv_answer_detatils_manager);
+        ImageLoader.getInstance().displayImage(detailsBean.getAppAnswer().getAnswerPhoto(), iv_answer_detatils_manager,displayImageOptions);
         tv_answer_details_manager_name.setText(detailsBean.getAppAnswer().getAnswerName());
         tv_answer_details_time.setText(detailsBean.getAppAnswer().getAnswerTime());
         tv_answer_details_content.setText(detailsBean.getAppAnswer().getAnswerContent());
@@ -356,7 +361,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                         detailsBean.getAppAnswer().setLikeStatus("yes");
 
                     } else {
-
+                        Toast.makeText(TrainingAnswerDetailsActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                     iv_answer_detailas_zan.setClickable(true);
 
@@ -377,33 +382,38 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
             Toast.makeText(TrainingAnswerDetailsActivity.this,"未登录",Toast.LENGTH_SHORT).show();
 
         }else{
-            if (TextUtils.isEmpty(commentId)) {       //  评论
+            if(!PreferenceUtil.getCheckStatus().equals("success")){
+                Toast.makeText(TrainingAnswerDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+            }else{
+                if (TextUtils.isEmpty(commentId)) {       //  评论
 
-                requestReplyData(commentContent);
-                hiddenInputLayout();
-            } else {              //  回复
+                    requestReplyData(commentContent);
+                    hiddenInputLayout();
+                } else {              //  回复
 
-                ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
-                itemBean.setReplyContent(commentContent);
+                    ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+                    itemBean.setReplyContent(commentContent);
 
-                itemBean.setReplyId(userId);      //      回复人id
-                itemBean.setReplyToId(toUserId);    //  被回复人id
+                    itemBean.setReplyId(userId);      //      回复人id
+                    itemBean.setReplyToId(toUserId);    //  被回复人id
 
-                String realName = "";
-                try {
-                    realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    String realName = "";
+                    try {
+                        realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    itemBean.setReplyName(realName);       //  回复人姓名
+                    itemBean.setReplyToName(replyToName);      //  被回复人姓名
+
+                    commentItemBeans.get(index).getReplys().add(itemBean);
+                    adapter.notifyDataSetChanged();
+                    requestReplyData(commentContent);
+                    hiddenInputLayout();
                 }
-
-                itemBean.setReplyName(realName);       //  回复人姓名
-                itemBean.setReplyToName(replyToName);      //  被回复人姓名
-
-                commentItemBeans.get(index).getReplys().add(itemBean);
-                adapter.notifyDataSetChanged();
-                requestReplyData(commentContent);
-                hiddenInputLayout();
             }
+
 
         }
 
@@ -530,6 +540,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     @OnTouch(R.id.lv_answer_details)
     boolean onTouch(View v, MotionEvent event) {
         if (MotionEvent.ACTION_MOVE == event.getAction()) {
+            commentId = "";
             hiddenInputLayout();
         }
         return false;
@@ -553,7 +564,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         isShowComment.set(false);
         etAnswerDetails.setText("");
         etAnswerDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
-        commentId = "";
+
 //        flAnswerDetails.setVisibility(View.GONE);
         InputMethodUtils.hiddenSoftKeyboard(this);
     }

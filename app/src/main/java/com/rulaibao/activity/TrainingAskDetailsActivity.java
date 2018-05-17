@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.RecyclerBaseAapter;
@@ -35,6 +37,8 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.test.TabMenu;
+import com.rulaibao.uitls.ImageLoaderManager;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.TitleBar;
@@ -60,6 +64,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
     @BindView(R.id.swipe_ask_details)
     SwipeRefreshLayout swipeAskDetails;
 
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
 
     private TextView tv_ask_detais_sort;        //
     private ImageView iv__ask_detais_sort;        //
@@ -248,7 +253,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
     public void setView(ResultAskDetailsBean bean) {
 
         tv_askdetails_title.setText(bean.getAppQuestion().getTitle());
-        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager);
+        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager,displayImageOptions);
         tv_ask_details_manager_name.setText(bean.getAppQuestion().getUserName());
         tv_ask_details_time.setText(bean.getAppQuestion().getTime());
         tv_ask_details_content.setText(bean.getAppQuestion().getDescript());
@@ -473,10 +478,24 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
         switch (view.getId()) {
 
             case R.id.tv_ask_details_answer:
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("questionId", questionId);
-                map.put("title", detailsBean.getAppQuestion().getTitle());
-                RlbActivityManager.toTrainingAnswerActivity(this, map, false);
+
+                if(TextUtils.isEmpty(userId)){
+                    Toast.makeText(TrainingAskDetailsActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(!PreferenceUtil.getCheckStatus().equals("success")){
+                        Toast.makeText(TrainingAskDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+
+                    }else{
+
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("questionId", questionId);
+                        map.put("title", detailsBean.getAppQuestion().getTitle());
+                        RlbActivityManager.toTrainingAnswerActivity(this, map, false);
+
+                    }
+                }
+
+
                 break;
 
             default:
