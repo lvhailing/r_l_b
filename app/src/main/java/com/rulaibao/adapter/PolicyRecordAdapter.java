@@ -71,7 +71,7 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // 加载图片
             ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
-            initListener(itemViewHolder.itemView,list.get(position).getOrderId());
+            initListener(itemViewHolder.itemView,position);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -139,13 +139,13 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      *
      * @param itemView
      */
-    private void initListener(View itemView,final String orderId) {
+    private void initListener(View itemView,final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到保险详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-                intent.putExtra("orderId", orderId);
+                intent.putExtra("orderId", list.get(position).getOrderId());
                 mContext.startActivity(intent);
             }
         });

@@ -9,12 +9,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.InsuranceProductDetailActivity;
 import com.rulaibao.activity.PolicyBookingDetailActivity;
+import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.MyCollectionList2B;
+import com.rulaibao.dialog.CancelBookingDialog;
+import com.rulaibao.dialog.CancelCollectionDialog;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+
+import java.util.LinkedHashMap;
 
 
 /**
@@ -23,6 +32,7 @@ import com.rulaibao.network.types.MouldList;
 public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<MyCollectionList2B> list;
+    private final String userId;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -39,8 +49,9 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
     private int mLoadMoreStatus = 0;
 
 
-    public MyCollectionRecycleAdapter(Context context, MouldList<MyCollectionList2B> list) {
+    public MyCollectionRecycleAdapter(Context context,String userId, MouldList<MyCollectionList2B> list) {
         mContext = context;
+        this.userId = userId;
         this.list = list;
         mInflater = LayoutInflater.from(context);
     }
@@ -66,7 +77,7 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_insurance_name.setText(list.get(position).getName());
 
-            initListener(itemViewHolder.itemView,list.get(position).getProductId());
+            initListener(itemViewHolder.itemView,position);
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -121,13 +132,66 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
      *
      * @param itemView
      */
-    private void initListener(View itemView,final String id) {
+    private void initListener(View itemView,final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到产品详情
                 Intent intent = new Intent(mContext, InsuranceProductDetailActivity.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", list.get(position).getProductId());
                 mContext.startActivity(intent);
+            }
+        });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showCancelCollectionDialog(position);
+                return true;
+            }
+        });
+    }
+
+    private void showCancelCollectionDialog(final int position) {
+        CancelCollectionDialog dialog = new CancelCollectionDialog(mContext, new CancelCollectionDialog.IsCancelCollection() {
+            @Override
+            public void onConfirm() {
+                requestCollectionCanceled(position);
+//                Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
+
+        dialog.show();
+    }
+
+    /**
+     *  取消收藏
+     * @param position
+     */
+    private void requestCollectionCanceled(int position) {
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", userId);
+        param.put("productId", list.get(position).getProductId());
+        param.put("dataStatus", "invalid");
+        param.put("collectionId", list.get(position).getCollectionId());
+        HtmlRequest.collection(mContext, param, new BaseRequester.OnRequestListener() {
+
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (param == null || params.result == null) {
+                    Toast.makeText(mContext, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Collection2B data = (Collection2B) params.result;
+                if ("true".equals(data.getFlag())) {
+                    Toast.makeText(mContext, data.getMessage(),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(mContext, data.getMessage(),Toast.LENGTH_LONG).show();
+
+                }
             }
         });
     }

@@ -126,7 +126,7 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
      */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", "18042513234098822058");
+        param.put("userId", userId);
         param.put("orderId", orderId);
 
         HtmlRequest.getPolicyRecordDetail(this, param, new BaseRequester.OnRequestListener() {

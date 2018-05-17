@@ -70,27 +70,27 @@ public class ImageUtils {
         int index = 0;
         if(!TextUtils.isEmpty(strIndex)){
             if(strIndex.equals("1")){
-                index = R.mipmap.bg_class_one;
-            }else if(strIndex.equals("2")){
-                index = R.mipmap.bg_class_two;
-            }else if(strIndex.equals("3")){
-                index = R.mipmap.bg_class_three;
-            }else if(strIndex.equals("4")){
                 index = R.mipmap.bg_class_four;
-            }else if(strIndex.equals("5")){
+            }else if(strIndex.equals("2")){
                 index = R.mipmap.bg_class_five;
-            }else if(strIndex.equals("6")){
+            }else if(strIndex.equals("3")){
                 index = R.mipmap.bg_class_six;
-            }else if(strIndex.equals("7")){
-                index = R.mipmap.bg_class_serven;
-            }else if(strIndex.equals("8")){
+            }else if(strIndex.equals("4")){
+                index = R.mipmap.bg_class_seven;
+            }else if(strIndex.equals("5")){
                 index = R.mipmap.bg_class_eight;
-            }else if(strIndex.equals("9")){
+            }else if(strIndex.equals("6")){
                 index = R.mipmap.bg_class_nine;
-            }else if(strIndex.equals("10")){
+            }else if(strIndex.equals("7")){
                 index = R.mipmap.bg_class_ten;
-            }else if(strIndex.equals("11")){
+            }else if(strIndex.equals("8")){
                 index = R.mipmap.bg_class_eleven;
+            }else if(strIndex.equals("9")){
+                index = R.mipmap.bg_class_one;
+            }else if(strIndex.equals("10")){
+                index = R.mipmap.bg_class_two;
+            }else if(strIndex.equals("11")){
+                index = R.mipmap.bg_class_three;
             }
         }
 

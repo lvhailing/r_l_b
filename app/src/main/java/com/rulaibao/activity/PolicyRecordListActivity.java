@@ -94,8 +94,6 @@ public class PolicyRecordListActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                ((PolicyRecordListFragment) vpAdapter.getItem(position)).setUserId(userId);
-                ((PolicyRecordListFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 
             @Override
@@ -107,6 +105,9 @@ public class PolicyRecordListActivity extends BaseActivity {
         sliding_tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                ((PolicyRecordListFragment) vpAdapter.getItem(tab.getPosition())).setUserId(userId);
+                ((PolicyRecordListFragment) vpAdapter.getItem(tab.getPosition())).getTabTitleCurrentPosition(tab.getPosition());
+
                 //选中的view
                 View view = tab.getCustomView();
                 TextView tv_title = (TextView) view.findViewById(R.id.tv_title);

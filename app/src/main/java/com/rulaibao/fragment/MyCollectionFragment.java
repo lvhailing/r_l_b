@@ -69,8 +69,8 @@ public class MyCollectionFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("category", type);
 
-        Log.i("hh", this+"userId------" + userId);
-        Log.i("hh", this+"category------" + type);
+        Log.i("hh", this+"userId ------ " + userId);
+        Log.i("hh", this+"category ------ " + type);
 
         HtmlRequest.getCollectionListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -133,7 +133,7 @@ public class MyCollectionFragment extends Fragment {
 
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myCollectionRecycleAdapter = new MyCollectionRecycleAdapter(getActivity(), totalList);
+        myCollectionRecycleAdapter = new MyCollectionRecycleAdapter(getActivity(), userId,totalList);
         recycler_view.setAdapter(myCollectionRecycleAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());

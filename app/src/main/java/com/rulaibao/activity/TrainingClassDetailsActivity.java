@@ -1,5 +1,7 @@
 package com.rulaibao.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,9 +17,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
 import com.rulaibao.bean.ResultClassDetailsIntroductionItemBean;
@@ -27,22 +34,26 @@ import com.rulaibao.fragment.TrainingDetailsPPTFragment;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.InputMethodUtils;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.TitleBar;
-import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 课程详情
  */
 
 
-public class TrainingClassDetailsActivity extends BaseActivity {
+public class TrainingClassDetailsActivity extends BaseActivity implements TrainingClassDiscussAdapter.DiscussReply {
 
 
     static final String iframeStr = "<iframe height=498 width=510 src='http://player.youku.com/embed/XOTMyOTAwNDE2' frameborder=0 'allowfullscreen'></iframe>";
@@ -60,6 +71,12 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
     @BindView(R.id.vp_class_details)
     ViewPager vpClassDetails;
+    @BindView(R.id.fl_details_discuss)
+    FrameLayout flDetailsDiscuss;
+    @BindView(R.id.et_detail_discuss)
+    EditText etDetailDiscuss;
+    @BindView(R.id.btn_details_discuss)
+    Button btnDetailsDiscuss;
 
     private String url = "http://player.youku.com/player.php/sid/XMzUxMzM5MzQyMA==/v.swf";
 
@@ -75,6 +92,15 @@ public class TrainingClassDetailsActivity extends BaseActivity {
     private ResultClassDetailsIntroductionItemBean course;
     private String speechmakeId = "";       //  演讲人id
     private String courseId = "";       //  课程id
+
+
+    private int index;
+    private int oldPosition = 0;
+    private int bottomOffset = 0;
+    private String commentName = "";
+    private int position;
+    private String toUserId = "";
+    private String commentId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +121,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
     }
 
-    public void initTabView(){
+    public void initTabView() {
 
         fragments = new ArrayList<>();
         listTitles = new ArrayList<>();
@@ -103,10 +129,10 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 //        introdutionFragment = new TrainingDetailsIntroductionFragment(vpClassDetails);
         introdutionFragment = new TrainingDetailsIntroductionFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("id",id);
-        bundle.putString("speechmakeId",speechmakeId);
-        bundle.putSerializable("course",course);
-        bundle.putSerializable("courseId",courseId);
+        bundle.putString("id", id);
+        bundle.putString("speechmakeId", speechmakeId);
+        bundle.putSerializable("course", course);
+        bundle.putSerializable("courseId", courseId);
         introdutionFragment.setArguments(bundle);
         fragments.add(introdutionFragment);
 
@@ -116,7 +142,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         fragments.add(catalogFragment);
 
 //        discussFragment = new TrainingDetailsDiscussFragment(vpClassDetails);
-        discussFragment = new TrainingDetailsDiscussFragment();
+        discussFragment = new TrainingDetailsDiscussFragment(this);
         discussFragment.setArguments(bundle);
         fragments.add(discussFragment);
 
@@ -132,7 +158,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         listTitles.add("PPT");
 
         //mTabLayout.setTabMode(TabLayout.SCROLL_AXIS_HORIZONTAL);//设置tab模式，当前为系统默认模式
-        for(int i=0;i<listTitles.size();i++){
+        for (int i = 0; i < listTitles.size(); i++) {
             tlClassDetails.addTab(tlClassDetails.newTab().setText(listTitles.get(i)));//添加tab选项
         }
 
@@ -147,6 +173,7 @@ public class TrainingClassDetailsActivity extends BaseActivity {
             public int getCount() {
                 return fragments.size();
             }
+
             //ViewPager与TabLayout绑定后，这里获取到PageTitle就是Tab的Text
             @Override
             public CharSequence getPageTitle(int position) {
@@ -161,6 +188,12 @@ public class TrainingClassDetailsActivity extends BaseActivity {
         vpClassDetails.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                if (position % 4 == 2) {
+                    flDetailsDiscuss.setVisibility(View.VISIBLE);
+                } else {
+                    flDetailsDiscuss.setVisibility(View.GONE);
+                }
 
             }
 
@@ -348,5 +381,85 @@ public class TrainingClassDetailsActivity extends BaseActivity {
 
 
     }
+
+
+    @OnClick(R.id.btn_details_discuss)
+    public void onclick() {
+
+        String commentContent = etDetailDiscuss.getText().toString();
+
+        if(TextUtils.isEmpty(userId)){
+            HashMap<String,Object> map = new HashMap<>();
+
+
+            RlbActivityManager.toLoginActivity(this,map,false);
+
+
+        }else{
+            if(!PreferenceUtil.getCheckStatus().equals("success")){
+
+                new AlertDialog.Builder(this)
+
+                        .setMessage("您还未认证，是否去认证")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                HashMap<String,Object> map = new HashMap<>();
+
+                                map.put("realName",PreferenceUtil.getUserRealName());
+                                map.put("status",PreferenceUtil.getCheckStatus());
+
+                                RlbActivityManager.toSaleCertificationActivity(TrainingClassDetailsActivity.this,map,false);
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+
+            }else{
+
+                discussFragment.toReply(commentContent,toUserId,commentId,commentName,index);
+                hiddenInputLayout();
+
+            }
+        }
+
+
+
+    }
+
+
+
+
+
+    @Override
+    public void reply(String toUserId, String commentId, String commentName, int index) {
+        this.toUserId = toUserId;
+        this.commentId = commentId;
+        this.index = index;
+        this.commentName = commentName;
+        etDetailDiscuss.setHint("回复" + commentName + "：");
+
+//        setBottomOffset(index);
+
+
+    }
+
+    private void hiddenInputLayout() {
+//        isShowComment.set(false);
+        etDetailDiscuss.setText("");
+        etDetailDiscuss.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+//        flAnswerDetails.setVisibility(View.GONE);
+        InputMethodUtils.hiddenSoftKeyboard(this);
+    }
+
 
 }

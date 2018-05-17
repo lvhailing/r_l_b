@@ -1,6 +1,8 @@
 package com.rulaibao.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -141,11 +143,41 @@ public class TrainingAskActivity extends BaseActivity {
     public void onClick(){
 
         if(TextUtils.isEmpty(userId)){
-            Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+
+            HashMap<String,Object> map = new HashMap<>();
+            RlbActivityManager.toLoginActivity(TrainingAskActivity.this,map,false);
+
         }else{
             String checkStatus = PreferenceUtil.getCheckStatus();
             if(!checkStatus.equals("success")){
-                Toast.makeText(context, "请认证", Toast.LENGTH_SHORT).show();
+
+                new AlertDialog.Builder(this)
+
+                        .setMessage("您还未认证，是否去认证")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                HashMap<String,Object> map = new HashMap<>();
+
+                                map.put("realName",PreferenceUtil.getUserRealName());
+                                map.put("status",PreferenceUtil.getCheckStatus());
+
+                                RlbActivityManager.toSaleCertificationActivity(TrainingAskActivity.this,map,false);
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+
+
             }else{
 
                 HashMap<String,Object> map = new HashMap<>();

@@ -1,7 +1,11 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -220,14 +224,33 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
                 }
             });
 
+
+
             String str = "";
             if(replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())){
                 str = replyItemBean.getReplyName()+"："+replyItemBean.getReplyContent();
+                String str2 = replyItemBean.getReplyName()+"：";
+
+                SpannableStringBuilder style = new SpannableStringBuilder(str);
+
+                style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, replyItemBean.getReplyName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder1.tvCommit.setText(style);
             }else{
                 str = replyItemBean.getReplyName()+" 回复 "+replyItemBean.getReplyToName()+"："+replyItemBean.getReplyContent();
+
+                String str2 = replyItemBean.getReplyName()+" 回复 ";
+                String str3 = str2+replyItemBean.getReplyToName();
+
+                SpannableStringBuilder style = new SpannableStringBuilder(str);
+
+                style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, replyItemBean.getReplyName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), str2.length(), str3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder1.tvCommit.setText(style);
             }
 
-            holder1.tvCommit.setText(str);
+
+
+
             return convertView;
         }
 

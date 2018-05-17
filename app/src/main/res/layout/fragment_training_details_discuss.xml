@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dip"
         android:layout_marginTop="10dip"
-        android:text="总共2条研讨"
+        android:text="总共0条研讨"
         android:textSize="16sp"
         />
     <com.rulaibao.widget.MyRecyclerView
@@ -41,6 +41,7 @@
         android:paddingRight="12dip"
         android:paddingLeft="12dip"
         android:paddingBottom="5dip"
+        android:visibility="gone"
         >
         <RelativeLayout
             android:layout_width="match_parent"

@@ -399,10 +399,39 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
         switch (view.getId()) {
             case R.id.btn_training_cirlce_details:
                 if(TextUtils.isEmpty(userId)){
-                    Toast.makeText(TrainingCircleDetailsActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+                    HashMap<String,Object> map = new HashMap<>();
+
+                    RlbActivityManager.toLoginActivity(TrainingCircleDetailsActivity.this,map,false);
+
                 }else{
                     if(!PreferenceUtil.getCheckStatus().equals("success")){
-                        Toast.makeText(TrainingCircleDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+
+                        new AlertDialog.Builder(TrainingCircleDetailsActivity.this)
+
+                                .setMessage("您还未认证，是否去认证")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        HashMap<String,Object> map = new HashMap<>();
+
+                                        map.put("realName",PreferenceUtil.getUserRealName());
+                                        map.put("status",PreferenceUtil.getCheckStatus());
+
+                                        RlbActivityManager.toSaleCertificationActivity(TrainingCircleDetailsActivity.this,map,false);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+
                     }else{
                         if(status.equals("other")){
                             Toast.makeText(TrainingCircleDetailsActivity.this, "请您加入该圈子后在进行相关操作", Toast.LENGTH_SHORT).show();

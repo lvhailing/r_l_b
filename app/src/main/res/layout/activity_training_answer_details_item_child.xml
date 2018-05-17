@@ -20,7 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dip"
-            android:text="小明回复小红：你好，" />
+            android:text="小明回复小红：你好，"
+            android:textColor="@color/txt_black2"
+            />
     </LinearLayout>
 
 

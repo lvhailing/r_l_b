@@ -1,6 +1,8 @@
 package com.rulaibao.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.activity.TrainingAskActivity;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleDetailsTopicItemBean;
@@ -155,10 +158,41 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
 
                 if(TextUtils.isEmpty(userId)){
-                    Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+                    HashMap<String,Object> map = new HashMap<>();
+
+
+                    RlbActivityManager.toLoginActivity((BaseActivity)context,map,false);
+
+
                 }else{
                     if(!PreferenceUtil.getCheckStatus().equals("success")){
-                        Toast.makeText(context, "请认证", Toast.LENGTH_SHORT).show();
+
+                        new AlertDialog.Builder(context)
+
+                                .setMessage("您还未认证，是否去认证")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        HashMap<String,Object> map = new HashMap<>();
+
+                                        map.put("realName",PreferenceUtil.getUserRealName());
+                                        map.put("status",PreferenceUtil.getCheckStatus());
+
+                                        RlbActivityManager.toSaleCertificationActivity((BaseActivity)context,map,false);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+
                     }else{
 
                         if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {

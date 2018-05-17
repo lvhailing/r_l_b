@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.TrainingClassDetailsActivity;
 import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
@@ -48,7 +49,7 @@ import butterknife.OnTouch;
  */
 
 @SuppressLint("ValidFragment")
-public class TrainingDetailsDiscussFragment extends BaseFragment implements TrainingClassDiscussAdapter.DiscussReply, MyRecyclerView.OnResizeListener {
+public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyRecyclerView.OnResizeListener {
 
 
     @BindView(R.id.tv_introduction_discuss_count)
@@ -78,6 +79,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     private ViewPagerForScrollView vp;
 
     private MouldList<ResultClassDetailsDiscussItemBean> list;
+    private TrainingClassDiscussAdapter.DiscussReply discussReply;
 
     private int index;
     private int oldPosition = 0;
@@ -87,6 +89,10 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
 
     public TrainingDetailsDiscussFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
+    }
+
+    public TrainingDetailsDiscussFragment(TrainingClassDiscussAdapter.DiscussReply discussReply) {
+        this.discussReply = discussReply;
     }
 
     public TrainingDetailsDiscussFragment() {
@@ -131,7 +137,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         };
 
         lvDiscuss.setLayoutManager(layoutManager);
-        adapter = new TrainingClassDiscussAdapter(getActivity(), list, TrainingDetailsDiscussFragment.this, speechmakeId);
+        adapter = new TrainingClassDiscussAdapter(getActivity(), list, discussReply, speechmakeId);
         lvDiscuss.setOnResizeListener(this);
         lvDiscuss.setAdapter(adapter);
 
@@ -172,7 +178,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             courseId = getArguments().getString("courseId");
-            speechmakeId = getArguments().getString("courseId");
+            speechmakeId = getArguments().getString("speechmakeId");
             if (list != null) {
                 list.clear();
             }
@@ -269,9 +275,9 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                         if (!TextUtils.isEmpty(commentId)) {      //  回复
 
                             commentId = "";
-                            hiddenInputLayout();
+//                            hiddenInputLayout();
                         } else {          //  评论
-                            hiddenInputLayout();
+//                            hiddenInputLayout();
                             page = 1;
                             list.clear();
                             requestData();
@@ -289,6 +295,45 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
                 }
             }
         });
+    }
+
+    public void toReply(String commentContent,String toUserId, String commentId, String commentName, int index){
+
+
+        this.toUserId = toUserId;
+        this.commentId = commentId;
+        this.index = index;
+        this.commentName = commentName;
+
+
+        if (TextUtils.isEmpty(commentId)) {       //  评论
+
+            requestReply(commentContent);
+
+        } else {              //  回复
+
+            ResultClassDetailsDiscussItemReplyBean itemBean = new ResultClassDetailsDiscussItemReplyBean();
+            itemBean.setReplyContent(commentContent);
+
+            itemBean.setReplyId(userId);      //      回复人id
+            itemBean.setReplyToId(toUserId);    //  被回复人id
+
+            String realName = "";
+            try {
+                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            itemBean.setReplyName(realName);       //  回复人姓名
+            itemBean.setReplyToName(commentName);      //  被回复人姓名
+
+            list.get(index).getReplys().add(itemBean);
+            adapter.notifyDataSetChanged();
+            requestReply(commentContent);
+
+        }
+
     }
 
     @OnClick(R.id.btn_details_discuss)
@@ -334,7 +379,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         return rootView;
     }
 
-    @Override
+   /* @Override
     public void reply(String toUserId, String commentId, String commentName, int index) {
         this.toUserId = toUserId;
         this.commentId = commentId;
@@ -342,10 +387,10 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
         this.commentName = commentName;
         etDetailDiscuss.setHint("回复" + commentName + "：");
 
-        setBottomOffset(index);
+//        setBottomOffset(index);
 
 
-    }
+    }*/
 
 
     //  弹出键盘
@@ -368,7 +413,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     private boolean deal(int position) {
         if (isShowComment.get()) {
             if (oldPosition != position) {
-                int offset = -(lvDiscuss.getHeight() - bottomOffset - flDetailsDiscuss.getHeight());
+                int offset = -(lvDiscuss.getHeight() - bottomOffset);
                 putOffset(offset);
             }
             return true;
@@ -379,7 +424,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     @OnTouch(R.id.lv_discuss)
     boolean onTouch(View v, MotionEvent event) {
         if (MotionEvent.ACTION_MOVE == event.getAction()) {
-            hiddenInputLayout();
+//            hiddenInputLayout();
         }
         return false;
     }
@@ -392,10 +437,23 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     }
 
     private void putOffset(int offset) {
-        lvDiscuss.smoothScrollBy(offset, 1000);
+
+        if(!TextUtils.isEmpty(commentId)){
+            lvDiscuss.smoothScrollBy(offset, 1000);
+        }
+
         oldPosition = position;
     }
-
+    public int getItemHeight(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) lvDiscuss.getLayoutManager();
+        int position = layoutManager.findFirstVisibleItemPosition()-1;
+//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if (position > index) {
+            position = index;
+        }
+        int set = lvDiscuss.getChildAt(index - position).getHeight();
+        return set;
+    }
 
     //  隐藏键盘
 
@@ -410,8 +468,8 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements Trai
     @Override
     public void OnResize(int w, int h, int oldw, int oldh) {
         if (oldh > h) {
-            int offset = (oldh - h + flDetailsDiscuss.getHeight()) - (oldh - bottomOffset);
-            putOffset(offset);
+//            int offset = (oldh - h + getItemHeight()) - (oldh - bottomOffset);
+//            putOffset(offset);
         }
     }
 

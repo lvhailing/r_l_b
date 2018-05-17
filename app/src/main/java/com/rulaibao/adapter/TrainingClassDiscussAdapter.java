@@ -2,6 +2,9 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +107,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
             holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());
 
-            if(arrayList.get(position).getReplys()==null||arrayList.get(position).getReplys().size()==0){
+            if(arrayList.get(position).getReplys().size()==0){
 
                 holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
                 if(speechmakeId.equals(userId)){
@@ -121,7 +124,14 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             }else{
                 holder1.tvDiscussReply.setVisibility(View.GONE);
                 holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
-                holder1.tvTrainingDiscussRepayContent.setText(arrayList.get(position).getReplys().get(0).getReplyName()+" 回复 "+arrayList.get(position).getReplys().get(0).getReplyContent());
+
+                String str = arrayList.get(position).getReplys().get(0).getReplyName()+" 回复: "+arrayList.get(position).getReplys().get(0).getReplyContent();
+
+                SpannableStringBuilder style = new SpannableStringBuilder(str);
+
+                style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, arrayList.get(position).getReplys().get(0).getReplyName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                holder1.tvTrainingDiscussRepayContent.setText(style);
             }
 
 

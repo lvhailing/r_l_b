@@ -1,6 +1,8 @@
 package com.rulaibao.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -480,10 +482,41 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
             case R.id.tv_ask_details_answer:
 
                 if(TextUtils.isEmpty(userId)){
-                    Toast.makeText(TrainingAskDetailsActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+
+                    HashMap<String,Object> map = new HashMap<>();
+                    RlbActivityManager.toLoginActivity(this,map,false);
+
                 }else{
                     if(!PreferenceUtil.getCheckStatus().equals("success")){
-                        Toast.makeText(TrainingAskDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(this)
+
+                                .setMessage("您还未认证，是否去认证")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+//                                Intent i_recharge = new Intent();
+//                                i_recharge.setClass(context, ReChargeActivity.class);
+//                                context.startActivity(i_recharge);
+//                                        requestCancelData();
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        HashMap<String,Object> map = new HashMap<>();
+
+                                        map.put("realName",PreferenceUtil.getUserRealName());
+                                        map.put("status",PreferenceUtil.getCheckStatus());
+
+                                        RlbActivityManager.toSaleCertificationActivity(TrainingAskDetailsActivity.this,map,false);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
 
                     }else{
 

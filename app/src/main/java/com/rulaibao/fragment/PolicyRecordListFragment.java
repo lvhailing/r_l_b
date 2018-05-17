@@ -147,8 +147,8 @@ public class PolicyRecordListFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("status", status);
 
-        Log.i("hh", this + " requestAskData userId: " + userId);
-        Log.i("hh", this + " requestAskData status: " + status);
+        Log.i("hh", this + " 保单列表 userId: " + userId);
+        Log.i("hh", this + " 保单列表 status: " + status);
 
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override

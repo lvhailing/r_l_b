@@ -4,6 +4,8 @@ package com.rulaibao.uitls;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.rulaibao.activity.LoginActivity;
+import com.rulaibao.activity.SalesCertificationActivity;
 import com.rulaibao.activity.TrainingAnswerActivity;
 import com.rulaibao.activity.TrainingAnswerDetailsActivity;
 import com.rulaibao.activity.TrainingAskActivity;
@@ -338,6 +340,39 @@ public class RlbActivityManager {
             startActivity(activity,map, TrainingSetAuthorityActivity.class);
         }
     }
+
+
+    /**
+     * 前往登录页面
+     * @param activity LoginActivity
+     * @param isFinish  是否关闭当前页面  true  false
+     *
+     */
+
+    public static void toLoginActivity(Activity activity, HashMap<String,Object> map, boolean isFinish) {
+        if (isFinish) {
+            startActivityAndFinish(activity,map, LoginActivity.class);
+        } else {
+            startActivity(activity,map, LoginActivity.class);
+        }
+    }
+
+
+    /**
+     * 前往认证页面
+     * @param activity toSaleCertificationActivity
+     * @param isFinish  是否关闭当前页面  true  false
+     *
+     */
+
+    public static void toSaleCertificationActivity(Activity activity, HashMap<String,Object> map, boolean isFinish) {
+        if (isFinish) {
+            startActivityAndFinish(activity,map, SalesCertificationActivity.class);
+        } else {
+            startActivity(activity,map, SalesCertificationActivity.class);
+        }
+    }
+
 
     /************************************************ 研修模块end ***********************************************************/
 

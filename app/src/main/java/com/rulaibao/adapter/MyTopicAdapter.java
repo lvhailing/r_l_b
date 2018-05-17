@@ -66,7 +66,7 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_circle_name.setText(list.get(position).getCircleName());
 //            itemViewHolder.tv_group_name.setText(list.get(position).getGroupName());
-            itemViewHolder.tv_topic_title.setText(list.get(position).getCommentCount());
+            itemViewHolder.tv_topic_title.setText(list.get(position).getTopicContent());
             itemViewHolder.tv_zan_number.setText(list.get(position).getLikeCount());
             itemViewHolder.tv_comment_number.setText(list.get(position).getCommentCount());
 
