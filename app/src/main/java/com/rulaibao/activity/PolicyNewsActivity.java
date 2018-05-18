@@ -43,7 +43,8 @@ public class PolicyNewsActivity extends BaseActivity {
 
         initTopTitle();
         initView();
-        requesData();
+        requestData();
+        initListener();
     }
 
     private void initTopTitle() {
@@ -74,7 +75,16 @@ public class PolicyNewsActivity extends BaseActivity {
         initRecylerView();
     }
 
-    private void requesData() {
+    private void initRecylerView() {
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        policyNewsAdapter = new PolicyNewsAdapter(this, totalList);
+        recycler_view.setAdapter(policyNewsAdapter);
+        //添加动画
+        recycler_view.setItemAnimator(new DefaultItemAnimator());
+
+    }
+
+    private void requestData() {
 
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
@@ -116,13 +126,43 @@ public class PolicyNewsActivity extends BaseActivity {
         });
     }
 
-    private void initRecylerView() {
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        policyNewsAdapter = new PolicyNewsAdapter(this, totalList);
-        recycler_view.setAdapter(policyNewsAdapter);
-        //添加动画
-        recycler_view.setItemAnimator(new DefaultItemAnimator());
-
+    private void initListener() {
+        initPullRefresh();
+        initLoadMoreListener();
     }
 
+    private void initPullRefresh() {
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {  // 下拉刷新
+                currentPage = 1;
+                requestData();
+            }
+        });
+    }
+
+    private void initLoadMoreListener() {
+        recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int firstVisibleItem;
+            private int lastVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == policyNewsAdapter.getItemCount() && firstVisibleItem != 0) {
+                    currentPage++;
+                    requestData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
 }

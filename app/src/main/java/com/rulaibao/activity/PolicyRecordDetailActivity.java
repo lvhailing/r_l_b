@@ -71,7 +71,8 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_policy_record_detail)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+             .setCenterText(getResources().getString(R.string.title_policy_record_detail)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -231,10 +232,10 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.rl_insurance_name: //
-                // Todo  跳转保险产品详情页
-//                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
-//                startActivity(intent);
+            case R.id.rl_insurance_name: // 跳转保险产品详情页
+                Intent intent = new Intent(this,InsuranceProductDetailActivity.class );
+                intent.putExtra("id", data.getProductId());
+                startActivity(intent);
                 break;
             case R.id.iv_delete:
                 rl_audit_status.setVisibility(View.GONE);

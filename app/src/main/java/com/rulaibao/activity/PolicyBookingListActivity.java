@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -83,14 +84,10 @@ public class PolicyBookingListActivity extends BaseActivity{
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-//                Log.i("hh", this + "-- onPageSelected --"+position);
-//                ((PolicyBookingFragment) vpAdapter.getItem(position)).setUserId(userId);
-//                ((PolicyBookingFragment) vpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 
             @Override
@@ -102,6 +99,7 @@ public class PolicyBookingListActivity extends BaseActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 //                Log.i("hh", this + "-- onTabSelected --" +tab.getPosition());
+
                 ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).setUserId(userId);
                 ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).getTabTitleCurrentPosition(tab.getPosition());
 
@@ -186,4 +184,13 @@ public class PolicyBookingListActivity extends BaseActivity{
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode ==100) {
+//            data.putExtra("userId", userId);
+//            data.putExtra("")
+            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).onActivityResult(100,resultCode,data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

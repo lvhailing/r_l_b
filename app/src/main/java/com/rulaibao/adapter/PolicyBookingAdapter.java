@@ -1,8 +1,10 @@
 package com.rulaibao.adapter;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ import com.rulaibao.network.types.MouldList;
 public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<PolicyBookingList2B> list;
+    private final PolicyBookingFragment fragment;
+    private final FragmentActivity activity;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -42,10 +46,12 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
     private PolicyBookingFragment policyBookingFragment;
 
 
-    public PolicyBookingAdapter(Context context, MouldList<PolicyBookingList2B> list) {
-        mContext = context;
+    public PolicyBookingAdapter(PolicyBookingFragment fragment, MouldList<PolicyBookingList2B> list) {
+        this.fragment = fragment;
         this.list = list;
-        mInflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(fragment.getContext());
+
+        activity = fragment.getActivity();
     }
 
     @Override
@@ -78,7 +84,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             } else if ("canceled".equals(status)) {
                 itemViewHolder.tv_status.setText("已取消");
             }
-            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount() + "元");
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsuranceAmount());
 
             initListener(itemViewHolder.itemView, position);
 
@@ -145,25 +151,11 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到预约详情
-
-                if (list.get(position).getAuditStatus().equals("confirming")) {
-                    Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
-                    intent.putExtra("id", list.get(position).getId());
-                    mContext.startActivity(intent);
-                    policyBookingFragment.requestData();
-                    notifyDataSetChanged();
-                } else {
-                    Intent intent = new Intent(mContext, PolicyBookingDetailActivity.class);
-                    intent.putExtra("id", list.get(position).getId());
-                    mContext.startActivity(intent);
-                }
+                Intent intent = new Intent(fragment.getContext(), PolicyBookingDetailActivity.class);
+                intent.putExtra("id", list.get(position).getId());
+                activity.startActivityForResult(intent,100);
             }
         });
-    }
-
-    public PolicyBookingFragment setMyBookingFragment(PolicyBookingFragment policyBookingFragment) {
-        this.policyBookingFragment = policyBookingFragment;
-        return policyBookingFragment;
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

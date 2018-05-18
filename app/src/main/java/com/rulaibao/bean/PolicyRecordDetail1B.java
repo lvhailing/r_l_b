@@ -18,18 +18,19 @@ public class PolicyRecordDetail1B implements IMouldType {
     private String insurancePeriod; // 保险期限
     private String paymentPeriod; // 缴费期限（天）
     private String renewalDate ; // 续期日期
-    private String  paymentedPremiums; // 已交保费（元）
-    private String  promotioinCost; // 推广费（%）
-    private String  commissionGained; // 获得佣金（元）
-    private String  recordTime; // 记录日期
-    private int  attachmentNum; // 附件数量(0，1，2，3，4，5)
-    private String  idcardPositive; // 身份证正面
-    private String  idcardNegative; // 身份证反面
-    private String  bankCard; // 银行卡
-    private String  attachmentFirst; // 附件一
-    private String  attachmentSecond; // 附件二
-    private String  remark; // 备注说明
-    private String  auditDesc; // 反馈说明（问题保单）
+    private String paymentedPremiums; // 已交保费（元）
+    private String promotioinCost; // 推广费（%）
+    private String commissionGained; // 获得佣金（元）
+    private String recordTime; // 记录日期
+    private int attachmentNum; // 附件数量(0，1，2，3，4，5)
+    private String idcardPositive; // 身份证正面
+    private String idcardNegative; // 身份证反面
+    private String bankCard; // 银行卡
+    private String attachmentFirst; // 附件一
+    private String attachmentSecond; // 附件二
+    private String remark; // 备注说明
+    private String auditDesc; // 反馈说明（问题保单）
+    private String productId; // 产品编号
 
 
     public String getStatus() {
@@ -199,4 +200,13 @@ public class PolicyRecordDetail1B implements IMouldType {
     public void setAuditDesc(String auditDesc) {
         this.auditDesc = auditDesc;
     }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 }
+

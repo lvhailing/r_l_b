@@ -12,7 +12,7 @@ public class CommissionNewsList2B implements IMouldType {
     private String topic;   //  消息标题
     private String status;     //  状态：read:已读     unread：未读，
     private String createTime;     //  创建时间
-    private String content;   //  消息内容
+    private String content;   //  保单状态
     private String busiType;     //  消息业务类型
     private String busiPriv;     //  存放佣金保单产品id
 

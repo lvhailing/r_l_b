@@ -109,7 +109,7 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tv_product_name; //  产品名称
         private final TextView tv_date; // 日期时间
-        private final TextView tv_status; // 状态
+        private final TextView tv_status; // 保单状态
 
         public ItemViewHolder(View itemView) {
             super(itemView);

@@ -1,6 +1,7 @@
 package com.rulaibao.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -92,8 +93,7 @@ public class PolicyBookingFragment extends Fragment {
 
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-        policyBookingAdapter = new PolicyBookingAdapter(getActivity(), totalList);
-        policyBookingAdapter.setMyBookingFragment(this);
+        policyBookingAdapter = new PolicyBookingAdapter(this, totalList);
         recycler_view.setAdapter(policyBookingAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -214,4 +214,11 @@ public class PolicyBookingFragment extends Fragment {
         return userId;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode ==100) {
+            requestData();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

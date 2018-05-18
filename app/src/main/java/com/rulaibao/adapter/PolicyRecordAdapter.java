@@ -67,7 +67,7 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
             itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
-            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod() + "年");
+            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
             // 加载图片
             ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 

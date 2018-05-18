@@ -191,13 +191,13 @@ public class PolicyRecordListFragment extends Fragment {
         if (currentPosition == 0) {
             status = "all";  //保单列表中全部数量=待审核+已承保+问题件+回执签收
         } else if (currentPosition == 1) {
-            status = "initTotal";  //待审核
+            status = "init";  //待审核
         } else if (currentPosition == 2) {
-            status = "payedTotal";  //已承保
+            status = "payed";  //已承保
         } else if (currentPosition == 3) {
-            status = "rejectedTotal";  //问题件
+            status = "rejected";  //问题件
         } else if (currentPosition == 4) {
-            status = "receiptSignedTotal";  //回执签收
+            status = "receiptSigned";  //回执签收
         }
     }
 

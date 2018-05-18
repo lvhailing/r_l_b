@@ -45,6 +45,8 @@
             android:layout_alignParentLeft="true"
             android:layout_marginRight="12dp"
             android:text="国华盛世年年年金险保险C款"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/txt_gray_d"
             android:textSize="16sp"/>
 
@@ -56,6 +58,8 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="7dp"
             android:text="[04-12 12:12]"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textSize="14sp"/>
 
         <TextView
@@ -64,9 +68,11 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tv_date"
             android:layout_toRightOf="@id/tv_date"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
             android:text="保单状态更改为已承保"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/txt_mark_gray"
             android:textSize="14sp"/>
     </RelativeLayout>

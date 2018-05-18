@@ -173,16 +173,16 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
             tv_insurance_plan.setText(data.getInsurancePlan());
         }
         if (!TextUtils.isEmpty(data.getInsuranceAmount())) { // 保险金额
-            tv_insurance_amount.setText(data.getInsuranceAmount()+"元");
+            tv_insurance_amount.setText(data.getInsuranceAmount());
         }
         if (!TextUtils.isEmpty(data.getPeriodAmount())) { // 年缴保费
-            tv_annual_premium.setText(data.getPeriodAmount()+"元");
+            tv_annual_premium.setText(data.getPeriodAmount());
         }
         if (!TextUtils.isEmpty(data.getInsurancePeriod())) { // 保险期限
-            tv_insurance_period.setText(data.getInsurancePeriod()+"年");
+            tv_insurance_period.setText(data.getInsurancePeriod());
         }
         if (!TextUtils.isEmpty(data.getPaymentPeriod())) { // 缴费期限
-            tv_payment_period.setText(data.getPaymentPeriod()+"天");
+            tv_payment_period.setText(data.getPaymentPeriod());
         }
         if (!TextUtils.isEmpty(data.getExceptSubmitTime())) { // 预计交单
             tv_expected_policy.setText(data.getExceptSubmitTime());

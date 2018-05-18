@@ -199,7 +199,7 @@
 
 
     <!-- 交易明细/保单详情 页面文字-->
-    <string name="bill_type">帐单类型：</string>
+    <string name="bill_type">账单类型：</string>
     <string name="underwriting_time">承保时间：</string>
     <string name="product_name">产品名称：</string>
     <string name="policy_number">保单编号：</string>
