@@ -2,11 +2,16 @@ package com.rulaibao.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +27,11 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.ViewPagerForScrollView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.LinkedHashMap;
 
@@ -53,7 +63,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
     @BindView(R.id.tv_introduction_class_type)
     TextView tvIntroductionClassType;
     @BindView(R.id.tv_introduction_content)
-    TextView tvIntroductionContent;
+    WebView tvIntroductionContent;
 
     private String id = "";
     private ResultClassDetailsIntroductionItemBean course;
@@ -144,8 +154,11 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         tvIntroductionClassName.setText(course.getCourseName());
         tvIntroductionClassTime.setText(course.getCourseTime());
         tvIntroductionClassType.setText(course.getTypeName());
-        tvIntroductionContent.setText(course.getCourseContent());
 
+
+//        tvIntroductionContent.setText(course.getCourseContent());
+
+        setWebView(course.getCourseContent(),tvIntroductionContent);
     }
 
 
@@ -157,5 +170,36 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         return rootView;
     }
+
+    private void setWebView(String html, WebView webView) {
+        webView.getSettings().setJavaScriptEnabled(true);
+        //支持屏幕缩放
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        webView.getSettings().setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(webView.getSettings()
+                    .MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
+        }
+        webView.loadDataWithBaseURL(null, getNewContent(html), "text/html", "UTF-8", null);
+    }
+
+    private String getNewContent(String htmltext) {
+
+        Document doc = Jsoup.parse(htmltext);
+        Elements elements = doc.getElementsByTag("img");
+        for (Element element : elements) {
+            element.attr("width", "100%").attr("height", "auto");
+        }
+
+        Log.d("VACK", doc.toString());
+        return doc.toString();
+    }
+
 
 }

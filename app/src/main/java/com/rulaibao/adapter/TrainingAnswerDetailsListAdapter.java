@@ -201,7 +201,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ChildViewHolder holder1 = null;
             if (convertView == null) {
                 holder1 = new ChildViewHolder();
@@ -220,7 +220,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    reply.reply(arrayList.get(index).getCid(),replyItemBean.getReplyId(),replyItemBean.getReplyName(),index);
+                    reply.reply(arrayList.get(index).getCid(),list.get(position).getReplyId(),list.get(position).getReplyName(),index);
                 }
             });
 

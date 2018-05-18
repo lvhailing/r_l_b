@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.rulaibao.R;
@@ -43,8 +44,8 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
         initTopTitle();
         initView();
-        initListener();
         requestData();
+        initListener();
     }
 
     private void initTopTitle() {
@@ -78,7 +79,14 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        newMembersCircleAdapter = new NewMembersCircleAdapter(this, userId,totalList);
+        newMembersCircleAdapter = new NewMembersCircleAdapter(this, userId,totalList, new NewMembersCircleAdapter.buttonAgreeClickListener() {
+            @Override
+            public void buttonAgreeClickListener() {
+                Log.i("hh", "buttonAgreeClickListener --- " + userId);
+                currentPage = 1;
+                requestData();
+            }
+        });
         recycler_view.setAdapter(newMembersCircleAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());

@@ -36,7 +36,7 @@ public class HomeAdapter extends PagerAdapter {
 		HomeViewPager2B bean=homeVpList.get(position);
 		View view = viewList.get(position);
 		String checkStatus = bean.getCheckStatus();
-		String promotionMoney = bean.getCheckStatus();
+		String promotionMoney = bean.getPromotionMoney();
 		TextView tv_home_promotionMoney= (TextView) view.findViewById(R.id.tv_home_promotionMoney);
 		TextView tv_home_promotionMoney_no= (TextView) view.findViewById(R.id.tv_home_promotionMoney_no);
 		TextView tv_home_name= (TextView) view.findViewById(R.id.tv_home_name);

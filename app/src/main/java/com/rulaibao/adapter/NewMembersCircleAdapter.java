@@ -3,6 +3,7 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final MouldList<NewMembersCircleList2B> list;
     private final String userId;
     private final Context context;
+    private final buttonAgreeClickListener listener;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -58,10 +60,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private String applyId;
 
 
-    public NewMembersCircleAdapter(Context context, String userId, MouldList<NewMembersCircleList2B> list) {
+
+    public NewMembersCircleAdapter(Context context, String userId, MouldList<NewMembersCircleList2B> list,buttonAgreeClickListener listener) {
         this.context = context;
         this.userId = userId;
         this.list = list;
+        this.listener = listener;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -85,7 +89,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_applicant_name.setText(list.get(position).getApplyUserName());
-            itemViewHolder.tv_circle_name.setText(list.get(position).getApplyCircleName());
+            itemViewHolder.tv_circle_name.setText("申请加入" + "\"" + list.get(position).getApplyCircleName() + "\"");
             status = list.get(position).getAuditStatus();
             if ("submit".equals(status)) {
                 itemViewHolder.btn_status.setText("同意");
@@ -100,13 +104,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
             // 加载图片
             ImageLoader.getInstance().displayImage(list.get(position).getApplyPhoto(), itemViewHolder.iv_circle_photo);
 
-            // 同意申请时的点击监听
+            // 同意按钮的点击监听
             itemViewHolder.btn_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (status.equals("submit")) {
-                        requestAgreeData(list.get(position).getApplyId(), position);
-                    }
+                    requestAgreeData(position);
+                    listener.buttonAgreeClickListener();
                 }
             });
 
@@ -132,6 +135,16 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
     }
+
+//    private buttonAgreeClickListener listener;
+
+    public interface buttonAgreeClickListener{
+        void buttonAgreeClickListener();
+    }
+
+//    public void setListener(buttonAgreeClickListener listener) {
+//        this.listener = listener;
+//    }
 
     @Override
     public int getItemCount() {
@@ -169,11 +182,13 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     /**
      * 同意申请时调的接口
      */
-    private void requestAgreeData(String applyId, final int position) {
+    private void requestAgreeData(final int position) {
         HashMap<String, Object> param = new HashMap<>();
-        param.put("applyId", applyId);
+        param.put("applyId", list.get(position).getApplyId());
         param.put("userId", userId);
 
+        Log.i("hh", "applyId --- " + list.get(position).getApplyCircleId());
+        Log.i("hh", "userId --- " + userId);
         HtmlRequest.getCircleApplyAgreeData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -189,6 +204,10 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
                         notifyDataSetChanged();
                     } else {
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                        if (data.getMessage().equals("您已经在圈子里")) {
+                            list.get(position).setAuditStatus("agree");
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             }
@@ -213,7 +232,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         itemView.setOnLongClickListener(new View.OnLongClickListener() { // 长按删除 监听
             @Override
             public boolean onLongClick(View v) {
-                showDeletDialog(applyId,position);
+                showDeletDialog(applyId, position);
                 return true;
             }
         });
@@ -224,7 +243,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             @Override
             public void onConfim() {
-                requestDeletData(applyId,position);
+                requestDeletData(applyId, position);
             }
 
             @Override

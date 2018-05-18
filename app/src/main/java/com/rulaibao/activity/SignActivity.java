@@ -95,8 +95,6 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         mHandler = new MyHandler();
         btnString = getResources().getString(R.string.sign_getsms_again);
 
-      //  checkNull();
-
     }
 
     private void initTopTitle() {
@@ -234,9 +232,14 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         }
         if(!StringUtil.checkPassword(password)){
             Toast.makeText(context,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+            return;
         }
         if(TextUtils.isEmpty(realName)){
-            Toast.makeText(context,"请输入姓名",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"请输入真实姓名",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!signup_checkbox.isChecked()){
+            Toast.makeText(context,"请选择服务协议",Toast.LENGTH_SHORT).show();
             return;
         }
         signup();

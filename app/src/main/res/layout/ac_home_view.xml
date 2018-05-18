@@ -97,6 +97,6 @@
             android:drawablePadding="8dp"
             android:drawableTop="@mipmap/ic_enterprise_team"
             android:gravity="center_horizontal"
-            android:text="企业团"/>
+            android:text="企业团体"/>
     </LinearLayout>
 </LinearLayout>

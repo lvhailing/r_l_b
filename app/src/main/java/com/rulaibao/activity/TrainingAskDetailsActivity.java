@@ -186,10 +186,10 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                     if (detailsBean.getFlag().equals("true")) {
                         setView(detailsBean);
                     } else {
-                        if (detailsBean.getCode().equals("1001")) {      //  参数错误
+                        if (detailsBean.getCode().equals("6001")) {      //  参数错误
+                            Toast.makeText(TrainingAskDetailsActivity.this, "该问题已删除", Toast.LENGTH_SHORT).show();
 
-
-                        } else if (detailsBean.getCode().equals("1002")) {        //  该问题已删除
+                        } else if (detailsBean.getCode().equals("6002")) {        //  该问题已删除
 
                             Toast.makeText(TrainingAskDetailsActivity.this, "该问题已删除", Toast.LENGTH_SHORT).show();
                             finish();

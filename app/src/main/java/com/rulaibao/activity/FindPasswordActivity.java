@@ -240,6 +240,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
         }
         if(!StringUtil.checkPassword(password)){
             Toast.makeText(context,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+            return;
         }
         if(TextUtils.isEmpty(password_again)){
             Toast.makeText(context,"请输入确认密码",Toast.LENGTH_SHORT).show();
@@ -247,9 +248,11 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
         }
         if(!StringUtil.checkPassword(password_again)){
             Toast.makeText(context,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+            return;
         }
         if(!password.equals(password_again)){
             Toast.makeText(context,"两次密码输入不一致，请重新输入",Toast.LENGTH_SHORT).show();
+            return;
         }
         findpassword();
     }

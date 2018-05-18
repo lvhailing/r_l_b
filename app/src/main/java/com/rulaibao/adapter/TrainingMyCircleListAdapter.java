@@ -159,4 +159,8 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
         });
     }
 
+
+
+
+
 }

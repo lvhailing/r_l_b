@@ -125,8 +125,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onSelected(Set<Integer> selectPosSet)
             {
-                category=stringBuilder(selectPosSet);
-                Toast.makeText(mContext,category , Toast.LENGTH_LONG).show();
+         //       category=stringBuilder(selectPosSet);
             }
         });
     }
@@ -177,7 +176,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
                     startActivity(intent);
                     return;
                 }
-                if (!"success".equals(data.getCheckStatus())) {
+                if (!"success".equals(PreferenceUtil.getCheckStatus())) {
                     intent = new Intent(PlanActivity.this, SalesCertificationActivity.class);
                     startActivity(intent);
                     return;
@@ -192,7 +191,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
 
     }
     /**
-     * 获取计划书数据
+     * 获取保险公司
      */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
@@ -270,7 +269,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_right_btn:
+            case R.id.iv_right_plan:
                 if (PreferenceUtil.isLogin()) {
                     intent = new Intent(mContext, SearchForPlanActivity.class);
                     mContext.startActivity(intent);
@@ -305,6 +304,10 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             case R.id.tv_ok:  // 确定
                 //点确定时，请求接口
                 currentPage = 1;
+                //获得所有选中的pos集合
+                Set<Integer> selectPosSet= mFlowLayout.getSelectedList();
+                category=stringBuilder(selectPosSet);
+
                 requestListData();
                 listView.getRefreshableView().setSelection(0);
 

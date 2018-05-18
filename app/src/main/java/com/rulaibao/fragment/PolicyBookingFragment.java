@@ -217,6 +217,10 @@ public class PolicyBookingFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode ==100) {
+            int position = data.getIntExtra("position",0);
+            Log.i("hh", "onActivityResult -- " + position);
+            getTabTitleCurrentPosition(position);
+            Log.i("hh", "getTabTitleCurrentPosition -- " + position);
             requestData();
         }
         super.onActivityResult(requestCode, resultCode, data);

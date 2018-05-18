@@ -188,7 +188,8 @@ public class PolicyBookingListActivity extends BaseActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode ==100) {
 //            data.putExtra("userId", userId);
-//            data.putExtra("")
+//            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
+            data.putExtra("position",currentTabPosition);
             ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).onActivityResult(100,resultCode,data);
         }
         super.onActivityResult(requestCode, resultCode, data);

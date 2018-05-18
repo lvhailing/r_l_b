@@ -87,6 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     private MouldList<HomeViewPager2B> homeVpList=new MouldList<>();
     private HomeAdapter homeAdapter;
     private View vIndicator;
+    private LinearLayout ll_recommend;
 
     private MyListView listView;
     private InsuranceProductAdapter mAdapter;
@@ -151,11 +152,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         tv_old_young= (TextView) mView.findViewById(R.id.tv_old_young);//一老一小
         tv_enterprise_team= (TextView) mView.findViewById(R.id.tv_enterprise_team);//企业团
 
+        ll_recommend= (LinearLayout) mView.findViewById(R.id.ll_recommend);
+
         marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, TextView textView) {
 
                 try {
+                    userId=null;
                     userId = DESUtil.decrypt(PreferenceUtil.getUserId());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -195,6 +199,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     //重磅推荐
     public void initViewPageData(final MouldList<HomeViewPager2B> homeVpList) {
         //重磅推荐
+
         mViewPager = (ViewPager) mView.findViewById(R.id.home_viewpager);
         vIndicator = mView.findViewById(R.id.home_indicator);// 线性水平布局，负责动态调整导航图标
 
@@ -278,6 +283,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
      */
     private void requestHomeData() {
         try {
+            userId=null;
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -312,6 +318,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
                 }
                 marqueeView.startWithList(info);
 
+                if (homeIndex2B.getRecommendlist().size()==0){
+                    ll_recommend.setVisibility(View.GONE);
+                }else{
+                    ll_recommend.setVisibility(View.VISIBLE);
+                }
                 indicator_imgs.clear();
                 homeVpList.clear();
                 homeVpList.addAll(homeIndex2B.getRecommendlist());

@@ -50,7 +50,6 @@ public class TrainingAskActivity extends BaseActivity {
     private List<Fragment> fragments;
     private Context context;
     private ArrayList<ResultAskTypeItemBean> typeBean;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,26 +58,20 @@ public class TrainingAskActivity extends BaseActivity {
 
         initView();
 
+        requestAskType();
     }
 
-    public void initView() {
-
-
-        typeBean = (ArrayList<ResultAskTypeItemBean>)getIntent().getSerializableExtra("type");
-
-        context = this;
-        listTitles = new ArrayList<>();
-        fragments = new ArrayList<>();
+    public void initTabView(){
 
         ResultAskTypeItemBean hot = new ResultAskTypeItemBean();
         hot.setTypeCode("");
         hot.setTypeName("热门推荐");
         listTitles.add(hot);
 
+
         if(typeBean!=null){
             listTitles.addAll(typeBean);
         }
-
 
         for (int i = 0; i < listTitles.size(); i++) {
             TrainingAakFragment fragment = TrainingAakFragment.newInstance(listTitles.get(i));
@@ -111,6 +104,19 @@ public class TrainingAskActivity extends BaseActivity {
 
         tlTrainingAsk.setupWithViewPager(vpTrainingAsk);//将TabLayout和ViewPager关联起来。
         tlTrainingAsk.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
+
+    }
+
+
+
+    public void initView() {
+
+
+//        typeBean = (ArrayList<ResultAskTypeItemBean>)getIntent().getSerializableExtra("type");
+
+        context = this;
+        listTitles = new ArrayList<>();
+        fragments = new ArrayList<>();
 
     }
 
@@ -191,10 +197,45 @@ public class TrainingAskActivity extends BaseActivity {
 
     }
 
+    //获取问答类型
+    public void requestAskType() {
+
+
+//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+
+
+        HtmlRequest.getTrainingAskType(context, map, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+
+                if (params.result != null) {
+
+                    ResultAskTypeBean bean = (ResultAskTypeBean) params.result;
+                    if(typeBean==null){
+                        typeBean = new MouldList<ResultAskTypeItemBean>();
+                    }
+                    typeBean.addAll(bean.getList());
+                    initTabView();
+//                    Toast.makeText(context,params.result.toString(),Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                }
+
+            }
+        });
+
+
+    }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
+
+
     }
 
     @Override

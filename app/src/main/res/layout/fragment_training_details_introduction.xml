@@ -120,18 +120,34 @@
                 android:background="@color/gray_light"
                 android:layout_marginTop="20dip"
                 />
+            <LinearLayout
+                android:id="@+id/ll_guarantee"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dip"
+                android:layout_marginLeft="0dip"
+                android:layout_marginBottom="20dip"
+                >
 
+                <WebView
+                    android:id="@+id/tv_introduction_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/txt_light_gray"
+                    android:textSize="13sp"/>
+            </LinearLayout>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tv_introduction_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dip"
                 android:layout_marginLeft="15dip"
                 android:layout_marginBottom="20dip"
-                android:text="---"
+                android:text="-&#45;&#45;"
 
-                />
+                />-->
 
             <EditText
                 android:layout_width="match_parent"

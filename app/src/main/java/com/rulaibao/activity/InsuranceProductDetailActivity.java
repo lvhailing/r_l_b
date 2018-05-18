@@ -30,6 +30,7 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
 
 import org.jsoup.Jsoup;
@@ -346,6 +347,11 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
      * 保险详情
      */
     private void requestData() {
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);
         param.put("id", id);

@@ -115,7 +115,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     private ResultClassIndexBean bean;
     private int hotPage = 1;
     private int classPage = 1;
-    private ResultAskTypeBean typeBean;
+
     private int qualityCount = 1;        //  精品课程总页数
 
     /**
@@ -162,7 +162,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         requestIndexData();// 获取研修首页数据
         requestHotAskData();// 获取
 
-        requestAskType();
+
     }
 
     /**
@@ -176,7 +176,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         picList = new ArrayList<ResultCycleIndex2B>();
         list = new MouldList<ResultHotAskItemBean>();
         bean = new ResultClassIndexBean();
-        typeBean = new ResultAskTypeBean();
 
 
         //为SwipeRefreshLayout设置监听事件
@@ -256,12 +255,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.tv_training_ask:          // 问答
                 HashMap<String, Object> map = new HashMap<>();
-                if (typeBean != null) {
-                    map.put("type", typeBean.getList());
 
                     RlbActivityManager.toTrainingAskActivity(getActivity(), map, false);
-                }
-
 
                 break;
 
@@ -409,33 +404,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     }
 
-    //获取问答类型
-    public void requestAskType() {
-
-
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
-
-        HtmlRequest.getTrainingAskType(context, map, new BaseRequester.OnRequestListener() {
-            @Override
-            public void onRequestFinished(BaseParams params) {
-
-                if (params.result != null) {
-
-                    typeBean = (ResultAskTypeBean) params.result;
-
-//                    Toast.makeText(context,params.result.toString(),Toast.LENGTH_SHORT).show();
-
-                } else {
-
-                }
-
-            }
-        });
-
-
-    }
 
 
     public void requestHotAskData() {

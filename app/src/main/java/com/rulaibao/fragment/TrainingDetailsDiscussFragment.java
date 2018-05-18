@@ -1,15 +1,20 @@
 package com.rulaibao.fragment;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -34,6 +39,11 @@ import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.MyRecyclerView;
 import com.rulaibao.widget.ViewPagerForScrollView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -471,6 +481,36 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
 //            int offset = (oldh - h + getItemHeight()) - (oldh - bottomOffset);
 //            putOffset(offset);
         }
+    }
+
+    private void setWebView(String html, WebView webView) {
+        webView.getSettings().setJavaScriptEnabled(true);
+        //支持屏幕缩放
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setDefaultTextEncodingName("UTF-8");
+        webView.getSettings().setBlockNetworkImage(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(webView.getSettings()
+                    .MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
+        }
+        webView.loadDataWithBaseURL(null, getNewContent(html), "text/html", "UTF-8", null);
+    }
+
+    private String getNewContent(String htmltext) {
+
+        Document doc = Jsoup.parse(htmltext);
+        Elements elements = doc.getElementsByTag("img");
+        for (Element element : elements) {
+            element.attr("width", "100%").attr("height", "auto");
+        }
+
+        Log.d("VACK", doc.toString());
+        return doc.toString();
     }
 
 
