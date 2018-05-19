@@ -3,29 +3,29 @@
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="android:Theme.Light">
     </style>-->
-    <!-- Base application theme. -->
-   <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
 
-    </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar" />
+
     <style name="AppThemeSplah">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
-
     </style>
+
     <!--toolbar替代actionbar后必须设置主题为NoActionBar-->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <!-- Activity继承自 android.support.v7.app.AppCompatActivity,主题配置 -->
     <style name="Theme.AppCompat.Light.NoTitleBar" parent="@style/Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
     </style>
 
     <!--自定义日期控件对话框样式-->
-    <style name="custom_date_picker_dialog" parent="android:Theme.Holo.Light.DarkActionBar">
-    </style>
+    <style name="custom_date_picker_dialog" parent="android:Theme.Holo.Light.DarkActionBar"></style>
 
     <!-- TitleBar -->
     <style name="TitleBar">
@@ -153,7 +153,7 @@
     </style>
 
 
-    <style name="training_tab" parent="android:TextAppearance.Holo.Large" >
+    <style name="training_tab" parent="android:TextAppearance.Holo.Large">
         <item name="android:textSize">16sp</item>
 
     </style>
@@ -184,7 +184,6 @@
     </style>
 
     <!--排序dialog样式-->
-
     <style name="SortDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -195,13 +194,18 @@
     </style>
 
     <!--控制头部据appbar的样式-->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!--用于控制toolbar溢出菜单的样式-->
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <!--BaseActivity 的dialog样式-->
+    <style name="BaseActivityDialogTheme" parent="android:Theme.Light">
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

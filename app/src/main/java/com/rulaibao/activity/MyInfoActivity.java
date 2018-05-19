@@ -79,11 +79,12 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
      * 表示选择的是裁剪--3
      */
     private static int CROP_REQUEST_CODE = 3;
+    /**
+     * 销售认证界面返回
+     */
+    private static int SALES_RETURN = 4;
 
     private Bitmap newZoomImage;
-    private MyHandler mHandler;
-    private Thread mthread;
-
 
     /**
      * 图片保存SD卡位置
@@ -122,9 +123,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_info);
 
-        mHandler = new MyHandler();
-        mthread = new Thread(myRunnable);
-
         initTopTitle();
         initView();
         requestUserInfo();
@@ -134,7 +132,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
-             .setCenterText(getResources().getString(R.string.title_my_info)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+                .setCenterText(getResources().getString(R.string.title_my_info)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -250,7 +248,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     /**
-     *  获取个人信息
+     * 获取个人信息
      */
     private void requestUserInfo() {
         try {
@@ -291,10 +289,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         }
 
         // 判断用户是否认证
-        if (data.getCheckStatus()!=null) {
-             status = data.getCheckStatus();
+        if (data.getCheckStatus() != null) {
+            status = data.getCheckStatus();
         }
-        if ("init".equals(status)){
+        if ("init".equals(status)) {
             tv_status.setText("未认证");
         } else if ("submit".equals(status)) {
             tv_status.setText("待认证");
@@ -417,17 +415,16 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             Bitmap bm = extras.getParcelable("data");
             newZoomImage = zoomImage(bm, 600, 300);
 //			sendImage(newZoomImage);
-        } else if (requestCode == 1000 && resultCode == 2000) {
-//            String nameData = data.getStringExtra("realName");
-//            realName=nameData;
-//            tv_name.setText(nameData);
-
+        } else if (requestCode == SALES_RETURN) {
+            //销售认证界面返回，刷新数据
+            requestUserInfo();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
      * 通过uri获取图片并进行压缩
+     *
      * @param uri
      */
     public static Bitmap getBitmapFormUri(Activity ac, Uri uri) throws FileNotFoundException, IOException {
@@ -466,6 +463,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
     /**
      * 质量压缩方法
+     *
      * @param image
      * @return
      */
@@ -567,7 +565,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     /**
-     *  调接口，上传图片
+     * 调接口，上传图片
+     *
      * @param bm
      */
     private void sendImage(Bitmap bm) {
@@ -589,12 +588,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String content) {
                     super.onSuccess(statusCode, headers, content);
-                    try {
-                        mthread = new Thread(myRunnable);
-                        mthread.start();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    stopLoading();
+                    img_photo.setImageBitmap(newZoomImage);
                 }
 
                 @Override
@@ -606,28 +601,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             e.printStackTrace();
         }
     }
-
-    class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            stopLoading();
-            if (msg.what == 1) {
-                img_photo.setImageBitmap(newZoomImage);
-            } else {
-            }
-        }
-
-    }
-
-    Runnable myRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Message msg = mHandler.obtainMessage();
-            msg.what = 1;
-            mHandler.sendMessage(msg);
-        }
-    };
 
     private Uri saveBitmap(Bitmap bm) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -664,12 +637,12 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.rl_layout_sales_certification: // 销售认证
                 Intent intent = new Intent(MyInfoActivity.this, SalesCertificationActivity.class);
-                intent.putExtra("realName",data.getRealName());
-                intent.putExtra("idNo",data.getIdNo());
-                intent.putExtra("post",data.getPosition());
-                intent.putExtra("status",data.getCheckStatus());
-                intent.putExtra("businessCard",data.getBusiCardPhoto());
-                startActivity(intent);
+                intent.putExtra("realName", data.getRealName());
+                intent.putExtra("idNo", data.getIdNo());
+                intent.putExtra("post", data.getPosition());
+                intent.putExtra("status", data.getCheckStatus());
+                intent.putExtra("businessCard", data.getBusiCardPhoto());
+                startActivityForResult(intent, SALES_RETURN);
                 break;
 //            case R.id.layout_name:
 //                Intent intent = new Intent(this, MyInfoForNameActivity.class);

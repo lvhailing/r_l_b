@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyBookingDetailActivity;
+import com.rulaibao.activity.PolicyBookingListActivity;
 import com.rulaibao.bean.PolicyBookingList2B;
 import com.rulaibao.fragment.PolicyBookingFragment;
 import com.rulaibao.network.types.MouldList;
@@ -153,7 +154,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) { // 跳转到预约详情
                 Intent intent = new Intent(fragment.getContext(), PolicyBookingDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
-                activity.startActivityForResult(intent,100);
+                activity.startActivityForResult(intent, PolicyBookingListActivity.REQUEST_CODE);
             }
         });
     }

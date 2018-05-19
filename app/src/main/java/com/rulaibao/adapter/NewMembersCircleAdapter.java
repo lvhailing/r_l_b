@@ -42,7 +42,6 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private final MouldList<NewMembersCircleList2B> list;
     private final String userId;
     private final Context context;
-    private final buttonAgreeClickListener listener;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -57,15 +56,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
     private String status;
-    private String applyId;
 
 
-
-    public NewMembersCircleAdapter(Context context, String userId, MouldList<NewMembersCircleList2B> list,buttonAgreeClickListener listener) {
+    public NewMembersCircleAdapter(Context context, String userId, MouldList<NewMembersCircleList2B> list) {
         this.context = context;
         this.userId = userId;
         this.list = list;
-        this.listener = listener;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -108,13 +104,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
             itemViewHolder.btn_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    requestAgreeData(position);
-                    listener.buttonAgreeClickListener();
+                    listener.onBtnClick(position);
                 }
             });
 
             // item  长按删除 监听
-            initListener(itemViewHolder.itemView, position, list.get(position).getApplyId());
+            initListener(itemViewHolder.itemView, position);
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
@@ -135,16 +130,6 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
     }
-
-//    private buttonAgreeClickListener listener;
-
-    public interface buttonAgreeClickListener{
-        void buttonAgreeClickListener();
-    }
-
-//    public void setListener(buttonAgreeClickListener listener) {
-//        this.listener = listener;
-//    }
 
     @Override
     public int getItemCount() {
@@ -180,46 +165,11 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     /**
-     * 同意申请时调的接口
-     */
-    private void requestAgreeData(final int position) {
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("applyId", list.get(position).getApplyId());
-        param.put("userId", userId);
-
-        Log.i("hh", "applyId --- " + list.get(position).getApplyCircleId());
-        Log.i("hh", "userId --- " + userId);
-        HtmlRequest.getCircleApplyAgreeData(context, param, new BaseRequester.OnRequestListener() {
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                OK2B data = (OK2B) params.result;
-                if (data != null) {
-                    if (data.getFlag().equals("true")) {
-                        Toast.makeText(context, "加入成功", Toast.LENGTH_LONG).show();
-                        list.get(position).setAuditStatus("agree");
-                        notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
-                        if (data.getMessage().equals("您已经在圈子里")) {
-                            list.get(position).setAuditStatus("agree");
-                            notifyDataSetChanged();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    /**
      * item 点击监听
      *
      * @param itemView
      */
-    private void initListener(View itemView, final int position, final String applyId) {
+    private void initListener(View itemView, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { //
@@ -229,61 +179,17 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        itemView.setOnLongClickListener(new View.OnLongClickListener() { // 长按删除 监听
+        // 长按删除 监听
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showDeletDialog(applyId, position);
+                listener.showDialog(position);
                 return true;
             }
         });
     }
 
-    private void showDeletDialog(final String applyId, final int position) {
-        DeleteHistoryDialog dialog = new DeleteHistoryDialog(context, new DeleteHistoryDialog.OnExitChanged() {
 
-            @Override
-            public void onConfim() {
-                requestDeletData(applyId, position);
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-        }, "确定删除该申请吗？");
-        dialog.show();
-    }
-
-    /**
-     * 删除成员申请信息
-     *
-     * @param applyId
-     */
-    private void requestDeletData(String applyId, final int position) {
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("applyId", applyId);
-        param.put("userId", userId);
-
-        HtmlRequest.getDeletCircleApplyData(context, param, new BaseRequester.OnRequestListener() {
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                OK2B data = (OK2B) params.result;
-                if (data != null) {
-                    if (data.getFlag().equals("true")) {
-                        Toast.makeText(context, " 删除成功", Toast.LENGTH_LONG).show();
-                        list.remove(position);
-                        notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-    }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
 
@@ -319,5 +225,18 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void changeMoreStatus(int status) {
         mLoadMoreStatus = status;
         notifyDataSetChanged();
+    }
+
+
+    public OnMyItemClickListener listener;
+
+    public interface OnMyItemClickListener {
+        void onBtnClick(int position);
+
+        void showDialog(int position);
+    }
+
+    public void setMyItemClickListener(OnMyItemClickListener listener) {
+        this.listener = listener;
     }
 }

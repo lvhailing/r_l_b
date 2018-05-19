@@ -19,12 +19,12 @@ import com.rulaibao.fragment.PolicyRecordListFragment;
 import com.rulaibao.widget.TitleBar;
 
 /**
- *  (我的预约)预约列表
+ * (我的预约)预约列表
  * Created by junde on 2018/4/19.
  */
 
-public class PolicyBookingListActivity extends BaseActivity{
-
+public class PolicyBookingListActivity extends BaseActivity {
+    public static int REQUEST_CODE = 100;
     private TabLayout tab_layout;
     private ViewPager vp;
     private String[] titles;
@@ -69,7 +69,7 @@ public class PolicyBookingListActivity extends BaseActivity{
     }
 
     private void initData() {
-        titles = new String[]{"全部（）", "待确认（）", "已确认（）", "已驳回（）","已取消（）"};
+        titles = new String[]{"全部（）", "待确认（）", "已确认（）", "已驳回（）", "已取消（）"};
 
         vpAdapter = new PolicyBookingVpAdapter(getSupportFragmentManager(), titles, this);
         ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
@@ -99,9 +99,10 @@ public class PolicyBookingListActivity extends BaseActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 //                Log.i("hh", this + "-- onTabSelected --" +tab.getPosition());
+                currentTabPosition = tab.getPosition();
 
-                ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).setUserId(userId);
-                ((PolicyBookingFragment) vpAdapter.getItem(tab.getPosition())).getTabTitleCurrentPosition(tab.getPosition());
+                ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).setUserId(userId);
+                ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
 
                 //选中的view
                 View view = tab.getCustomView();
@@ -186,11 +187,12 @@ public class PolicyBookingListActivity extends BaseActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode ==100) {
+        if (requestCode == REQUEST_CODE) {
 //            data.putExtra("userId", userId);
 //            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
-            data.putExtra("position",currentTabPosition);
-            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).onActivityResult(100,resultCode,data);
+            Intent intent = new Intent();
+            intent.putExtra("position", currentTabPosition);
+            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).onActivityResult(PolicyBookingFragment.REQUEST_CODE, resultCode, intent);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

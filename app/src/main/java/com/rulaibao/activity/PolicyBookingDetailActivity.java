@@ -248,14 +248,12 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
                     return;
                 }
                     OK2B data = (OK2B) params.result;
-                if (data != null) {
                     if (data.getFlag().equals("true")) {
                         Toast.makeText(PolicyBookingDetailActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
                         finish();
                     } else {
                         Toast.makeText(PolicyBookingDetailActivity.this, data.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }
             }
         });
     }

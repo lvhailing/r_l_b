@@ -24,14 +24,13 @@ import java.util.ArrayList;
 public class CancelBookingDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private Context mContext;
-    private LayoutInflater inflater;
     private LayoutParams lp;
     private int percentageH = 4;
     private int percentageW = 8;
     private TextView txtConfirm = null;
     private TextView txtCancel = null;
 //    private String info = null;
-//    private TextView txtInfo = null;
+    private TextView txtInfo = null;
     private RelativeLayout rl_cancel;
 
     ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
@@ -42,13 +41,8 @@ public class CancelBookingDialog extends Dialog implements DialogInterface.OnCan
         super(context, R.style.Dialog);
         this.mContext = context;
         this.onChanged = onChanged;
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onCreate(savedInstanceState);
-        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mView = inflater.inflate(R.layout.dialog_cancel_booking, null);
         setContentView(mView);
         // 设置window属性
@@ -64,13 +58,17 @@ public class CancelBookingDialog extends Dialog implements DialogInterface.OnCan
         setOnDismissListener(this);
         setOnCancelListener(this);
         initView(mView);
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void initView(View mView) {
         txtConfirm = (TextView) mView.findViewById(R.id.dialog_btn_confim);
         txtCancel = (TextView) mView.findViewById(R.id.dialog_btn_cancel);
-//        txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
+        txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
 
         rl_cancel = (RelativeLayout) mView.findViewById(R.id.rl_cancel);
 
@@ -89,6 +87,10 @@ public class CancelBookingDialog extends Dialog implements DialogInterface.OnCan
 //            rl_check_version_cancel.setVisibility(View.VISIBLE);
 //        }
 
+    }
+
+    public void setTitle(String title) {
+        txtInfo.setText(title);
     }
 
     private View.OnClickListener confirmListener = new View.OnClickListener() {

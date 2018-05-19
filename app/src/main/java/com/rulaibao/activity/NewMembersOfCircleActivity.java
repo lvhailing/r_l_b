@@ -15,6 +15,8 @@ import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.CommissionNewsList2B;
 import com.rulaibao.bean.NewMembersCircleList1B;
 import com.rulaibao.bean.NewMembersCircleList2B;
+import com.rulaibao.bean.OK2B;
+import com.rulaibao.dialog.DeleteHistoryDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -24,13 +26,11 @@ import com.rulaibao.widget.TitleBar;
 import java.util.HashMap;
 
 /**
- *  圈子新成员
+ * 圈子新成员
  * Created by junde on 2018/4/24.
  */
 
 public class NewMembersOfCircleActivity extends BaseActivity {
-
-
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private NewMembersCircleAdapter newMembersCircleAdapter;
@@ -74,17 +74,22 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-            initRecylerView();
+        initRecylerView();
     }
 
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        newMembersCircleAdapter = new NewMembersCircleAdapter(this, userId,totalList, new NewMembersCircleAdapter.buttonAgreeClickListener() {
+        newMembersCircleAdapter = new NewMembersCircleAdapter(this, userId, totalList);
+        newMembersCircleAdapter.setMyItemClickListener(new NewMembersCircleAdapter.OnMyItemClickListener() {
             @Override
-            public void buttonAgreeClickListener() {
+            public void onBtnClick(int position) { // 同意按钮的回调
                 Log.i("hh", "buttonAgreeClickListener --- " + userId);
-                currentPage = 1;
-                requestData();
+                requestAgreeData(position);
+            }
+
+            @Override
+            public void showDialog(int position) {// 长按删除时先弹框
+                showDeleteDialog(position);
             }
         });
         recycler_view.setAdapter(newMembersCircleAdapter);
@@ -112,12 +117,13 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             private int lastVisibleItem = 0;
             private int firstVisibleItem = 0;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==newMembersCircleAdapter.getItemCount()&& firstVisibleItem != 0){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == newMembersCircleAdapter.getItemCount() && firstVisibleItem != 0) {
 
                     currentPage++;
                     requestData();
@@ -131,7 +137,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                lastVisibleItem=layoutManager.findLastVisibleItemPosition();
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
             }
         });
     }
@@ -139,7 +145,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
     private void requestData() {
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
-        param.put("page", currentPage+"");
+        param.put("page", currentPage + "");
 
         HtmlRequest.getNemMembersCircleList(NewMembersOfCircleActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -172,6 +178,85 @@ public class NewMembersOfCircleActivity extends BaseActivity {
                     newMembersCircleAdapter.changeMoreStatus(newMembersCircleAdapter.PULLUP_LOAD_MORE);
                 } else {
                     newMembersCircleAdapter.changeMoreStatus(newMembersCircleAdapter.NO_LOAD_MORE);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 同意申请时调的接口
+     */
+    private void requestAgreeData(final int position) {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("applyId", totalList.get(position).getApplyId());
+        param.put("userId", userId);
+
+        HtmlRequest.getCircleApplyAgreeData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data.getFlag().equals("true")) {
+                    Toast.makeText(mContext, "加入成功", Toast.LENGTH_LONG).show();
+                    currentPage = 1;
+                    requestData();
+                } else {
+                    Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+                    if (data.getMessage().equals("您已经在圈子里")) {
+                        currentPage = 1;
+                        requestData();
+                    }
+                }
+            }
+        });
+    }
+
+    private void showDeleteDialog(final int position) {
+        DeleteHistoryDialog dialog = new DeleteHistoryDialog(mContext, new DeleteHistoryDialog.OnExitChanged() {
+
+            @Override
+            public void onConfim() {
+                requestDeleteData(position);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        }, "确定删除该申请吗？");
+        dialog.show();
+    }
+
+    /**
+     * 删除成员申请信息
+     *
+     * @param position
+     */
+    private void requestDeleteData(final int position) {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("applyId", totalList.get(position).getApplyId());
+        param.put("userId", userId);
+
+        HtmlRequest.getDeletCircleApplyData(mContext, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params.result == null) {
+                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data != null) {
+                    if (data.getFlag().equals("true")) {
+                        Toast.makeText(mContext, " 删除成功", Toast.LENGTH_LONG).show();
+                        currentPage = 1;
+                        requestData();
+                    } else {
+                        Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

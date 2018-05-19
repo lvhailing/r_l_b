@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
  */
 public class PolicyBookingFragment extends Fragment {
     private static final String KEY = "param1";
+    public static int REQUEST_CODE = 100;
 
     private String mParam1;
     private SwipeRefreshLayout swipe_refresh;
@@ -60,6 +61,7 @@ public class PolicyBookingFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             Log.i("hh", this + "-- setUserVisibleHint --");
+            currentPage = 1;
             // 页面可见时调接口
             requestData();
         }
@@ -146,7 +148,7 @@ public class PolicyBookingFragment extends Fragment {
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                if (totalList.size() != 0 && totalList.size() % 20 == 0) {
+                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.PULLUP_LOAD_MORE);
                 } else {
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.NO_LOAD_MORE);
@@ -216,8 +218,8 @@ public class PolicyBookingFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode ==100) {
-            int position = data.getIntExtra("position",0);
+        if (requestCode == REQUEST_CODE) {
+            int position = data.getIntExtra("position", 0);
             Log.i("hh", "onActivityResult -- " + position);
             getTabTitleCurrentPosition(position);
             Log.i("hh", "getTabTitleCurrentPosition -- " + position);
