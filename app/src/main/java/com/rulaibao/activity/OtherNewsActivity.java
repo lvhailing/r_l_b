@@ -5,15 +5,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.rulaibao.R;
-import com.rulaibao.adapter.PolicyNewsAdapter;
+import com.rulaibao.adapter.OtherNewsAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.CommissionNewsList2B;
-import com.rulaibao.bean.PolicyNewsList3B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -23,16 +21,16 @@ import com.rulaibao.widget.TitleBar;
 import java.util.HashMap;
 
 /**
- * 保单消息
- * Created by junde on 2018/4/21.
+ * 其它消息
+ * Created by junde on 2018/5/20.
  */
 
-public class PolicyNewsActivity extends BaseActivity {
+public class OtherNewsActivity extends BaseActivity {
 
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private MouldList<CommissionNewsList2B> totalList = new MouldList<>();
-    private PolicyNewsAdapter policyNewsAdapter;
+    private OtherNewsAdapter otherNewsAdapter;
     private int currentPage = 1;// 当前页
 
 
@@ -50,7 +48,7 @@ public class PolicyNewsActivity extends BaseActivity {
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.icon_back, false).setIndicator(R.mipmap.icon_back)
-             .setCenterText(getResources().getString(R.string.title_policy_news)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+             .setCenterText(getResources().getString(R.string.title_other_news)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -77,8 +75,8 @@ public class PolicyNewsActivity extends BaseActivity {
 
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        policyNewsAdapter = new PolicyNewsAdapter(this, totalList);
-        recycler_view.setAdapter(policyNewsAdapter);
+        otherNewsAdapter = new OtherNewsAdapter(this, totalList);
+        recycler_view.setAdapter(otherNewsAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
 
@@ -88,10 +86,10 @@ public class PolicyNewsActivity extends BaseActivity {
 
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
-        param.put("busiType", "insurance");
+        param.put("busiType", "insurance");  // Todo  消息类型 字段待修改
         param.put("page", currentPage);
 
-        HtmlRequest.getMessageListData(PolicyNewsActivity.this, param, new BaseRequester.OnRequestListener() {
+        HtmlRequest.getMessageListData(OtherNewsActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (swipe_refresh.isRefreshing()) {
@@ -100,7 +98,7 @@ public class PolicyNewsActivity extends BaseActivity {
                 }
 
                 if (params.result == null) {
-                    Toast.makeText(PolicyNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    Toast.makeText(OtherNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -110,8 +108,8 @@ public class PolicyNewsActivity extends BaseActivity {
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
-                    Toast.makeText(PolicyNewsActivity.this, "已显示全部", Toast.LENGTH_SHORT).show();
-                    policyNewsAdapter.changeMoreStatus(policyNewsAdapter.NO_LOAD_MORE);
+                    Toast.makeText(OtherNewsActivity.this, "已显示全部", Toast.LENGTH_SHORT).show();
+                    otherNewsAdapter.changeMoreStatus(otherNewsAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -119,9 +117,9 @@ public class PolicyNewsActivity extends BaseActivity {
                 }
                 totalList.addAll(everyList);
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
-                    policyNewsAdapter.changeMoreStatus(policyNewsAdapter.PULLUP_LOAD_MORE);
+                    otherNewsAdapter.changeMoreStatus(otherNewsAdapter.PULLUP_LOAD_MORE);
                 } else {
-                    policyNewsAdapter.changeMoreStatus(policyNewsAdapter.NO_LOAD_MORE);
+                    otherNewsAdapter.changeMoreStatus(otherNewsAdapter.NO_LOAD_MORE);
                 }
             }
         });
@@ -151,7 +149,7 @@ public class PolicyNewsActivity extends BaseActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == policyNewsAdapter.getItemCount() && firstVisibleItem != 0) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == otherNewsAdapter.getItemCount() && firstVisibleItem != 0) {
                     currentPage++;
                     requestData();
                 }

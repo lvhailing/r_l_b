@@ -14,7 +14,7 @@ public class CommissionNewsList2B implements IMouldType {
     private String createTime;     //  创建时间
     private String content;   //  保单状态
     private String busiType;     //  消息业务类型
-    private String busiPriv;     //  存放佣金保单产品id
+    private String busiPriv;     //  存放佣金,保单产品id
 
     public String getId() {
         return id;

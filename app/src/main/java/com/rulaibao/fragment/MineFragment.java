@@ -218,6 +218,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
+
         HtmlRequest.getMineData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {

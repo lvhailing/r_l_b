@@ -195,4 +195,51 @@
         style="@style/v_line"
         android:layout_alignParentBottom="true"/>
 
+    <RelativeLayout
+        android:id="@+id/rl_other_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_white"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="其它消息"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/iv_item_arrow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/img_arrow_right"/>
+
+        <TextView
+            android:id="@+id/tv_other_news_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_item_arrow5"
+            android:background="@drawable/shape_circle_red"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/v_line"
+        android:layout_alignParentBottom="true"/>
+
 </LinearLayout>

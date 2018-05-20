@@ -32,10 +32,13 @@
 
             <TextView
                 android:id="@+id/tv_turn_down"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_toLeftOf="@id/iv_delete"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="2"
                 android:text=""
                 android:textColor="@color/txt_black1"
                 android:textSize="16sp"/>
@@ -45,10 +48,10 @@
             android:id="@+id/rl_insurance_name"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
             android:layout_marginTop="10dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <ImageView
                 android:id="@+id/iv_arrow"
@@ -81,7 +84,8 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -381,9 +385,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
@@ -397,127 +401,161 @@
                 android:textColor="@color/txt_black1"
                 android:textSize="16sp"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/iv_id_card_positive"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/wu_normal"/>
-
-                <TextView
-                    android:id="@+id/tv_id_number_front"
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_id_card_positive"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="身份证正面"
-                    android:textColor="@color/txt_black2"
-                    android:textSize="14sp"/>
-
-                <ImageView
-                    android:id="@+id/iv_id_card_negative"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
-                    android:layout_marginLeft="11dp"
-                    android:layout_toRightOf="@id/iv_id_card_positive"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/wu_normal"/>
-
-                <TextView
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_id_card_negative"
-                    android:layout_marginLeft="11dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/tv_id_number_front"
-                    android:gravity="center_horizontal"
-                    android:text="身份证反面"
-                    android:textColor="@color/txt_black2"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_bank_card"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/wu_normal"/>
-
-                <TextView
-                    android:id="@+id/tv_bank_card"
-                    android:layout_width="165dp"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_bank_card"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_horizontal"
-                    android:text="银行卡"
-                    android:textColor="@color/txt_black2"
-                    android:textSize="14sp"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:layout_toRightOf="@id/iv_bank_card"
-                    android:id="@+id/iv_other_card_first"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
-                    android:layout_marginLeft="11dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/wu_normal"/>
+                    <ImageView
+                        android:id="@+id/iv_id_card_positive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="102dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/wu_normal"/>
 
-                <TextView
-                    android:layout_width="165dp"
+                    <TextView
+                        android:id="@+id/tv_id_number_front"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="身份证正面"
+                        android:textColor="@color/txt_black2"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_other_card_first"
                     android:layout_marginLeft="11dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/tv_bank_card"
-                    android:gravity="center_horizontal"
-                    android:text="其他"
-                    android:textColor="@color/txt_black2"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <RelativeLayout
+                    <ImageView
+                        android:id="@+id/iv_id_card_negative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="102dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/wu_normal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="身份证反面"
+                        android:textColor="@color/txt_black2"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_other_card_second"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/wu_normal"/>
-
-                <TextView
-                    android:id="@+id/tv_"
-                    android:layout_width="165dp"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_other_card_second"
-                    android:layout_marginTop="10dp"
-                   android:paddingBottom="28dp"
-                    android:gravity="center_horizontal"
-                    android:text="其他"
-                    android:textColor="@color/txt_black2"
-                    android:textSize="14sp"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv6"
-                    android:layout_width="165dp"
-                    android:layout_height="102dp"
+                    <ImageView
+                        android:id="@+id/iv_bank_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="102dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/wu_normal"/>
+
+                    <TextView
+                        android:id="@+id/tv_bank_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="银行卡"
+                        android:textColor="@color/txt_black2"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
-                    android:scaleType="fitXY"
-                    android:visibility="gone"/>
-            </RelativeLayout>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_other_card_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="102dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/wu_normal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="其它"
+                        android:textColor="@color/txt_black2"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_other_card_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="102dp"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/wu_normal"/>
+
+                    <TextView
+                        android:id="@+id/tv_"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingBottom="28dp"
+                        android:text="其它"
+                        android:textColor="@color/txt_black2"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!--<ImgeView-->
+                        <!--android:id="@+id/iv6"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="102dp"-->
+                        <!--android:scaleType="fitXY"-->
+                        <!--android:visibility="gone"/>-->
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <!-- 备注 -->
@@ -547,7 +585,7 @@
                 android:layout_marginBottom="21dp"
                 android:layout_marginTop="12dp"
                 android:lineSpacingExtra="6dp"
-                android:text="时间真像是一个不可理喻的疯子，坐在光线暗淡的角落里将我们一页页已经发生的往事撕碎，然后将碎片随地乱抛，让记忆的旋风卷进大脑的垃圾场里。我们好像已经习惯了时间的疯癫与残酷，在日升日落里忙碌旋转，在四季轮回中生老病死。"
+                android:text=""
                 android:textColor="@color/txt_black2"
                 android:textSize="14sp"/>
 

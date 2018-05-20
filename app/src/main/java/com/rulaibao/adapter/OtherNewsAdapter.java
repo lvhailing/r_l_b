@@ -14,14 +14,13 @@ import android.widget.TextView;
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyRecordDetailActivity;
 import com.rulaibao.bean.CommissionNewsList2B;
-import com.rulaibao.bean.PolicyNewsList3B;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- * 消息列表 Adapter 类
+ * 其它消息列表 Adapter 类
  */
-public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OtherNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<CommissionNewsList2B> list;
     Context mContext;
@@ -40,7 +39,7 @@ public class PolicyNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private int mLoadMoreStatus = 0;
 
 
-    public PolicyNewsAdapter(Context context, MouldList<CommissionNewsList2B> list) {
+    public OtherNewsAdapter(Context context, MouldList<CommissionNewsList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);

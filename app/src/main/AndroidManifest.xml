@@ -307,6 +307,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="com.rulaibao.activity.OtherNewsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.rulaibao.activity.InteractiveNewsActivity"
             android:screenOrientation="portrait" />
 

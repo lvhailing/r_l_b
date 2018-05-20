@@ -19,6 +19,7 @@ import com.rulaibao.bean.OK2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.LinkedHashMap;
@@ -27,7 +28,7 @@ import java.util.LinkedHashMap;
  * Created by junde on 2018/5/14.
  */
 
-public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener{
+public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText et_old_password; // 旧密码
     private EditText et_new_password; // 新密码
@@ -41,7 +42,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private String oldPassword;
     private String newPassword;
     private String confirmPassword;
-    private boolean isShowPassword=false; // 默认密码都不显示
+    private boolean isShowPassword = false; // 默认密码都不显示
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.setting_modify_password))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.setting_modify_password)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -91,7 +90,48 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         btn_sure.setOnClickListener(this);
 
         //  监听输入密码变化
+        et_old_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    oldPassword = et_old_password.getText().toString();
+                    newPassword = et_new_password.getText().toString();
+                    confirmPassword = et_confirm_password.getText().toString();
+
+                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
+            }
+        });
+        //  监听输入密码变化
+        et_new_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    oldPassword = et_old_password.getText().toString();
+                    newPassword = et_new_password.getText().toString();
+                    confirmPassword = et_confirm_password.getText().toString();
+
+                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
+            }
+        });
+        //  监听输入密码变化
         et_confirm_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -105,35 +145,30 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(TextUtils.isEmpty(editable)){
-                    btn_sure.setBackgroundResource(R.drawable.shape_non_clickable);
-                    btn_sure.setClickable(false);
-                }else{
                     oldPassword = et_old_password.getText().toString();
                     newPassword = et_new_password.getText().toString();
                     confirmPassword = et_confirm_password.getText().toString();
 
-                    setButton(oldPassword,newPassword,confirmPassword,btn_sure);
-                }
+                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
             }
         });
     }
 
-    private static void setButton(String str1,String str2,String str3,Button btn_sure){
-        if(TextUtils.isEmpty(str1)){
+    private static void setButton(String str1, String str2, String str3, Button btn_sure) {
+        if (TextUtils.isEmpty(str1)) {
             btn_sure.setBackgroundResource(R.drawable.shape_non_clickable);
-            btn_sure.setClickable(false);
-        }else {
-            if(TextUtils.isEmpty(str2)){
+            btn_sure.setEnabled(false);
+        } else {
+            if (TextUtils.isEmpty(str2)) {
                 btn_sure.setBackgroundResource(R.drawable.shape_non_clickable);
-                btn_sure.setClickable(false);
-            }else{
-                if(TextUtils.isEmpty(str3)){
+                btn_sure.setEnabled(false);
+            } else {
+                if (TextUtils.isEmpty(str3)) {
                     btn_sure.setBackgroundResource(R.drawable.shape_non_clickable);
-                    btn_sure.setClickable(false);
-                }else{
+                    btn_sure.setEnabled(false);
+                } else {
                     btn_sure.setBackgroundResource(R.drawable.shape_gradient_orange);
-                    btn_sure.setClickable(true);
+                    btn_sure.setEnabled(true);
                 }
             }
         }
@@ -144,7 +179,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.iv_old_hide_password: // 旧密码
                 oldPassword = et_old_password.getText().toString();
-                if (TextUtils.isEmpty(oldPassword)){
+                if (TextUtils.isEmpty(oldPassword)) {
                     return;
                 }
 
@@ -168,7 +203,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.iv_new_hide_password: //新密码
                 newPassword = et_new_password.getText().toString();
-                if (TextUtils.isEmpty(newPassword)){
+                if (TextUtils.isEmpty(newPassword)) {
                     return;
                 }
                 if (!isShowPassword) {
@@ -200,7 +235,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_new_hide_password.setImageResource(R.mipmap.icon_open_password);
+                    iv_confirm_hide_password.setImageResource(R.mipmap.icon_open_password);
                     isShowPassword = true;
                 } else {
                     isShowPassword = false;
@@ -209,11 +244,20 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
-                    iv_new_hide_password.setImageResource(R.mipmap.icon_hide_password);
+                    iv_confirm_hide_password.setImageResource(R.mipmap.icon_hide_password);
                 }
                 break;
             case R.id.btn_sure: // 确定
-                checkDataNull();
+                if(StringUtil.checkPassword(newPassword)){
+                    if(newPassword.equals(confirmPassword)){
+                        modifyPassword();
+                    }else{
+                        Toast.makeText(mContext,"两次密码输入不一致，请重新输入",Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(mContext,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+                }
                 break;
 
 
@@ -230,26 +274,32 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         oldPassword = et_old_password.getText().toString();
         newPassword = et_new_password.getText().toString();
         confirmPassword = et_confirm_password.getText().toString();
-        if(TextUtils.isEmpty(oldPassword.trim())){
-            Toast.makeText(this,"请输入原始密码",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(oldPassword.trim())) {
+            btn_sure.setEnabled(false);
+//            Toast.makeText(this, "请输入原始密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(newPassword.trim())){
-            Toast.makeText(this,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(newPassword)) {
+            Toast.makeText(this, "请输入新密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(confirmPassword)){
-            Toast.makeText(this,"请输入确认密码",Toast.LENGTH_SHORT).show();
+        if (!StringUtil.checkPassword(newPassword)) {
+            Toast.makeText(this, "请输入6至16位字母数字组合密码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!newPassword.equals(confirmPassword)){
-            Toast.makeText(this,"两次密码输入不一致，请重新输入",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(confirmPassword)) {
+            Toast.makeText(this, "请输入确认密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            Toast.makeText(this, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+            return;
         }
         modifyPassword();
     }
 
     /**
-     *  重新修改密码后调接口
+     * 重新修改密码后调接口
      */
     private void modifyPassword() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
@@ -258,23 +308,23 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         param.put("password", oldPassword);
         param.put("newPassword", newPassword);
 
-        HtmlRequest.modifyPassword(ModifyPasswordActivity.this, param,new BaseRequester.OnRequestListener() {
+        HtmlRequest.modifyPassword(ModifyPasswordActivity.this, param, new BaseRequester.OnRequestListener() {
 
             @Override
             public void onRequestFinished(BaseParams params) {
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {
-                        Toast.makeText(ModifyPasswordActivity.this,b.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(ModifyPasswordActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                         finish();
-                        Intent intent = new Intent(mContext,LoginActivity.class);
-                        intent.putExtra("GOTOMAIN",LoginActivity.GOTOMAIN);
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(ModifyPasswordActivity.this,b.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(ModifyPasswordActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(ModifyPasswordActivity.this, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ModifyPasswordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                 }
             }
         });

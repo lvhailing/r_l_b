@@ -128,7 +128,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
         tv_payment_period.setText(data.getPaymentPeriod());
         tv_renewal_date.setText(data.getRenewalDate());
         tv_have_insurance_premiums.setText(data.getPaymentedPremiums()+"元");
-        tv_promotion_fee.setText(data.getPromotioinCost()+"元");
+        tv_promotion_fee.setText(data.getPromotioinCost());
         tv_get_commission.setText(data.getCommissionGained()+"元");
         tv_record_date.setText(data.getCreateTime());
         tv_settlement_time.setText(data.getCommissionedTime());
