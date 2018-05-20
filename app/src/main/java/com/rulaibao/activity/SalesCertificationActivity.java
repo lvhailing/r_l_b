@@ -30,7 +30,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.UserInfo2B;
 import com.rulaibao.common.Urls;
-import com.rulaibao.dialog.CancelBookingDialog;
+import com.rulaibao.dialog.CancelNormalDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -59,7 +59,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 /**
@@ -268,7 +267,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
     }
 
     private void showDialog() {
-        CancelBookingDialog dialog = new CancelBookingDialog(this, new CancelBookingDialog.IsCancelBooking() {
+        CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
             @Override
             public void onConfirm() {
                 requestSubmitData();
@@ -482,7 +481,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
             if (mImageCaptureUri != null) {
                 try {
                     businessCard = mImageCaptureUri.getPath();
-                    Log.i("aaa", "名片的地址：" + mImageCaptureUri.getPath());
+//                    Log.i("aaa", "名片的地址：" + mImageCaptureUri.getPath());
                     photoBmp = getBitmapFormUri(SalesCertificationActivity.this, mImageCaptureUri);
                     newZoomImage = photoBmp;
                     // 调接口 上传图片

@@ -136,11 +136,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
-
-//            initListener(itemView);
         }
-
-
     }
 
     /**

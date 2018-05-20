@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyRecordDetailActivity;
 import com.rulaibao.activity.TransactionDetailActivity;
@@ -68,8 +70,11 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
             itemViewHolder.tv_status.setText(list.get(position).getStatus());
             itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancPeremiums());
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancPeremiums()+"元");
             itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
+
+            // 显示保险公司logo
+            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(),itemViewHolder.iv_company_logo);
 
             initListener(itemViewHolder.itemView,list.get(position).getOrderId());
         } else if (holder instanceof FooterViewHolder) {
@@ -115,6 +120,7 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         private final TextView tv_customer_name; // 客户姓名
         private final TextView tv_insurance_premiums; // 已交保费
         private final TextView tv_insurance_period; // 保险期限
+        private final ImageView iv_company_logo; // 保险公司logo
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +129,7 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
             tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
+            iv_company_logo = (ImageView) itemView.findViewById(R.id.iv_company_logo);
         }
 
     }

@@ -336,7 +336,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             conn.connect();
             InputStream is = conn.getInputStream();
             bitmap = BitmapFactory.decodeStream(is);
-            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
+//            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
             is.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -425,7 +425,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
               toWhichActivity(RenewalReminderActivity.class);
                 break;
             case R.id.rl_my_bookings: // 我的预约
-                needPositionToWhichActivity(PolicyBookingListActivity.class,0);
+                toWhichActivity(PolicyBookingListActivity.class);
                 break;
             case R.id.rl_my_ask: // 我的提问
                toWhichActivity(MyAskActivity.class);

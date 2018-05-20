@@ -29,7 +29,7 @@ public class PolicyBookingListActivity extends BaseActivity {
     private ViewPager vp;
     private String[] titles;
     private PolicyBookingVpAdapter vpAdapter;
-    private int currentTabPosition; //
+    private int currentTabPosition = 0;  // 默认进来加载“全部”的数据
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class PolicyBookingListActivity extends BaseActivity {
     }
 
     private void initView() {
-        currentTabPosition = getIntent().getIntExtra("position", 0);
         tab_layout = (TabLayout) findViewById(R.id.tab_layout);
         vp = (ViewPager) findViewById(R.id.vp);
     }
@@ -188,8 +187,6 @@ public class PolicyBookingListActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
-//            data.putExtra("userId", userId);
-//            ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
             Intent intent = new Intent();
             intent.putExtra("position", currentTabPosition);
             ((PolicyBookingFragment) vpAdapter.getItem(currentTabPosition)).onActivityResult(PolicyBookingFragment.REQUEST_CODE, resultCode, intent);

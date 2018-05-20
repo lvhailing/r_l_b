@@ -15,10 +15,10 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyCollectionRecycleAdapter;
-import com.rulaibao.bean.MyAskList1B;
-import com.rulaibao.bean.MyAskList2B;
+import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.MyCollectionList1B;
 import com.rulaibao.bean.MyCollectionList2B;
+import com.rulaibao.dialog.CancelNormalDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -59,10 +59,14 @@ public class MyCollectionFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            currentPage = 1;
             requestData();
         }
     }
 
+    /**
+     *  获取收藏列表 数据
+     */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);
@@ -134,6 +138,12 @@ public class MyCollectionFragment extends Fragment {
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
         myCollectionRecycleAdapter = new MyCollectionRecycleAdapter(getActivity(), userId,totalList);
+        myCollectionRecycleAdapter.setCollectionListener(new MyCollectionRecycleAdapter.CollectionItemClickListener() {
+            @Override
+            public void showDialog(int position) {
+                showCancelCollectionDialog(position);
+            }
+        });
         recycler_view.setAdapter(myCollectionRecycleAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -176,6 +186,54 @@ public class MyCollectionFragment extends Fragment {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
+    }
+
+    // 长按弹出的对话框
+    private void showCancelCollectionDialog(final int position) {
+        CancelNormalDialog dialog = new CancelNormalDialog(context, new CancelNormalDialog.IsCancel() {
+            @Override
+            public void onConfirm() {
+                requestCollectionCanceled(position);
+//                Toast.makeText(context, "取消成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
+        dialog.setTitle("确认取消收藏？");
+        dialog.show();
+    }
+
+    /**
+     *  取消收藏
+     * @param position
+     */
+    private void requestCollectionCanceled(int position) {
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", userId);
+        param.put("productId", totalList.get(position).getProductId());
+        param.put("dataStatus", "invalid");
+        param.put("collectionId", totalList.get(position).getCollectionId());
+        HtmlRequest.collection(context, param, new BaseRequester.OnRequestListener() {
+
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (param == null || params.result == null) {
+                    Toast.makeText(context, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Collection2B data = (Collection2B) params.result;
+                if ("true".equals(data.getFlag())) {
+                    currentPage = 1;
+                    requestData();
+                    Toast.makeText(context, data.getMessage(),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, data.getMessage(),Toast.LENGTH_LONG).show();
+
+                }
             }
         });
     }

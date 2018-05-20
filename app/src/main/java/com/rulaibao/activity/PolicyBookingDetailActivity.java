@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,13 +14,12 @@ import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.PolicyBookingDetail1B;
-import com.rulaibao.dialog.CancelBookingDialog;
+import com.rulaibao.dialog.CancelNormalDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.widget.TitleBar;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -218,7 +216,7 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
    }
 
     private void showDialog() {
-        CancelBookingDialog dialog = new CancelBookingDialog(this, new CancelBookingDialog.IsCancelBooking() {
+        CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
             @Override
             public void onConfirm() {
                     requestBookingCanceled();

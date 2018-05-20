@@ -9,7 +9,7 @@ import com.rulaibao.network.types.IMouldType;
 
 public class PolicyRecordDetail1B implements IMouldType {
 
-    private String status; // 保单状态 (init:待审核; payed:已承保; rejected:问题件; receiptSigned:回执签收; commissioned:已结算)
+    private String status; // 保单状态 (init:待审核; payed:已承保; rejected:问题件; receiptSigned:回执签收; commissioned:已结算; 续保中:renewing;已续保:renewed)
     private String underwirteTime; // 承保时间
     private String orderCode; // 保单编号
     private String insuranceName; //产品名称
@@ -29,7 +29,8 @@ public class PolicyRecordDetail1B implements IMouldType {
     private String attachmentFirst; // 附件一
     private String attachmentSecond; // 附件二
     private String remark; // 备注说明
-    private String auditDesc; // 反馈说明（问题保单）
+    private String auditDesc; // 驳回原因（问题保单）
+    private String auditTime; // 驳回时间（问题保单）
     private String productId; // 产品编号
 
 
@@ -199,6 +200,14 @@ public class PolicyRecordDetail1B implements IMouldType {
 
     public void setAuditDesc(String auditDesc) {
         this.auditDesc = auditDesc;
+    }
+
+    public String getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(String auditTime) {
+        this.auditTime = auditTime;
     }
 
     public String getProductId() {

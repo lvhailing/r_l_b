@@ -9,21 +9,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.InsuranceProductDetailActivity;
-import com.rulaibao.activity.PolicyBookingDetailActivity;
-import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.MyCollectionList2B;
-import com.rulaibao.dialog.CancelBookingDialog;
-import com.rulaibao.dialog.CancelCollectionDialog;
-import com.rulaibao.network.BaseParams;
-import com.rulaibao.network.BaseRequester;
-import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
-
-import java.util.LinkedHashMap;
 
 
 /**
@@ -142,58 +132,23 @@ public class MyCollectionRecycleAdapter extends RecyclerView.Adapter<RecyclerVie
             }
         });
 
+        // item长按删除
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showCancelCollectionDialog(position);
+               listener.showDialog(position);
                 return true;
             }
         });
     }
 
-    private void showCancelCollectionDialog(final int position) {
-        CancelCollectionDialog dialog = new CancelCollectionDialog(mContext, new CancelCollectionDialog.IsCancelCollection() {
-            @Override
-            public void onConfirm() {
-                requestCollectionCanceled(position);
-//                Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancel() {
-            }
-        });
-
-        dialog.show();
+    private CollectionItemClickListener listener;
+    public interface CollectionItemClickListener{
+        void showDialog(int position);
     }
 
-    /**
-     *  取消收藏
-     * @param position
-     */
-    private void requestCollectionCanceled(int position) {
-        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId", userId);
-        param.put("productId", list.get(position).getProductId());
-        param.put("dataStatus", "invalid");
-        param.put("collectionId", list.get(position).getCollectionId());
-        HtmlRequest.collection(mContext, param, new BaseRequester.OnRequestListener() {
-
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (param == null || params.result == null) {
-                    Toast.makeText(mContext, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                Collection2B data = (Collection2B) params.result;
-                if ("true".equals(data.getFlag())) {
-                    Toast.makeText(mContext, data.getMessage(),Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(mContext, data.getMessage(),Toast.LENGTH_LONG).show();
-
-                }
-            }
-        });
+    public void setCollectionListener(CollectionItemClickListener listener) {
+        this.listener = listener;
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

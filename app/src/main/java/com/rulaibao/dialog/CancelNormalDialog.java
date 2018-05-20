@@ -18,37 +18,31 @@ import com.rulaibao.R;
 import java.util.ArrayList;
 
 /**
- * 取消收藏 对话框
+ * 取消 对话框
  */
-public class CancelCollectionDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+public class CancelNormalDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private Context mContext;
-    private LayoutInflater inflater;
     private LayoutParams lp;
     private int percentageH = 4;
     private int percentageW = 8;
     private TextView txtConfirm = null;
     private TextView txtCancel = null;
 //    private String info = null;
-//    private TextView txtInfo = null;
+    private TextView txtInfo = null;
     private RelativeLayout rl_cancel;
 
     ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
     ArrayList<OnDismissListener> m_arrDismissListeners = new ArrayList<OnDismissListener>();
-    private IsCancelCollection onChanged = null;
+    private IsCancel onChanged = null;
 
-    public CancelCollectionDialog(Context context, IsCancelCollection onChanged) {
+    public CancelNormalDialog(Context context, IsCancel onChanged) {
         super(context, R.style.Dialog);
         this.mContext = context;
         this.onChanged = onChanged;
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onCreate(savedInstanceState);
-        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mView = inflater.inflate(R.layout.dialog_cancel_booking, null);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mView = inflater.inflate(R.layout.dialog_cancel_normal, null);
         setContentView(mView);
         // 设置window属性
         lp = getWindow().getAttributes();
@@ -63,13 +57,17 @@ public class CancelCollectionDialog extends Dialog implements DialogInterface.On
         setOnDismissListener(this);
         setOnCancelListener(this);
         initView(mView);
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void initView(View mView) {
         txtConfirm = (TextView) mView.findViewById(R.id.dialog_btn_confim);
         txtCancel = (TextView) mView.findViewById(R.id.dialog_btn_cancel);
-//        txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
+        txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
 
         rl_cancel = (RelativeLayout) mView.findViewById(R.id.rl_cancel);
 
@@ -88,6 +86,10 @@ public class CancelCollectionDialog extends Dialog implements DialogInterface.On
 //            rl_check_version_cancel.setVisibility(View.VISIBLE);
 //        }
 
+    }
+
+    public void setTitle(String title) {
+        txtInfo.setText(title);
     }
 
     private View.OnClickListener confirmListener = new View.OnClickListener() {
@@ -161,7 +163,7 @@ public class CancelCollectionDialog extends Dialog implements DialogInterface.On
         return wh;
     }
 
-    public interface IsCancelCollection {
+    public interface IsCancel {
         public void onConfirm();
 
         public void onCancel();

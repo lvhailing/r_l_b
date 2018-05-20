@@ -314,6 +314,10 @@
             android:name="com.rulaibao.activity.ModifyPasswordActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".photo_preview.PhotoPreviewAcForOne"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

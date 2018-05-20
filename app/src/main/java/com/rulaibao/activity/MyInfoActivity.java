@@ -151,7 +151,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-//        headPhoto = getIntent().getStringExtra("headPhoto");
 
         rl_layout_photo = (RelativeLayout) findViewById(R.id.rl_layout_photo);
         rl_layout_phone = (RelativeLayout) findViewById(R.id.rl_layout_phone);

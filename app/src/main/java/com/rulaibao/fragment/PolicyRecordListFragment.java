@@ -82,6 +82,7 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
+            currentPage = 1;
             requestData();
         }
     }

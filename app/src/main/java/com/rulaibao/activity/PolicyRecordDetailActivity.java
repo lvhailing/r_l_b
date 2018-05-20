@@ -119,6 +119,7 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
         iv_other_card_second = (ImageView) findViewById(R.id.iv_other_card_second);
         tv_remarks_description = (TextView) findViewById(R.id.tv_remarks_description);
 
+        iv_delete.setOnClickListener(this);
         rl_insurance_name.setOnClickListener(this);
     }
 
@@ -149,10 +150,10 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
             tv_insurance_name.setText(data.getInsuranceName());
             tv_product_name.setText(data.getInsuranceName());
         }
-        if (!TextUtils.isEmpty(data.getAuditDesc())) {
-            rl_audit_status.setVisibility(View.VISIBLE);
-            tv_turn_down.setText(data.getAuditDesc());
-        }
+//        if (!TextUtils.isEmpty(data.getAuditDesc())) {
+//            rl_audit_status.setVisibility(View.VISIBLE);
+//            tv_turn_down.setText(data.getAuditDesc());
+//        }
 
         String status = data.getStatus();
         if (TextUtils.isEmpty(data.getStatus())) {
@@ -162,12 +163,17 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
             tv_policy_status.setText("待审核");
         } else if ("payed".equals(status)) {
             tv_policy_status.setText("已承保");
+            //  承保时间 布局（待审核、驳回状态时不显示）
             ll_underwriting_time.setVisibility(View.VISIBLE);
             tv_underwriting_time.setText(data.getUnderwirteTime());
+
+            // 保单编号 布局（待审核、驳回状态时不显示）
             ll_policy_number.setVisibility(View.VISIBLE);
             tv_policy_number.setText(data.getOrderCode());
         } else if ("rejected".equals(status)) {
             tv_policy_status.setText("问题件");
+            rl_audit_status.setVisibility(View.VISIBLE);
+            tv_turn_down.setText("报单驳回："+data.getAuditDesc()+"{"+data.getAuditTime()+"}");
         } else if ("receiptSigned".equals(status)) {
             tv_policy_status.setText("回执签收");
             ll_underwriting_time.setVisibility(View.VISIBLE);
@@ -180,7 +186,20 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
             tv_underwriting_time.setText(data.getUnderwirteTime());
             ll_policy_number.setVisibility(View.VISIBLE);
             tv_policy_number.setText(data.getOrderCode());
+        }else if ("renewing".equals(status)) {
+            tv_policy_status.setText("续保中");
+            ll_underwriting_time.setVisibility(View.VISIBLE);
+            tv_underwriting_time.setText(data.getUnderwirteTime());
+            ll_policy_number.setVisibility(View.VISIBLE);
+            tv_policy_number.setText(data.getOrderCode());
+        }else if ("renewed".equals(status)) {
+            tv_policy_status.setText("已续保");
+            ll_underwriting_time.setVisibility(View.VISIBLE);
+            tv_underwriting_time.setText(data.getUnderwirteTime());
+            ll_policy_number.setVisibility(View.VISIBLE);
+            tv_policy_number.setText(data.getOrderCode());
         }
+
 
         if (!TextUtils.isEmpty(data.getCustomerName())) {
             tv_customer_name.setText(data.getCustomerName());

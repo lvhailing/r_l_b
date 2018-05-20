@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="确定取消预约吗？"
+                android:text="确定取消XXXX吗？"
                 android:textColor="@color/txt_black2"
                 android:textSize="14sp"/>
         </LinearLayout>

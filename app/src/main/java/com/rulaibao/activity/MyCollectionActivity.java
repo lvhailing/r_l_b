@@ -17,12 +17,13 @@ import com.rulaibao.widget.TitleBar;
  * Created by junde on 2018/4/21.
  */
 
-public class MyCollectionActivity extends BaseActivity implements View.OnClickListener {
+public class MyCollectionActivity extends BaseActivity {
 
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
     private String[] titles;
     private MyCollectionVpAdapter myCollectionVpAdapter;
+    private int currentTabPosition = 0; // 默认进来加载“全部”的数据
 
 
     @Override
@@ -79,8 +80,6 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onPageSelected(int position) {
-                ((MyCollectionFragment) myCollectionVpAdapter.getItem(position)).setUserId(userId);
-                ((MyCollectionFragment) myCollectionVpAdapter.getItem(position)).getTabTitleCurrentPosition(position);
             }
 
             @Override
@@ -88,11 +87,26 @@ public class MyCollectionActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
+
+        sliding_tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                currentTabPosition = tab.getPosition();
+                ((MyCollectionFragment) myCollectionVpAdapter.getItem(currentTabPosition)).setUserId(userId);
+                ((MyCollectionFragment) myCollectionVpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }
