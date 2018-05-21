@@ -7,6 +7,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.CommissionNewsList1B;
@@ -122,7 +123,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     public static String getResult(Map<String, Object> param) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         Map<String, Object> sortMap = sortMap(param);
 //        Log.i("hh", "排序后的入参为：" + sortMap);
         String str_md5 = gson.toJson(sortMap);
@@ -1151,7 +1152,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取佣金/保单消息列表
+     *  获取佣金消息/保单消息/其它消息等列表
      * @param context
      * @param param
      * @param listener
@@ -1181,7 +1182,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "佣金/保单消息列表：" + data);
+                    Log.i("hh", "佣金/保单/其它等消息列表：" + data);
 
                     Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
                     }.getType());

@@ -47,6 +47,7 @@ import calendar.views.NewsTitleTextView;
 public class InsuranceProductActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private ViewPager mViewPager;
     private ViewGroup mViewGroup;
+    private HorizontalScrollView h_scroll_view;
     private TabsViewPagerAdapter tabAdapter;
     private String[] mTabItems = new String[]{"重疾险", "年金险", "终身寿险", "意外险",
             "医疗险", "一老一小", "企业团体",""};
@@ -81,6 +82,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
     private void initView() {
         category = getIntent().getStringExtra("category");
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        h_scroll_view= (HorizontalScrollView) findViewById(R.id.h_scroll_view);
         mViewGroup = (ViewGroup) findViewById(R.id.viewgroup);
         iv_right_btn= (ImageView) findViewById(R.id.iv_right_insurance);
         iv_back= (ImageView) findViewById(R.id.iv_back);
@@ -266,8 +268,13 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
                             listView.onRefreshComplete();
                         }
                     }, 1000);
-
                     moveTitleLabel(mPreSelectItem);
+                    if (mPreSelectItem==6){
+                        //控制企业团体 滑到最右边
+                        h_scroll_view.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+
+                    }
+
 
                 }
             });
@@ -310,6 +317,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
         moveTitleLabel(position);
         mPreSelectItem = position;
         category=mTabItems[mPreSelectItem];
+        currentPage=1;
         initData();
     }
     private void moveTitleLabel(int position) {

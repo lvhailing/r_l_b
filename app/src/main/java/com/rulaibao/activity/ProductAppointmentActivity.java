@@ -210,7 +210,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
             Toast.makeText(context,"请输入缴费期限",Toast.LENGTH_SHORT).show();
             return;
         }
-        if("预计交单时间:".equals(exceptSubmitTime)){
+        if(TextUtils.isEmpty(exceptSubmitTime)){
             Toast.makeText(context,"请选择交单时间",Toast.LENGTH_SHORT).show();
             return;
         }

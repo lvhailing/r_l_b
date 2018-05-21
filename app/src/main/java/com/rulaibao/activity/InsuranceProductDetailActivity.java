@@ -31,6 +31,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.TitleBar;
 
 import org.jsoup.Jsoup;
@@ -47,7 +48,7 @@ import java.util.LinkedHashMap;
 public class InsuranceProductDetailActivity extends BaseActivity implements View.OnClickListener {
     private TitleBar titleBar;
 
-    private ImageView iv_product_logo;//产品logo
+    private CircularImage iv_product_logo;//产品logo
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions
             (R.mipmap.iv_product_default, R.mipmap.iv_product_default, R.mipmap.iv_product_default);
     private ImageView iv_collect;//收藏
@@ -139,7 +140,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
     }
 
     private void initView() {
-        iv_product_logo = (ImageView) findViewById(R.id.iv_product_logo);
+        iv_product_logo = (CircularImage) findViewById(R.id.iv_product_logo);
         iv_collect = (ImageView) findViewById(R.id.iv_collect);
         tv_product_name = (TextView) findViewById(R.id.tv_product_name);
 
@@ -423,6 +424,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         String purchaseNumber = data.getPurchaseNumber();
         String recommendations = data.getRecommendations();
         String appointmentStatus = data.getAppointmentStatus();
+        String prospectusStatus = data.getProspectusStatus();
         String type = data.getType();
 
         // ImageLoader 加载图片
@@ -481,24 +483,24 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         //根据预约type longTermInsurance:长期险;shortTermInsurance:短期险 判断显示底部布局
         if (!TextUtils.isEmpty(type)) {
             if ("longTermInsurance".equals(type)) {//长期险---有预约
-                rl_appointment.setVisibility(View.GONE);
-                rl_appointmented.setVisibility(View.VISIBLE);
-                tv_appointmented_minimumPremium.setText(data.getMinimumPremium() + "元起");
-                if ("success".equals(data.getCheckStatus())) {
-                    tv_appointmented_promotionmoney.setText("推广费:" + data.getPromotionMoney());
-                } else {
-                    tv_appointmented_promotionmoney.setText("推广费: 认证可见");
-                }
-
-
-            } else if ("shortTermInsurance".equals(type)) {//短期险---计划书购买
                 rl_appointment.setVisibility(View.VISIBLE);
                 rl_appointmented.setVisibility(View.GONE);
                 tv_appointment_minimumPremium.setText(data.getMinimumPremium() + "元起");
                 if ("success".equals(data.getCheckStatus())) {
-                    tv_appointment_promotionmoney.setText("推广费:" + data.getPromotionMoney());
+                    tv_appointment_promotionmoney.setText("推广费:" + data.getPromotionMoney()+"%");
                 } else {
                     tv_appointment_promotionmoney.setText("推广费: 认证可见");
+                }
+
+            } else if ("shortTermInsurance".equals(type)) {//短期险---计划书购买
+
+                rl_appointment.setVisibility(View.GONE);
+                rl_appointmented.setVisibility(View.VISIBLE);
+                tv_appointmented_minimumPremium.setText(data.getMinimumPremium() + "元起");
+                if ("success".equals(data.getCheckStatus())) {
+                    tv_appointmented_promotionmoney.setText("推广费:" + data.getPromotionMoney()+"%");
+                } else {
+                    tv_appointmented_promotionmoney.setText("推广费: 认证可见");
                 }
 
             }
@@ -510,6 +512,15 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
 
             } else if ("false".equals(appointmentStatus)) {
                 btn_appointment.setVisibility(View.VISIBLE);
+            }
+        }
+        //是否有计划书
+        if (!TextUtils.isEmpty(prospectusStatus)) {
+            if ("yes".equals(prospectusStatus)) {
+                btn_planbook.setVisibility(View.VISIBLE);
+
+            } else if ("no".equals(prospectusStatus)) {
+                btn_planbook.setVisibility(View.GONE);
             }
         }
 

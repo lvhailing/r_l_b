@@ -1,5 +1,7 @@
 package com.rulaibao.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,12 +36,14 @@ import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyRecyclerView;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -195,13 +199,15 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                     if (detailsBean.getFlag().equals("true")) {
                         setView();
                     } else {
-                        if (detailsBean.getCode().equals("1001")) {      //  参数错误
+                        if (detailsBean.getCode().equals("6001")) {      //  参数错误
 
 
-                        } else if (detailsBean.getCode().equals("1002")) {        //  该回答已删除
+                        } else if (detailsBean.getCode().equals("6002")) {        //  该回答已删除
 
                             Toast.makeText(TrainingAnswerDetailsActivity.this, "该回答已删除", Toast.LENGTH_SHORT).show();
                             finish();
+                        }else{
+                            Toast.makeText(TrainingAnswerDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -377,13 +383,38 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         String commentContent = etAnswerDetails.getText().toString();
 
-        if(TextUtils.isEmpty(userId)){
+        if(!PreferenceUtil.isLogin()){
 
-            Toast.makeText(TrainingAnswerDetailsActivity.this,"未登录",Toast.LENGTH_SHORT).show();
+            HashMap<String,Object> map = new HashMap<>();
+            RlbActivityManager.toLoginActivity(TrainingAnswerDetailsActivity.this,map,false);
 
         }else{
             if(!PreferenceUtil.getCheckStatus().equals("success")){
-                Toast.makeText(TrainingAnswerDetailsActivity.this, "请认证", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(this)
+
+                        .setMessage("您还未认证，是否去认证")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                HashMap<String,Object> map = new HashMap<>();
+
+                                map.put("realName",PreferenceUtil.getUserRealName());
+                                map.put("status",PreferenceUtil.getCheckStatus());
+
+                                RlbActivityManager.toSaleCertificationActivity(TrainingAnswerDetailsActivity.this,map,false);
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
             }else{
                 if (TextUtils.isEmpty(commentId)) {       //  评论
 

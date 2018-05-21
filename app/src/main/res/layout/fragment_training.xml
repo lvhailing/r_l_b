@@ -6,7 +6,9 @@
 
     <include
         android:id="@+id/fragment_title"
-        layout="@layout/fragment_titlebar" />
+        layout="@layout/fragment_titlebar"
+
+        />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_training"
@@ -27,7 +29,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:descendantFocusability="blocksDescendants"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -116,7 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:text="2011-1-4" />
+                            android:text="1900-01-01" />
                     </RelativeLayout>
 
                     <include layout="@layout/fragment_training_class_item" />
@@ -135,24 +139,36 @@
                         android:text="@string/training_boutique"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/tv_training_refresh"
+
+                    <LinearLayout
+                        android:id="@+id/ll_training_recommend_refresh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="15dip"
-                        android:text="@string/training_refresh"
-                        android:textSize="16sp" />
+                        android:gravity="center"
+                        >
 
-                    <ImageView
-                        android:id="@+id/iv_training_refresh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dip"
-                        android:layout_toLeftOf="@id/tv_training_refresh"
-                        android:src="@mipmap/img_training_refresh" />
+
+                        <ImageView
+                            android:id="@+id/iv_training_refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dip"
+                            android:src="@mipmap/img_training_refresh" />
+
+                        <TextView
+                            android:id="@+id/tv_training_refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dip"
+                            android:text="@string/training_refresh"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
                 </RelativeLayout>
 
                 <LinearLayout
@@ -185,7 +201,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:text="优质的在线理财课程" />
+                                android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_first"
@@ -211,7 +227,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:text="优质的在线理财课程" />
+                                android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_second"
@@ -244,7 +260,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:text="优质的在线理财课程" />
+                                android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_third"
@@ -270,7 +286,7 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:text="优质的在线理财课程" />
+                                android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_forth"

@@ -96,13 +96,7 @@ public class PolicyRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (list == null) {
-            //如果加载不到数据，只绘制1条 footerView
-            return 1;
-        } else {
-            //否则，绘制总条数+ 1（footerView）个
-            return list.size() + 1;
-        }
+        return list == null ? 0 : list.size()+1;
     }
 
     @Override

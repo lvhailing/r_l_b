@@ -33,7 +33,6 @@ import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 
 import java.util.LinkedHashMap;
-import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +41,7 @@ import butterknife.ButterKnife;
  * 保单规划
  */
 
-public class PolicyPlanFragment extends Fragment implements View.OnClickListener {
+public class PolicyPlanFragment extends Fragment implements View.OnClickListener{
     @BindView(R.id.lv_policy_plan)
     RecyclerView lvPolicyPlan;
 
@@ -82,10 +81,15 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         if (PreferenceUtil.isLogin()) {
             fl_nologin.setVisibility(View.GONE);
             vs.setVisibility(View.VISIBLE);
-            requestListData();
+            iv_right_btn.setVisibility(View.VISIBLE);
+            if (totalList==null || totalList.size()==0){
+                initView(mView);
+                requestListData();
+            }
 
         } else {
             fl_nologin.setVisibility(View.VISIBLE);
+            iv_right_btn.setVisibility(View.GONE);
             vs.setVisibility(View.GONE);
         }
     }
@@ -94,14 +98,16 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (context != null) {
-                totalList.clear();
                 if (PreferenceUtil.isLogin()) {
                     fl_nologin.setVisibility(View.GONE);
                     vs.setVisibility(View.VISIBLE);
+                    iv_right_btn.setVisibility(View.VISIBLE);
+                    initView(mView);
                     requestListData();
 
                 } else {
                     fl_nologin.setVisibility(View.VISIBLE);
+                    iv_right_btn.setVisibility(View.GONE);
                     vs.setVisibility(View.GONE);
                 }
             }

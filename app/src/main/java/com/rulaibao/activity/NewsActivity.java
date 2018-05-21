@@ -137,6 +137,12 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener {
             tv_circle_news_number.setVisibility(View.VISIBLE);
             tv_circle_news_number.setText(data.getCircle());
         }
+
+        // 其它消息
+        if (!TextUtils.isEmpty(data.getOtherMessage()) && Integer.parseInt(data.getOtherMessage()) != 0) {
+            tv_other_news_number.setVisibility(View.VISIBLE);
+            tv_other_news_number.setText(data.getOtherMessage());
+        }
     }
 
 
@@ -176,8 +182,7 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener {
             case R.id.rl_other_news: // 其它消息
                 intent = new Intent(this, OtherNewsActivity.class);
                 startActivity(intent);
-                // Todo 等接口增加其它消息字段后，此处待修改
-                if (!TextUtils.isEmpty(data.getComment()) && Integer.parseInt(data.getComment()) != 0) {
+                if (!TextUtils.isEmpty(data.getOtherMessage()) && Integer.parseInt(data.getOtherMessage()) != 0) {
                     tv_other_news_number.setVisibility(View.GONE);
                 }
                 break;

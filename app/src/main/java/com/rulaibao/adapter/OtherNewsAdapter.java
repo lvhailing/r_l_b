@@ -49,7 +49,7 @@ public class OtherNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_ITEM) {
-            View itemView = mInflater.inflate(R.layout.item_policy_news, parent, false);
+            View itemView = mInflater.inflate(R.layout.item_other_news, parent, false);
 
             return new ItemViewHolder(itemView);
         } else if (viewType == TYPE_FOOTER) {
@@ -91,8 +91,7 @@ public class OtherNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        //RecyclerView的count设置为数据总条数+ 1（footerView）
-        return list.size() + 1;
+        return list == null ? 0 : list.size()+1;
     }
 
     @Override

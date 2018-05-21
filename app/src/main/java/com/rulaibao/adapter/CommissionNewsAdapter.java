@@ -91,8 +91,13 @@ public class CommissionNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        //RecyclerView的count设置为数据总条数+ 1（footerView）
-        return list.size() + 1;
+        if (list == null) {
+            //如果加载不到数据，绘制0条数据
+            return 0;
+        } else {
+            //否则，绘制总条数+ 1（footerView）个
+            return list.size() + 1;
+        }
     }
 
     @Override

@@ -14,7 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyRecordListActivity;
@@ -45,6 +48,7 @@ public class PolicyRecordListFragment extends Fragment {
     private PolicyRecordList1B data;
     private String status = "";
     private String userId = "";
+    private ViewSwitcher vs;
 
 
     public static PolicyRecordListFragment newInstance(String param1) {
@@ -88,8 +92,14 @@ public class PolicyRecordListFragment extends Fragment {
     }
 
     private void initView(View view) {
+        vs = (ViewSwitcher)view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
+        tv_empty.setText("暂无保单记录");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -160,6 +170,7 @@ public class PolicyRecordListFragment extends Fragment {
                 }
 
                 if (params.result == null) {
+                    vs.setDisplayedChild(1);
                     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -179,6 +190,12 @@ public class PolicyRecordListFragment extends Fragment {
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
                 } else {

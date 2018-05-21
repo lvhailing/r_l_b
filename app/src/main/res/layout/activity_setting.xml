@@ -269,20 +269,21 @@
                     android:textColor="@color/txt_black2"
                     android:textSize="16sp"/>
             </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_setting_logout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
+                android:background="@drawable/shape_gradient_orange"
+                android:gravity="center|center_vertical"
+                android:text="@string/setting_logout"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_setting_logout"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="26dp"
-            android:layout_marginRight="26dp"
-            android:background="@drawable/shape_gradient_orange"
-            android:gravity="center|center_vertical"
-            android:text="@string/setting_logout"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:visibility="gone"/>
     </RelativeLayout>
 </ScrollView>

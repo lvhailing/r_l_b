@@ -104,7 +104,7 @@
         <activity
             android:name="com.rulaibao.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.rulaibao.activity.TrainingClassActivity"
             android:screenOrientation="portrait" />
@@ -187,7 +187,7 @@
         <activity
             android:name="com.rulaibao.activity.PlayerVideoActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoTitleBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoTitleBar"/>
         <activity
             android:name="com.rulaibao.activity.SettingActivity"
             android:screenOrientation="portrait" />
@@ -257,7 +257,7 @@
         <activity
             android:name="com.rulaibao.activity.ProductAppointmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateVisible"/>
         <activity
             android:name="com.rulaibao.activity.RenewalReminderActivity"
             android:screenOrientation="portrait" />

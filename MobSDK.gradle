@@ -13,8 +13,8 @@ MobSDK {
             QZone {
                 id 4
                 sortId 4
-                appId "1105724267"
-                appKey "wtKK7B1Lw2tz8XAK"
+                appId ""
+                appKey ""
                 shareByAppClient true
                 bypassApproval false
                 enable true
@@ -54,8 +54,8 @@ MobSDK {
             QQ {
                 id 3
                 sortId 3
-                appId "1105724267"
-                appKey "wtKK7B1Lw2tz8XAK"
+                appId ""
+                appKey ""
                 shareByAppClient true
                 bypassApproval false
                 enable true

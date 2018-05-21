@@ -29,9 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.activity.InsuranceProductActivity;
-import com.rulaibao.activity.SearchActivity;
-import com.rulaibao.activity.SearchForPlanActivity;
 import com.rulaibao.activity.WebActivity;
 import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.ShareSDKDialog;
@@ -91,7 +88,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         mContext = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.titlebar, this);
-        actions = (LinearLayout) view.findViewById(R.id.titlebar_btcontainer);// action
+        actions = (LinearLayout) view.findViewById(R.id.ll_search);// action
         actions_back = (LinearLayout) view.findViewById(R.id.title_back);// 大块返回，包括Title文字
         tv_groupcount = (TextView) view.findViewById(R.id.top_groupcount);// 返回中的Title右侧文字
         more = (TextView) view.findViewById(R.id.top_title_rightbtn);// 右侧

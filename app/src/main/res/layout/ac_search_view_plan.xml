@@ -19,7 +19,7 @@
         android:padding="10dp"
         android:textSize="16sp"
         android:textColor="@color/gray_dark"
-        android:text="热门搜词:"/>
+        android:text="热搜词:"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"

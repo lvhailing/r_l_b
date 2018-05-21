@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:background="@color/white">
 
-        <include layout="@layout/searchview"
+        <include layout="@layout/searchview_policy"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
             android:layout_width="0dp"

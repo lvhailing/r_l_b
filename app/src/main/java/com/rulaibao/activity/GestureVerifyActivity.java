@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.Login2B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.BasicDialog;
@@ -120,7 +121,7 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
             title.showLeftImg(false);//只有登录进来的手势密码验证，左侧返回键隐藏
             mTextForget.setText("忘记手势密码");
             mTextForget.setOnClickListener(this);
-            mTextOther.setOnClickListener(this);
+            mTextOther.setVisibility(View.GONE);
         } else if (from.equals(Urls.ACTIVITY_GESEDIT)) {
             mTextForget.setText("忘记手势密码");
             mTextForget.setOnClickListener(this);
@@ -431,11 +432,11 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private OK2B bean;
+    private Login2B bean;
 
     @Override
     public void update(Observable observable, Object data) {
-        bean = (OK2B) data;
+        bean = (Login2B) data;
         if (bean != null) {
             if (Boolean.parseBoolean(bean.getFlag())) {
                 if (from.equals(Urls.ACTIVITY_SPLASH)) {

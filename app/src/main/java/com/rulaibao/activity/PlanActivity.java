@@ -133,9 +133,9 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
         StringBuilder stringBuilder=new StringBuilder();
 
         for(Integer integer: selectPosSet){
-            stringBuilder.append("\'");
+            stringBuilder.append("'");
             stringBuilder.append(data.getCompanyList().get(integer));
-            stringBuilder.append("\'");
+            stringBuilder.append("'");
             stringBuilder.append(",");
         }
         String sb=stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);

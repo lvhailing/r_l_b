@@ -124,7 +124,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
 
 
-                    if(TextUtils.isEmpty(userId)){
+                    if(!PreferenceUtil.isLogin()){
                         HashMap<String,Object> map = new HashMap<>();
 
 

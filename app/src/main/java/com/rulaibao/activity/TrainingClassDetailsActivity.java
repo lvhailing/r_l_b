@@ -277,7 +277,6 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setVisibility(View.GONE);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
                 .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_class_details))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
@@ -388,7 +387,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
         String commentContent = etDetailDiscuss.getText().toString();
 
-        if(TextUtils.isEmpty(userId)){
+        if(!PreferenceUtil.isLogin()){
             HashMap<String,Object> map = new HashMap<>();
 
 

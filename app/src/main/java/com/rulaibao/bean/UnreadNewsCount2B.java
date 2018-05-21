@@ -9,6 +9,7 @@ public class UnreadNewsCount2B implements IMouldType {
 	private String commission; // 佣金消息
 	private String comment; // 互动消息
 	private String circle; // 圈子新成员
+	private String otherMessage; // 其它消息
 
 
     public String getInsurance() {
@@ -41,5 +42,13 @@ public class UnreadNewsCount2B implements IMouldType {
 
     public void setCircle(String circle) {
         this.circle = circle;
+    }
+
+    public String getOtherMessage() {
+        return otherMessage;
+    }
+
+    public void setOtherMessage(String otherMessage) {
+        this.otherMessage = otherMessage;
     }
 }

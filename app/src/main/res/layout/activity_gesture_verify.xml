@@ -56,7 +56,8 @@
             <TextView
                 android:id="@+id/text_forget_gesture"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/forget_gesture_code"
@@ -67,9 +68,10 @@
             <TextView
                 android:id="@+id/text_other_account"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:padding="10dp"
                 android:text="@string/use_other_account_login"
                 android:textColor="@color/txt_gray"
                 android:textSize="14.0sp"

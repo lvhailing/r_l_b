@@ -88,7 +88,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private TextView tv_problem_parts; // 问题件
     private TextView tv_return_receipt; // 回执签收
     private TextView tv_renewal_numbers; // 续保提醒 数量
-    private Intent intent;
     private Context context;
     private String userId = ""; // 测试userId 18032709463185347077
     private MineData2B data;
@@ -96,11 +95,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
     private boolean isLogin = false;
     private boolean isShowMoney = true; // 默认显示佣金额
-
-    /**
-     * 图片保存SD卡位置
-     */
-    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";
+    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";  // 图片保存SD卡位置
     private int insuranceWarning;
     private String totalCommission;
 
@@ -189,23 +184,25 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
         if (PreferenceUtil.isLogin()) {
             isLogin = true;
-//            Log.i("hh", this + "----onResume--11--" + isLogin);
             ll_user_name.setVisibility(View.VISIBLE);
             rl_total_commission.setVisibility(View.VISIBLE);
             tv_mine_login.setVisibility(View.GONE);
             requestData();
         } else {
             isLogin = false;
-//            Log.i("hh", this + "----onResume--22--" + isLogin);
             tv_mine_login.setVisibility(View.VISIBLE);
             ll_user_name.setVisibility(View.GONE);
             rl_total_commission.setVisibility(View.GONE);
             iv_user_photo.setImageResource(R.mipmap.icon_user_photo);
+
+            // 未登录时，消息数和续保消息数都不可见
+            tv_message_total.setVisibility(View.GONE);
+            tv_renewal_numbers.setVisibility(View.GONE);
         }
     }
 
     //我的主页面数据
-    private void requestData() {
+    public void requestData() {
 
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
@@ -229,7 +226,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 data = (MineData2B) params.result;
 
                 // 认证状态保存到sp
-                if(!TextUtils.isEmpty(data.getCheckStatus())){
+                if (!TextUtils.isEmpty(data.getCheckStatus())) {
                     try {
                         PreferenceUtil.setCheckStatus(data.getCheckStatus());
                     } catch (Exception e) {
@@ -337,7 +334,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             conn.connect();
             InputStream is = conn.getInputStream();
             bitmap = BitmapFactory.decodeStream(is);
-//            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
+            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
             is.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -366,22 +363,21 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return null;
         }
-
     }
-
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.iv_settings:  // 设置
                 intent = new Intent(context, SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.iv_news:  // 消息
-                toWhichActivity( NewsActivity.class);
+                toWhichActivity(NewsActivity.class);
                 break;
             case R.id.iv_user_photo: // 用户头像（跳转到个人信息页）
-                toWhichActivity( MyInfoActivity.class);
+                toWhichActivity(MyInfoActivity.class);
                 break;
             case R.id.iv_show_money: // 显示佣金金额
                 if (isShowMoney) {
@@ -390,13 +386,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                         tv_total_commission.setText(totalCommission);
                     }
                     isShowMoney = false;
-                }else {
+                } else {
                     isShowMoney = true;
                     iv_show_money.setImageResource(R.mipmap.icon_hide_password);
                     tv_total_commission.setText("****");
                 }
                 break;
-            case R.id.iv_commission_right_arrow: // 累计佣金
+            case R.id.iv_commission_right_arrow: // 点累计佣金跳转到交易记录页
                 intent = new Intent(context, TransactionRecordActivity.class);
                 intent.putExtra("totalCommission", data.getTotalCommission());
                 startActivity(intent);
@@ -406,51 +402,53 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.rl_my_policy: // 我的保单
-                needPositionToWhichActivity(PolicyRecordListActivity.class,0);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 0);
 
                 break;
             case R.id.tv_check_pending: // 待审核
-                needPositionToWhichActivity(PolicyRecordListActivity.class,1);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 1);
 
                 break;
             case R.id.tv_underwriting: // 已承保
-                needPositionToWhichActivity(PolicyRecordListActivity.class,2);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 2);
                 break;
             case R.id.tv_problem_parts: // 问题件
-                needPositionToWhichActivity(PolicyRecordListActivity.class,3);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 3);
                 break;
             case R.id.tv_return_receipt: // 回执签收
-                needPositionToWhichActivity(PolicyRecordListActivity.class,4);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 4);
                 break;
             case R.id.rl_renewal_reminder: // 续保提醒
-              toWhichActivity(RenewalReminderActivity.class);
+                toWhichActivity(RenewalReminderActivity.class);
                 break;
             case R.id.rl_my_bookings: // 我的预约
                 toWhichActivity(PolicyBookingListActivity.class);
                 break;
             case R.id.rl_my_ask: // 我的提问
-               toWhichActivity(MyAskActivity.class);
+                toWhichActivity(MyAskActivity.class);
                 break;
             case R.id.rl_my_topic: // 我的话题
-               toWhichActivity(MyTopicActivity.class);
+                toWhichActivity(MyTopicActivity.class);
                 break;
             case R.id.rl_my_participation: // 我参与的
-                needPositionToWhichActivity(PolicyRecordListActivity.class,0);
+                needPositionToWhichActivity(PolicyRecordListActivity.class, 0);
                 break;
             case R.id.rl_my_collection: // 我的收藏
-               toWhichActivity( MyCollectionActivity.class);
+                toWhichActivity(MyCollectionActivity.class);
 
                 break;
         }
     }
 
     /**
-     *  未登录时跳转页面调此方法
+     * 未登录时跳转页面调此方法
+     *
      * @param cls
      */
     private void toWhichActivity(Class cls) {
+        Intent intent;
         if (PreferenceUtil.isLogin()) {
-            intent = new Intent(context,cls);
+            intent = new Intent(context, cls);
             startActivity(intent);
         } else {
             Toast.makeText(context, "您还没登录，请先登录", Toast.LENGTH_LONG).show();
@@ -460,13 +458,15 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *  未登录时，跳转需要传位置时调此方法
+     * 未登录时，跳转需要传位置时调此方法
+     *
      * @param cls
      * @param pos
      */
     private void needPositionToWhichActivity(Class cls, int pos) {
+        Intent intent;
         if (PreferenceUtil.isLogin()) {
-            intent = new Intent(context,cls);
+            intent = new Intent(context, cls);
             intent.putExtra("position", pos);
             startActivity(intent);
         } else {

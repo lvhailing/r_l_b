@@ -54,7 +54,7 @@ public class TrainingClassFragment extends BaseFragment {
                 ((ViewGroup) mView.getParent()).removeView(mView);
             }
         }
-        string = getArguments().getString(KEY);
+
         return mView;
     }
 
@@ -62,7 +62,7 @@ public class TrainingClassFragment extends BaseFragment {
     protected void initViews() {
 
         context = getActivity();
-        typeCode = getArguments().getString(KEY);
+
         courseList = new MouldList<ResultClassIndexItemBean>();
 
         initRecyclerView();
@@ -76,6 +76,7 @@ public class TrainingClassFragment extends BaseFragment {
             if(context!=null){
                 courseList.clear();
             }
+            typeCode = getArguments().getString(KEY);         //  解决初始点击fragment拿不到参数的问题
             page = 1;
 
             requestIndexData();//

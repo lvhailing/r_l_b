@@ -187,7 +187,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                         setView(detailsBean);
                     } else {
                         if (detailsBean.getCode().equals("6001")) {      //  参数错误
-                            Toast.makeText(TrainingAskDetailsActivity.this, "该问题已删除", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
 
                         } else if (detailsBean.getCode().equals("6002")) {        //  该问题已删除
 
@@ -481,7 +481,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
             case R.id.tv_ask_details_answer:
 
-                if(TextUtils.isEmpty(userId)){
+                if(!PreferenceUtil.isLogin()){
 
                     HashMap<String,Object> map = new HashMap<>();
                     RlbActivityManager.toLoginActivity(this,map,false);

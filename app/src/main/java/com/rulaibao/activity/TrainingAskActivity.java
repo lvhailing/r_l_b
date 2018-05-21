@@ -148,7 +148,7 @@ public class TrainingAskActivity extends BaseActivity {
     @OnClick(R.id.btn_training_ask)
     public void onClick(){
 
-        if(TextUtils.isEmpty(userId)){
+        if(!PreferenceUtil.isLogin()){
 
             HashMap<String,Object> map = new HashMap<>();
             RlbActivityManager.toLoginActivity(TrainingAskActivity.this,map,false);

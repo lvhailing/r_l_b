@@ -8,8 +8,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.TransactionRecordAdapter;
@@ -44,6 +46,7 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
     private TransactionRecordAdapter transactionRecordAdapter;
     private int currentPage = 1;    //当前页
     private String totalCommission;
+    private ViewSwitcher vs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +88,15 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
         totalCommission = getIntent().getStringExtra("totalCommission");
 
         tv_total_commission = (TextView) findViewById(R.id.tv_total_commission);
+        vs = (ViewSwitcher) findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 //        tv_total_commission.setText(totalCommission+"元");
+
+        TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
+        tv_empty.setText("暂无交易记录");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();
     }
@@ -115,24 +124,6 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
             public void onRefresh() {  // 下拉刷新
                 currentPage = 1;
                 requestTrackingRecordData();
-
-                //刷新完成
-                swipe_refresh.setRefreshing(false);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        List<String> headDatas = new ArrayList<String>();
-//                        for (int i = 20; i <30 ; i++) {
-//                            headDatas.add("Heard Item "+i);
-//                        }
-//                        transactionRecordAdapter.AddHeaderItem(headDatas);
-//
-//                        //刷新完成
-//                        swipe_refresh.setRefreshing(false);
-//                        Toast.makeText(TransactionRecordActivity.this, "更新了 "+headDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, 3000);
-
             }
         });
     }
@@ -153,23 +144,6 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
 
                     currentPage ++;
                     requestTrackingRecordData();
-                    //改为网络请求
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //
-//                            List<String> footerDatas = new ArrayList<String>();
-//                            for (int i = 0; i< 10; i++) {
-//                                footerDatas.add("footer  item" + i);
-//                            }
-//                            transactionRecordAdapter.AddFooterItem(footerDatas);
-//                            //设置回到上拉加载更多
-//                            transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
-//                            //没有加载更多了
-//                            //mRefreshAdapter.changeMoreStatus(mRefreshAdapter.NO_LOAD_MORE);
-//                            Toast.makeText(TransactionRecordActivity.this, "更新了 "+footerDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 3000);
                 }
 
             }
@@ -201,6 +175,7 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
                     swipe_refresh.setRefreshing(false);
                 }
                 if (params.result == null) {
+                    vs.setDisplayedChild(1);
                     Toast.makeText(TransactionRecordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -220,6 +195,12 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
                 } else {

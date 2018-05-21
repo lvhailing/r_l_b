@@ -76,6 +76,9 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            if(courseList!=null){
+                courseList.clear();
+            }
             page = 1;
             requestData();
 
@@ -89,8 +92,8 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+
         speechmakeId = getArguments().getString("speechmakeId");
-        test();
         courseList = new MouldList<ResultClassIndexItemBean>();
         initRecyclerView();
 
@@ -186,20 +189,6 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                 }
             }
         });
-    }
-
-
-
-
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            String sd = string + "11" + i;
-            arrayList.add(sd);
-
-        }
-
     }
 
     @Override

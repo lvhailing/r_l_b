@@ -6,7 +6,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.InteractiveNewsAdapter;
@@ -35,6 +38,7 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
     private InteractiveNewsAdapter interactiveNewsAdapter;
     private MouldList<InteractiveNewsList2B> totalList = new MouldList<>();
     private int currentPage = 1; // 当前页
+    private ViewSwitcher vs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +74,14 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
+        vs = (ViewSwitcher) findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+
+        TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
+        tv_empty.setText("暂无互动消息");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();
     }
@@ -142,6 +152,7 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
                 }
 
                 if (params.result == null) {
+                    vs.setDisplayedChild(1);
                     Toast.makeText(InteractiveNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -160,6 +171,12 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.PULLUP_LOAD_MORE);
                 } else {

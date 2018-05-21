@@ -62,7 +62,7 @@
     <string name="sign_recommendation">推荐码</string>
     <string name="sign_get_verify">获取验证码</string>
     <string name="sign_agree">我已阅读并同意</string>
-    <string name="sign_web">《国恒保险》</string>
+    <string name="sign_web">《如来保》</string>
     <string name="sign_agree_two">服务协议。</string>
     <string name="sign_btn_name">立即注册</string>
     <string name="sign_getsms_again">重新获取</string>
@@ -148,7 +148,7 @@
     <string name="setting_contact_customer_service">联系客服</string>
     <string name="setting_platform_bulletin">平台公告</string>
     <string name="setting_service_agreement">服务协议</string>
-    <string name="setting_about">关于国恒保险</string>
+    <string name="setting_about">关于如来保</string>
     <string name="setting_logout">退出登录</string>
     <string name="et_consulting_questions">请输入您想要咨询的问题,我们会及时与您联系！</string>
     <string name="tv_phone">手机号码</string>

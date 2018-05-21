@@ -1,14 +1,17 @@
 package com.rulaibao.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +35,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.FlowLayout;
 import com.rulaibao.uitls.ListDataSave;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.TagFlowLayout;
 import com.rulaibao.widget.TitleBar;
 
@@ -68,7 +72,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
     private ImageView iv_delete_history;
     ListDataSave dataSave;
     boolean isDelete;
-
+    private Intent intent;
     private String name;//搜索字段
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,23 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new PlanAdapter(mContext, totalList);
         listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                if (!"success".equals(PreferenceUtil.getCheckStatus())) {
+                    intent = new Intent(SearchForPlanActivity.this, SalesCertificationActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                intent= new Intent(SearchForPlanActivity.this, WebActivity.class);
+                intent.putExtra("type", WebActivity.WEBTYPE_PLAN_BOOK);
+                intent.putExtra("url", totalList.get(position).getProspectus());
+                intent.putExtra("title", "计划书");
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initData() {
@@ -120,9 +141,10 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     //将搜索内容保存到SharedPreferences
                     isDelete=false;
-                    listString.add(v.getText().toString());
-                    dataSave.setDataList("search_string", listString);
-
+                    if(!TextUtils.isEmpty(v.getText().toString())){
+                        listString.add(v.getText().toString());
+                        dataSave.setDataList("search_string", listString);
+                    }
                     name=v.getText().toString();
                     //请求数据要搜索的内容
                     requestListData(name);

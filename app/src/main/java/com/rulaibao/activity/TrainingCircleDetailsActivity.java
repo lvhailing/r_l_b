@@ -398,7 +398,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
         switch (view.getId()) {
             case R.id.btn_training_cirlce_details:
-                if(TextUtils.isEmpty(userId)){
+                if(!PreferenceUtil.isLogin()){
                     HashMap<String,Object> map = new HashMap<>();
 
                     RlbActivityManager.toLoginActivity(TrainingCircleDetailsActivity.this,map,false);

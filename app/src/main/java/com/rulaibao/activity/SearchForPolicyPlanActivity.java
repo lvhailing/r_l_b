@@ -1,14 +1,17 @@
 package com.rulaibao.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -98,6 +101,16 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new PolicyPlanAdapter(mContext, totalList);
         listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                Intent intent = new Intent(SearchForPolicyPlanActivity.this, PolicyRecordDetailActivity.class);
+                intent.putExtra("orderId", totalList.get(position).getOrderId());
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initData() {
@@ -115,8 +128,10 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     //将搜索内容保存到SharedPreferences
                     isDelete=false;
-                    listString.add(v.getText().toString());
-                    dataSave.setDataList("search_string", listString);
+                    if(!TextUtils.isEmpty(v.getText().toString())){
+                        listString.add(v.getText().toString());
+                        dataSave.setDataList("search_string", listString);
+                    }
 
                     customerName=v.getText().toString();
                     //请求数据要搜索的内容

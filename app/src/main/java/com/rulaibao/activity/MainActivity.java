@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.service.AppUpgradeService;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.uitls.SystemInfo;
 import com.rulaibao.widget.TitleBar;
@@ -59,21 +61,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_plan;
     private TextView tv_mine;
 
-
-
-    private List<Fragment> mFragments;
     private HomeFragment tab_home; //首页
     private TrainingFragment tab_training; // 研修
     private PolicyPlanFragment tab_plan; // 规划
     private MineFragment tab_mine; // 我的
+    private List<Fragment> mFragments;
 
     private int selectPage = 0;
 
-    private String type = "";       //  answer：回答问题详情页  question：问题详情;  course:课程详情;  product:产品详情
-    private String id = "";     //
-    private String questionId = "";     //
-    private String answerId = "";     //
-    private String speechmakeId = "";     //
+    private String type = "";  // answer：回答问题详情页  question：问题详情;  course:课程详情;  product:产品详情
+    private String id = "";  //
+    private String questionId = "";  // 问题id
+    private String answerId = "";   // 回答id
+    private String speechMakeId = "";  // 演讲id
 
     private File destDir = null;
 
@@ -91,13 +91,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             id = uri.getQueryParameter("id");
             questionId = uri.getQueryParameter("questionId");
             answerId = uri.getQueryParameter("answerId");
-            speechmakeId = uri.getQueryParameter("speechmakeId");
+            speechMakeId = uri.getQueryParameter("speechMakeId");
         }
 
-        if(!TextUtils.isEmpty(type)){
+        if (!TextUtils.isEmpty(type)) {
             fromH5();
         }
-
 
         initTopTitle();
         initView();
@@ -106,41 +105,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initData();
     }
 
-    public void fromH5(){
-
-        if(type.equals("answer")){          //  回答问题详情页
-
-
-            HashMap<String,Object> map = new HashMap<String,Object>();
-            map.put("questionId",questionId);
-            map.put("answerId",answerId);
-            RlbActivityManager.toTrainingAnswerDetailsActivity(this,map,false);
-
-
-        }else if(type.equals("question")){      //  问题详情
-            HashMap<String,Object> map = new HashMap<String,Object>();
-            map.put("questionId",id);
-            RlbActivityManager.toTrainingAskDetailsActivity(this,map, false);
-        }else if(type.equals("course")){        //  课程详情
-
+    public void fromH5() {
+        if (type.equals("answer")) { // 回答问题详情页
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("questionId", questionId);
+            map.put("answerId", answerId);
+            RlbActivityManager.toTrainingAnswerDetailsActivity(this, map, false);
+        } else if (type.equals("question")) {  // 问题详情
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("questionId", id);
+            RlbActivityManager.toTrainingAskDetailsActivity(this, map, false);
+        } else if (type.equals("course")) { // 课程详情
             HashMap<String, Object> classMap = new HashMap<>();
             classMap.put("id", id);
-            classMap.put("speechmakeId", speechmakeId);
+            classMap.put("speechMakeId", speechMakeId);
             classMap.put("courseId", id);
             RlbActivityManager.toTrainingClassDetailsActivity(this, classMap, false);
-
-        }else if(type.equals("product")){       //  产品详情
+        } else if (type.equals("product")) {  // 产品详情
             Intent intent = new Intent(this, InsuranceProductDetailActivity.class);
             intent.putExtra("id", id);
             startActivity(intent);
-
-        }else {
-
-
         }
-
-
-
     }
 
     @Override
@@ -158,9 +143,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
-//        title = (TitleBar) findViewById(R.id.rl_title);
-//        title.setVisibility(View.GONE);
-
         mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
         ll_tab_home = (LinearLayout) findViewById(R.id.ll_tab_home);
         ll_tab_training = (LinearLayout) findViewById(R.id.ll_tab_training);
@@ -227,6 +209,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void setSelect(int i) {
+        if (PreferenceUtil.isLogin()) {
+//            Log.i("hh", this + "判断当前用户是否登录：" + PreferenceUtil.isLogin());
+            if (i == 3) {
+                tab_mine.requestData();
+            }
+        }
         setTab(i);
         mViewPager.setCurrentItem(i);
     }
@@ -260,6 +248,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    // 改变底部tab文字颜色
     private void resetTvs() {
         tv_home.setTextColor(Color.parseColor("#999999"));
         tv_training.setTextColor(Color.parseColor("#999999"));
@@ -267,13 +256,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tv_mine.setTextColor(Color.parseColor("#999999"));
     }
 
+    // 给底部tab设置 未选中时的背景图片
     private void resetImages() {
         iv_home.setImageResource(R.mipmap.bg_home_normal);
         iv_training.setImageResource(R.mipmap.bg_training_normal);
         iv_plan.setImageResource(R.mipmap.bg_plan_normal);
         iv_mine.setImageResource(R.mipmap.bg_mine_normal);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -290,7 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.ll_tab_mine:  // 我的
 //                PreferenceUtil.setLogin(true);
 //                if (PreferenceUtil.isLogin()) {
-                    setSelect(3);
+                setSelect(3);
 //                } else {
 //                    Intent i_login = new Intent(this, LoginActivity.class);
 //                    startActivity(i_login);
@@ -322,6 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             lastTime = currentTime;
         }
     }
+
     //检查版本更新
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();

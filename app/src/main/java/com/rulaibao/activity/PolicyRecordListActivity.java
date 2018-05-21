@@ -6,7 +6,9 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.PolicyRrcordListVPAdapter;
@@ -30,6 +32,7 @@ public class PolicyRecordListActivity extends BaseActivity {
     private int currentTabPosition; // currentTabPosition = 0 (全部)、currentTabPosition = 1 (待审核)、currentTabPosition = 2 (已承保)、currentTabPosition = 3 (问题件)、currentTabPosition = 4 (回执签收)
     private TabLayout.Tab tab;
     private PolicyRecordListFragment fragment;
+    private ViewSwitcher vs;
 //    private PolicyRecordList1B data;
 
 

@@ -2,6 +2,7 @@ package com.rulaibao.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -177,11 +178,11 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 checkDataNull();
                 break;
             case R.id.signup_web: //国恒保险
-                /*Intent i_service = new Intent(SignActivity.this,WebActivity.class);
-                i_service.putExtra("type", WebActivity.WEB_TYPE_SIGN_AGREEMENT);
-                i_service.putExtra("title", getResources().getString(R.string.setting_sign_agreement));
-                i_service.putExtra("url", Urls.URL_SIGNUP_WEB_AGREEMENT);
-                startActivity(i_service);*/
+                Intent intent = new Intent(SignActivity.this, WebActivity.class);
+                intent.putExtra("type", WebActivity.WEB_TYPE_ABOUT_US);
+                intent.putExtra("title", getResources().getString(R.string.setting_about));
+                intent.putExtra("url", Urls.URL_ABOUT_US /*+ SystemInfo.sVersionName*/);
+                startActivity(intent);
 
                 break;
             case R.id.tv_sign_get_verify_code:  // 获取验证码

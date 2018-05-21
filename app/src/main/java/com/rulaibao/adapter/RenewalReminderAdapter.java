@@ -99,8 +99,7 @@ public class RenewalReminderAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        //RecyclerView的count设置为数据总条数+ 1（footerView）
-        return list.size() + 1;
+        return list == null ? 0 : list.size()+1;
     }
 
     @Override

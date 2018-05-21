@@ -239,7 +239,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (appTopic.getLikeStatus().equals("yes")) {      //  已点赞     不处理
 //                    requestLikeData();
                 } else {
-                    if(TextUtils.isEmpty(userId)){
+                    if(!PreferenceUtil.isLogin()){
                         HashMap<String,Object> map = new HashMap<>();
                         RlbActivityManager.toLoginActivity(TrainingTopicDetailsActivity.this,map,false);
 
@@ -329,9 +329,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                     } else {
                         if (bean.getCode().equals("1001")) {      //  参数错误
-
+                            Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                         } else if (bean.getCode().equals("1002")) {        //  该话题已删除
+                            Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
                             finish();
                         }
 
@@ -417,7 +418,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                 String commentContent = etTopicDetails.getText().toString();
 
-                if(TextUtils.isEmpty(userId)){
+                if(!PreferenceUtil.isLogin()){
 
                     HashMap<String,Object> map = new HashMap<>();
                     RlbActivityManager.toLoginActivity(TrainingTopicDetailsActivity.this,map,false);

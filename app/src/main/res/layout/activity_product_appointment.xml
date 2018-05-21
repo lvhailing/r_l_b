@@ -190,7 +190,7 @@
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:layout_centerVertical="true"
                     android:maxLength="50"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:background="@color/white" />
             </LinearLayout>
             <ImageView
@@ -228,7 +228,7 @@
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:maxLength="50"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:background="@color/white" />
             </LinearLayout>
             <ImageView
@@ -264,7 +264,7 @@
                     android:textColor="@color/gray_dark"
                     android:textColorHint="@color/gray_d"
                     android:maxLength="50"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:layout_centerVertical="true"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:background="@color/white" />
@@ -304,7 +304,7 @@
                     android:textColorHint="@color/gray_d"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:maxLength="50"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:background="@color/white" />
             </LinearLayout>
             <ImageView
@@ -318,14 +318,23 @@
                 android:layout_marginLeft="20dip">
 
                 <TextView
-                    android:id="@+id/tv_select_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/product_appointment_time"
                     android:textSize="16sp"
                     android:gravity="center_vertical"
                     android:textColor="@color/gray_dark" />
+                <TextView
+                    android:id="@+id/tv_select_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="16sp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/iv_arrow"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray_dark" />
                 <ImageView
+                    android:id="@+id/iv_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

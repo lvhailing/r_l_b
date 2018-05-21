@@ -111,8 +111,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        //RecyclerView的count设置为数据总条数+ 1（footerView）
-        return list.size() + 1;
+        return list == null ? 0 : list.size()+1;
     }
 
     @Override
