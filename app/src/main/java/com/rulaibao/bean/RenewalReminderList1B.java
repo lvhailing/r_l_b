@@ -13,6 +13,7 @@ public class RenewalReminderList1B implements IMouldType {
     private MouldList<RenewalReminderList2B> list; // 提醒列表
     private String flag;
     private String msg;
+    private String message; // 提示信息
 
     public MouldList<RenewalReminderList2B> getList() {
         return list;
@@ -36,5 +37,13 @@ public class RenewalReminderList1B implements IMouldType {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

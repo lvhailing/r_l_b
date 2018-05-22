@@ -287,7 +287,48 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
             @Override
             public void onClick(View v) {
                 if (detailsBean.getAppAnswer().getLikeStatus().equals("no")) {
-                    requestLikeData();
+
+
+                    if(!PreferenceUtil.isLogin()){
+                        HashMap<String,Object> map = new HashMap<>();
+                        RlbActivityManager.toLoginActivity(TrainingAnswerDetailsActivity.this,map,false);
+
+                    }else{
+                        if(!PreferenceUtil.getCheckStatus().equals("success")){
+
+                            new AlertDialog.Builder(TrainingAnswerDetailsActivity.this)
+
+                                    .setMessage("您还未认证，是否去认证")
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            HashMap<String,Object> map = new HashMap<>();
+
+                                            map.put("realName",PreferenceUtil.getUserRealName());
+                                            map.put("status",PreferenceUtil.getCheckStatus());
+
+                                            RlbActivityManager.toSaleCertificationActivity(TrainingAnswerDetailsActivity.this,map,false);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+                        }else{
+
+                            requestLikeData();
+
+                        }
+                    }
+
+
                 } else {
 //                    requestLikeData();
                 }

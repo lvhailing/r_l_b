@@ -431,13 +431,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
             }
         }
 
-
-
     }
-
-
-
-
 
     @Override
     public void reply(String toUserId, String commentId, String commentName, int index) {
@@ -450,6 +444,12 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 //        setBottomOffset(index);
 
 
+    }
+
+    @Override
+    public void refresh() {
+        commentId = "";
+        hiddenInputLayout();
     }
 
     private void hiddenInputLayout() {

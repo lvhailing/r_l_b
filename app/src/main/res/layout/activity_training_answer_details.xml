@@ -17,6 +17,7 @@
             android:id="@+id/lv_answer_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="1.2dip"
             android:layout_marginBottom="42dip"
             android:divider="@color/white"
             android:dividerHeight="0dip"

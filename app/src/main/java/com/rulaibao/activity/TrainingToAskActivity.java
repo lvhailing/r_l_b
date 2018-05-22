@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.FullyLinearLayoutManager;
 import com.rulaibao.widget.MyGridView;
 import com.rulaibao.widget.TitleBar;
 
@@ -63,7 +65,12 @@ public class TrainingToAskActivity extends BaseActivity {
 
         typeList = (ArrayList<ResultAskTypeItemBean>)getIntent().getSerializableExtra("type");
         typeList.get(0).setFlag(true);
-        adapter = new TrainingToAskListAdapter(this, typeList);
+        adapter = new TrainingToAskListAdapter(gvTrainingToask,this, typeList);
+
+//        FullyLinearLayoutManager mLayoutManager = new FullyLinearLayoutManager(this);
+//        gvTrainingToask.setLa.setLayoutManager(mLayoutManager);
+
+
         gvTrainingToask.setAdapter(adapter);
 
         gvTrainingToask.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -186,8 +193,17 @@ public class TrainingToAskActivity extends BaseActivity {
     public void onClick(){
         questionTitle = etToaskTitle.getText().toString();
         questionDesc = etToaskContent.getText().toString();
+        if(questionTitle.length()<10){
+            Toast.makeText(TrainingToAskActivity.this,"标题至少十个字",Toast.LENGTH_SHORT).show();
+        }else{
+            if(TextUtils.isEmpty(questionDesc.trim())){
+                Toast.makeText(TrainingToAskActivity.this,"请输入问题",Toast.LENGTH_SHORT).show();
+            }else{
+                requestAsk();
+            }
 
-        requestAsk();
+        }
+
 
     }
 

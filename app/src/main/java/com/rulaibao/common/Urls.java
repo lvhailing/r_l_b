@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_FYM;
+    private static String EC_HOST = URL_DEBUG;
 
     /**
      * 版本更新
@@ -318,7 +318,7 @@ public class Urls {
     public static final String URL_COLLECTION_LIST = EC_HOST + "collection/list";
 
     // 修改登录密码
-    public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "accountt/password/modify";
+    public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "account/set/password/modify";
 
 
 

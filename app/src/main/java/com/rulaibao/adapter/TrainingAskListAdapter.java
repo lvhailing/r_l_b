@@ -2,6 +2,9 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +97,15 @@ public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.View
             holder1.tvTrainingAskAnswer.setVisibility(View.VISIBLE);
             holder1.tvTrainingAskManager.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(arrayList.get(position).getAnswerPhoto(),holder1.ivTrainingAsk,displayImageOptions);
-            holder1.tvTrainingAskAnswer.setText(arrayList.get(position).getAnswerContent());
+
+
+            String str1 = "答:";
+            String str2 = str1 + arrayList.get(position).getAnswerContent();
+            SpannableStringBuilder style = new SpannableStringBuilder(str2);
+            style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, str1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder1.tvTrainingAskAnswer.setText(style);
+
+
             holder1.tvTrainingAskManager.setText(arrayList.get(position).getAnswerName());
         }
 

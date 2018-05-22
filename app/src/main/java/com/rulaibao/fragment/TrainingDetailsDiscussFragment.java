@@ -435,6 +435,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
     boolean onTouch(View v, MotionEvent event) {
         if (MotionEvent.ACTION_MOVE == event.getAction()) {
 //            hiddenInputLayout();
+            discussReply.refresh();
         }
         return false;
     }
@@ -480,6 +481,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
         if (oldh > h) {
 //            int offset = (oldh - h + getItemHeight()) - (oldh - bottomOffset);
 //            putOffset(offset);
+
         }
     }
 

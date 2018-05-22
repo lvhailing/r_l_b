@@ -28,12 +28,13 @@ public class PolicyRecordListActivity extends BaseActivity {
     private ViewPager viewpager;
     private String[] titles;
     private PolicyRrcordListVPAdapter vpAdapter;
-    private String flag; // 如果flag =1000,则说明是要展示指定的tab及对应的内容；
-    private int currentTabPosition; // currentTabPosition = 0 (全部)、currentTabPosition = 1 (待审核)、currentTabPosition = 2 (已承保)、currentTabPosition = 3 (问题件)、currentTabPosition = 4 (回执签收)
-    private TabLayout.Tab tab;
-    private PolicyRecordListFragment fragment;
     private ViewSwitcher vs;
-//    private PolicyRecordList1B data;
+    /**
+     * currentTabPosition = 0 (全部)、currentTabPosition = 1 (待审核)、
+     * currentTabPosition = 2 (已承保)、currentTabPosition = 3 (问题件)、
+     * currentTabPosition = 4 (回执签收)
+     */
+    private int currentTabPosition = 0;
 
 
     @Override
@@ -75,7 +76,7 @@ public class PolicyRecordListActivity extends BaseActivity {
 
     private void initView() {
 //        flag = getIntent().getStringExtra("flag");
-        currentTabPosition = getIntent().getIntExtra("position", 0);
+//        currentTabPosition = getIntent().getIntExtra("position", 0);
 
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);

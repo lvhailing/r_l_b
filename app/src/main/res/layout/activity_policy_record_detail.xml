@@ -389,7 +389,8 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:paddingRight="15dp"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -414,7 +415,7 @@
 
                     <ImageView
                         android:id="@+id/iv_id_card_positive"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="102dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/wu_normal"/>
@@ -439,7 +440,7 @@
 
                     <ImageView
                         android:id="@+id/iv_id_card_negative"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="102dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/wu_normal"/>
@@ -469,7 +470,7 @@
 
                     <ImageView
                         android:id="@+id/iv_bank_card"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="102dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/wu_normal"/>
@@ -494,7 +495,7 @@
 
                     <ImageView
                         android:id="@+id/iv_other_card_first"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="102dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/wu_normal"/>
@@ -524,7 +525,7 @@
 
                     <ImageView
                         android:id="@+id/iv_other_card_second"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="102dp"
                         android:scaleType="fitXY"
                         android:src="@mipmap/wu_normal"/>
@@ -533,8 +534,8 @@
                         android:id="@+id/tv_"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
                         android:paddingBottom="28dp"
                         android:text="其它"
                         android:textColor="@color/txt_black2"
@@ -549,11 +550,11 @@
                     android:orientation="vertical">
 
                     <!--<ImgeView-->
-                        <!--android:id="@+id/iv6"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="102dp"-->
-                        <!--android:scaleType="fitXY"-->
-                        <!--android:visibility="gone"/>-->
+                    <!--android:id="@+id/iv6"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="102dp"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:visibility="gone"/>-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -19,6 +19,7 @@ import com.rulaibao.bean.OK2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.widget.TitleBar;
 
@@ -103,11 +104,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    oldPassword = et_old_password.getText().toString();
-                    newPassword = et_new_password.getText().toString();
-                    confirmPassword = et_confirm_password.getText().toString();
+                oldPassword = et_old_password.getText().toString();
+                newPassword = et_new_password.getText().toString();
+                confirmPassword = et_confirm_password.getText().toString();
 
-                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
+                setButton(oldPassword, newPassword, confirmPassword, btn_sure);
             }
         });
         //  监听输入密码变化
@@ -124,11 +125,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    oldPassword = et_old_password.getText().toString();
-                    newPassword = et_new_password.getText().toString();
-                    confirmPassword = et_confirm_password.getText().toString();
+                oldPassword = et_old_password.getText().toString();
+                newPassword = et_new_password.getText().toString();
+                confirmPassword = et_confirm_password.getText().toString();
 
-                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
+                setButton(oldPassword, newPassword, confirmPassword, btn_sure);
             }
         });
         //  监听输入密码变化
@@ -145,11 +146,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    oldPassword = et_old_password.getText().toString();
-                    newPassword = et_new_password.getText().toString();
-                    confirmPassword = et_confirm_password.getText().toString();
+                oldPassword = et_old_password.getText().toString();
+                newPassword = et_new_password.getText().toString();
+                confirmPassword = et_confirm_password.getText().toString();
 
-                    setButton(oldPassword, newPassword, confirmPassword, btn_sure);
+                setButton(oldPassword, newPassword, confirmPassword, btn_sure);
             }
         });
     }
@@ -248,16 +249,19 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.btn_sure: // 确定
-                if(StringUtil.checkPassword(newPassword)){
-                    if(newPassword.equals(confirmPassword)){
-                        modifyPassword();
-                    }else{
-                        Toast.makeText(mContext,"两次密码输入不一致，请重新输入",Toast.LENGTH_SHORT).show();
-                    }
-
-                }else{
-                    Toast.makeText(mContext,"请输入6至16位字母数字组合密码",Toast.LENGTH_SHORT).show();
+                if (!StringUtil.checkPassword(oldPassword)) {
+                    Toast.makeText(mContext, "请输入6至16位字母数字组合密码", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                if (!StringUtil.checkPassword(newPassword)) {
+                    Toast.makeText(mContext, "请输入6至16位字母数字组合密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!newPassword.equals(confirmPassword)) {
+                    Toast.makeText(mContext, "两次密码输入不一致，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                modifyPassword();
                 break;
 
 

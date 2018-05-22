@@ -17,7 +17,7 @@ import com.rulaibao.widget.TitleBar;
 import java.util.LinkedHashMap;
 
 /**
- *  交易明细
+ * 交易明细
  * Created by junde on 2018/4/12.
  */
 
@@ -54,9 +54,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_transaction_detail))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_transaction_detail)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -96,7 +94,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
     }
 
     /**
-     *  获取交易明细数据
+     * 获取交易明细数据
      */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
@@ -117,7 +115,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
     }
 
     private void setView() {
-        tv_total_commission.setText("+"+data.getCommissionGained());
+        tv_total_commission.setText("+" + data.getCommissionGained());
         tv_bill_type.setText(data.getOrderType());
         tv_underwriting_time.setText(data.getUnderwirteTime());
         tv_product_name.setText(data.getProductName());
@@ -127,9 +125,9 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
         tv_insurance_period.setText(data.getInsurancePeriod());
         tv_payment_period.setText(data.getPaymentPeriod());
         tv_renewal_date.setText(data.getRenewalDate());
-        tv_have_insurance_premiums.setText(data.getPaymentedPremiums()+"元");
-        tv_promotion_fee.setText(data.getPromotioinCost());
-        tv_get_commission.setText(data.getCommissionGained()+"元");
+        tv_have_insurance_premiums.setText(data.getPaymentedPremiums() + "元");
+        tv_promotion_fee.setText(data.getPromotioinCost() + "%");
+        tv_get_commission.setText(data.getCommissionGained() + "元");
         tv_record_date.setText(data.getCreateTime());
         tv_settlement_time.setText(data.getCommissionedTime());
     }

@@ -20,9 +20,23 @@ public class MyGridView extends GridView {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         int expandSpec = MeasureSpec.makeMeasureSpec(
                 Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
+
+
+
+//        int heightSpec;
+//        if (getLayoutParams().height == LayoutParams.WRAP_CONTENT) {
+//            heightSpec = MeasureSpec.makeMeasureSpec(
+//                    0x3fffffff, MeasureSpec.AT_MOST);
+//        }
+//        else {
+//            heightSpec = heightMeasureSpec;
+//        }
+//        super.onMeasure(widthMeasureSpec, heightSpec);
+
     }
 
 }

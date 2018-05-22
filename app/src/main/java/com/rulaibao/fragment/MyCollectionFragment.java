@@ -59,13 +59,14 @@ public class MyCollectionFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            Log.i("hh", "setUserVisibleHint --- " + isVisibleToUser);
             currentPage = 1;
             requestData();
         }
     }
 
     /**
-     *  获取收藏列表 数据
+     * 获取收藏列表 数据
      */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
@@ -73,8 +74,8 @@ public class MyCollectionFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("category", type);
 
-        Log.i("hh", this+"userId ------ " + userId);
-        Log.i("hh", this+"category ------ " + type);
+        Log.i("hh", this + "userId ------ " + userId);
+        Log.i("hh", this + "category ------ " + type);
 
         HtmlRequest.getCollectionListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -97,6 +98,7 @@ public class MyCollectionFragment extends Fragment {
                 if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
                     myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.NO_LOAD_MORE);
+                    return;
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -123,6 +125,7 @@ public class MyCollectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
+        Log.i("hh", "onCreateView --- ");
         initView(view);
         initListener();
         return view;
@@ -137,7 +140,7 @@ public class MyCollectionFragment extends Fragment {
 
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-        myCollectionRecycleAdapter = new MyCollectionRecycleAdapter(getActivity(), userId,totalList);
+        myCollectionRecycleAdapter = new MyCollectionRecycleAdapter(getActivity(), userId, totalList);
         myCollectionRecycleAdapter.setCollectionListener(new MyCollectionRecycleAdapter.CollectionItemClickListener() {
             @Override
             public void showDialog(int position) {
@@ -208,7 +211,8 @@ public class MyCollectionFragment extends Fragment {
     }
 
     /**
-     *  取消收藏
+     * 取消收藏
+     *
      * @param position
      */
     private void requestCollectionCanceled(int position) {
@@ -222,16 +226,16 @@ public class MyCollectionFragment extends Fragment {
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (param == null || params.result == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Collection2B data = (Collection2B) params.result;
                 if ("true".equals(data.getFlag())) {
                     currentPage = 1;
                     requestData();
-                    Toast.makeText(context, data.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context, data.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -249,11 +253,11 @@ public class MyCollectionFragment extends Fragment {
             type = "wholeLife";  //终身寿险
         } else if (currentPosition == 4) {
             type = "accident";  //意外险
-        }else if (currentPosition == 5) {
+        } else if (currentPosition == 5) {
             type = "medical";  //医疗险
         } else if (currentPosition == 6) {
             type = "oldSmall";  //一老一小
-        }else if (currentPosition == 7) {
+        } else if (currentPosition == 7) {
             type = "enterpriseGroup";  //企业团体
         }
     }

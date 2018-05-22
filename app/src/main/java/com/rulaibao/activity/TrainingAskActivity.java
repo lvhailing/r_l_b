@@ -187,8 +187,13 @@ public class TrainingAskActivity extends BaseActivity {
             }else{
 
                 HashMap<String,Object> map = new HashMap<>();
-                map.put("type",typeBean);
-                RlbActivityManager.toTrainingToAskActivity(this,map,false);
+                if(typeBean.size()==0){
+                    Toast.makeText(context,"请联系管理员添加问题类型",Toast.LENGTH_SHORT).show();
+                }else{
+                    map.put("type",typeBean);
+                    RlbActivityManager.toTrainingToAskActivity(this,map,false);
+                }
+
 
             }
         }

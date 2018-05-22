@@ -144,12 +144,12 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
         } else if (status.equals("other")) {       //  其他圈子
 
             tvCircleJoin.setText("+ 加入");
-            flIssueTopic.setVisibility(View.GONE);
+            flIssueTopic.setVisibility(View.VISIBLE);
 
         } else {
 
             tvCircleJoin.setText("+ 加入");
-            flIssueTopic.setVisibility(View.GONE);
+            flIssueTopic.setVisibility(View.VISIBLE);
         }
 
 
@@ -267,11 +267,17 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
             public void onRequestFinished(BaseParams params) {
 
                 if (params.result != null) {
-
                     ResultCircleDetailsBean bean = (ResultCircleDetailsBean) params.result;
-                    appCircle = bean.getAppCircle();
-                    topAppTopics = bean.getTopAppTopics();
-                    initTopAdapterData(bean.getAppCircle());
+                    if(bean.getFlag().equals("true")){
+                        appCircle = bean.getAppCircle();
+                        topAppTopics = bean.getTopAppTopics();
+                        initTopAdapterData(bean.getAppCircle());
+                    }else{
+                        Toast.makeText(TrainingCircleDetailsActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+
 
                 } else {
 
@@ -420,6 +426,8 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
+
+
                                         HashMap<String,Object> map = new HashMap<>();
 
                                         map.put("realName",PreferenceUtil.getUserRealName());
@@ -433,7 +441,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
 
                     }else{
-                        if(status.equals("other")){
+                        if(!(status.equals("mine")||status.equals("join"))){
                             Toast.makeText(TrainingCircleDetailsActivity.this, "请您加入该圈子后在进行相关操作", Toast.LENGTH_SHORT).show();
                         }else{
                             HashMap<String, Object> map = new HashMap<>();
@@ -485,7 +493,49 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入
 
-                    requestAddCircle();
+                    if(!PreferenceUtil.isLogin()){
+                        HashMap<String,Object> map = new HashMap<>();
+
+                        RlbActivityManager.toLoginActivity(TrainingCircleDetailsActivity.this,map,false);
+
+                    }else{
+                        if(!PreferenceUtil.getCheckStatus().equals("success")){
+
+                            new AlertDialog.Builder(TrainingCircleDetailsActivity.this)
+
+                                    .setMessage("您还未认证，是否去认证")
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+
+
+                                            HashMap<String,Object> map = new HashMap<>();
+
+                                            map.put("realName",PreferenceUtil.getUserRealName());
+                                            map.put("status",PreferenceUtil.getCheckStatus());
+
+                                            RlbActivityManager.toSaleCertificationActivity(TrainingCircleDetailsActivity.this,map,false);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+
+                        }else{
+                            requestAddCircle();
+                        }
+                    }
+
+
+
 
                 }
 

@@ -87,7 +87,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
     private int page = 1;
     private MouldList<ResultAskDetailsAnswerItemBean> list;
     private ResultAskDetailsBean detailsBean;
-    private String sortType = "default";
+    private String sortType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
     }
 
     public void initData() {
+        sortType = "";
         page = 1;
         list.clear();
         request();
@@ -184,7 +185,9 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                     detailsBean = (ResultAskDetailsBean) params.result;
 //                    indexItemBeans = b.getList();
                     if (detailsBean.getFlag().equals("true")) {
-                        setView(detailsBean);
+
+
+
                     } else {
                         if (detailsBean.getCode().equals("6001")) {      //  参数错误
                             Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
@@ -242,6 +245,14 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
                     }
 
+                    // 处理加载header闪跳的问题
+                    if(page==1 && TextUtils.isEmpty(sortType)){
+                        if(detailsBean!=null){
+                            setView(detailsBean);
+                        }
+
+                    }
+
                     adapter.notifyDataSetChanged();
                     swipeAskDetails.setRefreshing(false);
                 } else {
@@ -290,6 +301,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
 
         adapter.setmHeaderView(header);
+        lvAskDetails.getItemAnimator().setChangeDuration(0);
     }
 
 //    private void setFooterView(RecyclerView view){

@@ -177,6 +177,13 @@ public class PolicyRecordListFragment extends Fragment {
 
                 data = (PolicyRecordList1B) params.result;
                 ((PolicyRecordListActivity) context).refreshTabTitle(data);
+                // 没有认证的用户无保单记录
+                if ("false".equals(data.getFlag())) {
+                    vs.setDisplayedChild(1);
+                    Toast.makeText(context, data.getMessage() + "", Toast.LENGTH_LONG).show();
+                    policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                    return;
+                }
                 MouldList<PolicyRecordList2B> everyList = data.getList();
                 if (everyList == null) {
                     return;

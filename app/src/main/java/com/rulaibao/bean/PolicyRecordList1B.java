@@ -19,6 +19,7 @@ public class PolicyRecordList1B implements IMouldType {
     private MouldList<PolicyRecordList2B> list; // 保单列表
     private String flag;
     private String msg;
+    private String message;
 
     public String getTotal() {
         return total;
@@ -90,5 +91,13 @@ public class PolicyRecordList1B implements IMouldType {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

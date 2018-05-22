@@ -1,6 +1,8 @@
 package com.rulaibao.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingCircleActivity;
 import com.rulaibao.activity.TrainingCircleDetailsActivity;
+import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleIndexItemBean;
 import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.bean.TestBean;
@@ -22,9 +25,12 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.RlbActivityManager;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import butterknife.BindView;
@@ -96,7 +102,49 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    requestAddCircle(arrayList.get(position).getCircleId(),userId);
+                    if(!PreferenceUtil.isLogin()){
+                        HashMap<String,Object> map = new HashMap<>();
+
+                        RlbActivityManager.toLoginActivity((BaseActivity)context,map,false);
+
+                    }else{
+                        if(!PreferenceUtil.getCheckStatus().equals("success")){
+
+                            new AlertDialog.Builder(context)
+
+                                    .setMessage("您还未认证，是否去认证")
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+
+
+                                            HashMap<String,Object> map = new HashMap<>();
+
+                                            map.put("realName",PreferenceUtil.getUserRealName());
+                                            map.put("status",PreferenceUtil.getCheckStatus());
+
+                                            RlbActivityManager.toSaleCertificationActivity((BaseActivity)context,map,false);
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+
+
+                        }else{
+                            requestAddCircle(arrayList.get(position).getCircleId(),userId);
+                        }
+                    }
+
+
+
 
                 }
             });

@@ -402,7 +402,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.rl_my_policy: // 我的保单
-                needPositionToWhichActivity(PolicyRecordListActivity.class, 0);
+                toWhichActivity(PolicyRecordListActivity.class);
 
                 break;
             case R.id.tv_check_pending: // 待审核
@@ -431,7 +431,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 toWhichActivity(MyTopicActivity.class);
                 break;
             case R.id.rl_my_participation: // 我参与的
-                needPositionToWhichActivity(PolicyRecordListActivity.class, 0);
+                toWhichActivity(MyPartakeActivity.class);
                 break;
             case R.id.rl_my_collection: // 我的收藏
                 toWhichActivity(MyCollectionActivity.class);

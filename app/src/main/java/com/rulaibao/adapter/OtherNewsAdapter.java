@@ -126,11 +126,10 @@ public class OtherNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void initListener(View itemView, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // 跳转到保单详情
-                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-                intent.putExtra("orderId", list.get(position).getBusiPriv());
-                Log.i("hh", "跳转到保单详情需要传的orderId ---" + list.get(position).getBusiPriv());
-                mContext.startActivity(intent);
+            public void onClick(View v) { //
+//                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
+//                intent.putExtra("orderId", list.get(position).getBusiPriv());
+//                mContext.startActivity(intent);
             }
         });
     }

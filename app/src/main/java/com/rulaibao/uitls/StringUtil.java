@@ -405,19 +405,6 @@ public class StringUtil {
     }
 
     /**
-     * 验证身份证号是否符合规则
-     *
-     * @param text 身份证号
-     * @return
-     */
-    public static boolean personIdValidation(String text) {
-        String regx = "[0-9]{17}xX";
-        String reg1 = "[0-9]{15}";
-        String regex = "[0-9]{18}";
-        return text.matches(regx) || text.matches(reg1) || text.matches(regex);
-    }
-
-    /**
      * 验证邮政编码是否符合规则
      *
      * @param text 身份证号

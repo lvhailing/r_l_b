@@ -3,6 +3,7 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +99,12 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             // 加载图片
-            ImageLoader.getInstance().displayImage(list.get(position).getApplyPhoto(), itemViewHolder.iv_circle_photo);
+            String applyPhotoUrl = list.get(position).getApplyPhoto();
+            if (!TextUtils.isEmpty(applyPhotoUrl)) {
+                ImageLoader.getInstance().displayImage(applyPhotoUrl, itemViewHolder.iv_circle_photo);
+            }else {
+                itemViewHolder.iv_circle_photo.setImageResource(R.mipmap.ic_ask_photo_default);
+            }
 
             // 同意按钮的点击监听
             itemViewHolder.btn_status.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +139,7 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.size()+1;
+        return list == null ? 0 : list.size() + 1;
     }
 
     @Override
@@ -187,7 +193,6 @@ public class NewMembersCircleAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
     }
-
 
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

@@ -38,6 +38,7 @@ import com.rulaibao.network.http.AsyncHttpClient;
 import com.rulaibao.network.http.AsyncHttpResponseHandler;
 import com.rulaibao.network.http.RequestParams;
 import com.rulaibao.photo_preview.PhotoPreviewAcForOne;
+import com.rulaibao.uitls.IdCardCheckUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
@@ -144,12 +145,6 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         rl_business_card.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
 
-//        realName = getIntent().getStringExtra("realName");
-//        idNo = getIntent().getStringExtra("idNo");
-//        post = getIntent().getStringExtra("post");
-//        status = getIntent().getStringExtra("status");
-//        businessCard = getIntent().getStringExtra("businessCard");
-
 
     }
 
@@ -191,9 +186,9 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
             post = data.getPosition();
             et_employment_post.setText(post);
         }
-        if (data.getBusiCardPhoto() != null) { //获取名片
-            businessCard = data.getBusiCardPhoto();
-            ImageLoader.getInstance().displayImage(businessCard, img_business_card);
+        String businessCardUrl = data.getBusiCardPhoto();
+        if (!TextUtils.isEmpty(businessCardUrl)) {
+            new ImageViewService().execute(businessCardUrl);
         }
 
         // 判断用户认证状态
@@ -244,11 +239,11 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
                     Toast.makeText(SalesCertificationActivity.this, "真实姓名不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (TextUtils.isEmpty(idNo)) {
-                    Toast.makeText(SalesCertificationActivity.this, "身份证号不能为空", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (!StringUtil.personIdValidation(idNo)) {
+//                if (TextUtils.isEmpty(idNo)) {
+//                    Toast.makeText(SalesCertificationActivity.this, "身份证号不能为空", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+                if (!TextUtils.isEmpty(idNo) && !IdCardCheckUtils.isIdCard((idNo.toUpperCase()))) {
                     Toast.makeText(SalesCertificationActivity.this, "请输入正确的身份证号", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -676,14 +671,9 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String content) {
                     super.onSuccess(statusCode, headers, content);
-                    Log.i("hh", "提交认证，上传图片：" + content);
-                    img_business_card.setImageBitmap(newZoomImage);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    Log.i("hh", "提交认证，上传图片：" + content);
                     stopLoading();
+                    img_business_card.setImageBitmap(newZoomImage);
                 }
 
                 @Override

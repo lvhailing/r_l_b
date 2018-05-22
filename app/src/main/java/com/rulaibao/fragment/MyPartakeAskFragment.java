@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyPartakeAskAdapter;
@@ -39,6 +42,7 @@ public class MyPartakeAskFragment extends Fragment {
     private Context context;
     private int currentPosition; // 当前tab位置（0：提问，1：话题）
     private String userId;
+    private ViewSwitcher vs;
 
 
     public static MyPartakeAskFragment newInstance(String param1) {
@@ -79,8 +83,15 @@ public class MyPartakeAskFragment extends Fragment {
 
     private void initView(View view) {
         context = getActivity();
+
+        vs = (ViewSwitcher)view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
+        tv_empty.setText("暂无提问");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -108,6 +119,7 @@ public class MyPartakeAskFragment extends Fragment {
                 }
 
                 if (params.result == null) {
+                    vs.setDisplayedChild(1);
                     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -126,6 +138,12 @@ public class MyPartakeAskFragment extends Fragment {
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
                 } else {

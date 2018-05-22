@@ -107,6 +107,8 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
     private String collectionStatus;
     private Intent intent;
 
+    private String collectionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -382,7 +384,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         param.put("userId", userId);
         param.put("productId", id);
         param.put("dataStatus", collectionStatus);
-        param.put("collectionId", result.getCollectionId());
+        param.put("collectionId", collectionId);
         HtmlRequest.collection(InsuranceProductDetailActivity.this, param, new BaseRequester.OnRequestListener() {
 
             @Override
@@ -401,10 +403,12 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
                     if ("valid".equals(collection2B.getDataStatus())) {//收藏
                         iv_collect.setImageResource(R.mipmap.ic_collected);
                         collectionStatus = "invalid";
+
                     } else if ("invalid".equals(collection2B.getDataStatus())) {//未收藏
                         iv_collect.setImageResource(R.mipmap.ic_collect);
                         collectionStatus = "valid";
                     }
+                    collectionId=collection2B.getCollectionId();
                 } else {
                     Toast.makeText(InsuranceProductDetailActivity.this, collection2B.getMessage(),
                             Toast.LENGTH_LONG).show();
@@ -415,6 +419,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
     }
 
     private void setData(InsuranceDetail1B data) {
+        collectionId=result.getCollectionId();
         String logo = data.getLogo();
         String collectionDataStatus = data.getCollectionDataStatus();
         String name = data.getName();

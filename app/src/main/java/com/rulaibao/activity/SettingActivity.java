@@ -33,7 +33,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     private RelativeLayout rl_setting_contact_customer_service;  // 联系客服
     private RelativeLayout rl_setting_platform_bulletin;  // 平台公告
     private RelativeLayout rl_setting_service_agreement; // 服务协议
-    private RelativeLayout rl_setting_about;  //  关于国恒保险
+    private RelativeLayout rl_setting_about;  //  关于如来保
     private TextView tv_setting_version_code;  //  版本号
     private Button btn_setting_logout;  // 退出登录
 
@@ -48,7 +48,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         initTopTitle();
         initView();
         initData();
-        registerBoradcastReceiver();
+        registerBroadcastReceiver();
 
     }
 
@@ -204,7 +204,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                 break;
 
-            case R.id.rl_setting_about: // 关于国恒保险
+            case R.id.rl_setting_about: // 关于如来保
               intent = new Intent(SettingActivity.this, WebActivity.class);
                 intent.putExtra("type", WebActivity.WEB_TYPE_ABOUT_US);
                 intent.putExtra("title", getResources().getString(R.string.setting_about));
@@ -221,21 +221,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
 
             default:
-
                 break;
-
-
         }
-
-
     }
     private ReceiveBroadCast receiveBroadCast; // 广播实例
     String myActionName = "gestureChooseState";
     // 注册广播
-    public void registerBoradcastReceiver() {
+    public void registerBroadcastReceiver() {
         receiveBroadCast = new ReceiveBroadCast();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(myActionName); // 只有持有相同的action的接受者才能接收此广播
+        filter.addAction(myActionName); // 只有持有相同的action的接收者才能接收此广播
         this.registerReceiver(receiveBroadCast, filter);
     }
 

@@ -19,6 +19,7 @@
         android:textColor="@color/txt_black1"
         android:paddingLeft="15dip"
         android:paddingTop="10dip"
+        android:descendantFocusability="blocksDescendants"
         />
 
     <RelativeLayout

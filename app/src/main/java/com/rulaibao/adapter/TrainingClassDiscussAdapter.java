@@ -189,6 +189,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
     public interface DiscussReply{
 
         public void reply(String toUserId,String commentId,String commentName,int index);
+        public void refresh();
 
     }
 

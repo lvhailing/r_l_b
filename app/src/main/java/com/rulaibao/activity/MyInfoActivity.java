@@ -69,46 +69,27 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private TextView tv_phone;
     private String realName;
     private String headPhoto;
-    private String userId = ""; // 测试userId  18032709463185347077
 
-    /**
-     * 表示选择的是相册--2
-     */
+    //表示选择的是相册--2
     private static int GALLERY_REQUEST_CODE = 2;
-    /**
-     * 表示选择的是裁剪--3
-     */
+    //表示选择的是裁剪--3
     private static int CROP_REQUEST_CODE = 3;
-    /**
-     * 销售认证界面返回
-     */
+   //销售认证界面返回
     private static int SALES_RETURN = 4;
-
     private Bitmap newZoomImage;
 
-    /**
-     * 图片保存SD卡位置
-     */
+    //图片保存SD卡位置
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";
-    /**
-     * 图片保存SD卡位置
-     */
+   //图片保存SD卡位置
     private final static String IMG_PATH_TWO = Environment.getExternalStorageDirectory() + "/rlb/imgs2/";
 
-    /***
-     * 使用照相机拍照获取图片
-     */
+  //使用照相机拍照获取图片
     public static final int SELECT_PIC_BY_TACK_PHOTO = 1;
-    /***
-     * 使用相册中的图片
-     */
+   //使用相册中的图片
     public static final int SELECT_PIC_BY_PICK_PHOTO = 2;
 
-    /**
-     * 获取到的图片路径
-     */
+   //获取到的图片路径
     private String picPath;
-
     private Uri photoUri;
 
     private static final String TAG = "MyInfoActivity";

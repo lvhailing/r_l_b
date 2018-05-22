@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyBookingListActivity;
@@ -46,6 +49,7 @@ public class PolicyBookingFragment extends Fragment {
     private PolicyBookingList1B data;
     private String status;
     private String userId;
+    private ViewSwitcher vs;
 
 
     public static PolicyBookingFragment newInstance(String param1) {
@@ -60,8 +64,8 @@ public class PolicyBookingFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Log.i("hh", this + "-- setUserVisibleHint --");
             currentPage = 1;
+            Log.i("hh", this + "-- setUserVisibleHint  ---  " + currentPage);
             // 页面可见时调接口
             requestData();
         }
@@ -87,8 +91,14 @@ public class PolicyBookingFragment extends Fragment {
     private void initView(View view) {
         context = getActivity();
 
+        vs = (ViewSwitcher) view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
+        tv_empty.setText("暂无预约产品");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -129,6 +139,7 @@ public class PolicyBookingFragment extends Fragment {
                 }
 
                 if (params.result == null) {
+                    vs.setDisplayedChild(1);
                     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -142,12 +153,19 @@ public class PolicyBookingFragment extends Fragment {
                 if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.NO_LOAD_MORE);
+                    return;
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.PULLUP_LOAD_MORE);
                 } else {

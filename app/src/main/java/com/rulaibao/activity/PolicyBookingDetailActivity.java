@@ -152,7 +152,7 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         } else if  ("refuse".equals(status)) {
                 tv_policy_booking_status.setText("已驳回");
                 rl_audit_status.setVisibility(View.VISIBLE);
-                tv_turn_down.setText("报单驳回："+data.getRefuseReason()+"。{"+data.getAuditTime()+"}");
+                tv_turn_down.setText("预约驳回："+data.getRefuseReason()+"。{"+data.getAuditTime()+"}");
         }
 
         if (!TextUtils.isEmpty(data.getCreateTime())) {  // 预约时间
@@ -227,7 +227,7 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
             public void onCancel() {
             }
         });
-
+        dialog.setTitle("确定取消预约吗？");
         dialog.show();
     }
 

@@ -22,7 +22,7 @@ public class MyPartakeActivity extends BaseActivity {
     private ViewPager viewpager;
     private String[] titles;
     private MyPartakeVpAdapter myPartakeVpAdapter;
-    private int currentTabPosition; // 0:提问   1:话题
+    private int currentTabPosition = 0; // 0:提问   1:话题
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class MyPartakeActivity extends BaseActivity {
     }
 
     private void initView() {
-        currentTabPosition = getIntent().getIntExtra("position", 0);
+//        currentTabPosition = getIntent().getIntExtra("position", 0);
 
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);

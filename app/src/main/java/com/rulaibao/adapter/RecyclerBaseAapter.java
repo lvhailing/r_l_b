@@ -49,6 +49,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
     public void setmHeaderView(View mHeaderView) {
         this.mHeaderView = mHeaderView;
         notifyItemInserted(0);
+
 //        notifyDataSetChanged();
     }
 

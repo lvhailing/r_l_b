@@ -8,4 +8,5 @@
     <dimen name="home_card_left">8.0dp</dimen>
 
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="height">30dp</dimen>
 </resources>
