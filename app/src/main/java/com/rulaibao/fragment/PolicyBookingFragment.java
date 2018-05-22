@@ -148,6 +148,7 @@ public class PolicyBookingFragment extends Fragment {
                 ((PolicyBookingListActivity) getActivity()).refreshTabTitle(data);
                 MouldList<PolicyBookingList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -163,10 +164,12 @@ public class PolicyBookingFragment extends Fragment {
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+
+                vs.setDisplayedChild(0);
+
+                if (totalList.size() % 10 == 0) {
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.PULLUP_LOAD_MORE);
                 } else {
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.NO_LOAD_MORE);

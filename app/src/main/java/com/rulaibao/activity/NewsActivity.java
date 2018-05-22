@@ -106,9 +106,7 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener {
                     return;
                 }
                 data = (UnreadNewsCount2B) params.result;
-                if (data != null) {
-                    setData(data);
-                }
+                setData(data);
             }
         });
     }
@@ -133,7 +131,9 @@ public class NewsActivity extends BaseActivity implements View.OnClickListener {
         }
 
         // 圈子新成员
-        if (!TextUtils.isEmpty(data.getCircle()) && Integer.parseInt(data.getCircle()) != 0) {
+        if (data.getCircle() == null || Integer.parseInt(data.getCircle()) == 0) {
+            tv_circle_news_number.setVisibility(View.GONE);
+        } else {
             tv_circle_news_number.setVisibility(View.VISIBLE);
             tv_circle_news_number.setText(data.getCircle());
         }
