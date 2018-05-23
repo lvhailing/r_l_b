@@ -162,9 +162,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
     private void initData() {
         vs = (ViewSwitcher) newview.get(mPreSelectItem).findViewById(R.id.vs);
         TextView tv_empty = (TextView)newview.get(mPreSelectItem).findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView)newview.get(mPreSelectItem).findViewById(R.id.img_empty);
-        tv_empty.setText("暂无保险产品");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
+        tv_empty.setText("暂无产品");
         listView = (PullToRefreshListView) newview.get(mPreSelectItem).findViewById(R.id.listview_insurance_product);
   //      moveTitleLabel(mPreSelectItem);
         //PullToRefreshListView  上滑加载更多及下拉刷新

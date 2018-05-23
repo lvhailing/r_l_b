@@ -28,6 +28,7 @@ public class InsuranceDetail1B implements IMouldType {
     private String companyName;
     private String category;
     private String prospectusStatus;
+    private String productStatus;
 
     public String getId() {
         return id;
@@ -227,5 +228,13 @@ public class InsuranceDetail1B implements IMouldType {
 
     public void setProspectusStatus(String prospectusStatus) {
         this.prospectusStatus = prospectusStatus;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 }

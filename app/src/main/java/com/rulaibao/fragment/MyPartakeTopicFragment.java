@@ -91,7 +91,7 @@ public class MyPartakeTopicFragment extends Fragment {
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
         ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
-        tv_empty.setText("暂无话题");
+        tv_empty.setText("未参与话题");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();

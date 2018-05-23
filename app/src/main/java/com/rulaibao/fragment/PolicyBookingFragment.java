@@ -64,8 +64,6 @@ public class PolicyBookingFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            currentPage = 1;
-            Log.i("hh", this + "-- setUserVisibleHint  ---  " + currentPage);
             // 页面可见时调接口
             requestData();
         }
@@ -97,7 +95,7 @@ public class PolicyBookingFragment extends Fragment {
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
         ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
-        tv_empty.setText("暂无预约产品");
+        tv_empty.setText("暂无预约");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
@@ -166,7 +164,6 @@ public class PolicyBookingFragment extends Fragment {
                     vs.setDisplayedChild(1);
                     return;
                 }
-
                 vs.setDisplayedChild(0);
 
                 if (totalList.size() % 10 == 0) {
@@ -241,10 +238,11 @@ public class PolicyBookingFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             int position = data.getIntExtra("position", 0);
-            Log.i("hh", "onActivityResult -- " + position);
+//            Log.i("hh", "onActivityResult -- " + position);
             getTabTitleCurrentPosition(position);
-            Log.i("hh", "getTabTitleCurrentPosition -- " + position);
-            requestData();
+//            Log.i("hh", "getTabTitleCurrentPosition -- " + position);
+
+//            requestData();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

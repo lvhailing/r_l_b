@@ -73,7 +73,7 @@ public class MyAskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
-                    footerViewHolder.tvLoadText.setText("上拉加载更多...");
+                    footerViewHolder.tvLoadText.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvLoadText.setText("正加载更多...");

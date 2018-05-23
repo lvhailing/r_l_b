@@ -114,7 +114,7 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
-                    footerViewHolder.tvFooterMore.setText("上拉加载更多...");
+                    footerViewHolder.tvFooterMore.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvFooterMore.setText("正加载更多...");

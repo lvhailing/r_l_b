@@ -144,9 +144,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     private void initRefresh() {
         vs = (ViewSwitcher)findViewById(R.id.vs);
         TextView tv_empty = (TextView)findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView)findViewById(R.id.img_empty);
         tv_empty.setText("暂无计划书");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
         listView = (PullToRefreshListView)findViewById(R.id.listview_plan);
         //PullToRefreshListView  上滑加载更多及下拉刷新
         ViewUtils.slideAndDropDown(listView);

@@ -152,7 +152,12 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
         } else if  ("refuse".equals(status)) {
                 tv_policy_booking_status.setText("已驳回");
                 rl_audit_status.setVisibility(View.VISIBLE);
+                String refuseReason = data.getRefuseReason();
+            if (TextUtils.isEmpty(refuseReason)) {
+                tv_turn_down.setText("预约驳回："+"暂无驳回信息"+"。{"+data.getAuditTime()+"}");
+            }else{
                 tv_turn_down.setText("预约驳回："+data.getRefuseReason()+"。{"+data.getAuditTime()+"}");
+            }
         }
 
         if (!TextUtils.isEmpty(data.getCreateTime())) {  // 预约时间

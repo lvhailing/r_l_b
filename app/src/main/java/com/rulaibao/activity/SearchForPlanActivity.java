@@ -303,7 +303,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
                     Plan2B data = (Plan2B) params.result;
                     MouldList<Plan3B> everyList = data.getList();
                     if ((everyList == null || everyList.size() == 0)){
-                        Toast.makeText(mContext, "啊哦，没有搜到计划书！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "暂无相关计划书", Toast.LENGTH_SHORT).show();
                     }
                     totalList.clear();
                     totalList.addAll(everyList);

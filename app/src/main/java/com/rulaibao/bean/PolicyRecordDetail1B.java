@@ -32,6 +32,7 @@ public class PolicyRecordDetail1B implements IMouldType {
     private String auditDesc; // 驳回原因（问题保单）
     private String auditTime; // 驳回时间（问题保单）
     private String productId; // 产品编号
+    private String productStatus; // normal：正常；delete：已删除;  down：已下架
 
 
     public String getStatus() {
@@ -216,6 +217,14 @@ public class PolicyRecordDetail1B implements IMouldType {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 }
 

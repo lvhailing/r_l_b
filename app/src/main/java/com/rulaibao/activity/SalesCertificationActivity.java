@@ -95,7 +95,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
     private static final String TAG = "SalesCertificationActivity";
     private TextView tv_certification_status;
     private ImageView iv_delete;
-    private String businessCard;
+    private String businessCardUrl;
 
 
     @Override
@@ -174,19 +174,24 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
     }
 
     private void setData(UserInfo2B data) {
-        if (data.getRealName() != null) { // 获取真实姓名
+        // 获取真实姓名
+        if (data.getRealName() != null) {
             realName = data.getRealName();
             tv_name.setText(realName);
         }
-        if (data.getIdNo() != null) { // 获取身份证号
+        // 获取身份证号
+        if (data.getIdNo() != null) {
             idNo = data.getIdNo();
             et_id_number.setText(idNo);
         }
-        if (data.getPosition() != null) { // 获取从业岗位
+        // 获取从业岗位
+        if (data.getPosition() != null) {
             post = data.getPosition();
             et_employment_post.setText(post);
         }
-        String businessCardUrl = data.getBusiCardPhoto();
+
+        // 获取名片
+         businessCardUrl = data.getBusiCardPhoto();
         if (!TextUtils.isEmpty(businessCardUrl)) {
             new ImageViewService().execute(businessCardUrl);
         }
@@ -251,7 +256,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
                     Toast.makeText(SalesCertificationActivity.this, "从业岗位不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (TextUtils.isEmpty(businessCard)) {
+                if (TextUtils.isEmpty(businessCardUrl)) {
                     Toast.makeText(SalesCertificationActivity.this, "名片不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -396,7 +401,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
     private void showPhotoPreviewAcForOne() {
         ArrayList<String> list = new ArrayList<>();
-        list.add(businessCard);
+        list.add(businessCardUrl);
         Intent i_card = new Intent(mContext, PhotoPreviewAcForOne.class);
         i_card.putStringArrayListExtra("urls", list);
         i_card.putExtra("currentPos", 0);
@@ -449,7 +454,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
             if (photoUri != null) {
                 try {
-                    businessCard = photoUri.getPath();
+                    businessCardUrl = photoUri.getPath();
                     photoBmp = getBitmapFormUri(SalesCertificationActivity.this, photoUri);
                     if (photoBmp != null) {
                         dialog.setmLoadingTip("正在上传照片，请稍后……");
@@ -475,7 +480,7 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
             if (mImageCaptureUri != null) {
                 try {
-                    businessCard = mImageCaptureUri.getPath();
+                    businessCardUrl = mImageCaptureUri.getPath();
 //                    Log.i("aaa", "名片的地址：" + mImageCaptureUri.getPath());
                     photoBmp = getBitmapFormUri(SalesCertificationActivity.this, mImageCaptureUri);
                     newZoomImage = photoBmp;

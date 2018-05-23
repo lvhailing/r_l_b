@@ -11,7 +11,9 @@
         android:layout_above="@+id/img_middle"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dip"
-        android:scaleType="centerInside"/>
+        android:scaleType="centerInside"
+        android:background="@mipmap/ic_empty"/>
+
 
     <ImageView
         android:id="@+id/img_middle"

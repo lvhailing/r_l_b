@@ -80,7 +80,7 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
-        tv_empty.setText("暂无提问");
+        tv_empty.setText("暂未提问");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();

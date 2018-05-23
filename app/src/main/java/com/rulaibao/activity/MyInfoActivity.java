@@ -569,6 +569,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 public void onSuccess(int statusCode, Header[] headers, String content) {
                     super.onSuccess(statusCode, headers, content);
                     stopLoading();
+                    newZoomImage = ImageUtils.toRoundBitmap(newZoomImage); // 把图片处理成圆形
                     img_photo.setImageBitmap(newZoomImage);
                 }
 
@@ -617,11 +618,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.rl_layout_sales_certification: // 销售认证
                 Intent intent = new Intent(MyInfoActivity.this, SalesCertificationActivity.class);
-                intent.putExtra("realName", data.getRealName());
-                intent.putExtra("idNo", data.getIdNo());
-                intent.putExtra("post", data.getPosition());
-                intent.putExtra("status", data.getCheckStatus());
-                intent.putExtra("businessCard", data.getBusiCardPhoto());
+//                intent.putExtra("realName", data.getRealName());
+//                intent.putExtra("idNo", data.getIdNo());
+//                intent.putExtra("post", data.getPosition());
+//                intent.putExtra("status", data.getCheckStatus());
+//                intent.putExtra("businessCard", data.getBusiCardPhoto());
                 startActivityForResult(intent, SALES_RETURN);
                 break;
 //            case R.id.layout_name:

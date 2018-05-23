@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,6 +26,7 @@ import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.InsuranceDetail1B;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.bean.ResultSentSMSContentBean;
+import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -39,6 +41,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.net.URL;
 import java.util.LinkedHashMap;
 
 
@@ -108,6 +111,8 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
     private Intent intent;
 
     private String collectionId;
+    private ViewSwitcher vs;
+    private TextView tv_empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +191,9 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         btn_buy = (Button) findViewById(R.id.btn_buy);
         tv_appointmented_minimumPremium = (TextView) findViewById(R.id.tv_appointmented_minimumPremium);
         tv_appointmented_promotionmoney = (TextView) findViewById(R.id.tv_appointmented_promotionmoney);
+
+        vs = (ViewSwitcher)findViewById(R.id.vs);
+        tv_empty = (TextView)findViewById(R.id.tv_empty);
     }
 
     private void initData() {
@@ -369,9 +377,24 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
                     return;
                 }
                 result = (InsuranceDetail1B) params.result;
-                setData(result);
+                String productStatus=result.getProductStatus();
+                if ("normal".equals(productStatus)){
+                    vs.setDisplayedChild(0);
+                    setData(result);
+                    titleBar.setVisibilityState(View.VISIBLE);
+                }else if ("delete".equals(productStatus)){
+                    vs.setDisplayedChild(1);
+                    tv_empty.setText("该产品已不存在");
+                    titleBar.setVisibilityState(View.GONE);
+
+                } else if ("down".equals(productStatus)){
+                    vs.setDisplayedChild(1);
+                    tv_empty.setText("该产品已下架");
+                    titleBar.setVisibilityState(View.GONE);
+                }
+                String shareUrl= Urls.URL_SHARE_PRODUCT_DETAILS+id;
                 // 设置分享参数
-                titleBar.setActivityParameters(id, "测试分享标题", "测试分享内容");
+                titleBar.setActivityParameters(shareUrl,id, result.getName(), result.getRecommendations());
             }
         });
     }

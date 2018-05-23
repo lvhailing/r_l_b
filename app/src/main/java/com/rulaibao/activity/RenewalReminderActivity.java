@@ -80,7 +80,7 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
-        tv_empty.setText("暂无续保保单");
+        tv_empty.setText("暂无待续保保单");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();

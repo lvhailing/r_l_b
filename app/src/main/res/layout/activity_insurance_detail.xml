@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ViewSwitcher
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vs"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light">
+    android:background="@color/gray_light"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -563,4 +569,8 @@
             android:textColor="@color/white"
             android:background="@drawable/shape_center_orange_white"/>
     </RelativeLayout>
-</RelativeLayout>
+
+    </RelativeLayout>
+    <include layout="@layout/ac_empty_view"/>
+</ViewSwitcher>
+

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,12 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
             // 加载头像
-            ImageLoader.getInstance().displayImage(list.get(position).getReplyPhoto(),  itemViewHolder.iv_interactive_news_photo);
+            String replyPhotoUrl = list.get(position).getReplyPhoto();
+            if (!TextUtils.isEmpty(replyPhotoUrl)) {
+                ImageLoader.getInstance().displayImage(replyPhotoUrl,  itemViewHolder.iv_interactive_news_photo);
+            }else {
+                itemViewHolder.iv_interactive_news_photo.setImageResource(R.mipmap.ic_ask_photo_default);
+            }
 
             itemViewHolder.tv_interactive_news_name.setText(list.get(position).getReplyName());
             itemViewHolder.tv_interactive_news_date.setText(list.get(position).getCreateTime());
@@ -92,7 +98,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
-                    footerViewHolder.tvLoadText.setText("上拉加载更多...");
+                    footerViewHolder.tvLoadText.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvLoadText.setText("正加载更多...");

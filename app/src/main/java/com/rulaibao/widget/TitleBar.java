@@ -568,6 +568,16 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         iv_right_btn.setBackgroundResource(drawable);
         return TitleBar.this;
     }
+    /**
+     * 设置最右侧按钮 显示或者隐藏
+     *
+     * @param state
+     * @return
+     */
+    public TitleBar setVisibilityState(int state) {
+        iv_right_btn.setVisibility(state);
+        return TitleBar.this;
+    }
 
     /**
      * 设置LOGO显示图片及是否显示
@@ -812,25 +822,6 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //启动分享
-//                    if (flag.equals("1000")) {
-//                        if (!PreferenceUtil.isLogin()) { // 用户没登录
-//                            shareUrl = Urls.URL_PROJECT_H5_DETAIL + "/" + shareId + "/0";
-//                        } else {  // 用户登录,分享时要拼上用户的userId
-//                            shareUrl = Urls.URL_PROJECT_H5_DETAIL + "/" + shareId + "/" + userId;
-//                        }
-//                    } else if (flag.equals("1001")) {
-//
-//                        if (!PreferenceUtil.isLogin()) { // 用户没登录
-//                            shareUrl = Urls.URL_HOUSE_H5_DETAIL + "/" + shareId + "/0";
-//                        } else { // 用户登录,分享时要拼上用户的userId
-//                            shareUrl = Urls.URL_HOUSE_H5_DETAIL + "/" + shareId + "/" + userId;
-//                        }
-//                    }
-//
-                    if (flag.equals("1000")) {
-                        shareUrl = Urls.URL_INSURANCE_DETAILS + "/" + shareId + "/" + userId;
-                    }
                     if (!TextUtils.isEmpty(shareId)) {
                         ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
                             @Override
@@ -873,7 +864,8 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
      * @param title 分享出去显示的标题
      * @param text  分享出去显示的简单描述
      */
-    public void setActivityParameters(String id, String title, String text) {
+    public void setActivityParameters(String shareUrl,String id, String title, String text) {
+        this.shareUrl=shareUrl;
         this.shareId = id;
         this.shareTitle = title;
         this.shareText = text;

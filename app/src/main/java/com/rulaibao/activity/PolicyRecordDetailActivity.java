@@ -173,7 +173,12 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
         } else if ("rejected".equals(status)) {
             tv_policy_status.setText("问题件");
             rl_audit_status.setVisibility(View.VISIBLE);
-            tv_turn_down.setText("保单驳回："+data.getAuditDesc()+"{"+data.getAuditTime()+"}");
+            String auditDesc = data.getAuditDesc();
+            if (TextUtils.isEmpty(auditDesc)) {
+                tv_turn_down.setText("保单驳回："+ "暂无驳回信息。"+"{"+data.getAuditTime()+"}");
+            }else {
+                tv_turn_down.setText("保单驳回："+auditDesc+"{"+data.getAuditTime()+"}");
+            }
         } else if ("receiptSigned".equals(status)) {
             tv_policy_status.setText("回执签收");
             ll_underwriting_time.setVisibility(View.VISIBLE);

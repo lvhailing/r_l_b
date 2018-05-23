@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.MyCollectionRecycleAdapter;
@@ -39,6 +42,7 @@ public class MyCollectionFragment extends Fragment {
     private int currentPage = 1;
     private String type;
     private String userId;
+    private ViewSwitcher vs;
 
 
     public static MyCollectionFragment newInstance(String param1) {
@@ -59,7 +63,6 @@ public class MyCollectionFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Log.i("hh", "setUserVisibleHint --- " + isVisibleToUser);
             currentPage = 1;
             requestData();
         }
@@ -93,6 +96,7 @@ public class MyCollectionFragment extends Fragment {
                 MyCollectionList1B data = (MyCollectionList1B) params.result;
                 MouldList<MyCollectionList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -105,6 +109,13 @@ public class MyCollectionFragment extends Fragment {
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                    return;
+                }
+                vs.setDisplayedChild(0);
+
                 if (totalList.size() != 0 && totalList.size() % 10 == 0) {
                     myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.PULLUP_LOAD_MORE);
                 } else {
@@ -132,8 +143,14 @@ public class MyCollectionFragment extends Fragment {
     }
 
     private void initView(View view) {
+        vs = (ViewSwitcher) view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+        TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
+        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
+        tv_empty.setText("暂无收藏");
+        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
+
 
         initRecyclerView();
     }

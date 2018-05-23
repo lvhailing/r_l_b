@@ -335,7 +335,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     InsuranceProduct1B data= (InsuranceProduct1B) params.result;
                     MouldList<InsuranceProduct2B> everyList = data.getList();
                     if ((everyList == null || everyList.size() == 0)){
-                        Toast.makeText(mContext, "啊哦，没有搜到保险产品！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "暂无相关产品", Toast.LENGTH_SHORT).show();
                     }
                     totalList.clear();
                     totalList.addAll(everyList);

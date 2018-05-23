@@ -81,7 +81,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
-        tv_empty.setText("暂无圈子新成员消息");
+        tv_empty.setText("暂无申请");
         img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();

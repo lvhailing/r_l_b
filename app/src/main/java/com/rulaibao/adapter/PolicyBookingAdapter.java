@@ -94,7 +94,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
-                    footerViewHolder.tvLoadText.setText("上拉加载更多...");
+                    footerViewHolder.tvLoadText.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
                     footerViewHolder.tvLoadText.setText("正加载更多...");
@@ -111,7 +111,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.size()+1;
+        return list == null ? 0 : list.size() + 1;
     }
 
     @Override
@@ -149,7 +149,8 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) { // 跳转到预约详情
                 Intent intent = new Intent(fragment.getContext(), PolicyBookingDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
-                activity.startActivityForResult(intent, PolicyBookingListActivity.REQUEST_CODE);
+//                activity.startActivityForResult(intent, PolicyBookingListActivity.REQUEST_CODE);
+                activity.startActivity(intent);
             }
         });
     }
