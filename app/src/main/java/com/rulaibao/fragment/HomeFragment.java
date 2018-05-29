@@ -68,7 +68,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     private MyRollViewPager rollViewPager;
     private String url; // url
     private String name;
-    private MarqueeView marqueeView;
+ //   private MarqueeView marqueeView;
+    private TextView marqueeView;
     private MouldList<Bulletin2B> bulletinlist=new MouldList<>();
 
     private TextView tv_project_plan;//计划书
@@ -117,7 +118,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     @Override
     public void onResume() {
         super.onResume();
-        initView(mView);
         requestHomeData();// 请求首页数据
     }
     @Override
@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(context!=null){
-                initView(mView);
                 requestHomeData();// 请求首页数据
             }
         } else {
@@ -142,7 +141,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         picList = new MouldList<CycleIndex2B>();
         ll_vp = (LinearLayout) mView.findViewById(R.id.ll_vp);
         ll_point_container = (LinearLayout) mView.findViewById(R.id.ll_point_container);
-        marqueeView = (MarqueeView) mView.findViewById(R.id.marqueeView);//公告
+        marqueeView = (TextView) mView.findViewById(R.id.marqueeView);//公告
         tv_project_plan= (TextView) mView.findViewById(R.id.tv_project_plan);//计划书
         tv_disease_guarantee= (TextView) mView.findViewById(R.id.tv_disease_guarantee);//疾病保障
         tv_pension_guarantee= (TextView) mView.findViewById(R.id.tv_pension_guarantee);//养老保障
@@ -154,27 +153,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
 
         ll_recommend= (LinearLayout) mView.findViewById(R.id.ll_recommend);
 
-        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+        marqueeView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position, TextView textView) {
-
-                try {
-                    userId=null;
-                    userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-                } catch (Exception e) {
-                    e.printStackTrace();
+            public void onClick(View v) {
+                if (bulletinlist.size() != 0) {
+                    try {
+                        userId = null;
+                        userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(context, WebActivity.class);
+                    intent.putExtra("type", WebActivity.WEB_TYPE_NOTICE);
+                    intent.putExtra("title", "公告详情");
+                    intent.putExtra("url", Urls.URL_BULLETIN_DETAIL + "?id=" + bulletinlist.get(0).getBulletinId() + "&userId=" + userId);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(context, WebActivity.class);
-                intent.putExtra("type", WebActivity.WEB_TYPE_NOTICE);
-                intent.putExtra("title", "公告详情");
-                intent.putExtra("url", Urls.URL_BULLETIN_DETAIL + "?id=" + bulletinlist.get(position).getBulletinId() + "&userId=" + userId);
-                startActivity(intent);
             }
         });
         //热销精品
         listView= (MyListView) mView.findViewById(R.id.home_listview);
+        View view = View.inflate(getActivity(), R.layout.listview_home_footerview, null);
+        listView.addFooterView(view);// 为listview添加footview
         mAdapter = new InsuranceProductAdapter(context, totalList);
         listView.setAdapter(mAdapter);
+
+
 
         swipe_refresh.setOnRefreshListener(this);
         tv_project_plan.setOnClickListener(this);
@@ -309,14 +313,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
 
                 //公告
                 bulletinlist=homeIndex2B.getBulletinlist();
-                List<String> info = new ArrayList<>();
-                for(int i=0;i<bulletinlist.size();i++){
-                    info.add(bulletinlist.get(i).getBulletinTopic());//marqueeView 有1个数据就不会转动
+                if (bulletinlist.size()!=0){
+                    marqueeView.setText(bulletinlist.get(0).getBulletinTopic());
+                }else{
+                    marqueeView.setText("暂无公告");
                 }
-                if (bulletinlist.size()==0){
-                    info.add("暂无公告");
-                }
-                marqueeView.startWithList(info);
 
                 if (homeIndex2B.getRecommendlist().size()==0){
                     ll_recommend.setVisibility(View.GONE);
@@ -422,23 +423,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
             // 改变当前背景图片为：选中
             indicator_imgs.get(position)
                     .setBackgroundResource(R.drawable.round_orange);
-        }
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (marqueeView!=null){
-
-            marqueeView.startFlipping();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (marqueeView!=null){
-
-            marqueeView.stopFlipping();
         }
     }
 }

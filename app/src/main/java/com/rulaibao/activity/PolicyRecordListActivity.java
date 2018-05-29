@@ -83,7 +83,7 @@ public class PolicyRecordListActivity extends BaseActivity {
     }
 
     private void initData() {
-        titles = new String[]{"全部（）", "待审核（）", "已承保（）", "问题件（）", "回执签收（）"};
+        titles = new String[]{"全部（0）", "待审核（0）", "已承保（0）", "问题件（0）", "回执签收（0）"};
         vpAdapter = new PolicyRrcordListVPAdapter(getSupportFragmentManager(), titles, this);
         ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);
         ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).setUserId(userId);
@@ -154,6 +154,10 @@ public class PolicyRecordListActivity extends BaseActivity {
         }
     }
 
+    /**
+     *  获取顶部Tab数据
+     * @param data
+     */
     public void refreshTabTitle(PolicyRecordList1B data) {
         if (data.getAllTotal() != null) {
             View titleView1 = (View) sliding_tabs.getTabAt(0).getCustomView();

@@ -21,12 +21,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
 import com.rulaibao.bean.ResultClassDetailsIntroductionItemBean;
+import com.rulaibao.common.Urls;
 import com.rulaibao.fragment.TrainingDetailsCatalogFragment;
 import com.rulaibao.fragment.TrainingDetailsDiscussFragment;
 import com.rulaibao.fragment.TrainingDetailsIntroductionFragment;
@@ -37,6 +39,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
 import java.lang.reflect.Field;
@@ -101,6 +104,8 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     private int position;
     private String toUserId = "";
     private String commentId = "";
+    private String linkId = "";
+    private TitleBar title = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +123,15 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         courseId = getIntent().getStringExtra("courseId");
         requestData();
 
-
     }
 
     public void initTabView() {
+
+
+        String shardId = "23232323";
+        String url = Urls.URL_SHARED_CLASS+courseId;
+        title.setActivityParameters(url,shardId, course.getCourseName(), course.getCourseTime()+course.getTypeName());
+
 
         fragments = new ArrayList<>();
         listTitles = new ArrayList<>();
@@ -228,9 +238,17 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultClassDetailsIntroductionBean bean = (ResultClassDetailsIntroductionBean) params.result;
-                    course = bean.getCourse();
-                    initPlayView();
-                    initTabView();
+
+                    if (bean.getFlag().equals("true")) {
+                        course = bean.getCourse();
+                        initPlayView();
+                        initTabView();
+                    } else {
+                        ViewUtils.showDeleteDialog(TrainingClassDetailsActivity.this,bean.getMessage());
+//                        Toast.makeText(TrainingClassDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
+//                        finish();
+                    }
+
 
                 } else {
 
@@ -276,9 +294,11 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     }
 
     private void initTopTitle() {
-        TitleBar title = (TitleBar) findViewById(R.id.rl_title);
+        title = (TitleBar) findViewById(R.id.rl_title);
+        title.showLeftImg(true);
+        title.setFromActivity("1000");
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_class_details))
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_class_details)).showMore(false).setTitleRightButton(R.drawable.ic_share_title)
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
@@ -387,45 +407,23 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
         String commentContent = etDetailDiscuss.getText().toString();
 
-        if(!PreferenceUtil.isLogin()){
-            HashMap<String,Object> map = new HashMap<>();
+        if (!PreferenceUtil.isLogin()) {
+            HashMap<String, Object> map = new HashMap<>();
 
 
-            RlbActivityManager.toLoginActivity(this,map,false);
+            RlbActivityManager.toLoginActivity(this, map, false);
 
 
-        }else{
-            if(!PreferenceUtil.getCheckStatus().equals("success")){
-
-                new AlertDialog.Builder(this)
-
-                        .setMessage("您还未认证，是否去认证")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                HashMap<String,Object> map = new HashMap<>();
-
-                                map.put("realName",PreferenceUtil.getUserRealName());
-                                map.put("status",PreferenceUtil.getCheckStatus());
-
-                                RlbActivityManager.toSaleCertificationActivity(TrainingClassDetailsActivity.this,map,false);
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+        } else {
+            if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
 
-            }else{
+                ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
 
-                discussFragment.toReply(commentContent,toUserId,commentId,commentName,index);
+
+            } else {
+
+                discussFragment.toReply(commentContent, toUserId, commentId, commentName, index,linkId);
                 hiddenInputLayout();
 
             }
@@ -434,11 +432,12 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     }
 
     @Override
-    public void reply(String toUserId, String commentId, String commentName, int index) {
+    public void reply(String toUserId, String commentId, String commentName, int index,String linkId) {
         this.toUserId = toUserId;
         this.commentId = commentId;
         this.index = index;
         this.commentName = commentName;
+        this.linkId = linkId;
         etDetailDiscuss.setHint("回复" + commentName + "：");
 
 //        setBottomOffset(index);

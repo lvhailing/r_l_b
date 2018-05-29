@@ -14,10 +14,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.activity.TrainingCircleDetailsActivity;
+import com.rulaibao.activity.TrainingClassDetailsActivity;
 import com.rulaibao.bean.ResultClassDetailsIntroductionBean;
 import com.rulaibao.bean.ResultClassDetailsIntroductionItemBean;
 import com.rulaibao.bean.ResultInfoBean;
@@ -25,6 +28,7 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageLoaderManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.ViewPagerForScrollView;
 
@@ -39,15 +43,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
  * 课程详情 简介栏
- *
  */
 
 @SuppressLint("ValidFragment")
 public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
 
     @BindView(R.id.iv_introduction)
@@ -110,7 +112,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
 
-            if(context!=null){
+            if (context != null) {
 
             }
 
@@ -120,7 +122,6 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         }
 
     }
-
 
 
     public void requestData() {
@@ -137,8 +138,15 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
                 if (params.result != null) {
 
                     ResultClassDetailsIntroductionBean bean = (ResultClassDetailsIntroductionBean) params.result;
-                    course = bean.getCourse();
-                    setView();
+                    if (bean.getFlag().equals("true")) {
+                        course = bean.getCourse();
+                        setView();
+                    } else {
+                        ViewUtils.showDeleteDialog(getActivity(),bean.getMessage());
+//                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
+//                        getActivity().finish();
+                    }
+
                 } else {
 
                 }
@@ -146,9 +154,9 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         });
     }
 
-    public void setView(){
+    public void setView() {
 
-        ImageLoader.getInstance().displayImage(course.getHeadPhoto(),ivIntroduction,displayImageOptions);
+        ImageLoader.getInstance().displayImage(course.getHeadPhoto(), ivIntroduction, displayImageOptions);
         tvIntroductionManager.setText(course.getPosition());
         tvIntroductionManagerName.setText(course.getRealName());
         tvIntroductionClassName.setText(course.getCourseName());
@@ -158,9 +166,8 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
 
 //        tvIntroductionContent.setText(course.getCourseContent());
 
-        setWebView(course.getCourseContent(),tvIntroductionContent);
+        setWebView(course.getCourseContent(), tvIntroductionContent);
     }
-
 
 
     @Override

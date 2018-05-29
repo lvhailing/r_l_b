@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rulaibao.R;
@@ -21,11 +22,9 @@ import butterknife.ButterKnife;
 
 /**
  * 热门问答列表  adapter
- *
  */
 
 public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
 
 
     private Context context;
@@ -43,12 +42,18 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
     public static final int LOADING_MORE = 1;
     //没有加载更多 隐藏
     public static final int NO_LOAD_MORE = 2;
-
+    //没有数据
+    public static final int NO_DATA = 4;
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
 
     private LoadMoreData loadMoreData;
 
+    protected String noDataMessage = "";
+
+    public void setNoDataMessage(String noDataMessage) {
+        this.noDataMessage = noDataMessage;
+    }
 
     public TrainingHotAskListAdapter(Context context, MouldList<ResultHotAskItemBean> arrayList, LoadMoreData loadMoreData) {
         this.context = context;
@@ -93,9 +98,9 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
             itemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    HashMap<String,Object> map = new HashMap<String,Object>();
-                    map.put("questionId",arrayList.get(position).getQuestionId());
-                    RlbActivityManager.toTrainingAskDetailsActivity((BaseActivity) context,map, false);
+                    HashMap<String, Object> map = new HashMap<String, Object>();
+                    map.put("questionId", arrayList.get(position).getQuestionId());
+                    RlbActivityManager.toTrainingAskDetailsActivity((BaseActivity) context, map, false);
                 }
             });
 
@@ -113,6 +118,12 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
                 case NO_LOAD_MORE:
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+                case NO_DATA:
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
                     break;
 
             }
@@ -157,6 +168,7 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
         TextView tvHotAskLeave;
         @BindView(R.id.tv_hot_ask_leave_count)
         TextView tvHotAskLeaveCount;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -165,6 +177,8 @@ public class TrainingHotAskListAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_hot_ask_footer)
+        ImageView ivHotAskFooter;
         @BindView(R.id.tv_footer_more)
         TextView tvFooterMore;
 

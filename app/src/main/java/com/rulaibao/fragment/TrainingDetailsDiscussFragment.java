@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingClassDetailsActivity;
@@ -36,6 +37,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.MyRecyclerView;
 import com.rulaibao.widget.ViewPagerForScrollView;
@@ -95,8 +97,9 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
     private int oldPosition = 0;
     private int bottomOffset = 0;
     private String commentName = "";
+    private String linkId = "";
     private int position;
-
+    private boolean noDataFlag = true;      //  控制无数据不加载
     public TrainingDetailsDiscussFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
@@ -160,10 +163,13 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
+                    if(noDataFlag){
+                        adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
-                    page++;
-                    requestData();
+                        page++;
+                        requestData();
+                    }
+
 
                 }
 
@@ -192,6 +198,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
             if (list != null) {
                 list.clear();
             }
+            noDataFlag = true;
             page = 1;
             requestData();
 //            scrollView.smoothScrollTo(0, 0);
@@ -217,24 +224,40 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
                 if (params.result != null) {
 
                     ResultClassDetailsDiscussBean bean = (ResultClassDetailsDiscussBean) params.result;
-                    if (bean.getList().size() == 0) {
-                        if (page != 1) {
-                            page--;
+                    if(bean.getFlag().equals("true")){
+                        if (bean.getList().size() == 0) {
+                            if (page != 1) {
+                                page--;
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }else{
+                                adapter.setNoDataMessage("暂无研讨信息");
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                noDataFlag = false;
+                                tvIntroductionDiscussCount.setVisibility(View.GONE);
+                            }
+
+
+                        } else {
+                            tvIntroductionDiscussCount.setVisibility(View.VISIBLE);
+                            tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
+                            list.addAll(bean.getList());
+                            adapter.notifyDataSetChanged();
+
+                            if(list.size()%10==0){
+                                adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                            }else{
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }
+
                         }
+                    }else{
 
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                    } else {
-                        tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
-                        list.addAll(bean.getList());
-                        adapter.notifyDataSetChanged();
+                        ViewUtils.showDeleteDialog(getActivity(),bean.getMessage());
 
-                        if(list.size()%10==0){
-                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }
-
+//                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
+//                        getActivity().finish();
                     }
+
 
                 } else {
 
@@ -253,7 +276,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+//        courseId = "2222";
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
@@ -270,6 +293,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
             map.put("userId", userId);      //
             map.put("toUserId", toUserId);      //      回复的目标用户id（注：当回复时需要，评论不需要传）
             map.put("commentId", commentId);      //所属评论的id（注：当回复时需要，评论不需要传）
+            map.put("linkId", linkId);      //回复id
 
         }
 
@@ -290,11 +314,12 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
 //                            hiddenInputLayout();
                             page = 1;
                             list.clear();
+                            noDataFlag = true;
                             requestData();
                         }
 
                     } else {
-
+                        Toast.makeText(context,bean.getMessage(),Toast.LENGTH_SHORT).show();
 
                     }
 //                    list.addAll(bean.getList());
@@ -307,13 +332,14 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
         });
     }
 
-    public void toReply(String commentContent,String toUserId, String commentId, String commentName, int index){
+    public void toReply(String commentContent,String toUserId, String commentId, String commentName, int index,String linkId){
 
 
         this.toUserId = toUserId;
         this.commentId = commentId;
         this.index = index;
         this.commentName = commentName;
+        this.linkId = linkId;
 
 
         if (TextUtils.isEmpty(commentId)) {       //  评论
@@ -371,6 +397,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
 
             itemBean.setReplyName(realName);       //  回复人姓名
             itemBean.setReplyToName(commentName);      //  被回复人姓名
+            itemBean.setRid(commentId);
 
             list.get(index).getReplys().add(itemBean);
             adapter.notifyDataSetChanged();

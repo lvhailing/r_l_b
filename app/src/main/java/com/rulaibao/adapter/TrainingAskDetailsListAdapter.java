@@ -28,6 +28,7 @@ import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 
@@ -39,26 +40,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *  问题详情 adapter
- *
+ * 问题详情 adapter
  */
 public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
     private MouldList<ResultAskDetailsAnswerItemBean> arrayList;
     private String questionId = "";
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default);
     private String userId = null;
-    public TrainingAskDetailsListAdapter(Context context, MouldList<ResultAskDetailsAnswerItemBean> arrayList,String questionId) {
+
+    public TrainingAskDetailsListAdapter(Context context, MouldList<ResultAskDetailsAnswerItemBean> arrayList, String questionId) {
         super(context);
         this.arrayList = arrayList;
         this.questionId = questionId;
 
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
@@ -68,14 +66,28 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("正加载更多...");
                     break;
                 case NO_LOAD_MORE:
                     //隐藏加载更多
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setPadding(0, 50, 0, 0);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
                     break;
             }
         }
@@ -91,18 +103,18 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder holder1 = (ViewHolder) holder;
         int index = position;
-        if(getmHeaderView()!=null){
-            index = position-1;
+        if (getmHeaderView() != null) {
+            index = position - 1;
         }
         holder1.tvTrainingAskDetailsManagerName.setText(arrayList.get(index).getAnswerName());
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getAnswerPhoto(),holder1.ivTrainingAskDetailsManager,displayImageOptions);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getAnswerPhoto(), holder1.ivTrainingAskDetailsManager, displayImageOptions);
         holder1.tvAskDetailsContent.setText(arrayList.get(index).getAnswerContent());
         holder1.tvAskDetailsTime.setText(arrayList.get(index).getAnswerTime());
         holder1.tvAskDetailsMessageCount.setText(arrayList.get(index).getCommentCount());
         holder1.tvAskDetailsZanCount.setText(arrayList.get(index).getLikeCount());
-        if(arrayList.get(index).getLikeStatus().equals("yes")){
+        if (arrayList.get(index).getLikeStatus().equals("yes")) {
             holder1.ivAskDetailsZan.setImageResource(R.mipmap.img_zaned_icon);
-        }else{
+        } else {
             holder1.ivAskDetailsZan.setImageResource(R.mipmap.img_zan_icon);
         }
 
@@ -111,69 +123,43 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String,Object> map = new HashMap<>();
-                map.put("questionId",questionId);
-                map.put("answerId",arrayList.get(finalIndex).getAnswerId());
-                RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,map,false);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("questionId", questionId);
+                map.put("answerId", arrayList.get(finalIndex).getAnswerId());
+                RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity) context, map, false);
             }
         });
 
-            holder1.llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        holder1.llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
 
 
-                    if(!PreferenceUtil.isLogin()){
-                        HashMap<String,Object> map = new HashMap<>();
+                if (!PreferenceUtil.isLogin()) {
+                    HashMap<String, Object> map = new HashMap<>();
 
 
-                        RlbActivityManager.toLoginActivity((BaseActivity)context,map,false);
-                    }else{
-                        if(!PreferenceUtil.getCheckStatus().equals("success")){
+                    RlbActivityManager.toLoginActivity((BaseActivity) context, map, false);
+                } else {
+                    if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
-                            new AlertDialog.Builder(context)
+                        ViewUtils.showToSaleCertificationDialog(context, "您还未认证，是否去认证");
+                    } else {
 
-                                    .setMessage("您还未认证，是否去认证")
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            HashMap<String,Object> map = new HashMap<>();
-
-                                            map.put("realName",PreferenceUtil.getUserRealName());
-                                            map.put("status",PreferenceUtil.getCheckStatus());
-
-                                            RlbActivityManager.toSaleCertificationActivity((BaseActivity)context,map,false);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
-
-                        }else{
-
-                            if(arrayList.get(finalIndex).getLikeStatus().equals("no")){
-                                requestLikeData(arrayList.get(finalIndex).getAnswerId(),finalIndex);
-                                holder1.llAskDetailsZan.setClickable(false);
-                            }
-
-
+                        if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
+                            requestLikeData(arrayList.get(finalIndex).getAnswerId(), finalIndex);
+                            holder1.llAskDetailsZan.setClickable(false);
                         }
+
+
                     }
+                }
 
 
 //                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
+            }
+        });
 
 
     }
@@ -185,8 +171,11 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-
-
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         map.put("answerId", answerId);      //  问题id
         map.put("userId", userId);
 //        map.put("likeStatus", likeStatus);
@@ -198,13 +187,13 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
                 if (params.result != null) {
 
                     ResultInfoBean bean = (ResultInfoBean) params.result;
-                    if(bean.getFlag().equals("true")){
+                    if (bean.getFlag().equals("true")) {
                         arrayList.get(index).setLikeStatus("yes");
                         int count = Integer.parseInt(arrayList.get(index).getLikeCount());
-                        arrayList.get(index).setLikeCount((count+1)+"");
+                        arrayList.get(index).setLikeCount((count + 1) + "");
                         notifyDataSetChanged();
-                    }else{
-
+                    } else {
+                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -217,9 +206,9 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 
     @Override
     public int getItem() {
-        if(mHeaderView!=null){
+        if (mHeaderView != null) {
             return arrayList.size() + 2;
-        }else{
+        } else {
             return arrayList.size() + 1;
         }
 
@@ -227,7 +216,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_training_ask_details_manager)
         CircularImage ivTrainingAskDetailsManager;
         @BindView(R.id.tv_training_ask_details_manager_name)

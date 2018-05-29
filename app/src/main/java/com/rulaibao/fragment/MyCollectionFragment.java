@@ -63,7 +63,6 @@ public class MyCollectionFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            currentPage = 1;
             requestData();
         }
     }
@@ -77,7 +76,7 @@ public class MyCollectionFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("category", type);
 
-        Log.i("hh", this + "userId ------ " + userId);
+//        Log.i("hh", this + "userId ------ " + userId);
         Log.i("hh", this + "category ------ " + type);
 
         HtmlRequest.getCollectionListData(context, param, new BaseRequester.OnRequestListener() {
@@ -116,7 +115,7 @@ public class MyCollectionFragment extends Fragment {
                 }
                 vs.setDisplayedChild(0);
 
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                if (totalList.size() % 10 == 0) {
                     myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.PULLUP_LOAD_MORE);
                 } else {
                     myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.NO_LOAD_MORE);
@@ -136,7 +135,6 @@ public class MyCollectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
-        Log.i("hh", "onCreateView --- ");
         initView(view);
         initListener();
         return view;
@@ -147,9 +145,7 @@ public class MyCollectionFragment extends Fragment {
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
         tv_empty.setText("暂无收藏");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
 
         initRecyclerView();

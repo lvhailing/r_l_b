@@ -70,6 +70,16 @@ public class TrainingAskListAdapter extends RecyclerBaseAapter<RecyclerView.View
                     footerViewHolder.tvFooterMore.setLayoutParams(lp);
 //                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                     break;
+
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
+                    break;
             }
         }
     }

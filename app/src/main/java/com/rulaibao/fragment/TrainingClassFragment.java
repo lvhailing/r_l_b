@@ -42,6 +42,7 @@ public class TrainingClassFragment extends BaseFragment {
     private int page = 1;
     private String typeCode = "";
     private MouldList<ResultClassIndexItemBean> courseList;
+    private boolean noDataFlag = true;      //  控制无数据不加载
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class TrainingClassFragment extends BaseFragment {
             }
             typeCode = getArguments().getString(KEY);         //  解决初始点击fragment拿不到参数的问题
             page = 1;
-
+            noDataFlag = true;
             requestIndexData();//
 //            scrollView.smoothScrollTo(0, 0);
         } else {
@@ -102,10 +103,13 @@ public class TrainingClassFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
+                    if(noDataFlag){
+                        adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
-                    page++;
-                    requestIndexData();
+                        page++;
+                        requestIndexData();
+                    }
+
 
                 }
 
@@ -139,14 +143,18 @@ public class TrainingClassFragment extends BaseFragment {
             public void onRequestFinished(BaseParams params) {
 
                 if(params.result!=null){
-
                     ResultClassIndexBean bean = (ResultClassIndexBean)params.result;
                     if(bean.getCourseList().size()==0){
 
                         if(page!=1){
                             page--;
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }else{
+                            adapter.setNoDataMessage("暂无课程");
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            noDataFlag = false;
                         }
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+
 
                     }else{
                         courseList.addAll(bean.getCourseList());

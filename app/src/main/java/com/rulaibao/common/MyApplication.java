@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -23,8 +26,14 @@ import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.SystemInfo;
 import com.mob.MobSDK;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+
+import static com.rulaibao.activity.RecommendActivity.getSDPath;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
@@ -78,6 +87,11 @@ public class MyApplication extends Application {
         //3.1.4版本 ShareSDK 初始化
         MobSDK.init(this);
 
+        try {
+            saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.ic_share)), "share.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /****
@@ -98,6 +112,50 @@ public class MyApplication extends Application {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
 
     }
+
+    private Bitmap drawableToBitamp(Drawable drawable) {
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        return bd.getBitmap();
+    }
+
+    /**
+     * 保存图片的方法 保存到sdcard
+     *
+     * @throws Exception
+     */
+    public  void saveImage(Bitmap bitmap, String imageName)
+            throws Exception {
+        String filePath = isExistsFilePath();
+        FileOutputStream fos = null;
+        File file = new File(filePath, imageName);
+        try {
+            fos = new FileOutputStream(file);
+            if (null != fos) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取缓存文件夹目录 如果不存在创建 否则则创建文件夹
+     *
+     * @return filePath
+     */
+    private static String isExistsFilePath() {
+        String filePath = getSDPath() + CACHE;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return filePath;
+    }
+    private final static String CACHE = "/rulaibao/imgs";
 
 
     public interface NetListener {

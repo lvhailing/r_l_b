@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingAskActivity;
+import com.rulaibao.activity.TrainingTopicDetailsActivity;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleDetailsTopicItemBean;
@@ -50,17 +51,20 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
     private String circleId = "";
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
     private String userId = null;
-    public TrainingMyCircleDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicItemBean> arrayList, String circleId) {
+    private boolean isJoin = false;
+
+    public void setJoin(boolean join) {
+        isJoin = join;
+    }
+
+    public TrainingMyCircleDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicItemBean> arrayList, String circleId, boolean isJoin) {
         super(context);
         this.arrayList = arrayList;
         this.circleId = circleId;
+        this.isJoin = isJoin;
         layoutInflater = LayoutInflater.from(context);
 
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -87,9 +91,15 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
+                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params1);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
+                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params2);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("正加载更多...");
                     break;
                 case NO_LOAD_MORE:
@@ -97,13 +107,25 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                     break;
                 case NO_LOAD_BLACK:
+                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params3);
                     //隐藏加载更多  留空白
                     footerViewHolder.tvFooterMore.setText("");
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     ViewGroup.LayoutParams lp = footerViewHolder.tvFooterMore.getLayoutParams();
                     lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     lp.height = ViewUtils.dip2px(context, 40);//lp.height=LayoutParams.WRAP_CONTENT;
                     footerViewHolder.tvFooterMore.setLayoutParams(lp);
 //                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
                     break;
             }
         }
@@ -152,6 +174,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
             holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zan_icon);
         }
 
+        final int finalIndex1 = index;
         holder1.llCircleDetailsZan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,38 +189,21 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 
                 }else{
                     if(!PreferenceUtil.getCheckStatus().equals("success")){
-
-                        new AlertDialog.Builder(context)
-
-                                .setMessage("您还未认证，是否去认证")
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        HashMap<String,Object> map = new HashMap<>();
-
-                                        map.put("realName",PreferenceUtil.getUserRealName());
-                                        map.put("status",PreferenceUtil.getCheckStatus());
-
-                                        RlbActivityManager.toSaleCertificationActivity((BaseActivity)context,map,false);
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
+                        ViewUtils.showToSaleCertificationDialog(context,"您还未认证，是否去认证");
 
 
                     }else{
 
                         if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
-                            requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
-                            holder1.llCircleDetailsZan.setClickable(false);
+
+                            if(isJoin){
+                                Toast.makeText(context, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
+                            }else{
+                                requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
+                                holder1.llCircleDetailsZan.setClickable(false);
+                            }
+
+
                         }
 
                     }
@@ -221,6 +227,13 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
         //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
+
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         map.put("appTopicId", appTopicId);      //  话题id
         map.put("userId", userId);
 //        map.put("likeStatus", likeStatus);
@@ -238,7 +251,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
                         arrayList.get(index).setLikeCount((count+1)+"");
                         notifyDataSetChanged();
                     }else{
-
+                        Toast.makeText(context,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     }
 
 

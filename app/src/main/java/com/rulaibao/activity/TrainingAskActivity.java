@@ -23,6 +23,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
@@ -157,43 +158,20 @@ public class TrainingAskActivity extends BaseActivity {
             String checkStatus = PreferenceUtil.getCheckStatus();
             if(!checkStatus.equals("success")){
 
-                new AlertDialog.Builder(this)
 
-                        .setMessage("您还未认证，是否去认证")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                HashMap<String,Object> map = new HashMap<>();
-
-                                map.put("realName",PreferenceUtil.getUserRealName());
-                                map.put("status",PreferenceUtil.getCheckStatus());
-
-                                RlbActivityManager.toSaleCertificationActivity(TrainingAskActivity.this,map,false);
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-
-
+                ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
 
             }else{
 
                 HashMap<String,Object> map = new HashMap<>();
-                if(typeBean.size()==0){
-                    Toast.makeText(context,"请联系管理员添加问题类型",Toast.LENGTH_SHORT).show();
-                }else{
-                    map.put("type",typeBean);
-                    RlbActivityManager.toTrainingToAskActivity(this,map,false);
+                if(typeBean!=null){
+                    if(typeBean.size()==0){
+                        Toast.makeText(context,"请联系管理员添加问题类型",Toast.LENGTH_SHORT).show();
+                    }else{
+                        map.put("type",typeBean);
+                        RlbActivityManager.toTrainingToAskActivity(this,map,false);
+                    }
                 }
-
 
             }
         }

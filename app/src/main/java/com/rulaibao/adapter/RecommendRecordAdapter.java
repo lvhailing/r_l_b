@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.rulaibao.R;
 import com.rulaibao.bean.RecommendRecordList2B;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.StringUtil;
 
 
 /**
@@ -62,15 +63,15 @@ public class RecommendRecordAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_invitation_name.setText(list.get(position).getRealName());
-            itemViewHolder.tv_invitation_phone.setText(list.get(position).getMobile());
+            itemViewHolder.tv_invitation_phone.setText(StringUtil.replaceSubString(list.get(position).getMobile()));
             String status = list.get(position).getCheckStatus();
             if ("init".equals(status)) {
             itemViewHolder.tv_status.setText("未认证");
             }else if ("submit".equals(status)){
             itemViewHolder.tv_status.setText("待认证");
-            }else if ("success ".equals(status)){
+            }else if ("success".equals(status)){
                 itemViewHolder.tv_status.setText("认证成功");
-            }else if ("fail ".equals(status)){
+            }else if ("fail".equals(status)){
                 itemViewHolder.tv_status.setText("认证失败");
             }
 

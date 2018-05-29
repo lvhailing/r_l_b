@@ -86,7 +86,6 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
-            currentPage = 1;
             requestData();
         }
     }
@@ -97,9 +96,7 @@ public class PolicyRecordListFragment extends Fragment {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
         tv_empty.setText("暂无保单记录");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -158,8 +155,8 @@ public class PolicyRecordListFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("status", status);
 
-        Log.i("hh", this + " 保单列表 userId: " + userId);
-        Log.i("hh", this + " 保单列表 status: " + status);
+//        Log.i("hh", this + " 保单列表 -- userId: " + userId);
+//        Log.i("hh", this + " 保单列表 -- status: " + status);
 
         HtmlRequest.getPolicyRecordListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -176,16 +173,21 @@ public class PolicyRecordListFragment extends Fragment {
                 }
 
                 data = (PolicyRecordList1B) params.result;
-                ((PolicyRecordListActivity) context).refreshTabTitle(data);
+
                 // 没有认证的用户无保单记录
                 if ("false".equals(data.getFlag())) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(context, data.getMessage() + "", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, data.getMessage() + "", Toast.LENGTH_SHORT).show();
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
                     return;
                 }
+
+                // 更新顶部 Tab 数据
+                ((PolicyRecordListActivity) context).refreshTabTitle(data);
+
                 MouldList<PolicyRecordList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -200,10 +202,10 @@ public class PolicyRecordListFragment extends Fragment {
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
                 } else {
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);

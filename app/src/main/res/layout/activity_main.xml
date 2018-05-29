@@ -11,10 +11,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/main_color_yellow"/>
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_bottom_lines"/>
 
     <include layout="@layout/bottom"/>
 </LinearLayout>

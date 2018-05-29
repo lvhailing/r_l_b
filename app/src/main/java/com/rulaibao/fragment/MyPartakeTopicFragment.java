@@ -57,8 +57,7 @@ public class MyPartakeTopicFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) { //页面可见时调接口刷新数据
-
+        if (isVisibleToUser) {
             //获取话题列表数据
             requestTopicData();
         }
@@ -85,14 +84,12 @@ public class MyPartakeTopicFragment extends Fragment {
     private void initView(View view) {
         context = getActivity();
 
-        vs = (ViewSwitcher)view.findViewById(R.id.vs);
+        vs = (ViewSwitcher) view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
         tv_empty.setText("未参与话题");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -108,9 +105,10 @@ public class MyPartakeTopicFragment extends Fragment {
 
     private void requestTopicData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId",userId);
+        param.put("userId", userId);
         param.put("page", currentPage + "");
-        Log.i("hh", this +"--- userId:" + userId);
+
+//        Log.i("hh", this +"--- userId:" + userId);
 
         HtmlRequest.getMyPartakeTopicListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -129,6 +127,7 @@ public class MyPartakeTopicFragment extends Fragment {
                 MyTopicList1B data = (MyTopicList1B) params.result;
                 MouldList<MyTopicList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -143,10 +142,10 @@ public class MyPartakeTopicFragment extends Fragment {
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.PULLUP_LOAD_MORE);
                 } else {
                     myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.NO_LOAD_MORE);

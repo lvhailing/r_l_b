@@ -27,6 +27,7 @@ import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.CircularImage;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
         }
 
         holder.tvMycircleName.setText(arrayList.get(position).getCircleName());
-        holder.tvMycircleDescription.setText(arrayList.get(position).getCircleName());
+        holder.tvMycircleDescription.setText(arrayList.get(position).getCircleDesc());
 
         ImageLoader.getInstance().displayImage(arrayList.get(position).getCirclePhoto(),holder.ivMycircleSign,displayImageOptions);
 
@@ -110,41 +111,14 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
                     }else{
                         if(!PreferenceUtil.getCheckStatus().equals("success")){
 
-                            new AlertDialog.Builder(context)
+                            ViewUtils.showToSaleCertificationDialog(context,"您还未认证，是否去认证");
 
-                                    .setMessage("您还未认证，是否去认证")
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-
-
-                                            HashMap<String,Object> map = new HashMap<>();
-
-                                            map.put("realName",PreferenceUtil.getUserRealName());
-                                            map.put("status",PreferenceUtil.getCheckStatus());
-
-                                            RlbActivityManager.toSaleCertificationActivity((BaseActivity)context,map,false);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
 
 
                         }else{
                             requestAddCircle(arrayList.get(position).getCircleId(),userId);
                         }
                     }
-
-
-
 
                 }
             });
@@ -155,10 +129,8 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
 
         }
 
-
         return convertView;
     }
-
 
     static class ViewHolder {
         @BindView(R.id.iv_mycircle_sign)
@@ -206,9 +178,5 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
             }
         });
     }
-
-
-
-
 
 }

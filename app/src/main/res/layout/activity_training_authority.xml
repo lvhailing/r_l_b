@@ -27,8 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/img_arrow_right"
-            android:layout_alignParentRight="true"
+
             android:layout_centerVertical="true"
+            android:visibility="invisible"
 
             />
 
@@ -38,7 +39,8 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/iv_authority_arrow"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dip"
+            android:layout_alignParentRight="true"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@mipmap/img_set_on"/>

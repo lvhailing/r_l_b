@@ -1,9 +1,11 @@
 package com.rulaibao.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.TagLostException;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.TitleBar;
@@ -513,22 +516,23 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
             if ("longTermInsurance".equals(type)) {//长期险---有预约
                 rl_appointment.setVisibility(View.VISIBLE);
                 rl_appointmented.setVisibility(View.GONE);
-                tv_appointment_minimumPremium.setText(data.getMinimumPremium() + "元起");
+                tv_appointment_minimumPremium.setText(setTextStyle2(this,data.getMinimumPremium()));
                 if ("success".equals(data.getCheckStatus())) {
-                    tv_appointment_promotionmoney.setText("推广费:" + data.getPromotionMoney()+"%");
+
+                    tv_appointment_promotionmoney.setText(setTextStyle1(this,data.getPromotionMoney()));
                 } else {
-                    tv_appointment_promotionmoney.setText("推广费: 认证可见");
+                    tv_appointment_promotionmoney.setText(setTextStyle1(this,"认证可见"));
                 }
 
             } else if ("shortTermInsurance".equals(type)) {//短期险---计划书购买
 
                 rl_appointment.setVisibility(View.GONE);
                 rl_appointmented.setVisibility(View.VISIBLE);
-                tv_appointmented_minimumPremium.setText(data.getMinimumPremium() + "元起");
+                tv_appointmented_minimumPremium.setText(setTextStyle2(this,data.getMinimumPremium()));
                 if ("success".equals(data.getCheckStatus())) {
-                    tv_appointmented_promotionmoney.setText("推广费:" + data.getPromotionMoney()+"%");
+                    tv_appointmented_promotionmoney.setText(setTextStyle1(this,data.getPromotionMoney()));
                 } else {
-                    tv_appointmented_promotionmoney.setText("推广费: 认证可见");
+                    tv_appointmented_promotionmoney.setText(setTextStyle1(this,"认证可见"));
                 }
 
             }
@@ -582,6 +586,29 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
 
         Log.d("VACK", doc.toString());
         return doc.toString();
+    }
+    private static SpannableStringBuilder setTextStyle1(Context context, String str) {
+        String str3;
+        String str1= "推广费:";
+        String str2=str1+str;
+        if ("认证可见".equals(str)){
+             str3=str2+"";
+        }else{
+             str3=str2+"%";
+        }
+        SpannableStringBuilder ssb= StringUtil.setTextStyle(context, str1, str2, str3,
+                R.color.txt_black2, R.color.txt_black1, R.color.txt_black1,
+                14, 16, 14, 0, 0, 0);
+        return  ssb;
+    }
+    private static SpannableStringBuilder  setTextStyle2(Context context, String str) {
+        String str1= str;
+        String str2=str1+"元起";
+        String str3=str2+"";
+        SpannableStringBuilder ssb= StringUtil.setTextStyle(context, str1, str2, str3,
+                R.color.txt_black1, R.color.txt_black2, R.color.txt_black2,
+                16, 14, 14, 0, 0, 0);
+        return  ssb;
     }
 
 }

@@ -1,8 +1,8 @@
 apply plugin: 'com.mob.sdk'
 
 MobSDK {
-    appKey "25acb50b3637c"
-    appSecret "2e3fd03e80f368bcffebfeb8a30e8729"
+    appKey "25f027148d31b"
+    appSecret "3d88c1913809f955e99859b42ae9f10d"
 
     ShareSDK {
 
@@ -13,8 +13,8 @@ MobSDK {
             QZone {
                 id 4
                 sortId 4
-                appId ""
-                appKey ""
+                appId "1106879880"
+                appKey "rVjNmSeRie8VEV4c"
                 shareByAppClient true
                 bypassApproval false
                 enable true
@@ -54,8 +54,8 @@ MobSDK {
             QQ {
                 id 3
                 sortId 3
-                appId ""
-                appKey ""
+                appId "1106879880"
+                appKey "rVjNmSeRie8VEV4c"
                 shareByAppClient true
                 bypassApproval false
                 enable true

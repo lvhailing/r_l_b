@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.widget.DoubleScaleImageView;
 import com.rulaibao.widget.ZoomImageView;
@@ -39,7 +40,7 @@ import butterknife.ButterKnife;
  *
  */
 
-public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
     private Context context;
 
@@ -50,52 +51,88 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_FOOTER = 1;   //  footer布局
 
 
-    //上拉加载更多
-    public static final int PULLUP_LOAD_MORE = 0;
-    //正在加载中
-    public static final int LOADING_MORE = 1;
-    //没有加载更多 隐藏
-    public static final int NO_LOAD_MORE = 2;
-
-    //上拉加载更多状态-默认为0
-    private int mLoadMoreStatus = 0;
     private View itemview;
     private ImageView imageView;
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_traffining_recommend,R.mipmap.img_traffining_recommend,R.mipmap.img_traffining_recommend);
     public TrainingClassPPTAdapter(Context context, ArrayList<String> arrayList) {
+        super(context);
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
+        View view = layoutInflater.inflate(R.layout.activity_training_class_ppt_item, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
-    public int getItemCount() {
-        return arrayList.size()+1;
-    }
+    public void initHolderData(RecyclerView.ViewHolder holder, int position) {
+        final ViewHolder holder1 = (ViewHolder) holder;
 
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType == TYPE_ITEM) {
-            // 填充布局
-
-            itemview = layoutInflater.inflate(R.layout.activity_training_class_ppt_item,parent, false);
-            ViewHolder holder = new ViewHolder(itemview);
-            return holder;
-        } else if (viewType == TYPE_FOOTER) {
-            View view = layoutInflater.inflate(R.layout.activity_training_hot_ask_footer, parent, false);
-            FooterViewHolder holder = new FooterViewHolder(view);
-            return holder;
+        int index = position;
+        if (getmHeaderView() != null) {
+            index = position - 1;
         }
 
-        return null;
+        ImageLoader.getInstance().displayImage(arrayList.get(position),holder1.ivPpt);
+
+        final int finalIndex = index;
+        holder1.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                imageView = new ImageView(context);
+                imageView.setOnTouchListener(new TouchListener());
+
+                ImageLoader.getInstance().displayImage(arrayList.get(finalIndex), imageView, displayImageOptions, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String s, View view) {
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+
+                    }
+                }, new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String s, View view, int i, int i1) {
+
+                    }
+                });
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(imageView);
+                builder.show();
+//                    AlertDialog alert = builder.create();
+            }
+        });
+
+    }
+
+    @Override
+    public int getItem() {
+        if (mHeaderView != null) {
+            return arrayList.size() + 2;
+        } else {
+            return arrayList.size() + 1;
+        }
     }
 
     @Override
@@ -103,74 +140,42 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (holder instanceof ViewHolder) {
 
-            final ViewHolder holder1 = (ViewHolder) holder;
 
-            ImageLoader.getInstance().displayImage(arrayList.get(position),holder1.ivPpt);
-
-//            holder1.tv_training_name.setText(arrayList.get(position).toString());
-//            itemViewHolder.tv_policy_number.setText(str);
-//            itemViewHolder.tv_commission.setText(str);
-
-//            View view = layoutInflater.inflate(R.layout.activity_training_class_ppt_item, null);
-
-            holder1.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-                    imageView = new ImageView(context);
-                    imageView.setOnTouchListener(new TouchListener());
-
-                    ImageLoader.getInstance().displayImage(arrayList.get(position), imageView, displayImageOptions, new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String s, View view) {
-
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String s, View view, FailReason failReason) {
-
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String s, View view) {
-
-                        }
-                    }, new ImageLoadingProgressListener() {
-                        @Override
-                        public void onProgressUpdate(String s, View view, int i, int i1) {
-
-                        }
-                    });
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setView(imageView);
-                    builder.show();
-//                    AlertDialog alert = builder.create();
-                }
-            });
-
-
+            initHolderData(holder, position);
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
+                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params1);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
+                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params2);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("正加载更多...");
                     break;
                 case NO_LOAD_MORE:
+                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params3);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setPadding(0,50,0,0);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
                     break;
 
             }
@@ -200,24 +205,6 @@ public class TrainingClassPPTAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    class FooterViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_footer_more)
-        TextView tvFooterMore;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-
-            ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    loadMoreData.getMoreData();
-
-                }
-            });
-        }
-
-    }
 
     /**
      * 更新加载更多状态

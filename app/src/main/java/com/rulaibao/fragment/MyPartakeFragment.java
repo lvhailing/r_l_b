@@ -73,13 +73,6 @@ public class MyPartakeFragment extends Fragment {
         context = getActivity();
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-
-//        for (int i = 0; i < 10; i++) {
-//            MyPartakeList2B bean = new MyPartakeList2B();
-//            bean.setTitle("中纪委发文中纪委发文" + "10" + i);
-//            totalList.add(bean);
-//
-//        }
         initRecyclerView();
     }
 

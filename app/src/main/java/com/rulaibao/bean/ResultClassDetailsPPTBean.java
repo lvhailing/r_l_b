@@ -10,7 +10,25 @@ import java.util.ArrayList;
 public class ResultClassDetailsPPTBean implements IMouldType {
 
 
-    ArrayList<String> pptImgs;      //
+    private ArrayList<String> pptImgs;      //
+    private String flag;
+    private String message;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public ArrayList<String> getPptImgs() {
         return pptImgs;

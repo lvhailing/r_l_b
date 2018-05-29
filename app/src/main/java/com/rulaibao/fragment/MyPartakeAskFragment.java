@@ -84,14 +84,12 @@ public class MyPartakeAskFragment extends Fragment {
     private void initView(View view) {
         context = getActivity();
 
-        vs = (ViewSwitcher)view.findViewById(R.id.vs);
+        vs = (ViewSwitcher) view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
         tv_empty.setText("未参与提问");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }
@@ -109,7 +107,7 @@ public class MyPartakeAskFragment extends Fragment {
         param.put("userId", userId);
         param.put("page", currentPage + "");
 
-        Log.i("hh", this + "-- userId:" + userId);
+//        Log.i("hh", this + "-- userId:" + userId);
         HtmlRequest.getMyPartakeAskListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -127,6 +125,7 @@ public class MyPartakeAskFragment extends Fragment {
                 MyAskList1B data = (MyAskList1B) params.result;
                 MouldList<MyAskList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -141,10 +140,10 @@ public class MyPartakeAskFragment extends Fragment {
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
                 } else {
                     myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);

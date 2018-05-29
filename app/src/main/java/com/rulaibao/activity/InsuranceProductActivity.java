@@ -65,6 +65,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
     private ImageView iv_right_btn;
     private ImageView iv_back;
     private Intent intent;
+    private InsuranceProduct1B data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,11 +86,13 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
         h_scroll_view= (HorizontalScrollView) findViewById(R.id.h_scroll_view);
         mViewGroup = (ViewGroup) findViewById(R.id.viewgroup);
         iv_right_btn= (ImageView) findViewById(R.id.iv_right_insurance);
+        iv_right_btn.setClickable(false);
         iv_back= (ImageView) findViewById(R.id.iv_back);
         iv_right_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     intent = new Intent(mContext, SearchActivity.class);
+                    intent.putStringArrayListExtra("companyList",data.getCompanyList());
                     mContext.startActivity(intent);
             }
         });
@@ -242,7 +245,8 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
                         }, 1000);
                         return;
                     }
-                    InsuranceProduct1B data= (InsuranceProduct1B) params.result;
+                    data= (InsuranceProduct1B) params.result;
+                    iv_right_btn.setClickable(true);
                     MouldList<InsuranceProduct2B> everyList = data.getList();
                     if ((everyList == null || everyList.size() == 0) && currentPage != 1) {
                         Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();

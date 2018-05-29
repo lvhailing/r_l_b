@@ -19,6 +19,11 @@ import android.widget.EditText;
 
 import com.rulaibao.R;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.rulaibao.activity.TrainingCircleDetailsActivity;
+import com.rulaibao.base.BaseActivity;
+import com.rulaibao.dialog.CancelNormalDialog;
+
+import java.util.HashMap;
 
 public class ViewUtils {
 
@@ -312,5 +317,45 @@ public class ViewUtils {
 		}
 	}
 
+
+	//  去认证
+
+	public static void showToSaleCertificationDialog(final Context context, String msg) {
+		CancelNormalDialog dialog = new CancelNormalDialog(context, new CancelNormalDialog.IsCancel() {
+			@Override
+			public void onConfirm() {
+				HashMap<String, Object> map = new HashMap<>();
+				map.put("realName", PreferenceUtil.getUserRealName());
+				map.put("status", PreferenceUtil.getCheckStatus());
+				RlbActivityManager.toSaleCertificationActivity((BaseActivity)context, map, false);
+
+			}
+
+			@Override
+			public void onCancel() {
+
+			}
+		},"去认证");
+		dialog.setTitle(msg);
+		dialog.show();
+	}
+
+//  删除提示
+
+	public static void showDeleteDialog(final Activity context, String msg) {
+		CancelNormalDialog dialog = new CancelNormalDialog(context, new CancelNormalDialog.IsCancel() {
+			@Override
+			public void onConfirm() {
+				context.finish();
+			}
+
+			@Override
+			public void onCancel() {
+
+			}
+		});
+		dialog.setTitle(msg);
+		dialog.show();
+	}
 
 }

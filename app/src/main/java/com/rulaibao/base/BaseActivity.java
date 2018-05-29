@@ -45,6 +45,14 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+                userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+//            token = DESUtil.decrypt(PreferenceUtil.getToken());
+                phone = DESUtil.decrypt(PreferenceUtil.getPhone());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
        /* //设置状态栏为透明
         initSystemBarTint();
         //设置状态栏为字体黑色
@@ -63,13 +71,7 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
         mContext = this;
 
 
-        try {
-            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-//            token = DESUtil.decrypt(PreferenceUtil.getToken());
-            phone = DESUtil.decrypt(PreferenceUtil.getPhone());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         apl.registReceiver();
     }
 
@@ -88,6 +90,17 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
         MyApplication apl = (MyApplication) getApplicationContext();
         apl.addNetListener(this);
         onNetWorkChange(apl.netType);
+
+        try {
+            if (TextUtils.isEmpty(userId)){
+                userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+//            token = DESUtil.decrypt(PreferenceUtil.getToken());
+                phone = DESUtil.decrypt(PreferenceUtil.getPhone());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

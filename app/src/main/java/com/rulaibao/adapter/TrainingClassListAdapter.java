@@ -24,9 +24,7 @@ import butterknife.ButterKnife;
 import static com.rulaibao.uitls.ImageUtils.getClassImgIndex;
 
 /**
- *
  * 课程列表
- *
  */
 
 public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
@@ -44,7 +42,7 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
-        View view = layoutInflater.inflate(R.layout.activity_training_class_item, parent,false);
+        View view = layoutInflater.inflate(R.layout.activity_training_class_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -53,34 +51,34 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
     public void initHolderData(RecyclerView.ViewHolder holder, int position) {
         ViewHolder holder1 = (ViewHolder) holder;
         int index = position;
-        if(getmHeaderView()!=null){
-            index = position-1;
+        if (getmHeaderView() != null) {
+            index = position - 1;
         }
         holder1.tvTrainingName.setText(arrayList.get(index).getTypeName());
         holder1.tvTrainingClassTime.setText(arrayList.get(index).getCourseTime());
         holder1.ivTrainingRecommend.setImageResource(getClassImgIndex(arrayList.get(index).getCourseLogo()));
 
         holder1.tvTrainingRecommendManager.setText(arrayList.get(index).getCourseName());
-        holder1.tvTrainingRecommendManagerName.setText(arrayList.get(index).getSpeechmakeName()+" "+arrayList.get(position).getPosition());
+        holder1.tvTrainingRecommendManagerName.setText(arrayList.get(index).getSpeechmakeName() + " " + arrayList.get(position).getPosition());
 
         final int finalIndex = index;
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String,Object> map = new HashMap<>();
-                map.put("id",arrayList.get(finalIndex).getCourseId());
-                map.put("speechmakeId",arrayList.get(finalIndex).getSpeechmakeId());
-                map.put("courseId",arrayList.get(finalIndex).getCourseId());
-                RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context,map, false);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("id", arrayList.get(finalIndex).getCourseId());
+                map.put("speechmakeId", arrayList.get(finalIndex).getSpeechmakeId());
+                map.put("courseId", arrayList.get(finalIndex).getCourseId());
+                RlbActivityManager.toTrainingClassDetailsActivity((BaseActivity) context, map, false);
             }
         });
     }
 
     @Override
     public int getItem() {
-        if(mHeaderView!=null){
+        if (mHeaderView != null) {
             return arrayList.size() + 2;
-        }else{
+        } else {
             return arrayList.size() + 1;
         }
     }
@@ -95,14 +93,36 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
+                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params1);
                     footerViewHolder.tvFooterMore.setText("数据加载中...");
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     break;
                 case LOADING_MORE:
+                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params2);
                     footerViewHolder.tvFooterMore.setText("正加载更多...");
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     break;
                 case NO_LOAD_MORE:
+                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params3);
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                    break;
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
+
+                    break;
+                default:
+
                     break;
             }
         }

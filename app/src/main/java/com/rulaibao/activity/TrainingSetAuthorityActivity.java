@@ -5,6 +5,7 @@ package com.rulaibao.activity;
  */
 
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ import com.rulaibao.widget.TitleBar;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +38,7 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
 
     private String auditStatus = "";        //  是否需要验证
     private String circleId = "";
-
+    private String allowClick = "true";     //  处理频繁点击攻击服务器参数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +110,13 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
                         if (auditStatus.equals("yes")) {
                             ibAuthority.setImageResource(R.mipmap.img_set_on);
                             auditStatus = "yes";
+                            Toast.makeText(TrainingSetAuthorityActivity.this,"验证开启！加入圈子需要审核！",Toast.LENGTH_SHORT).show();
+
                         } else {
                             ibAuthority.setImageResource(R.mipmap.img_set_off);
                             auditStatus = "no";
+                            Toast.makeText(TrainingSetAuthorityActivity.this,"验证关闭！加入圈子不需要审核！",Toast.LENGTH_SHORT).show();
+
                         }
 
                     }else{
@@ -128,6 +135,7 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
                 }else{
 
                 }
+                ibAuthority.setClickable(true);
             }
         });
     }
@@ -135,14 +143,34 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
 
     @OnClick(R.id.ib_authority)
     public void onClick(){
-        if (auditStatus.equals("yes")) {
 
-            auditStatus = "no";
-        } else {
 
-            auditStatus = "yes";
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                allowClick = "true";
+
+            }
+
+        },3000);
+
+        if(allowClick.equals("true")){
+            if (auditStatus.equals("yes")) {
+
+                auditStatus = "no";
+            } else {
+
+                auditStatus = "yes";
+            }
+            allowClick = "false";
+            ibAuthority.setClickable(false);
+            requestSetAuthorityData();
+        }else{
+            Toast.makeText(TrainingSetAuthorityActivity.this,"请勿频繁操作",Toast.LENGTH_SHORT).show();
         }
-        requestSetAuthorityData();
+
 
 
     }

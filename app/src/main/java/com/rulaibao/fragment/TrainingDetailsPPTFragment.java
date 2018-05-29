@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
 import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingClassPPTAdapter;
@@ -52,6 +53,7 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
     public TrainingDetailsPPTFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
+
     public TrainingDetailsPPTFragment() {
     }
 
@@ -74,13 +76,11 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
     protected void initViews() {
         courseId = getArguments().getString("courseId");
         pptImgs = new ArrayList<String>();
-
-        test();
         initRecyclerView();
         requestData();
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context) {
             @Override
@@ -92,12 +92,13 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
         };
 
         lvPpt.setLayoutManager(layoutManager);
-        adapter = new TrainingClassPPTAdapter(getActivity(),pptImgs);
+        adapter = new TrainingClassPPTAdapter(getActivity(), pptImgs);
         lvPpt.setAdapter(adapter);
 
 
         lvPpt.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -119,11 +120,9 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
         });
 
 
-
     }
 
     public void requestData() {
-
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
@@ -138,30 +137,22 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
                     ResultClassDetailsPPTBean bean = (ResultClassDetailsPPTBean) params.result;
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                    if (bean.getPptImgs().size() == 0) {
+                        adapter.setNoDataMessage("暂无PPT信息");
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                    } else {
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
 
-                    pptImgs.addAll(bean.getPptImgs());
-                    adapter.notifyDataSetChanged();
+                        pptImgs.addAll(bean.getPptImgs());
+                        adapter.notifyDataSetChanged();
+                    }
+
 
                 } else {
 
                 }
             }
         });
-    }
-
-
-
-
-    public void test() {
-
-        for (int i = 0; i < 10; i++) {
-
-            String sd = string + "11" + i;
-            arrayList.add(sd);
-
-        }
-
     }
 
     @Override

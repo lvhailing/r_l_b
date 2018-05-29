@@ -18,11 +18,13 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="16sp"
+        android:visibility="gone"
         android:textColor="@color/gray_dark"
         android:text="热门搜词:"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:visibility="gone"
         android:background="@color/gray_light"/>
 
     <com.rulaibao.uitls.TagFlowLayout
@@ -32,6 +34,7 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
+        android:visibility="gone"
         android:paddingRight="10dp"
         app:max_select="1"/>
     <TextView

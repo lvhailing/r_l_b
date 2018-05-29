@@ -94,9 +94,7 @@ public class PolicyBookingFragment extends Fragment {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) view.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) view.findViewById(R.id.img_empty);
         tv_empty.setText("暂无预约");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecyclerView();
     }

@@ -99,7 +99,7 @@ public class AppUpgradeService extends Service {
 		mDownloadUrl = intent.getStringExtra("downloadUrl");
 
 		if (Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
+				android.os.Environment.MEDIA_MOUNTED)) {
 			destDir = new File(Environment.getExternalStorageDirectory()
 					.getPath() + MyApplication.mDownloadPath);
 			if (destDir.exists()) {
@@ -149,7 +149,7 @@ public class AppUpgradeService extends Service {
 		@Override
 		public void run() {
 			if (Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED)) {
+					android.os.Environment.MEDIA_MOUNTED)) {
 				if (destDir == null) {
 					destDir = new File(Environment
 							.getExternalStorageDirectory().getPath()

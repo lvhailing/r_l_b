@@ -88,11 +88,11 @@
 
 
     <TextView
+        android:id="@+id/tv_answer_detailas_line"
         android:layout_width="match_parent"
         android:layout_height="2dip"
         android:layout_marginLeft="15dip"
         android:layout_marginTop="15dip"
-        android:layout_marginBottom="5dip"
         android:layout_marginRight="15dip"
         android:background="@color/gray_light"
         />

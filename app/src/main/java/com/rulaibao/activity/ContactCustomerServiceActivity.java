@@ -16,7 +16,9 @@ import com.rulaibao.bean.OK2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.StringUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.LinkedHashMap;
@@ -33,6 +35,7 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
     private TextView tv_change_text;  // 用户输入时字数的变化
     private Button btn_submit; // 提交 按钮
     private String content = "";
+    private String realName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,12 +168,16 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
     private void requestData() {
         content = et_consulting_questions.getText().toString();
         phone = et_phone.getText().toString();
-
+        try {
+            realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("content", content);
-        param.put("mobile",  phone);
-        param.put("userId",  "");
-        param.put("userName",  "");
+        param.put("mobileNumber",  phone);
+        param.put("userId",  userId);
+        param.put("userName", realName);
 
         HtmlRequest.getFeedbackData(this, param, new BaseRequester.OnRequestListener() {
             @Override

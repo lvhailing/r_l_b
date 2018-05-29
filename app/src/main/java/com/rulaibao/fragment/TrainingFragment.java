@@ -315,12 +315,16 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.iv_training_boutique_first:
                 HashMap<String, Object> classFirstMap = new HashMap<>();
-                if (bean != null&&bean.getQualityCourseList().size()>0) {
-                    if(bean.getQualityCourseList().get(0)!=null){
-                        classFirstMap.put("id", bean.getQualityCourseList().get(0).getCourseId());
-                        classFirstMap.put("speechmakeId", bean.getQualityCourseList().get(0).getSpeechmakeId());
-                        classFirstMap.put("courseId", bean.getQualityCourseList().get(0).getCourseId());
-                        RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classFirstMap, false);
+                if (bean != null) {
+                    if(bean.getQualityCourseList()!=null){
+                        if(bean.getQualityCourseList().size()>0){
+                            if(bean.getQualityCourseList().get(0)!=null){
+                                classFirstMap.put("id", bean.getQualityCourseList().get(0).getCourseId());
+                                classFirstMap.put("speechmakeId", bean.getQualityCourseList().get(0).getSpeechmakeId());
+                                classFirstMap.put("courseId", bean.getQualityCourseList().get(0).getCourseId());
+                                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classFirstMap, false);
+                            }
+                        }
                     }
 
                 }
@@ -329,12 +333,16 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.iv_training_boutique_second:
                 HashMap<String, Object> classSecondMap = new HashMap<>();
-                if (bean != null&&bean.getQualityCourseList().size()>1) {
-                    if(bean.getQualityCourseList().get(1)!=null){
-                        classSecondMap.put("id", bean.getQualityCourseList().get(1).getCourseId());
-                        classSecondMap.put("speechmakeId", bean.getQualityCourseList().get(1).getSpeechmakeId());
-                        classSecondMap.put("courseId", bean.getQualityCourseList().get(1).getCourseId());
-                        RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classSecondMap, false);
+                if (bean != null) {
+                    if(bean.getQualityCourseList()!=null){
+                        if(bean.getQualityCourseList().size()>1){
+                            if(bean.getQualityCourseList().get(1)!=null){
+                                classSecondMap.put("id", bean.getQualityCourseList().get(1).getCourseId());
+                                classSecondMap.put("speechmakeId", bean.getQualityCourseList().get(1).getSpeechmakeId());
+                                classSecondMap.put("courseId", bean.getQualityCourseList().get(1).getCourseId());
+                                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classSecondMap, false);
+                            }
+                        }
                     }
 
                 }
@@ -343,13 +351,19 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.iv_training_boutique_third:
                 HashMap<String, Object> classThirdMap = new HashMap<>();
-                if (bean != null&&bean.getQualityCourseList().size()>2) {
-                    if(bean.getQualityCourseList().get(2)!=null){
-                        classThirdMap.put("id", bean.getQualityCourseList().get(2).getCourseId());
-                        classThirdMap.put("speechmakeId", bean.getQualityCourseList().get(2).getSpeechmakeId());
-                        classThirdMap.put("courseId", bean.getQualityCourseList().get(2).getCourseId());
-                        RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classThirdMap, false);
+                if (bean != null) {
+                    if(bean.getQualityCourseList()!=null){
+                        if(bean.getQualityCourseList().size()>2){
+                            if(bean.getQualityCourseList().get(2)!=null){
+                                classThirdMap.put("id", bean.getQualityCourseList().get(2).getCourseId());
+                                classThirdMap.put("speechmakeId", bean.getQualityCourseList().get(2).getSpeechmakeId());
+                                classThirdMap.put("courseId", bean.getQualityCourseList().get(2).getCourseId());
+                                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classThirdMap, false);
+                            }
+
+                        }
                     }
+
 
                 }
 
@@ -357,14 +371,17 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.iv_training_boutique_forth:
                 HashMap<String, Object> classforthMap = new HashMap<>();
-                if (bean != null&&bean.getQualityCourseList().size()>3) {
-                    if(bean.getQualityCourseList().get(3)!=null){
-                        classforthMap.put("id", bean.getQualityCourseList().get(3).getCourseId());
-                        classforthMap.put("speechmakeId", bean.getQualityCourseList().get(3).getSpeechmakeId());
-                        classforthMap.put("courseId", bean.getQualityCourseList().get(3).getCourseId());
-                        RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classforthMap, false);
+                if (bean != null) {
+                    if(bean.getQualityCourseList()!=null){
+                        if(bean.getQualityCourseList().size()>3){
+                            if(bean.getQualityCourseList().get(3)!=null){
+                                classforthMap.put("id", bean.getQualityCourseList().get(3).getCourseId());
+                                classforthMap.put("speechmakeId", bean.getQualityCourseList().get(3).getSpeechmakeId());
+                                classforthMap.put("courseId", bean.getQualityCourseList().get(3).getCourseId());
+                                RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classforthMap, false);
+                            }
+                        }
                     }
-
 
                 }
 
@@ -460,7 +477,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     public void requestHotAskData() {
 
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", hotPage + "");
@@ -473,11 +489,20 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                     ResultHotAskBean bean = (ResultHotAskBean) params.result;
 //                    if(){}
+
+//                    bean.getList().clear();
+//                    hotPage = 1;
                     if (bean.getList().size() == 0 && hotPage != 1) {     //  非首次的无数据情况
                         hotPage--;
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
-                    } else {
+                    } else if(bean.getList().size() == 0 && hotPage == 1){      //  没有数据
+
+                        adapter.setNoDataMessage("暂无热门问答");
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+
+
+                    }else{
 //                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 //                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
 

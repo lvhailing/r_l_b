@@ -79,9 +79,7 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
         tv_empty.setText("暂无待续保保单");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();
     }
@@ -121,12 +119,13 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
                 // 没有认证的用户 无续保提醒
                 if ("false".equals(data.getFlag())) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(mContext, data.getMessage() + "", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(mContext, data.getMessage() + "", Toast.LENGTH_SHORT).show();
                     renewalReminderAdapter.changeMoreStatus(renewalReminderAdapter.NO_LOAD_MORE);
                     return;
                 }
                 MouldList<RenewalReminderList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
 
@@ -142,10 +141,11 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+
+                vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     renewalReminderAdapter.changeMoreStatus(renewalReminderAdapter.PULLUP_LOAD_MORE);
                 } else {
                     renewalReminderAdapter.changeMoreStatus(renewalReminderAdapter.NO_LOAD_MORE);

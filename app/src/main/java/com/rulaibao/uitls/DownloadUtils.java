@@ -1,32 +1,35 @@
 package com.rulaibao.uitls;
 
-import com.mob.tools.network.SSLSocketFactoryEx;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyStore;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.zip.GZIPInputStream;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class DownloadUtils {
 	private static final int CONNECT_TIMEOUT = 10000;
@@ -40,7 +43,7 @@ public class DownloadUtils {
 	}
 
 	public static long download(String urlStr, File dest, boolean append,
-								DownloadListener downloadListener) throws Exception {
+                                DownloadListener downloadListener) throws Exception {
 		
 		int downloadProgress = 0;
 		long remoteSize = 0;
@@ -74,147 +77,70 @@ public class DownloadUtils {
 		HttpParams params = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(params, CONNECT_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(params, DATA_TIMEOUT);
-		HttpClient httpClient;
-
-		try {
-			KeyStore trustStore = KeyStore.getInstance(KeyStore
-					.getDefaultType());
-			trustStore.load(null, null);
-
-			SSLSocketFactory sf = new SSLSocketFactoryEx(trustStore);
-			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-			params = new BasicHttpParams();
-			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-			HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-
-			SchemeRegistry registry = new SchemeRegistry();
-			registry.register(new Scheme("http", PlainSocketFactory
-					.getSocketFactory(), 80));
-			registry.register(new Scheme("https", sf, 443));
-
-			ClientConnectionManager ccm = new ThreadSafeClientConnManager(
-					params, registry);
-
-
-			httpClient = new DefaultHttpClient(ccm,params);
-
-		} catch (Exception e) {
-			httpClient = new DefaultHttpClient(params);
-		}
-
-
-
-
-
-		InputStream is = null;
-		FileOutputStream os = null;
-		try {
-			HttpResponse response = httpClient.execute(request);
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				is = response.getEntity().getContent();
-				remoteSize = response.getEntity().getContentLength();
-				org.apache.http.Header contentEncoding = response
-						.getFirstHeader("Content-Encoding");
-				if (contentEncoding != null
-						&& contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-					is = new GZIPInputStream(is);
-				}
-				os = new FileOutputStream(dest, append);
-				byte buffer[] = new byte[DATA_BUFFER];
-				int readSize = 0;
-				while ((readSize = is.read(buffer)) > 0) {
-					os.write(buffer, 0, readSize);
-					os.flush();
-					totalSize += readSize;
-					if (downloadListener != null) {
-						downloadProgress = (int) (totalSize * 100 / remoteSize);
-						downloadListener.downloading(downloadProgress);
-					}
-				}
-				if (totalSize < 0) {
-					totalSize = 0;
-				}
-			}
-		} finally {
-			if (os != null) {
-				os.close();
-			}
-			if (is != null) {
-				is.close();
-			}
-		}
-
-		if (totalSize < 0) {
-			throw new Exception("Download file fail: " + urlStr);
-		}
-
-		if (downloadListener != null) {
-			downloadListener.downloaded();
-		}
-
-		return totalSize;
-
-
-		/*int downloadProgress = 0;
-		long remoteSize = 0;
-		int currentSize = 0;
-		long totalSize = -1;
-
-		if (!append && dest.exists() && dest.isFile()) {
-			dest.delete();
-		}
-
-		if (append && dest.exists() && dest.exists()) {
-			FileInputStream fis = null;
-			try {
-				fis = new FileInputStream(dest);
-				currentSize = fis.available();
-			} catch (IOException e) {
-				throw e;
-			} finally {
-				if (fis != null) {
-					fis.close();
-				}
-			}
-		}
-
-		HttpGet request = new HttpGet(urlStr);
-
-		if (currentSize > 0) {
-			request.addHeader("RANGE", "bytes=" + currentSize + "-");
-		}
-
-		HttpParams params = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(params, CONNECT_TIMEOUT);
-		HttpConnectionParams.setSoTimeout(params, DATA_TIMEOUT);
 		HttpClient httpClient = new DefaultHttpClient(params);
 
-
 		InputStream is = null;
 		FileOutputStream os = null;
-		try {
 
-			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new TrustManager[] { new X509TrustManager() {
-						@Override
-						public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
+		if (urlStr.contains("http:")){
+			try {
+				HttpResponse response = httpClient.execute(request);
+				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					is = response.getEntity().getContent();
+					remoteSize = response.getEntity().getContentLength();
+					org.apache.http.Header contentEncoding = response
+							.getFirstHeader("Content-Encoding");
+					if (contentEncoding != null
+							&& contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+						is = new GZIPInputStream(is);
+					}
+					os = new FileOutputStream(dest, append);
+					byte buffer[] = new byte[DATA_BUFFER];
+					int readSize = 0;
+					while ((readSize = is.read(buffer)) > 0) {
+						os.write(buffer, 0, readSize);
+						os.flush();
+						totalSize += readSize;
+						if (downloadListener != null) {
+							downloadProgress = (int) (totalSize * 100 / remoteSize);
+							downloadListener.downloading(downloadProgress);
 						}
+					}
+					if (totalSize < 0) {
+						totalSize = 0;
+					}
+				}
+			} finally {
+				if (os != null) {
+					os.close();
+				}
+				if (is != null) {
+					is.close();
+				}
+			}
+		}else if(urlStr.contains("https:")){
+			try {
 
-						@Override
-						public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+				SSLContext sc = SSLContext.getInstance("TLS");
+				sc.init(null, new TrustManager[] { new X509TrustManager() {
+							@Override
+							public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
 
-						}
+							}
 
-						@Override
-						public X509Certificate[] getAcceptedIssuers() {
-							return new X509Certificate[0];
-						}
-					} },
-					new SecureRandom());
-			HttpsURLConnection
-					.setDefaultSSLSocketFactory(sc.getSocketFactory());
+							@Override
+							public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+
+							}
+
+							@Override
+							public X509Certificate[] getAcceptedIssuers() {
+								return new X509Certificate[0];
+							}
+						} },
+						new SecureRandom());
+				HttpsURLConnection
+						.setDefaultSSLSocketFactory(sc.getSocketFactory());
 //			HttpsURLConnection
 //					.setDefaultHostnameVerifier(new HostnameVerifier() {
 //						@Override
@@ -222,54 +148,55 @@ public class DownloadUtils {
 //							return true;
 //						}
 //					});
-			SSLSocketFactory.getSocketFactory().setHostnameVerifier(new AllowAllHostnameVerifier());
+				SSLSocketFactory.getSocketFactory().setHostnameVerifier(new AllowAllHostnameVerifier());
+				HttpsURLConnection conn = (HttpsURLConnection) new URL(urlStr)
+						.openConnection();
+				conn.setDoOutput(true);
+				conn.setDoInput(true);
+				conn.connect();
 
-			HttpsURLConnection conn = (HttpsURLConnection) new URL(urlStr)
-					.openConnection();
-			conn.setDoOutput(true);
-			conn.setDoInput(true);
-			conn.connect();
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
+				HttpResponse response = httpClient.execute(request);
+				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					is = response.getEntity().getContent();
+					remoteSize = response.getEntity().getContentLength();
+					org.apache.http.Header contentEncoding = response
+							.getFirstHeader("Content-Encoding");
 
-			HttpResponse response = httpClient.execute(request);
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				is = response.getEntity().getContent();
-				remoteSize = response.getEntity().getContentLength();
-				org.apache.http.Header contentEncoding = response
-						.getFirstHeader("Content-Encoding");
+					//	验证https协议
+					SSLSocketFactory.getSocketFactory().setHostnameVerifier(new AllowAllHostnameVerifier());
 
-				//	验证https协议
-//				SSLSocketFactory.getSocketFactory().setHostnameVerifier(new AllowAllHostnameVerifier());
-
-				if (contentEncoding != null
-						&& contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-					is = new GZIPInputStream(is);
-				}
-				os = new FileOutputStream(dest, append);
-				byte buffer[] = new byte[DATA_BUFFER];
-				int readSize = 0;
-				while ((readSize = is.read(buffer)) > 0) {
-					os.write(buffer, 0, readSize);
-					os.flush();
-					totalSize += readSize;
-					if (downloadListener != null) {
-						downloadProgress = (int) (totalSize * 100 / remoteSize);
-						downloadListener.downloading(downloadProgress);
+					if (contentEncoding != null
+							&& contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+						is = new GZIPInputStream(is);
+					}
+					os = new FileOutputStream(dest, append);
+					byte buffer[] = new byte[DATA_BUFFER];
+					int readSize = 0;
+					while ((readSize = is.read(buffer)) > 0) {
+						os.write(buffer, 0, readSize);
+						os.flush();
+						totalSize += readSize;
+						if (downloadListener != null) {
+							downloadProgress = (int) (totalSize * 100 / remoteSize);
+							downloadListener.downloading(downloadProgress);
+						}
+					}
+					if (totalSize < 0) {
+						totalSize = 0;
 					}
 				}
-				if (totalSize < 0) {
-					totalSize = 0;
+			} finally {
+				if (os != null) {
+					os.close();
+				}
+				if (is != null) {
+					is.close();
 				}
 			}
-		} finally {
-			if (os != null) {
-				os.close();
-			}
-			if (is != null) {
-				is.close();
-			}
+
 		}
 
 		if (totalSize < 0) {
@@ -303,7 +230,7 @@ public class DownloadUtils {
 				throws CertificateException { }
 
 		@Override
-		public X509Certificate[] getAcceptedIssuers() { return null; }*/
+		public X509Certificate[] getAcceptedIssuers() { return null; }
 
 	}
 }

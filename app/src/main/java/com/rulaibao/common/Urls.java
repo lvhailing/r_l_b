@@ -28,7 +28,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_OUTER_NET_DEBUG;
+    private static String EC_HOST = URL_DEBUG;
 
     /**
      * 版本更新
@@ -54,12 +54,13 @@ public class Urls {
     /**
      * url
      */
-    public static final String URL = EC_HOST + "";
+    public static final String URL = EC_HOST;
 
     /**
-     * 产品详情
+     * 产品详情分享
      */
     public static final String URL_SHARE_PRODUCT_DETAILS = EC_HOST + "product/detail/share/";
+
     /**
      * 登陆
      */
@@ -196,6 +197,17 @@ public class Urls {
     // 研修课程详情--PPT
     public static final String URL_TRAINING_CLASS_DETAILS_PPT = EC_HOST + "appCourse/detail/ppt";
 
+    // 课程详情分享（H5）
+    public static final String URL_SHARED_CLASS = EC_HOST + "appCourse/detail/share/content/";
+
+    // 问题详情（H5）
+    public static final String URL_SHARED_ASK = EC_HOST + "appQuestion/share/";
+
+    // 回答详情（H5）
+    public static final String URL_SHARED_ANSWER = EC_HOST + "appAnswer/share/";
+
+    // 话题详情（H5）
+    public static final String URL_SHARED_TOPIC = EC_HOST + "appTopic/share/";
 
     /************************************************* 研修模块end *****************************************************************/
     //首页

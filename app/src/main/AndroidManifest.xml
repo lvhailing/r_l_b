@@ -120,7 +120,9 @@
 
         <activity
             android:name="com.rulaibao.activity.TrainingClassDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            />
 
         <activity
             android:name="com.rulaibao.activity.TrainingToAskActivity"
@@ -322,6 +324,7 @@
             android:name=".photo_preview.PhotoPreviewAcForOne"
             android:screenOrientation="portrait"/>
 
+        <service android:name=".service.AppUpgradeService" />
     </application>
 
 </manifest>

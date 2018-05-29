@@ -48,6 +48,7 @@ public class TrainingAakFragment extends BaseFragment {
     private MouldList<ResultAskIndexItemBean> indexItemBeans;
     private int page = 1;
     private ResultAskTypeItemBean key;
+    private boolean noDataFlag = true;      //  控制无数据不加载
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class TrainingAakFragment extends BaseFragment {
             key = new ResultAskTypeItemBean();
             key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
             page = 1;
+            noDataFlag = true;
             requestAsk(key);
 
         } else {
@@ -104,10 +106,13 @@ public class TrainingAakFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                    if(noDataFlag){
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-                    page++;
-                    requestAsk(key);
+                        page++;
+                        requestAsk(key);
+                    }
+
 
                 }
 
@@ -131,7 +136,6 @@ public class TrainingAakFragment extends BaseFragment {
     //获取问答
     public void requestAsk(ResultAskTypeItemBean appQuestionType){
 
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
         map.put("appQuestionType",appQuestionType.getTypeCode());
@@ -142,14 +146,18 @@ public class TrainingAakFragment extends BaseFragment {
             public void onRequestFinished(BaseParams params) {
 
                 if(params.result!=null){
-
                     ResultAskIndexBean b = (ResultAskIndexBean)params.result;
                     if(b.getList().size()==0){
                         if(page!=1){
                             page--;
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
                         }else{
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            adapter.setNoDataMessage("暂无问答");
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            noDataFlag = false;
+
+
+//                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
 
                     }else{

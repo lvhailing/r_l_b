@@ -153,9 +153,9 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_recommend: // 推荐App给朋友
-                final String shareTitle=getString(R.string.login_title);
+                final String shareTitle=getString(R.string.shared_title);
                 final String shareText=getString(R.string.shared_message);
-                final String shareUrl = Urls.URL + "register/" + recommendCode + "/recommend";;
+                final String shareUrl = Urls.URL + "register/" + recommendCode + "/recommend";
 
                 ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
                     @Override
@@ -169,7 +169,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
                 dialog.show();
-         //       sharedSDK();
                 break;
             case R.id.tv_recommend_record: // 邀请记录
                 Intent intent = new Intent(this, RecommendRecordActivity.class);
@@ -179,129 +178,6 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
             default:
                 break;
-        }
-    }
-
-    private void sharedSDK() {
-        final OnekeyShare oks = new OnekeyShare();
-        // 关闭sso授权
-        oks.disableSSOWhenAuthorize();
-//        oks.addHiddenPlatform(WechatFavorite.NAME);// 隐藏微信收藏；
-
-        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
-            //自定义分享的回调想要函数
-            @Override
-            public void onShare(Platform platform, cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
-                String url = Urls.URL + "register/" + recommendCode + "/recommend";
-
-                //点击微信好友
-                if("Wechat".equals(platform.getName())){
-                    //微信分享应用 ,此功能需要微信绕开审核，需要使用项目中的wechatdemo.keystore进行签名打包
-                    //由于Onekeyshare没有关于应用分享的参数如setShareType等，我们需要通过自定义 分享来实现
-                    //比如下面设置了setTitle,可以覆盖oks.setTitle里面的title值
-                    paramsToShare.setTitle(getString(R.string.login_title));
-                    paramsToShare.setTitleUrl(url);
-                    paramsToShare.setText(getString(R.string.shared_message) + url);
-                    paramsToShare.setUrl(url);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
-//                    paramsToShare.setExtInfo("应用信息");
-//                    paramsToShare.setFilePath("xxxxx.apk");
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
-//                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/haidehui/imgs/haidehui.png");
-                }
-
-                //点击微信朋友圈
-                if("WechatMoments".equals(platform.getName())){
-                    paramsToShare.setTitle(getString(R.string.login_title));
-                    paramsToShare.setTitleUrl(url);
-                    paramsToShare.setText(getString(R.string.shared_message) + url);
-                    paramsToShare.setUrl(url);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
-                }
-
-                //点击QQ空间
-                if ("QZone".equals(platform.getName())){
-//                    paramsToShare.setTitle(getString(R.string.login_title));
-                    paramsToShare.setText(getString(R.string.shared_message) + url);
-                    paramsToShare.setTitleUrl(url);
-                    paramsToShare.setShareType(Platform.SHARE_WEBPAGE);// 如果分享网页，这个一定要加
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
-                }
-
-                //点击QQ
-                if ("QQ".equals(platform.getName())) {
-                    paramsToShare.setText(getString(R.string.shared_message) + url);
-                    paramsToShare.setTitle(getString(R.string.login_title));
-                    paramsToShare.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
-                    paramsToShare.setTitleUrl(url);
-                    paramsToShare.setUrl(url);
-                    paramsToShare.setSite(context.getString(R.string.app_name));
-                }
-                //点击信息
-                if ("ShortMessage".equals(platform.getName())) {
-                    paramsToShare.setText(getString(R.string.shared_message) + url);
-                    paramsToShare.setTitleUrl(url);
-                    paramsToShare.setUrl(url);
-                }
-
-            }
-        });
-
-        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle(getString(R.string.share));
-        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        // oks.setTitleUrl("http://www.vjinke.com");
-
-        // 自定义分享按钮
-        Bitmap enableLogo = BitmapFactory.decodeResource(context.getResources(), R.drawable.ssdk_logo_lianjie);
-        String label = "复制链接";
-        View.OnClickListener listener = new View.OnClickListener() {
-            public void onClick(View v) {
-                StringBuffer randomNum = new StringBuffer();
-                for (int i = 0; i < 6; i++) {
-                    int t = (int) (Math.random() * 10);
-                    randomNum.append(t);
-                }
-                ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setText(Urls.URL + "register/" + recommendCode + "/recommend");
-                Toast.makeText(context, "复制成功", Toast.LENGTH_SHORT).show();
-            }
-        };
-        oks.setCustomerLogo(enableLogo, label, listener);
-
-        oks.setCallback(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-//                Toast.makeText(context,"--------"+platform.getName(),Toast.LENGTH_SHORT).show();
-
-                if (platform.getName().equals("WechatMoments")) {
-
-                } else if (platform.getName().equals("Wechat")) {
-
-                } else if (platform.getName().equals("QZone")) {
-
-                } else if (platform.getName().equals("SinaWeibo")) {
-
-                } else if (platform.getName().equals("ShortMessage")) {
-
-                } else if (platform.getName().equals("QQ")) {
-
-                }
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-            }
-        });
-
-        if (!TextUtils.isEmpty(recommendCode)) {
-            // 启动分享GUI
-            oks.show(this);
         }
     }
 

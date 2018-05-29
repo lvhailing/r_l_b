@@ -64,8 +64,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private String[] mHot = new String[]
             {"E生保", "抗癌卫士", "平安保险 ", "保险", "人寿保险", "E生保",
                     "平安保险", "抗癌卫士", "人寿保险"};//固定的
-    private String[] mInsurance = new String[]
-            {"中国人寿", "阳光保险", "中华保险"};//固定的
     private TagFlowLayout mFlowLayoutHot;//热门搜词
     private TagFlowLayout mFlowLayoutInsurance;//保险公司
     private TagFlowLayout mFlowLayoutHistory;//历史搜索
@@ -74,6 +72,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private ImageView iv_delete_history;
     ListDataSave dataSave;
     boolean isDelete;
+    private ArrayList<String> company;
 
     private String name;//搜索除了保险字段
     private String companyName;//搜索保险字段
@@ -122,6 +121,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initData() {
+        company=getIntent().getStringArrayListExtra("companyList");
         bt_clear.setOnClickListener(this);
         tv_search_cancel.setOnClickListener(this);
         iv_delete_history.setOnClickListener(this);
@@ -144,9 +144,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     }
 
                     name=v.getText().toString();
-                    companyName="";
                     //请求数据要搜索的内容
-                    requestListData(name,companyName);
+                    requestListData(name);
                     return true;
                 }
                 return false;
@@ -173,9 +172,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 et_search.setSelection(et_search.getText().toString().length());
 
                 name = mHot[position];
-                companyName="";
-                //请求数据要搜索的内容
-                requestListData(name,companyName);
+                requestListData(name);
                 return true;
             }
         });
@@ -187,7 +184,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
     //保险公司
     private void flowLayoutInsurance() {
-        mFlowLayoutInsurance.setAdapter(new TagAdapter<String>(mInsurance){
+        mFlowLayoutInsurance.setAdapter(new TagAdapter<String>(company){
             @Override
             public View getView(FlowLayout parent, int position, String s){
                 TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.search_flow_item_tv,
@@ -200,13 +197,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent){
 
-                et_search.setText(mInsurance[position]);
+                et_search.setText(company.get(position));
                 et_search.setSelection(et_search.getText().toString().length());
 
-                name="";
-                companyName = mInsurance[position];
-                //请求数据要搜索的内容
-                requestListData(name,companyName);
+                name=company.get(position);
+                requestListData(name);
                 return true;
             }
         });
@@ -243,9 +238,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 et_search.setSelection(et_search.getText().toString().length());
 
                 name = listString.get(position).toString();
-                companyName = "";
-                //请求数据要搜索的内容
-                requestListData(name,companyName);
+                requestListData(name);
                 return true;
             }
         });
@@ -319,11 +312,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     /**
      * 获取保险产品搜索数据
      */
-    private void requestListData(String name,String companyName ) {
+    private void requestListData(String name) {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);
-        param.put("name",name);
-        param.put("companyName",companyName);
+        param.put("keyWord",name);
         try {
             HtmlRequest.getInsuranceProductSearch(mContext, param, new BaseRequester.OnRequestListener() {
                 @Override

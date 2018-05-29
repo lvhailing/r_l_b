@@ -2,6 +2,7 @@ package com.rulaibao.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rulaibao.R;
@@ -14,10 +15,12 @@ public class FooterViewHolder extends RecyclerView.ViewHolder
 {
 
     public TextView tvFooterMore;
+    public ImageView ivHotAskFooter;
 
     public FooterViewHolder(View itemView) {
         super(itemView);
         tvFooterMore = (TextView) itemView.findViewById(R.id.tv_footer_more);
+        ivHotAskFooter = (ImageView) itemView.findViewById(R.id.iv_hot_ask_footer);
         ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

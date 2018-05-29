@@ -138,7 +138,12 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             stringBuilder.append("'");
             stringBuilder.append(",");
         }
-        String sb=stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
+        String sb="";
+        if (selectPosSet.size()!=0){
+
+            sb=stringBuilder.toString().substring(0,stringBuilder.toString().length()-1);
+        }
+
         return sb;
     }
     private void initRefresh() {

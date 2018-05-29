@@ -18,9 +18,9 @@ import com.rulaibao.R;
 import java.util.ArrayList;
 
 /**
- * 取消 对话框
+ * 删除提示对话框
  */
-public class CancelNormalDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+public class DeleteMessageDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private Context mContext;
     private LayoutParams lp;
@@ -37,7 +37,7 @@ public class CancelNormalDialog extends Dialog implements DialogInterface.OnCanc
     private IsCancel onChanged = null;
     private String strConfirm = "确定";
 
-    public CancelNormalDialog(Context context, IsCancel onChanged) {
+    public DeleteMessageDialog(Context context, IsCancel onChanged) {
         super(context, R.style.Dialog);
         this.mContext = context;
         this.onChanged = onChanged;
@@ -60,7 +60,7 @@ public class CancelNormalDialog extends Dialog implements DialogInterface.OnCanc
         initView(mView);
     }
 
-    public CancelNormalDialog(Context context, IsCancel onChanged,String strConfirm) {
+    public DeleteMessageDialog(Context context, IsCancel onChanged, String strConfirm) {
         super(context, R.style.Dialog);
         this.strConfirm = strConfirm;
         this.mContext = context;

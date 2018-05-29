@@ -50,6 +50,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
 
     private ViewPagerForScrollView vp;
+    private boolean noDataFlag = true;      //  控制无数据不加载
 
     public TrainingDetailsCatalogFragment( ) {
     }
@@ -124,10 +125,13 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                    if(noDataFlag){
+                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
-                    page++;
-                    requestData();
+                        page++;
+                        requestData();
+                    }
+
 
                 }
 
@@ -167,8 +171,13 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                     if(bean.getCourseList().size()==0){
                         if(page!=1){
                             page--;
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }else{
+                            adapter.setNoDataMessage("暂无相关课程");
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            noDataFlag = false;
                         }
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+
                     }else{
                         courseList.addAll(bean.getCourseList());
 

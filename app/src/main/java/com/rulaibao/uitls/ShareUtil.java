@@ -40,7 +40,7 @@ public final class ShareUtil {
             oks.setText(text+url);
             oks.setTitleUrl(url);
             oks.setTitle(title);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
+            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setUrl(url);
             oks.setPlatform(Wechat.NAME);
         }else if(position==1){
@@ -48,13 +48,13 @@ public final class ShareUtil {
             oks.setTitle(title);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
+            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setPlatform(WechatMoments.NAME);
         }
         else if(position==2){
             oks.setText(text+url);
             oks.setTitle( title);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
+            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setTitleUrl(url);
             oks.setUrl(url);
             oks.setSite(context.getString(R.string.app_name));
@@ -65,7 +65,7 @@ public final class ShareUtil {
             oks.setText(text+url);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/rulaibao.png");
+            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setPlatform(QZone.NAME);
         }
         else if(position==4){
@@ -81,7 +81,7 @@ public final class ShareUtil {
                 randomNum.append(t);
             }
             ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            cm.setText(url);
+            cm.setText(text+url);
             Toast.makeText(context, "复制成功", Toast.LENGTH_SHORT).show();
             return;
         }

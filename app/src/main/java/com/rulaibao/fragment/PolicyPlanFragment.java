@@ -124,9 +124,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         iv_right_btn.setOnClickListener(this);
         vs = (ViewSwitcher) mView.findViewById(R.id.vs);
         TextView tv_empty = (TextView) mView.findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) mView.findViewById(R.id.img_empty);
         tv_empty.setText("暂无保单规划");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         fl_nologin = (FrameLayout) mView.findViewById(R.id.fl_nologin);
         btn_login = (Button) mView.findViewById(R.id.btn_login);

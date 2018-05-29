@@ -72,7 +72,7 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
         baseSetContentView(R.layout.activity_training_circle);
         initTopTitle();
         initView();
-        initData();
+
 
     }
 
@@ -215,6 +215,7 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
     }
 
     @Override

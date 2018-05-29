@@ -8,7 +8,7 @@
     android:paddingBottom="25dp">
     <TextView
         android:id="@+id/tv_home_promotionMoney"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
         android:textColor="@color/main_color_yellow"/>
     <TextView
         android:id="@+id/tv_home_promotionMoney_no"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:layout_gravity="center"

@@ -106,12 +106,19 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:paddingTop="20dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <ViewSwitcher
+            android:id="@+id/vs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:background="@color/gray_light"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
+            <include layout="@layout/ac_empty_view"/>
+        </ViewSwitcher>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

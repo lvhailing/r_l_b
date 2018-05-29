@@ -35,8 +35,13 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
     //没有加载更多 留空白布局
     public static final int NO_LOAD_BLACK = 3;
 
+    //没有数据
+    public static final int NO_DATA = 4;
+
     //上拉加载更多状态-默认为0
     protected int mLoadMoreStatus = 1;
+
+    protected String noDataMessage = "";
 
 
     public View mHeaderView;
@@ -44,6 +49,10 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
 
     public View getmHeaderView() {
         return mHeaderView;
+    }
+
+    public void setNoDataMessage(String noDataMessage) {
+        this.noDataMessage = noDataMessage;
     }
 
     public void setmHeaderView(View mHeaderView) {

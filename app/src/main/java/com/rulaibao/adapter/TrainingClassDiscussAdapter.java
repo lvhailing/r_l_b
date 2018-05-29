@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.bean.ResultClassDetailsDiscussBean;
 import com.rulaibao.bean.ResultClassDetailsDiscussItemBean;
 import com.rulaibao.network.BaseParams;
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
  *
  */
 
-public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
     private Context context;
 
@@ -49,90 +50,94 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int TYPE_FOOTER = 1;   //  footer布局
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
 
-    //上拉加载更多
-    public static final int PULLUP_LOAD_MORE = 0;
-    //正在加载中
-    public static final int LOADING_MORE = 1;
-    //没有加载更多 隐藏
-    public static final int NO_LOAD_MORE = 2;
-
-    //上拉加载更多状态-默认为0
-    private int mLoadMoreStatus = 0;
-
     private DiscussReply discussReply;
     private String speechmakeId = "";
     private String userId = "";
 
 
     public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList,DiscussReply discussReply,String speechmakeId) {
+        super(context);
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
         this.discussReply = discussReply;
         this.speechmakeId = speechmakeId;
+
+
+    }
+
+
+    @Override
+    public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
+        View view = layoutInflater.inflate(R.layout.activity_training_class_discuss_item, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void initHolderData(RecyclerView.ViewHolder holder, int position) {
+        ViewHolder holder1 = (ViewHolder) holder;
+
+        int index = position;
+        if (getmHeaderView() != null) {
+            index = position - 1;
+        }
+
+        holder1.tvTrainingDiscussName.setText(arrayList.get(index).getCommentName());
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(),holder1.ivTrainingDiscuss,displayImageOptions);
+        holder1.tvTrainingDiscussDate.setText(arrayList.get(index).getCommentTime());
+
+        holder1.tvTrainingDiscussContent.setText(arrayList.get(index).getCommentContent());
+
         try {
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if(arrayList.get(index).getReplys().size()==0){
+
+            holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
+            if(speechmakeId.equals(userId)){
+                holder1.tvDiscussReply.setVisibility(View.VISIBLE);
+
+                final int finalIndex = index;
+                holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        discussReply.reply(arrayList.get(finalIndex).getCommentId(),arrayList.get(finalIndex).getCid(),arrayList.get(finalIndex).getCommentName(),finalIndex,arrayList.get(finalIndex).getCid());
+                    }
+                });
+            }
+
+        }else{
+            holder1.tvDiscussReply.setVisibility(View.GONE);
+            holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
+
+            String str = arrayList.get(index).getReplys().get(0).getReplyName()+" 回复: "+arrayList.get(index).getReplys().get(0).getReplyContent();
+
+            SpannableStringBuilder style = new SpannableStringBuilder(str);
+
+            style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, arrayList.get(index).getReplys().get(0).getReplyName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            holder1.tvTrainingDiscussRepayContent.setText(style);
+        }
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType == TYPE_ITEM) {
-            // 填充布局
-
-            View view = layoutInflater.inflate(R.layout.activity_training_class_discuss_item, parent,false);
-            ViewHolder holder = new ViewHolder(view);
-            return holder;
-        } else if (viewType == TYPE_FOOTER) {
-            View view = layoutInflater.inflate(R.layout.activity_training_hot_ask_footer, parent, false);
-            FooterViewHolder holder = new FooterViewHolder(view);
-            return holder;
+    public int getItem() {
+        if (mHeaderView != null) {
+            return arrayList.size() + 2;
+        } else {
+            return arrayList.size() + 1;
         }
-        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolder) {
 
-            ViewHolder holder1 = (ViewHolder) holder;
-
-            holder1.tvTrainingDiscussName.setText(arrayList.get(position).getCommentName());
-            ImageLoader.getInstance().displayImage(arrayList.get(position).getCommentPhoto(),holder1.ivTrainingDiscuss,displayImageOptions);
-            holder1.tvTrainingDiscussDate.setText(arrayList.get(position).getCommentTime());
-
-            holder1.tvTrainingDiscussContent.setText(arrayList.get(position).getCommentContent());
-
-            if(arrayList.get(position).getReplys().size()==0){
-
-                holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
-                if(speechmakeId.equals(userId)){
-                    holder1.tvDiscussReply.setVisibility(View.VISIBLE);
-
-                    holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            discussReply.reply(arrayList.get(position).getCommentId(),arrayList.get(position).getCid(),arrayList.get(position).getCommentName(),position);
-                        }
-                    });
-                }
-
-            }else{
-                holder1.tvDiscussReply.setVisibility(View.GONE);
-                holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
-
-                String str = arrayList.get(position).getReplys().get(0).getReplyName()+" 回复: "+arrayList.get(position).getReplys().get(0).getReplyContent();
-
-                SpannableStringBuilder style = new SpannableStringBuilder(str);
-
-                style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), 0, arrayList.get(position).getReplys().get(0).getReplyName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                holder1.tvTrainingDiscussRepayContent.setText(style);
-            }
+            initHolderData(holder, position);
 
 
         } else if (holder instanceof FooterViewHolder) {
@@ -140,31 +145,40 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
+                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params1);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("数据加载中...");
                     break;
                 case LOADING_MORE:
+                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params2);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     footerViewHolder.tvFooterMore.setText("正加载更多...");
                     break;
                 case NO_LOAD_MORE:
+                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setLayoutParams(params3);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
                     //隐藏加载更多
                     footerViewHolder.tvFooterMore.setVisibility(View.GONE);
+                    break;
+
+                case NO_DATA:
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    footerViewHolder.itemView.setPadding(0,50,0,0);
+                    footerViewHolder.itemView.setLayoutParams(params);
+
+                    //没有数据
+                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
+                    footerViewHolder.tvFooterMore.setText(noDataMessage);
                     break;
 
             }
         }
 
     }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return arrayList.size()+1;
-    }
-
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.iv_training_discuss)
@@ -188,7 +202,7 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public interface DiscussReply{
 
-        public void reply(String toUserId,String commentId,String commentName,int index);
+        public void reply(String toUserId,String commentId,String commentName,int index,String linkId);
         public void refresh();
 
     }
@@ -205,20 +219,6 @@ public class TrainingClassDiscussAdapter extends RecyclerView.Adapter<RecyclerVi
             return TYPE_ITEM;
         }
     }
-
-    class FooterViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_footer_more)
-        TextView tvFooterMore;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-
-            ButterKnife.bind(this, itemView);
-
-        }
-
-    }
-
 
     /**
      * 更新加载更多状态

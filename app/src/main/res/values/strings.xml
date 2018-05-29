@@ -47,7 +47,7 @@
     <string name="translate_up_down_behavior">com.rulaibao.test.TranslateUpDownBehavior</string>
 
     <!-- 登录 -->
-    <string name="login_title">道德 专业 平等 利它</string>
+    <string name="login_title">道德    专业    平等    利它</string>
     <string name="login_phone">手机号：</string>
     <string name="login_password">密码：</string>
     <string name="login_forget_password">忘记密码？</string>
@@ -118,7 +118,8 @@
     <string name="product_appointment_btn">提交预约</string>
 
     <!-- 邀请好友内容 -->
-    <string name="shared_message">海德汇致力于打造最专业的客户服务，提供最前沿的海外产品，组织最舒适的线下体验，承办全方位的社交活动！</string>
+    <string name="shared_title">高效获客，高效成交</string>
+    <string name="shared_message">如来保是一款面向广大营销员伙伴们的应用软件，可以提供在线承保；在线计划书生成、分享；在线预约；投保状态实时跟踪；在线保单检视；风险缺口分析等全方位营销工具。</string>
 
     <!-- 客服电话 -->
     <string name="phone_number_format">4000000314</string>

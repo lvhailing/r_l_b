@@ -31,6 +31,7 @@ import com.rulaibao.bean.ResultCircleDetailsTopicDetailsBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicDetailsItemBean;
 import com.rulaibao.bean.ResultInfoBean;
 import com.rulaibao.bean.TestBean;
+import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -39,6 +40,7 @@ import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyRecyclerView;
@@ -47,6 +49,8 @@ import com.rulaibao.widget.TitleBar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
@@ -102,7 +106,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private int bottomOffset = 0;
     private int position;
     private View header;
+    private TitleBar title = null;
 
+    private String allowClick = "true";     //      处理频繁点击置顶操作
+    private String linkId = "";
+    private boolean noDataFlag = true;      //  控制无数据不加载
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +123,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     public void initData() {
+        noDataFlag = true;
         page = 1;
         commentItemBeans.clear();
         requestTopicDetailsData();
@@ -165,9 +174,15 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-                    page++;
-                    requestCircleCommentData();
+                    if(!(lastVisibleItem==1&&page==1)){
+                        if(noDataFlag){
+                            adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                            page++;
+                            requestCircleCommentData();
+                        }
+
+                    }
+
                 }
 
             }
@@ -206,12 +221,17 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     public void initHeadData() {
 
+
+        String id = "23232323";
+        String url = Urls.URL_SHARED_TOPIC+appTopicId;
+        title.setActivityParameters(url,id, appTopic.getCircleName(), appTopic.getTopicContent());
+
         ImageLoader.getInstance().displayImage(appTopic.getCreatorPhoto(), iv_answer_detatils_manager,displayImageOptions);
         tv_answer_details_manager_name.setText(appTopic.getCreatorName());
         tv_answer_details_content.setText(appTopic.getTopicContent());
         tv_training_topic_detils_name.setText(appTopic.getCircleName());
         tv_training_topic_detils_time.setText(appTopic.getCreateTime());
-        tv_answer_detailas_zan_count.setText("给他一个赞(" + appTopic.getLikeCount() + ")");
+        tv_answer_detailas_zan_count.setText("给Ta一个赞(" + appTopic.getLikeCount() + ")");
 //        tv_answer_details_comment_count.setText(appTopic.getCommentCount() + "评论");
 
         if (appTopic.getIsManager().equals("yes")) {
@@ -224,11 +244,32 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         tv_answer_details_settop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (appTopic.getIsTop().equals("yes")) {      //  已置顶     取消置顶
-                    requestTopData("no");
-                } else {
-                    requestTopData("yes");
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        allowClick = "true";
+
+                    }
+
+                },3000);
+
+                if(allowClick.equals("true")){
+                    allowClick = "false";
+                    if (appTopic.getIsTop().equals("yes")) {      //  已置顶     取消置顶
+                        tv_answer_details_settop.setClickable(false);
+                        requestTopData("no");
+                    } else {
+                        requestTopData("yes");
+                    }
+
+                }else{
+                    Toast.makeText(TrainingTopicDetailsActivity.this, "请勿频繁操作", Toast.LENGTH_SHORT).show();
                 }
+
+
 
             }
         });
@@ -245,35 +286,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                     }else{
                         if(!PreferenceUtil.getCheckStatus().equals("success")){
-
-                            new AlertDialog.Builder(TrainingTopicDetailsActivity.this)
-
-                                    .setMessage("您还未认证，是否去认证")
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            HashMap<String,Object> map = new HashMap<>();
-
-                                            map.put("realName",PreferenceUtil.getUserRealName());
-                                            map.put("status",PreferenceUtil.getCheckStatus());
-
-                                            RlbActivityManager.toSaleCertificationActivity(TrainingTopicDetailsActivity.this,map,false);
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .show();
+                            ViewUtils.showToSaleCertificationDialog(TrainingTopicDetailsActivity.this,"您还未认证，是否去认证");
 
                         }else{
                             if(appTopic.getIsJoin().equals("no")){
-                                Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后在进行相关操作", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
                             }else{
                                 requestLikeData();
                             }
@@ -329,11 +346,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                     } else {
                         if (bean.getCode().equals("1001")) {      //  参数错误
+
                             Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                         } else if (bean.getCode().equals("1002")) {        //  该话题已删除
-                            Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
-                            finish();
+                            ViewUtils.showDeleteDialog(TrainingTopicDetailsActivity.this,bean.getMessage());
+//                            Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
+//                            finish();
                         }
 
                     }
@@ -365,10 +384,17 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     if (bean.getList().size() == 0) {
                         if(page != 1){
                             page--;
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                        }else{
+                            adapter.setNoDataMessage("暂无评论");
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            noDataFlag = false;
+                            tv_answer_details_comment_count.setVisibility(View.GONE);
                         }
 
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+
                     } else {
+                        tv_answer_details_comment_count.setVisibility(View.VISIBLE);
                         tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
                         commentItemBeans.addAll(bean.getList());
                         adapter.notifyDataSetChanged();
@@ -391,9 +417,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
 
     private void initTopTitle() {
-        TitleBar title = (TitleBar) findViewById(R.id.rl_title);
+        title = (TitleBar) findViewById(R.id.rl_title);
+        title.showLeftImg(true);
+        title.setFromActivity("1000");
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_topic_details))
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_topic_details)).showMore(false).setTitleRightButton(R.drawable.ic_share_title)
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
             @Override
             public void onMenu(int id) {
@@ -426,35 +454,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 }else{
 
                     if(!PreferenceUtil.getCheckStatus().equals("success")){
-
-                        new AlertDialog.Builder(TrainingTopicDetailsActivity.this)
-
-                                .setMessage("您还未认证，是否去认证")
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .setPositiveButton("去认证", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        HashMap<String,Object> map = new HashMap<>();
-
-                                        map.put("realName",PreferenceUtil.getUserRealName());
-                                        map.put("status",PreferenceUtil.getCheckStatus());
-
-                                        RlbActivityManager.toSaleCertificationActivity(TrainingTopicDetailsActivity.this,map,false);
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
+                        ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
 
                     }else{
                         if(appTopic.getIsJoin().equals("no")){
-                            Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后在进行相关操作", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
                         }else{
                             if (TextUtils.isEmpty(commentId)) {       //  评论
                                 hiddenInputLayout();
@@ -476,6 +480,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                                 itemBean.setReplyName(realName);       //  回复人姓名
                                 itemBean.setReplyToName(replyToName);      //  被回复人姓名
+                                itemBean.setRid(linkId);
 
                                 commentItemBeans.get(index).getReplys().add(itemBean);
                                 adapter.notifyDataSetChanged();
@@ -519,6 +524,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             map.put("commentContent", commentContent);
             map.put("toUserId", toUserId);          //  被回复人id
             map.put("userId", userId);
+            map.put("linkId", linkId);
         }
 
 
@@ -634,7 +640,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             tv_answer_details_settop.setText("取消置顶");
                             appTopic.setIsTop("yes");
                         }
-
+                        Toast.makeText(TrainingTopicDetailsActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(TrainingTopicDetailsActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     }
@@ -643,6 +649,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 } else {
 
                 }
+                tv_answer_details_settop.setClickable(true);
             }
         });
     }
@@ -677,11 +684,12 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     // 回复回调
     @Override
-    public void reply(String commentId, String toUserId, String replyToName, int index) {
+    public void reply(String commentId, String toUserId, String replyToName, int index,String linkId) {
         this.commentId = commentId;
         this.toUserId = toUserId;
         this.replyToName = replyToName;
         this.index = index;
+        this.linkId = linkId;
         etTopicDetails.setHint("回复" + replyToName + "：");
 
         setBottomOffset(index);
@@ -692,15 +700,23 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     //  弹出键盘
 
     public void setBottomOffset(int position) {
-
+//        position = position-1;
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvTopicDetails.getLayoutManager();
         int index = layoutManager.findFirstVisibleItemPosition();
-//        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
-//        int index = 0;
-        if (index > position) {
-            index = position;
+        int indexCom = layoutManager.findFirstCompletelyVisibleItemPosition();
+        if(indexCom-index>1){
+            index++;
         }
-        bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
+//        int index = 0;
+
+        if (index > position) {
+//            index = position;
+            bottomOffset = -lvTopicDetails.getChildAt(index-position).getBottom();
+        }else{
+            bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
+        }
+
+
         if (!deal(position))
             showInputLyaout();
     }
@@ -736,7 +752,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     private void putOffset(int offset) {
         lvTopicDetails.smoothScrollBy(0, offset);
-        oldPosition = position;
+        oldPosition = index;
     }
 
 

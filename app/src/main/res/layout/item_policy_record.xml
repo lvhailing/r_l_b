@@ -95,7 +95,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="小金子"
-                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@color/txt_black2"
                         android:textSize="14sp"/>
                 </LinearLayout>
@@ -118,7 +119,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20000.00元"
-                       android:maxLength="15"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@color/txt_black2"
                         android:textSize="14sp"/>
                 </LinearLayout>
@@ -141,7 +143,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3年"
-                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@color/txt_black2"
                         android:textSize="14sp"/>
                 </LinearLayout>

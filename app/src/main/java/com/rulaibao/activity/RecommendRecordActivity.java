@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.rulaibao.R;
@@ -43,6 +44,7 @@ public class RecommendRecordActivity extends BaseActivity{
     private MouldList<RecommendRecordList2B> totalList = new MouldList<>();
     private RecommendRecordAdapter recommendRecordAdapter;
     private int currentPage = 1;    //当前页
+    private ViewSwitcher vs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,9 @@ public class RecommendRecordActivity extends BaseActivity{
     }
 
     private void initView() {
+        vs = (ViewSwitcher)findViewById(R.id.vs);
+        TextView tv_empty = (TextView)findViewById(R.id.tv_empty);
+        tv_empty.setText("暂无推荐记录");
         tv_amount_people = (TextView) findViewById(R.id.tv_amount_people);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
@@ -167,7 +172,8 @@ public class RecommendRecordActivity extends BaseActivity{
                 RecommendRecordList1B  data = (RecommendRecordList1B) params.result;
                 tv_amount_people.setText(data.getTotal());
                 MouldList<RecommendRecordList2B> everyList = data.getRecommendList();
-                if (everyList == null) {
+                if (everyList == null || (everyList.size()==0 && currentPage==1)) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {

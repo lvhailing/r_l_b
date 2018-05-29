@@ -94,9 +94,7 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
 //        tv_total_commission.setText(totalCommission+"元");
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
-        ImageView img_empty = (ImageView) findViewById(R.id.img_empty);
         tv_empty.setText("暂无交易记录");
-        img_empty.setBackgroundResource(R.mipmap.ic_empty_insurance);
 
         initRecylerView();
     }
