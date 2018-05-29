@@ -8,27 +8,18 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
-import com.rulaibao.bean.ResultClassDetailsDiscussBean;
 import com.rulaibao.bean.ResultClassDetailsDiscussItemBean;
-import com.rulaibao.network.BaseParams;
-import com.rulaibao.network.BaseRequester;
-import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +39,7 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
 
     private static final int TYPE_ITEM = 0;     // item布局
     private static final int TYPE_FOOTER = 1;   //  footer布局
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo,R.mipmap.img_default_photo,R.mipmap.img_default_photo);
 
     private DiscussReply discussReply;
     private String speechmakeId = "";

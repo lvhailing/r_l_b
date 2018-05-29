@@ -32,7 +32,7 @@
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/img_arrow"
             android:scaleType="fitXY"
-            android:src="@mipmap/img_list_photo"/>
+            android:src="@mipmap/img_default_photo"/>
 
         <ImageView
             android:id="@+id/img_arrow"

@@ -118,22 +118,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     @Override
     public void onResume() {
         super.onResume();
-        requestHomeData();// 请求首页数据
     }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(context!=null){
                 requestHomeData();// 请求首页数据
-            }
         } else {
 
         }
 
     }
     private void initView(View mView) {
-        context = getActivity();
+        context = getContext();
         swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         swipe_refresh.setColorSchemeResources(R.color.main_color_yellow);
 
@@ -297,16 +294,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         HtmlRequest.getHomeData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (params.result == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params == null || params.result == null) {
+             //       Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 HomeIndex2B homeIndex2B = (HomeIndex2B) params.result;
-
                 //轮播图
                 picList = homeIndex2B.getAdvertiseList();
                 freshVP();

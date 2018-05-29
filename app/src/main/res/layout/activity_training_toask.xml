@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.rulaibao.activity.MainActivity"
     android:orientation="vertical"
     android:background="@color/gray_light"
     android:fillViewport="true"
-    android:scrollbars="none"
-    >
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,10 +23,19 @@
             <LinearLayout
                 android:id="@+id/ll_training_toask"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 >
-                <com.rulaibao.widget.MyGridView
+                <com.rulaibao.uitls.TagFlowLayout
+                    android:id="@+id/gv_training_toask"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    app:max_select="1"/>
+              <!--  <GridView
                     android:id="@+id/gv_training_toask"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -39,7 +47,7 @@
                     android:background="@color/white"
                     >
 
-                </com.rulaibao.widget.MyGridView>
+                </GridView>-->
             </LinearLayout>
 
 

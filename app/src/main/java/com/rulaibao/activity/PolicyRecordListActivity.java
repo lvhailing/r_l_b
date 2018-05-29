@@ -75,8 +75,7 @@ public class PolicyRecordListActivity extends BaseActivity {
     }
 
     private void initView() {
-//        flag = getIntent().getStringExtra("flag");
-//        currentTabPosition = getIntent().getIntExtra("position", 0);
+        currentTabPosition = getIntent().getIntExtra("position", 0);
 
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);

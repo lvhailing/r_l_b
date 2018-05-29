@@ -62,7 +62,7 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == TYPE_ITEM) {
+        if (viewType == TYPE_ITEM) { // 加载互动消息的item 布局
             View itemView = mInflater.inflate(R.layout.item_interactive_news, parent, false);
 
             return new ItemViewHolder(itemView);
@@ -111,26 +111,6 @@ public class InteractiveNewsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         }
 
-    }
-
-    private Bitmap getImageBitmap(String url) {
-        URL imgUrl = null;
-        Bitmap bitmap = null;
-        try {
-            imgUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            bitmap = ImageUtils.toRoundBitmap(bitmap); // 把图片处理成圆形
-            is.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
     }
 
     @Override

@@ -12,8 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -38,7 +36,6 @@ import com.rulaibao.uitls.ImageUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
-import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.SelectPhotoDialog;
 import com.rulaibao.widget.TitleBar;
 
@@ -151,7 +148,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 new ImageViewService().execute(headPhoto);
             }
         } else {
-            img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_list_photo));
+            img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_default_photo));
         }
 
         rl_layout_photo.setOnClickListener(this);
@@ -179,7 +176,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 img_photo.setImageBitmap(result);
                 saveBitmap2(result);
             } else {
-                img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_list_photo));
+                img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_default_photo));
             }
         }
 
@@ -265,7 +262,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         if (!TextUtils.isEmpty(url)) {
             new MyInfoActivity.ImageViewService().execute(url);
         } else {
-            img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_list_photo));
+            img_photo.setImageDrawable(getResources().getDrawable(R.mipmap.img_default_photo));
         }
 
         // 判断用户是否认证

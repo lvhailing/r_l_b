@@ -22,7 +22,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginTop="25dip"
             android:layout_centerVertical="true"
-            android:src="@mipmap/img_list_photo"
+            android:src="@mipmap/img_default_photo"
             />
 
         <TextView

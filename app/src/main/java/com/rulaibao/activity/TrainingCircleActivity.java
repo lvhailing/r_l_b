@@ -5,6 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.TrainingMyCircleListAdapter;
@@ -51,6 +53,10 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
     LinearLayout llRecommendCircle;
     @BindView(R.id.swipe_circle)
     SwipeRefreshLayout swipeCircle;
+    @BindView(R.id.tv_empty)
+    TextView tvEmpty;
+    @BindView(R.id.vs_training_circle)
+    ViewSwitcher vsTrainingCircle;
 
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
@@ -95,10 +101,17 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 //        test();
-
+        vsTrainingCircle.setDisplayedChild(0);
     }
 
     public void initAdapterData() {
+
+        if(myAppCircle.size() == 0&&myJoinAppCircle.size() == 0&&myRecomAppCircle.size() == 0){
+            vsTrainingCircle.setDisplayedChild(1);
+            tvEmpty.setText("暂无圈子");
+        }else{
+            vsTrainingCircle.setDisplayedChild(0);
+        }
 
         if (myAppCircle.size() == 0) {
             llMycircle.setVisibility(View.GONE);
@@ -117,6 +130,8 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
         } else {
             llRecommendCircle.setVisibility(View.VISIBLE);
         }
+
+
 
         myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE, userId);
         lvMycircle.setAdapter(myCircleAdapter);

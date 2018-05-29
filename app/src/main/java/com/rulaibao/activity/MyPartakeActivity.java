@@ -57,8 +57,6 @@ public class MyPartakeActivity extends BaseActivity {
     }
 
     private void initView() {
-//        currentTabPosition = getIntent().getIntExtra("position", 0);
-
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);
     }

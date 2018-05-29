@@ -3,6 +3,7 @@ package com.rulaibao.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCheckVersionContentBean;
@@ -41,7 +43,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     private ViewPager mViewPager;
     private FragmentPagerAdapter mAdapter;
     private TitleBar title;
@@ -67,7 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MineFragment tab_mine; // 我的
     private List<Fragment> mFragments;
 
-    private int selectPage = 0;
+    private int selectPage;
 
     private String type = "";  // answer：回答问题详情页  question：问题详情;  course:课程详情;  product:产品详情
     private String id = "";  //
@@ -82,7 +84,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_main);
-        selectPage = getIntent().getIntExtra("selectPage", 0);
+        selectPage = getIntent().getIntExtra("selectIndex", 0);
 
         Intent intent = getIntent();
         Uri uri = intent.getData();
@@ -132,7 +134,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent != null) {
-            selectPage = getIntent().getIntExtra("selectPage", 0);
+            selectPage = getIntent().getIntExtra("selectIndex", 0);
             setSelect(selectPage);
         }
     }
@@ -352,4 +354,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         });
     }
+
 }

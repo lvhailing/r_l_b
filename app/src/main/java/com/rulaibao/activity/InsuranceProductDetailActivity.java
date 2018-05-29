@@ -397,7 +397,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
                 }
                 String shareUrl= Urls.URL_SHARE_PRODUCT_DETAILS+id;
                 // 设置分享参数
-                titleBar.setActivityParameters(shareUrl,id, result.getName(), result.getRecommendations());
+                titleBar.setActivityParameters(shareUrl,id, result.getName(), "推荐说明："+result.getRecommendations());
             }
         });
     }

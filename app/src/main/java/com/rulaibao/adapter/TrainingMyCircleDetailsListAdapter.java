@@ -1,10 +1,7 @@
 package com.rulaibao.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,6 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.activity.TrainingAskActivity;
-import com.rulaibao.activity.TrainingTopicDetailsActivity;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleDetailsTopicItemBean;
@@ -49,7 +44,7 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 
     private MouldList<ResultCircleDetailsTopicItemBean> arrayList;
     private String circleId = "";
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default,R.mipmap.ic_ask_photo_list_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo,R.mipmap.img_default_photo,R.mipmap.img_default_photo);
     private String userId = null;
     private boolean isJoin = false;
 

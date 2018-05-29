@@ -37,14 +37,14 @@ public final class ShareUtil {
         final OnekeyShare oks = new OnekeyShare();
         oks.disableSSOWhenAuthorize();// 关闭sso授权
         if (position==0){
-            oks.setText(text+url);
+            oks.setText(text);
             oks.setTitleUrl(url);
             oks.setTitle(title);
             oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setUrl(url);
             oks.setPlatform(Wechat.NAME);
         }else if(position==1){
-            oks.setText(text+url);
+            oks.setText(text);
             oks.setTitle(title);
             oks.setTitleUrl(url);
             oks.setUrl(url);
@@ -52,8 +52,8 @@ public final class ShareUtil {
             oks.setPlatform(WechatMoments.NAME);
         }
         else if(position==2){
-            oks.setText(text+url);
-            oks.setTitle( title);
+            oks.setText(text);
+            oks.setTitle(title);
             oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setTitleUrl(url);
             oks.setUrl(url);
@@ -61,8 +61,8 @@ public final class ShareUtil {
             oks.setPlatform(QQ.NAME);
         }
         else if(position==3){
-            oks.setTitle( title);
-            oks.setText(text+url);
+            oks.setTitle(title);
+            oks.setText(text);
             oks.setTitleUrl(url);
             oks.setUrl(url);
             oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");

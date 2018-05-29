@@ -81,11 +81,12 @@ public class RecommendRecordActivity extends BaseActivity{
 
     private void initView() {
         vs = (ViewSwitcher)findViewById(R.id.vs);
-        TextView tv_empty = (TextView)findViewById(R.id.tv_empty);
-        tv_empty.setText("暂无推荐记录");
         tv_amount_people = (TextView) findViewById(R.id.tv_amount_people);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+
+        TextView tv_empty = (TextView)findViewById(R.id.tv_empty);
+        tv_empty.setText("暂无推荐记录");
 
         initRecylerView();
     }
@@ -110,10 +111,6 @@ public class RecommendRecordActivity extends BaseActivity{
             public void onRefresh() {
                 currentPage = 1;
                 getRecommendRecordData();
-
-                //刷新完成
-//                swipe_refresh.setRefreshing(false);
-
             }
         });
     }
@@ -172,7 +169,7 @@ public class RecommendRecordActivity extends BaseActivity{
                 RecommendRecordList1B  data = (RecommendRecordList1B) params.result;
                 tv_amount_people.setText(data.getTotal());
                 MouldList<RecommendRecordList2B> everyList = data.getRecommendList();
-                if (everyList == null || (everyList.size()==0 && currentPage==1)) {
+                if (everyList == null) {
                     vs.setDisplayedChild(1);
                     return;
                 }
@@ -185,7 +182,13 @@ public class RecommendRecordActivity extends BaseActivity{
                     totalList.clear();
                 }
                 totalList.addAll(everyList);
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                    return;
+                }
+                vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
                 } else {
                     recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.NO_LOAD_MORE);

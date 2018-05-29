@@ -129,8 +129,9 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
 
         String shardId = "23232323";
-        String url = Urls.URL_SHARED_CLASS+courseId;
-        title.setActivityParameters(url,shardId, course.getCourseName(), course.getCourseTime()+course.getTypeName());
+        String url = Urls.URL_SHARED_CLASS + courseId;
+        String content = "演讲人:" + course.getCourseName() + "\n课程类型:" + course.getTypeName() + "\n课程时间:" + course.getCourseTime();
+        title.setActivityParameters(url, shardId, course.getCourseName(), content);
 
 
         fragments = new ArrayList<>();
@@ -244,7 +245,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
                         initPlayView();
                         initTabView();
                     } else {
-                        ViewUtils.showDeleteDialog(TrainingClassDetailsActivity.this,bean.getMessage());
+                        ViewUtils.showDeleteDialog(TrainingClassDetailsActivity.this, bean.getMessage());
 //                        Toast.makeText(TrainingClassDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 //                        finish();
                     }
@@ -418,12 +419,12 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
             if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
 
-                ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
+                ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
 
 
             } else {
 
-                discussFragment.toReply(commentContent, toUserId, commentId, commentName, index,linkId);
+                discussFragment.toReply(commentContent, toUserId, commentId, commentName, index, linkId);
                 hiddenInputLayout();
 
             }
@@ -432,7 +433,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     }
 
     @Override
-    public void reply(String toUserId, String commentId, String commentName, int index,String linkId) {
+    public void reply(String toUserId, String commentId, String commentName, int index, String linkId) {
         this.toUserId = toUserId;
         this.commentId = commentId;
         this.index = index;

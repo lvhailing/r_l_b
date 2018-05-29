@@ -15,7 +15,7 @@
             android:id="@+id/iv_training_circle_details_manager"
             android:layout_width="35dip"
             android:layout_height="35dip"
-            android:src="@mipmap/img_list_photo"
+            android:src="@mipmap/img_default_photo"
             android:layout_marginLeft="15dip"
             />
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
-            android:text="渣渣辉"
+            android:text="--"
             android:layout_gravity="center_vertical"
             />
 
@@ -37,7 +37,9 @@
         android:layout_marginTop="10dip"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
-        android:text="日照香炉生紫烟，李白来到烤鸭店"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="---"
         />
 
     <LinearLayout

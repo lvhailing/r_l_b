@@ -1,10 +1,7 @@
 package com.rulaibao.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,12 +12,10 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.activity.TrainingCircleDetailsActivity;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskDetailsAnswerItemBean;
 import com.rulaibao.bean.ResultInfoBean;
-import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -32,7 +27,6 @@ import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -46,7 +40,7 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
 
     private MouldList<ResultAskDetailsAnswerItemBean> arrayList;
     private String questionId = "";
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
     private String userId = null;
 
     public TrainingAskDetailsListAdapter(Context context, MouldList<ResultAskDetailsAnswerItemBean> arrayList, String questionId) {

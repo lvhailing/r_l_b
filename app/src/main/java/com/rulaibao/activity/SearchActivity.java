@@ -35,6 +35,7 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.FlowLayout;
 import com.rulaibao.uitls.ListDataSave;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.TagFlowLayout;
 import com.rulaibao.widget.TitleBar;
 
@@ -321,19 +322,24 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onRequestFinished(BaseParams params) {
                     if (params==null||params.result == null) {
-                        Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                        return;
+                   //     Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                      /*  Intent i_account = new Intent();
+                        i_account.setClass(mContext, MainActivity.class);
+                        i_account.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i_account.putExtra("selectPage", 3);
+                        startActivity(i_account);*/
+                      //  return;
+                    }else{
+                        InsuranceProduct1B data= (InsuranceProduct1B) params.result;
+                        MouldList<InsuranceProduct2B> everyList = data.getList();
+                        if ((everyList == null || everyList.size() == 0)){
+                            Toast.makeText(mContext, "暂无相关产品", Toast.LENGTH_SHORT).show();
+                        }
+                        totalList.clear();
+                        totalList.addAll(everyList);
+                        //刷新数据
+                        mAdapter.notifyDataSetChanged();
                     }
-                    InsuranceProduct1B data= (InsuranceProduct1B) params.result;
-                    MouldList<InsuranceProduct2B> everyList = data.getList();
-                    if ((everyList == null || everyList.size() == 0)){
-                        Toast.makeText(mContext, "暂无相关产品", Toast.LENGTH_SHORT).show();
-                    }
-                    totalList.clear();
-                    totalList.addAll(everyList);
-                    //刷新数据
-                    mAdapter.notifyDataSetChanged();
-
                 }
             });
         } catch (Exception e) {

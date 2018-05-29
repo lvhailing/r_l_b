@@ -158,6 +158,7 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
                 InteractiveNewsList1B data = (InteractiveNewsList1B) params.result;
                 MouldList<InteractiveNewsList2B> everyList = data.getList();
                 if (everyList == null) {
+                    vs.setDisplayedChild(1);
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
@@ -172,10 +173,10 @@ public class InteractiveNewsActivity extends BaseActivity implements View.OnClic
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
+                    return;
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+                 vs.setDisplayedChild(0);
+                if (totalList.size() % 10 == 0) {
                     interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.PULLUP_LOAD_MORE);
                 } else {
                     interactiveNewsAdapter.changeMoreStatus(interactiveNewsAdapter.NO_LOAD_MORE);

@@ -1,6 +1,7 @@
 package com.rulaibao.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -9,6 +10,7 @@ import android.webkit.CookieSyncManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.rulaibao.activity.MainActivity;
 import com.rulaibao.bean.Collection2B;
 import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.HomeIndex2B;
@@ -214,6 +216,55 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         return result;
     }
     /**
+     * 处理结果
+     * 正常返回 true，异常返回false
+     *
+     * @param result 处理数据
+     * @return fanhuizhi
+     */
+    public static Boolean resultEncrypt(Context c, String result) {
+
+        if (result.equals("0000")) {
+            return true;
+        } else {
+            if (result.equals("9999")) {
+                /*Intent i_login = new Intent(c, LoginActivity.class);
+//				PreferenceUtil.setAutoLoginAccount("");
+				PreferenceUtil.setAutoLoginPwd("");
+				PreferenceUtil.setLogin(false);
+				PreferenceUtil.setFirstLogin(true);
+//				PreferenceUtil.setPhone("");
+				PreferenceUtil.setUserId("");
+				PreferenceUtil.setUserNickName("");
+				PreferenceUtil.setShowMyAccout(true);
+
+				// i.putExtra("result", "exit");
+				// setResult(9, i);
+//				Toast.makeText(c, "服务器异常，请重新登录", Toast.LENGTH_LONG).show();
+				i_login.putExtra("tomain", "23");
+				c.startActivity(i_login);*/
+
+
+                Intent i_account = new Intent();
+                i_account.setClass(c, MainActivity.class);
+                i_account.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i_account.putExtra("selectIndex", 3);
+//				PreferenceUtil.setAutoLoginAccount("");
+                PreferenceUtil.setAutoLoginPwd("");
+                PreferenceUtil.setLogin(false);
+                PreferenceUtil.setFirstLogin(true);
+//				PreferenceUtil.setPhone("");
+                PreferenceUtil.setUserId("");
+                PreferenceUtil.setUserNickName("");
+                PreferenceUtil.setToken("");
+                PreferenceUtil.setCheckStatus("");
+                c.startActivity(i_account);
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      *注册
      *
      * @param context  上下文
@@ -247,7 +298,12 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
 
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -347,8 +403,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -397,8 +456,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -449,8 +511,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<HomeIndex2B> b = json.fromJson(data, new TypeToken<Repo<HomeIndex2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -501,8 +566,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCheckVersionContentBean> b = json.fromJson(result, new TypeToken<Repo<ResultCheckVersionContentBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -548,8 +616,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -594,8 +665,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -640,8 +714,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Plan2B> b = json.fromJson(data, new TypeToken<Repo<Plan2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -686,8 +763,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Plan2B> b = json.fromJson(data, new TypeToken<Repo<Plan2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -732,8 +812,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyPlan2B> b = json.fromJson(data, new TypeToken<Repo<PolicyPlan2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -778,8 +861,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InsuranceDetail1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceDetail1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -825,8 +911,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Collection2B> b = json.fromJson(data, new TypeToken<Repo<Collection2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -871,8 +960,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -922,8 +1014,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MouldList<ResultCycleIndex2B>> b = json.fromJson(data, new TypeToken<Repo<MouldList<ResultCycleIndex2B>>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -974,8 +1069,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MineData2B> b = json.fromJson(data, new TypeToken<Repo<MineData2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1027,8 +1125,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<UserInfo2B> b = json.fromJson(data, new TypeToken<Repo<UserInfo2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1080,8 +1181,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1133,8 +1237,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<UnreadNewsCount2B> b = json.fromJson(data, new TypeToken<Repo<UnreadNewsCount2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1186,8 +1293,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1239,8 +1349,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InteractiveNewsList1B> b = json.fromJson(data, new TypeToken<Repo<InteractiveNewsList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1292,8 +1405,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1345,8 +1461,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1398,8 +1517,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<NewMembersCircleList1B> b = json.fromJson(data, new TypeToken<Repo<NewMembersCircleList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1451,8 +1573,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Recommend1B> b = json.fromJson(data, new TypeToken<Repo<Recommend1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1504,8 +1629,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<RecommendRecordList1B> b = json.fromJson(data, new TypeToken<Repo<RecommendRecordList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1557,8 +1685,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<TrackingList1B> b = json.fromJson(data, new TypeToken<Repo<TrackingList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1610,8 +1741,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<TrackingDetail1B> b = json.fromJson(data, new TypeToken<Repo<TrackingDetail1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1663,8 +1797,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyRecordList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1716,8 +1853,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyRecordDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordDetail1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1769,8 +1909,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<RenewalReminderList1B> b = json.fromJson(data, new TypeToken<Repo<RenewalReminderList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1822,8 +1965,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyBookingList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1875,8 +2021,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyBookingDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingDetail1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1926,8 +2075,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -1977,8 +2129,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2029,8 +2184,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2082,8 +2240,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2136,8 +2297,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2189,8 +2353,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PlatformBulletinList1B> b = json.fromJson(data, new TypeToken<Repo<PlatformBulletinList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2241,8 +2408,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2294,8 +2464,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyCollectionList1B> b = json.fromJson(data, new TypeToken<Repo<MyCollectionList1B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2347,8 +2520,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2403,8 +2579,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2455,8 +2634,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultHotAskBean> b = json.fromJson(data, new TypeToken<Repo<ResultHotAskBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2507,8 +2689,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2560,8 +2745,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2614,8 +2802,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleIndexBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2668,8 +2859,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2722,8 +2916,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicListBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2775,8 +2972,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicDetailsBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2829,8 +3029,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicCommentListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicCommentListBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2881,8 +3084,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2934,8 +3140,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -2986,8 +3195,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3038,8 +3250,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3090,8 +3305,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3142,8 +3360,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3194,8 +3415,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3247,8 +3471,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskTypeBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskTypeBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3299,8 +3526,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskIndexBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3351,8 +3581,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskDetailsBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3403,8 +3636,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskDetailsAnswerBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskDetailsAnswerBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3455,8 +3691,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAnswerDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultAnswerDetailsBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3508,8 +3747,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicCommentListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicCommentListBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3561,8 +3803,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3614,8 +3859,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3666,8 +3914,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3718,8 +3969,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3770,8 +4024,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassDetailsIntroductionBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsIntroductionBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3822,8 +4079,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassDetailsCatalogBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsCatalogBean>>() {
                     }.getType());
-
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3876,7 +4136,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultClassDetailsDiscussBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsDiscussBean>>() {
                     }.getType());
 
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3930,7 +4194,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
 
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -3982,7 +4250,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultClassDetailsPPTBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsPPTBean>>() {
                     }.getType());
 
-                    return b.getData();
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;

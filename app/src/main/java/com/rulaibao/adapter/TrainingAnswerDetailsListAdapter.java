@@ -36,7 +36,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
     private int index = 0;
     private ResultCircleDetailsTopicCommentReplyItemBean replyItemBean;
     private ReplyAdapter replyAdapter;
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default, R.mipmap.ic_ask_photo_list_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
 
     public TrainingAnswerDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList, Reply reply) {
         super(context);
@@ -84,7 +84,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
                 case NO_DATA:
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setPadding(0,50,0,0);
+                    footerViewHolder.itemView.setPadding(0, 50, 0, 0);
                     footerViewHolder.itemView.setLayoutParams(params);
 
                     //没有数据
@@ -116,7 +116,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         replyAdapter.clearAll();
         replyAdapter.addAll(arrayList.get(index).getReplys());
 
-        if ((index+1) == arrayList.size()) {
+        if ((index + 1) == arrayList.size()) {
             holder1.tvAnswerDetailasLine.setVisibility(View.INVISIBLE);
         } else {
             holder1.tvAnswerDetailasLine.setVisibility(View.VISIBLE);
@@ -124,10 +124,11 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         holder1.lvAnswerDetails.setAdapter(replyAdapter);
 
         final int finalIndex = index;
+        //  回复
         holder1.tvAnswerDetailsReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reply.reply(arrayList.get(finalIndex).getCid(), arrayList.get(finalIndex).getCommentId(), arrayList.get(finalIndex).getCommentName(), finalIndex,arrayList.get(finalIndex).getCid());
+                reply.reply(arrayList.get(finalIndex).getCid(), arrayList.get(finalIndex).getCommentId(), arrayList.get(finalIndex).getCommentName(), finalIndex, arrayList.get(finalIndex).getCid());
 
             }
         });
@@ -169,7 +170,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
     public interface Reply {
 
-        public void reply(String commentId, String toUserId, String replyToName, int index,String linkId);
+        public void reply(String commentId, String toUserId, String replyToName, int index, String linkId);
 
     }
 
@@ -236,15 +237,20 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             }
 
             replyItemBean = list.get(position);
-
-
             holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index,list.get(position).getRid());
+                    if (replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())) {
+
+                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, arrayList.get(index).getCid());
+
+                    } else {
+
+                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, list.get(position).getRid());
+
+                    }
                 }
             });
-
 
             String str = "";
             if (replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())) {
@@ -267,7 +273,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
                 style.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.txt_black1)), str2.length(), str3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder1.tvCommit.setText(style);
             }
-
 
             return convertView;
         }

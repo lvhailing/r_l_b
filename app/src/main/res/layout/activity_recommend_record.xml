@@ -103,20 +103,23 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:paddingTop="20dp">
+        android:layout_height="match_parent">
+
         <ViewSwitcher
             android:id="@+id/vs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray_light"
+            android:background="@color/bg_gray_new"
             android:orientation="vertical">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
+                android:paddingTop="20dp"
                 android:scrollbars="vertical"/>
+
             <include layout="@layout/ac_empty_view"/>
         </ViewSwitcher>
     </android.support.v4.widget.SwipeRefreshLayout>

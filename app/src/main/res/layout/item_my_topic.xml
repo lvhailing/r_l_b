@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/bg_gray_new"
     android:orientation="vertical"
     >
@@ -21,7 +22,7 @@
             android:id="@+id/tv_circle_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="圈子/小组名称"
+            tools:text="圈子/小组名称"
             android:textColor="@color/txt_black1"
             android:textSize="16sp"/>
 
@@ -66,7 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
-                android:text="中纪委发文谈落马"
+                tools:text="中纪委发文谈落马"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/txt_gray_d"
                 android:textSize="16sp"/>
 
@@ -76,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_topic_title"
                 android:layout_marginTop="10dp"
-                android:text="2"
+                tools:text="2"
                 android:textColor="@color/txt_mark_gray"
                 android:textSize="14sp"/>
 
@@ -98,7 +101,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/iv_zan_checked"
-                android:text="2"
+                tools:text="2"
                 android:textColor="@color/txt_mark_gray"
                 android:textSize="14sp"/>
 

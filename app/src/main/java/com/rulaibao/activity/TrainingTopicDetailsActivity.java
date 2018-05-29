@@ -326,7 +326,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
+//        appTopicId = "111";
         map.put("appTopicId", appTopicId);
         map.put("userId", userId);
 

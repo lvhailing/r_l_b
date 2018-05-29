@@ -61,7 +61,7 @@
                 android:id="@+id/iv_training_ask"
                 android:layout_width="35dip"
                 android:layout_height="35dip"
-                android:src="@mipmap/img_list_photo"
+                android:src="@mipmap/img_default_photo"
                 />
             <TextView
                 android:id="@+id/tv_training_ask_manager"

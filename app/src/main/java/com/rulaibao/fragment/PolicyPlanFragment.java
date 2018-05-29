@@ -210,8 +210,12 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.iv_right_btn:
                 if (PreferenceUtil.isLogin()) {
-                    intent = new Intent(context, SearchForPolicyPlanActivity.class);
-                    context.startActivity(intent);
+                    if ("success".equals(PreferenceUtil.getCheckStatus())){
+                        intent = new Intent(context, SearchForPolicyPlanActivity.class);
+                        context.startActivity(intent);
+                    }else{
+                        Toast.makeText(context, "请到账户中心进行认证", Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);
