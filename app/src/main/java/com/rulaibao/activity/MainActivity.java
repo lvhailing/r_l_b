@@ -136,6 +136,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if (intent != null) {
             selectPage = getIntent().getIntExtra("selectIndex", 0);
             setSelect(selectPage);
+
+            Intent i_h5 = getIntent();
+            Uri uri = i_h5.getData();
+            if (uri != null) {
+                type = uri.getQueryParameter("type");
+                id = uri.getQueryParameter("id");
+                questionId = uri.getQueryParameter("questionId");
+                answerId = uri.getQueryParameter("answerId");
+                speechMakeId = uri.getQueryParameter("speechMakeId");
+            }
+
+            if (!TextUtils.isEmpty(type)) {
+                fromH5();
+            }
         }
     }
 

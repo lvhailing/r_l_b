@@ -49,12 +49,9 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
     public void initHolderData(RecyclerView.ViewHolder holder, int position) {
         ViewHolder holder1 = (ViewHolder) holder;
         int index = position;
-        if(getmHeaderView()!=null){
-            index = position-1;
-        }
+        String name = arrayList.get(index).getCustomerName();
         String url = arrayList.get(index).getCompanyLogo();
         String title = arrayList.get(index).getInsuranceName();
-        String name = arrayList.get(index).getCustomerName();
         String amount = arrayList.get(index).getPaymentedPremiums();
         String limit = arrayList.get(index).getInsurancePeriod();
 
@@ -68,11 +65,6 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
         } else {
             holder1.tv_title.setText("--");
         }
-        if (!TextUtils.isEmpty(name)) {
-            holder1.tv_name.setText(name);
-        } else {
-            holder1.tv_name.setText("--");
-        }
         if (!TextUtils.isEmpty(amount)) {
             holder1.tv_amount.setText(amount+"元");
         } else {
@@ -83,7 +75,11 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
         } else {
             holder1.tv_limit.setText("--");
         }
-
+        if (!TextUtils.isEmpty(name)) {
+            holder1.tv_name.setText(name);
+        } else {
+            holder1.tv_name.setText("--");
+        }
         final int finalIndex = index;
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +130,7 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
         ImageView iv_plan;
         @BindView(R.id.tv_title)
         TextView tv_title;
-        @BindView(R.id.tv_name)
+        @BindView(R.id.tv_policy_plan_name)
         TextView tv_name;
         @BindView(R.id.tv_amount)
         TextView tv_amount;

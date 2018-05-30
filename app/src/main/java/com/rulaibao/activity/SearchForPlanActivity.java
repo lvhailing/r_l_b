@@ -57,6 +57,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
     private Button bt_clear;//清除
     private TextView tv_search_cancel;
     private ViewSwitcher vs;
+    private ViewSwitcher vs_listview;
     private ListView listView;
     private PlanAdapter mAdapter;
     private MouldList<Plan3B> totalList = new MouldList<>();
@@ -102,6 +103,9 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
+        tv_empty.setText("暂无相关计划书");
 
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new PlanAdapter(mContext, totalList);
@@ -296,20 +300,25 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
             HtmlRequest.getPlanSearch(mContext, param, new BaseRequester.OnRequestListener() {
                 @Override
                 public void onRequestFinished(BaseParams params) {
-                    if (params.result == null) {
-                        Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    if (params == null || params.result == null) {
+                        vs_listview.setDisplayedChild(1);
                         return;
                     }
                     Plan2B data = (Plan2B) params.result;
-                    MouldList<Plan3B> everyList = data.getList();
-                    if ((everyList == null || everyList.size() == 0)){
-                        Toast.makeText(mContext, "暂无相关计划书", Toast.LENGTH_SHORT).show();
+                    if ("true".equals(data.getFlag())) {
+                        MouldList<Plan3B> everyList = data.getList();
+                        totalList.clear();
+                        totalList.addAll(everyList);
+                        if (totalList.size() == 0) {
+                            vs_listview.setDisplayedChild(1);
+                        } else {
+                            vs_listview.setDisplayedChild(0);
+                        }
+                        //刷新数据
+                        mAdapter.notifyDataSetChanged();
+                    }else{
+                        vs_listview.setDisplayedChild(1);
                     }
-                    totalList.clear();
-                    totalList.addAll(everyList);
-                    //刷新数据
-                    mAdapter.notifyDataSetChanged();
-
                 }
             });
         } catch (Exception e) {

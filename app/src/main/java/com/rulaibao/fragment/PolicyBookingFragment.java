@@ -124,7 +124,7 @@ public class PolicyBookingFragment extends Fragment {
         param.put("page", currentPage + "");
         param.put("auditStatus", status);
 
-        Log.i("hh", "预约列表userId:-- " + userId);
+//        Log.i("hh", "预约列表userId:-- " + userId);
         Log.i("hh", "预约列表状态：-- " + status);
         HtmlRequest.getPolicyBookingListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -148,7 +148,7 @@ public class PolicyBookingFragment extends Fragment {
                     return;
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
-                    Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
                     policyBookingAdapter.changeMoreStatus(policyBookingAdapter.NO_LOAD_MORE);
                     return;
                 }

@@ -1,6 +1,7 @@
 package com.rulaibao.fragment;
 
 import android.annotation.SuppressLint;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -61,7 +62,7 @@ import butterknife.OnTouch;
  */
 
 @SuppressLint("ValidFragment")
-public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyRecyclerView.OnResizeListener {
+public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRecyclerView.OnResizeListener {
 
 
     @BindView(R.id.tv_introduction_discuss_count)
@@ -100,6 +101,8 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
     private String linkId = "";
     private int position;
     private boolean noDataFlag = true;      //  控制无数据不加载
+    private boolean isRefresh = true;      //  处理刷新数据
+
     public TrainingDetailsDiscussFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
@@ -163,7 +166,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
                         page++;
@@ -190,9 +193,34 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(isRefresh){
+            courseId = getArguments().getString("courseId");
+            speechmakeId = getArguments().getString("speechmakeId");
+            if (list != null) {
+                list.clear();
+            }
+            noDataFlag = true;
+            page = 1;
+            requestData();
+        }
+        Log.e("222222","222");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isRefresh = true;
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            Log.e("222222","333");
+            isRefresh = false;
             courseId = getArguments().getString("courseId");
             speechmakeId = getArguments().getString("speechmakeId");
             if (list != null) {
@@ -203,7 +231,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
             requestData();
 //            scrollView.smoothScrollTo(0, 0);
         } else {
-
+            isRefresh = true;
         }
 
     }
@@ -224,35 +252,38 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
                 if (params.result != null) {
 
                     ResultClassDetailsDiscussBean bean = (ResultClassDetailsDiscussBean) params.result;
-                    if(bean.getFlag().equals("true")){
-                        if (bean.getList().size() == 0) {
-                            if (page != 1) {
-                                page--;
-                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                            }else{
-                                adapter.setNoDataMessage("暂无研讨信息");
-                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
-                                noDataFlag = false;
-                                tvIntroductionDiscussCount.setVisibility(View.GONE);
+                    if (bean.getFlag().equals("true")) {
+                        if(bean.getList()!=null){
+                            if (bean.getList().size() == 0) {
+                                if (page != 1) {
+                                    page--;
+                                    adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                                } else {
+                                    adapter.setNoDataMessage("暂无研讨信息");
+                                    adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                    noDataFlag = false;
+                                    tvIntroductionDiscussCount.setVisibility(View.GONE);
+                                }
+
+
+                            } else {
+                                tvIntroductionDiscussCount.setVisibility(View.VISIBLE);
+                                tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
+                                list.addAll(bean.getList());
+                                adapter.notifyDataSetChanged();
+
+                                if (list.size() % 10 == 0) {
+                                    adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                                } else {
+                                    adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                                }
+
                             }
-
-
-                        } else {
-                            tvIntroductionDiscussCount.setVisibility(View.VISIBLE);
-                            tvIntroductionDiscussCount.setText("总共" + bean.getTotal() + "条研讨");
-                            list.addAll(bean.getList());
-                            adapter.notifyDataSetChanged();
-
-                            if(list.size()%10==0){
-                                adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                            }else{
-                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                            }
-
                         }
-                    }else{
 
-                        ViewUtils.showDeleteDialog(getActivity(),bean.getMessage());
+                    } else {
+
+                        ViewUtils.showDeleteDialog(getActivity(), bean.getMessage());
 
 //                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
 //                        getActivity().finish();
@@ -285,7 +316,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
             map.put("courseId", courseId);      //话题课程id
             map.put("commentContent", commentContent);      //
             map.put("userId", userId);      //
-
+            map.put("linkId", commentId);
         } else {
 
             map.put("courseId", courseId);      //话题课程id
@@ -317,9 +348,9 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
                             noDataFlag = true;
                             requestData();
                         }
-
+                        adapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(context,bean.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
 //                    list.addAll(bean.getList());
@@ -332,7 +363,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
         });
     }
 
-    public void toReply(String commentContent,String toUserId, String commentId, String commentName, int index,String linkId){
+    public void toReply(String commentContent, String toUserId, String commentId, String commentName, int index, String linkId) {
 
 
         this.toUserId = toUserId;
@@ -365,7 +396,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
             itemBean.setReplyToName(commentName);      //  被回复人姓名
 
             list.get(index).getReplys().add(itemBean);
-            adapter.notifyDataSetChanged();
+
             requestReply(commentContent);
 
         }
@@ -476,15 +507,16 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements  MyR
 
     private void putOffset(int offset) {
 
-        if(!TextUtils.isEmpty(commentId)){
+        if (!TextUtils.isEmpty(commentId)) {
             lvDiscuss.smoothScrollBy(offset, 1000);
         }
 
         oldPosition = position;
     }
-    public int getItemHeight(){
+
+    public int getItemHeight() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvDiscuss.getLayoutManager();
-        int position = layoutManager.findFirstVisibleItemPosition()-1;
+        int position = layoutManager.findFirstVisibleItemPosition() - 1;
 //        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
         if (position > index) {
             position = index;

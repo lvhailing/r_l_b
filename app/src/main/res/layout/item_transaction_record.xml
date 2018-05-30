@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:background="@color/white"
               android:orientation="vertical">
 
@@ -37,8 +38,10 @@
                 android:id="@+id/tv_insurance_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="国华人寿-盛世年金保险"
+                tools:text="国华人寿-盛世年金保险国华人寿-盛世年金保险"
                 android:textColor="@color/txt_black1"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="16sp"/>
 
             <TextView

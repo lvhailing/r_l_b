@@ -25,9 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
  * 课程详情--研讨列表adapter
- *
  */
 
 public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
@@ -39,14 +37,14 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
 
     private static final int TYPE_ITEM = 0;     // item布局
     private static final int TYPE_FOOTER = 1;   //  footer布局
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo,R.mipmap.img_default_photo,R.mipmap.img_default_photo);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
 
     private DiscussReply discussReply;
     private String speechmakeId = "";
     private String userId = "";
 
 
-    public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList,DiscussReply discussReply,String speechmakeId) {
+    public TrainingClassDiscussAdapter(Context context, MouldList<ResultClassDetailsDiscussItemBean> arrayList, DiscussReply discussReply, String speechmakeId) {
         super(context);
         this.context = context;
         this.arrayList = arrayList;
@@ -75,9 +73,8 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
         }
 
         holder1.tvTrainingDiscussName.setText(arrayList.get(index).getCommentName());
-        ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(),holder1.ivTrainingDiscuss,displayImageOptions);
+        ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(), holder1.ivTrainingDiscuss, displayImageOptions);
         holder1.tvTrainingDiscussDate.setText(arrayList.get(index).getCommentTime());
-
         holder1.tvTrainingDiscussContent.setText(arrayList.get(index).getCommentContent());
 
         try {
@@ -86,26 +83,28 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
             e.printStackTrace();
         }
 
-        if(arrayList.get(index).getReplys().size()==0){
+        if (arrayList.get(index).getReplys().size() == 0) {
 
             holder1.tvTrainingDiscussRepayContent.setVisibility(View.GONE);
-            if(speechmakeId.equals(userId)){
+            if (speechmakeId.equals(userId)) {
                 holder1.tvDiscussReply.setVisibility(View.VISIBLE);
 
                 final int finalIndex = index;
                 holder1.tvDiscussReply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        discussReply.reply(arrayList.get(finalIndex).getCommentId(),arrayList.get(finalIndex).getCid(),arrayList.get(finalIndex).getCommentName(),finalIndex,arrayList.get(finalIndex).getCid());
+                        discussReply.reply(arrayList.get(finalIndex).getCommentId(), arrayList.get(finalIndex).getCid(), arrayList.get(finalIndex).getCommentName(), finalIndex, arrayList.get(finalIndex).getCid());
                     }
                 });
+            } else {
+                holder1.tvDiscussReply.setVisibility(View.GONE);
             }
 
-        }else{
+        } else {
             holder1.tvDiscussReply.setVisibility(View.GONE);
             holder1.tvTrainingDiscussRepayContent.setVisibility(View.VISIBLE);
 
-            String str = arrayList.get(index).getReplys().get(0).getReplyName()+" 回复: "+arrayList.get(index).getReplys().get(0).getReplyContent();
+            String str = arrayList.get(index).getReplys().get(0).getReplyName() + " 回复: " + arrayList.get(index).getReplys().get(0).getReplyContent();
 
             SpannableStringBuilder style = new SpannableStringBuilder(str);
 
@@ -157,7 +156,7 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
 
                 case NO_DATA:
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setPadding(0,50,0,0);
+                    footerViewHolder.itemView.setPadding(0, 50, 0, 0);
                     footerViewHolder.itemView.setLayoutParams(params);
 
                     //没有数据
@@ -171,7 +170,7 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
 
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_training_discuss)
         CircularImage ivTrainingDiscuss;
         @BindView(R.id.tv_training_discuss_name)
@@ -191,13 +190,13 @@ public class TrainingClassDiscussAdapter extends RecyclerBaseAapter<RecyclerView
         }
     }
 
-    public interface DiscussReply{
+    public interface DiscussReply {
 
-        public void reply(String toUserId,String commentId,String commentName,int index,String linkId);
+        public void reply(String toUserId, String commentId, String commentName, int index, String linkId);
+
         public void refresh();
 
     }
-
 
 
     @Override

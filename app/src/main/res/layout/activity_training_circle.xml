@@ -6,20 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.rulaibao.activity.MainActivity">
+    <ScrollView
 
-    <ViewSwitcher
-        android:id="@+id/vs_training_circle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ScrollView
-
+        android:layout_height="match_parent"
+        android:background="@color/gray_light"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:scrollbars="none">
+        <ViewSwitcher
+            android:id="@+id/vs_training_circle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/gray_light"
-            android:fillViewport="true"
-            android:orientation="vertical"
-            android:scrollbars="none">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -125,13 +123,16 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
-        <include
-            android:id="@+id/ic_empty"
-            layout="@layout/ac_empty_view">
 
-        </include>
-    </ViewSwitcher>
+            <include
+                android:id="@+id/ic_empty"
+                layout="@layout/ac_empty_view">
+
+            </include>
+        </ViewSwitcher>
+
+    </ScrollView>
+
 
 </android.support.v4.widget.SwipeRefreshLayout>
 

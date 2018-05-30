@@ -49,7 +49,8 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private String type = "";
     private String userId = "";
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_training_class,R.mipmap.img_training_class,R.mipmap.img_training_class);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default
+            ,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
 
     public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type,String userId) {
         this.context = context;

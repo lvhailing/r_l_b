@@ -103,7 +103,7 @@
                     android:background="@color/bg_white"
                     android:orientation="vertical"
                     android:padding="15dip"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -188,6 +188,7 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:id="@+id/rl_training_boutique_first"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_marginRight="5dip"
@@ -201,6 +202,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
+                                android:maxLines="1"
+                                android:ellipsize="end"
                                 android:text="---" />
 
                             <ImageView
@@ -214,6 +217,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rl_training_boutique_second"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dip"
@@ -227,6 +231,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
+                                android:maxLines="1"
+                                android:ellipsize="end"
                                 android:text="---" />
 
                             <ImageView
@@ -247,6 +253,7 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:id="@+id/rl_training_boutique_third"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_marginRight="5dip"
@@ -260,6 +267,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
+                                android:maxLines="1"
+                                android:ellipsize="end"
                                 android:text="---" />
 
                             <ImageView
@@ -273,6 +282,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rl_training_boutique_forth"
                             android:layout_width="0dip"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dip"
@@ -286,6 +296,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
+                                android:maxLines="1"
+                                android:ellipsize="end"
                                 android:text="---" />
 
                             <ImageView

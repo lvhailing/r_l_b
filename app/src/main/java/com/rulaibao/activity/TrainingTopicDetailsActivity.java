@@ -381,31 +381,34 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 if (params.result != null) {
 
                     ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean) params.result;
-                    if (bean.getList().size() == 0) {
-                        if(page != 1){
-                            page--;
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }else{
-                            adapter.setNoDataMessage("暂无评论");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
-                            noDataFlag = false;
-                            tv_answer_details_comment_count.setVisibility(View.GONE);
+                    if(bean.getList()!=null){
+                        if (bean.getList().size() == 0) {
+                            if(page != 1){
+                                page--;
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }else{
+                                adapter.setNoDataMessage("暂无评论");
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                noDataFlag = false;
+                                tv_answer_details_comment_count.setVisibility(View.GONE);
+                            }
+
+
+                        } else {
+                            tv_answer_details_comment_count.setVisibility(View.VISIBLE);
+                            tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
+                            commentItemBeans.addAll(bean.getList());
+                            adapter.notifyDataSetChanged();
+
+                            if(commentItemBeans.size()%10==0){
+                                adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                            }else{
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }
+
                         }
-
-
-                    } else {
-                        tv_answer_details_comment_count.setVisibility(View.VISIBLE);
-                        tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
-                        commentItemBeans.addAll(bean.getList());
-                        adapter.notifyDataSetChanged();
-
-                        if(commentItemBeans.size()%10==0){
-                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }
-
                     }
+
 
                     swipeTopicDetails.setRefreshing(false);
                 } else {
@@ -703,18 +706,23 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //        position = position-1;
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvTopicDetails.getLayoutManager();
         int index = layoutManager.findFirstVisibleItemPosition();
-        int indexCom = layoutManager.findFirstCompletelyVisibleItemPosition();
-        if(indexCom-index>1){
-            index++;
-        }
+//        int indexCom = layoutManager.findFirstCompletelyVisibleItemPosition();
+//        if(indexCom-index>1){
+//            index++;
+//        }
 //        int index = 0;
 
-        if (index > position) {
+        try {
+            if (index > position) {
 //            index = position;
-            bottomOffset = -lvTopicDetails.getChildAt(index-position).getBottom();
-        }else{
-            bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
+                bottomOffset = -lvTopicDetails.getChildAt(index-position).getBottom();
+            }else{
+                bottomOffset = lvTopicDetails.getChildAt(position - index).getBottom();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
 
 
         if (!deal(position))
@@ -751,8 +759,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     private void putOffset(int offset) {
-        lvTopicDetails.smoothScrollBy(0, offset);
-        oldPosition = index;
+        try {
+            lvTopicDetails.smoothScrollBy(0, offset);
+            oldPosition = index;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -771,10 +784,18 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvTopicDetails.getLayoutManager();
         int position = layoutManager.findFirstVisibleItemPosition()-1;
 //        int index = layoutManager.findFirstCompletelyVisibleItemPosition();
-        if (position > index) {
-            position = index;
+        int set = 0;
+        try {
+            if (position > index) {
+//            position = index;
+                set = lvTopicDetails.getChildAt(position - index).getHeight();
+            }else{
+                set = lvTopicDetails.getChildAt(index - position).getHeight();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        int set = lvTopicDetails.getChildAt(index - position).getHeight();
+
         return set;
     }
 

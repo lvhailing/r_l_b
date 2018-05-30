@@ -22,8 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="暂无热门问答"
-        android:textSize="16sp"
-        android:textColor="@color/txt_black2"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/gray_d"
         />
 </LinearLayout>

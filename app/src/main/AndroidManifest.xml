@@ -259,7 +259,7 @@
         <activity
             android:name="com.rulaibao.activity.ProductAppointmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateVisible"/>
+            android:windowSoftInputMode="adjustResize|stateVisible"/>
         <activity
             android:name="com.rulaibao.activity.RenewalReminderActivity"
             android:screenOrientation="portrait" />

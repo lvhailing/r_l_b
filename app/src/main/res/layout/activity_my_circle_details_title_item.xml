@@ -26,6 +26,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dip"
         android:text="清明时节雨纷纷"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textSize="16sp"
         android:textColor="@color/txt_black1"
         />

@@ -111,7 +111,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         initTopTitle();
 
         initView();
-        initData();
+
 
     }
 
@@ -520,6 +520,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
     }
 
     @Override

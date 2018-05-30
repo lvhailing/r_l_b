@@ -6,6 +6,7 @@ public class CycleIndex2B implements IMouldType {
     private String picture; // 图片地址
     private String targetUrl; // url
     private String name;
+    private String linkType;
 
 
     public String getPicture() {
@@ -30,5 +31,13 @@ public class CycleIndex2B implements IMouldType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLinkType() {
+        return linkType;
+    }
+
+    public void setLinkType(String linkType) {
+        this.linkType = linkType;
     }
 }

@@ -665,6 +665,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
+//                    b.setCode("9999");
                     if (resultEncrypt(context, b.getCode())){
                         return b.getData();
                     }else{

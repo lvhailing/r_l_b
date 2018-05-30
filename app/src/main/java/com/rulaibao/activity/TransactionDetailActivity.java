@@ -99,6 +99,7 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("id", id);
+        param.put("userId", userId);
 
         HtmlRequest.getTradeRecordDetail(TransactionDetailActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override

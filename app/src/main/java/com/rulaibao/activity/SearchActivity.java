@@ -28,6 +28,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.InsuranceProduct1B;
 import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.bean.InsuranceProduct3B;
+import com.rulaibao.bean.PolicyPlan2B;
 import com.rulaibao.dialog.DeleteHistoryDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -57,6 +58,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private Button bt_clear;//清除
     private TextView tv_search_cancel;
     private ViewSwitcher vs;
+    private ViewSwitcher vs_listview;
     private ListView listView;
     private InsuranceProductAdapter mAdapter;
     private MouldList<InsuranceProduct2B> totalList = new MouldList<>();
@@ -93,7 +95,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-        mContext = getApplicationContext();
+        mContext = this;
         dataSave = new ListDataSave(mContext, "search_pre");//搜索sp
         et_search = (EditText) findViewById(R.id.et_search);
         bt_clear = (Button) findViewById(R.id.bt_clear);
@@ -107,6 +109,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
 
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new InsuranceProductAdapter(mContext, totalList);
@@ -321,26 +325,27 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             HtmlRequest.getInsuranceProductSearch(mContext, param, new BaseRequester.OnRequestListener() {
                 @Override
                 public void onRequestFinished(BaseParams params) {
-                    if (params==null||params.result == null) {
-                   //     Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                      /*  Intent i_account = new Intent();
-                        i_account.setClass(mContext, MainActivity.class);
-                        i_account.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i_account.putExtra("selectPage", 3);
-                        startActivity(i_account);*/
-                      //  return;
-                    }else{
-                        InsuranceProduct1B data= (InsuranceProduct1B) params.result;
+                    if (params == null || params.result == null) {
+                        vs_listview.setDisplayedChild(1);
+                        return;
+                    }
+                    InsuranceProduct1B data = (InsuranceProduct1B) params.result;
+                    if ("true".equals(data.getFlag())) {
                         MouldList<InsuranceProduct2B> everyList = data.getList();
-                        if ((everyList == null || everyList.size() == 0)){
-                            Toast.makeText(mContext, "暂无相关产品", Toast.LENGTH_SHORT).show();
-                        }
                         totalList.clear();
                         totalList.addAll(everyList);
+                        if (totalList.size() == 0) {
+                            vs_listview.setDisplayedChild(1);
+                        } else {
+                            vs_listview.setDisplayedChild(0);
+                        }
                         //刷新数据
                         mAdapter.notifyDataSetChanged();
+                    } else {
+                        vs_listview.setDisplayedChild(1);
                     }
                 }
+
             });
         } catch (Exception e) {
             e.printStackTrace();

@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     private CycleIndex2B cycleIndex2B; //  CycleIndex2B 类型的对象
     private MyRollViewPager rollViewPager;
     private String url; // url
+    private String linkType; // 轮播图跳转类型（url:h5页面跳转、product:产品详情 为id、none:无跳转）
     private String name;
  //   private MarqueeView marqueeView;
     private TextView marqueeView;
@@ -367,12 +368,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
                         cycleIndex2B = picList.get(position);
                         url = cycleIndex2B.getTargetUrl();
                         name = cycleIndex2B.getName();
+                        linkType=cycleIndex2B.getLinkType();
 
-                        intent = new Intent(context, WebActivity.class);
-                        intent.putExtra("type", WebActivity.WEBTYPE_BANNER);
-                        intent.putExtra("url", url);
-                        intent.putExtra("title", name);
-                        startActivity(intent);
+                        if ("url".equals(linkType)) { // 跳转h5网页
+                            Intent intent = new Intent(context, WebActivity.class);
+                            intent.putExtra("type", WebActivity.WEBTYPE_BANNER);
+                            intent.putExtra("url", url);
+                            intent.putExtra("title", name);
+                            startActivity(intent);
+                        } else if ("product".equals(linkType)) { // 产品详情
+                            Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
+                            intent.putExtra("id",url);
+                            startActivity(intent);
+                        } else if ("none".equals(linkType)) { // 无跳转
+
+                        }
                     }
 
                 }

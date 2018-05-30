@@ -37,15 +37,21 @@
         android:orientation="vertical">
 
         <include layout="@layout/ac_search_view_policy_plan"/>
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
+        <ViewSwitcher
+            android:id="@+id/vs_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/gray_light"
-            android:dividerHeight="15dp"/>
+            android:background="@color/gray_light">
+            <ListView
+                android:id="@+id/listView"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/gray_light"
+                android:dividerHeight="15dp"/>
+            <include layout="@layout/ac_empty_view"/>
+        </ViewSwitcher>
     </ViewSwitcher>
 </RelativeLayout>

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -17,17 +16,13 @@ import com.rulaibao.R;
 import com.rulaibao.adapter.TagAdapter;
 import com.rulaibao.adapter.TrainingToAskListAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.ResultAskIndexBean;
 import com.rulaibao.bean.ResultAskTypeItemBean;
 import com.rulaibao.bean.ResultInfoBean;
-import com.rulaibao.bean.TestBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.FlowLayout;
-import com.rulaibao.uitls.FullyLinearLayoutManager;
 import com.rulaibao.uitls.TagFlowLayout;
-import com.rulaibao.widget.MyGridView;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
@@ -60,6 +55,7 @@ public class TrainingToAskActivity extends BaseActivity {
     private String questionTitle = "";
     private String questionDesc = "";
     private int position = 0;
+    private TextView tv;
 
     private ArrayList<ResultAskTypeItemBean> typeList;
     private ArrayList<String> nameList=new ArrayList<>();
@@ -81,10 +77,10 @@ public class TrainingToAskActivity extends BaseActivity {
             nameList.add(typeList.get(i).getTypeName());
             codeList.add(typeList.get(i).getTypeCode());
         }
-        flowLayoutAsk();
-        /*if (typeList.size() > 0) {
+        if (typeList.size() > 0) {
             typeList.get(0).setFlag(true);
-        }*/
+        }
+        flowLayoutAsk();
 
        /* adapter = new TrainingToAskListAdapter(gvTrainingToask, this, typeList);
 
@@ -128,18 +124,26 @@ public class TrainingToAskActivity extends BaseActivity {
         gv_training_toask.setAdapter(tagAdapter=new TagAdapter<String>(nameList){
             @Override
             public View getView(FlowLayout parent, int position, String s){
-                TextView tv = (TextView) LayoutInflater.from(TrainingToAskActivity.this).inflate(R.layout.ask_flow_item_tv,
-                        gv_training_toask, false);
+                tv = (TextView) LayoutInflater.from(TrainingToAskActivity.this).inflate(R.layout.ask_flow_item,
+                        gv_training_toask,false);
                 tv.setText(s);
+                if (typeList.get(position).getFlag()) {
+                    tv.setBackgroundResource(R.drawable.shape_ring_orange);
+                    tv.setTextColor(TrainingToAskActivity.this.getResources().getColor(R.color.txt_orange));
+                } else {
+                    tv.setBackgroundResource(R.drawable.shape_ring_gray);
+                    tv.setTextColor(TrainingToAskActivity.this.getResources().getColor(R.color.txt_gray));
+                }
                 return tv;}
         });
-        tagAdapter.setSelectedList(1);
 
         gv_training_toask.setOnTagClickListener(new TagFlowLayout.OnTagClickListener(){
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent){
                 setPosition(position);
-           //     requestListData(name);
+
+                notifyData(position);
+                tagAdapter.notifyDataChanged();
                 return true;
             }
         });

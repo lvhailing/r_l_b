@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,6 +109,14 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     SwipeRefreshLayout swipeTraining;
     @BindView(R.id.ll_training_recommend_refresh)
     LinearLayout llTrainingRecommendRefresh;
+    @BindView(R.id.rl_training_boutique_first)
+    RelativeLayout rlTrainingBoutiqueFirst;
+    @BindView(R.id.rl_training_boutique_second)
+    RelativeLayout rlTrainingBoutiqueSecond;
+    @BindView(R.id.rl_training_boutique_third)
+    RelativeLayout rlTrainingBoutiqueThird;
+    @BindView(R.id.rl_training_boutique_forth)
+    RelativeLayout rlTrainingBoutiqueForth;
 
     private ArrayList<ResultCycleIndex2B> picList;
     private Animation mRefreshAnim;
@@ -123,6 +132,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     private int classPage = 1;
 
     private int qualityCount = 1;        //  精品课程总页数
+    private boolean noDataFlag = true;      //  控制无数据不加载
 
     /**
      * 绑定布局文件
@@ -164,6 +174,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     public void initData() {
         hotPage = 1;
+        noDataFlag = true;
         list.clear();
         requestIndexData();// 获取研修首页数据
         requestHotAskData();// 获取
@@ -249,7 +260,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     }
 
 
-    @OnClick({R.id.tv_training_class, R.id.tv_training_ask, R.id.tv_training_circle, R.id.tv_training_promote, R.id.iv_training_recommend, R.id.ll_training_recommend_refresh, R.id.iv_training_boutique_first, R.id.iv_training_boutique_second, R.id.iv_training_boutique_third, R.id.iv_training_boutique_forth})
+    @OnClick({R.id.tv_training_class, R.id.tv_training_ask, R.id.tv_training_circle, R.id.tv_training_promote, R.id.iv_training_recommend, R.id.ll_training_recommend_refresh, R.id.rl_training_boutique_first, R.id.rl_training_boutique_second, R.id.rl_training_boutique_third, R.id.rl_training_boutique_forth})
     public void onclick(View view) {
         switch (view.getId()) {
 
@@ -288,8 +299,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 HashMap<String, Object> classMap = new HashMap<>();
                 if (bean != null) {
-                    if(bean.getCourseRecommend()!=null){
-                        if(TextUtils.isEmpty(bean.getCourseRecommend().getCourseId())){
+                    if (bean.getCourseRecommend() != null) {
+                        if (!TextUtils.isEmpty(bean.getCourseRecommend().getCourseId())) {
                             classMap.put("id", bean.getCourseRecommend().getCourseId());
                             classMap.put("speechmakeId", bean.getCourseRecommend().getSpeechmakeId());
                             classMap.put("courseId", bean.getCourseRecommend().getCourseId());
@@ -303,7 +314,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
             case R.id.ll_training_recommend_refresh:          //  精品课程 刷新（换一换）
 
-                if(qualityCount < 1){
+                if (qualityCount < 1) {
                     qualityCount = 1;
                 }
                 classPage = (classPage) % ((qualityCount + 3) / 4) + 1;
@@ -313,12 +324,12 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 break;
 
-            case R.id.iv_training_boutique_first:
+            case R.id.rl_training_boutique_first:
                 HashMap<String, Object> classFirstMap = new HashMap<>();
                 if (bean != null) {
-                    if(bean.getQualityCourseList()!=null){
-                        if(bean.getQualityCourseList().size()>0){
-                            if(bean.getQualityCourseList().get(0)!=null){
+                    if (bean.getQualityCourseList() != null) {
+                        if (bean.getQualityCourseList().size() > 0) {
+                            if (bean.getQualityCourseList().get(0) != null) {
                                 classFirstMap.put("id", bean.getQualityCourseList().get(0).getCourseId());
                                 classFirstMap.put("speechmakeId", bean.getQualityCourseList().get(0).getSpeechmakeId());
                                 classFirstMap.put("courseId", bean.getQualityCourseList().get(0).getCourseId());
@@ -331,12 +342,12 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 break;
 
-            case R.id.iv_training_boutique_second:
+            case R.id.rl_training_boutique_second:
                 HashMap<String, Object> classSecondMap = new HashMap<>();
                 if (bean != null) {
-                    if(bean.getQualityCourseList()!=null){
-                        if(bean.getQualityCourseList().size()>1){
-                            if(bean.getQualityCourseList().get(1)!=null){
+                    if (bean.getQualityCourseList() != null) {
+                        if (bean.getQualityCourseList().size() > 1) {
+                            if (bean.getQualityCourseList().get(1) != null) {
                                 classSecondMap.put("id", bean.getQualityCourseList().get(1).getCourseId());
                                 classSecondMap.put("speechmakeId", bean.getQualityCourseList().get(1).getSpeechmakeId());
                                 classSecondMap.put("courseId", bean.getQualityCourseList().get(1).getCourseId());
@@ -349,12 +360,12 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 break;
 
-            case R.id.iv_training_boutique_third:
+            case R.id.rl_training_boutique_third:
                 HashMap<String, Object> classThirdMap = new HashMap<>();
                 if (bean != null) {
-                    if(bean.getQualityCourseList()!=null){
-                        if(bean.getQualityCourseList().size()>2){
-                            if(bean.getQualityCourseList().get(2)!=null){
+                    if (bean.getQualityCourseList() != null) {
+                        if (bean.getQualityCourseList().size() > 2) {
+                            if (bean.getQualityCourseList().get(2) != null) {
                                 classThirdMap.put("id", bean.getQualityCourseList().get(2).getCourseId());
                                 classThirdMap.put("speechmakeId", bean.getQualityCourseList().get(2).getSpeechmakeId());
                                 classThirdMap.put("courseId", bean.getQualityCourseList().get(2).getCourseId());
@@ -369,12 +380,12 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 break;
 
-            case R.id.iv_training_boutique_forth:
+            case R.id.rl_training_boutique_forth:
                 HashMap<String, Object> classforthMap = new HashMap<>();
                 if (bean != null) {
-                    if(bean.getQualityCourseList()!=null){
-                        if(bean.getQualityCourseList().size()>3){
-                            if(bean.getQualityCourseList().get(3)!=null){
+                    if (bean.getQualityCourseList() != null) {
+                        if (bean.getQualityCourseList().size() > 3) {
+                            if (bean.getQualityCourseList().get(3) != null) {
                                 classforthMap.put("id", bean.getQualityCourseList().get(3).getCourseId());
                                 classforthMap.put("speechmakeId", bean.getQualityCourseList().get(3).getSpeechmakeId());
                                 classforthMap.put("courseId", bean.getQualityCourseList().get(3).getCourseId());
@@ -422,17 +433,18 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     }
 
     public void setView() {
-        if(bean.getCourseRecommend()!=null){
-            if(TextUtils.isEmpty(bean.getCourseRecommend().getCourseId())){
+        if (bean.getCourseRecommend() != null) {
+            if (!TextUtils.isEmpty(bean.getCourseRecommend().getCourseId())) {
+                llTrainingRecommend.setVisibility(View.VISIBLE);
                 tvTrainingRecommendDate.setText(bean.getCourseRecommend().getCourseTime());
                 ivTrainingRecommend.setImageResource(getClassImgIndex(bean.getCourseRecommend().getCourseLogo()));
                 tvTrainingRecommendManager.setText(bean.getCourseRecommend().getCourseName());
                 tvTrainingRecommendManagerName.setText(bean.getCourseRecommend().getSpeechmakeName() + "  " + bean.getCourseRecommend().getPosition());
 
-            }else{
+            } else {
                 llTrainingRecommend.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             llTrainingRecommend.setVisibility(View.GONE);
         }
 
@@ -443,29 +455,29 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     public void setQualityView() {
 
-        if(bean.getQualityCourseList().size()>0){
-            if(bean.getQualityCourseList().get(0)!=null){
+        if (bean.getQualityCourseList().size() > 0) {
+            if (bean.getQualityCourseList().get(0) != null) {
                 tvTrainingBoutiqueFirst.setText(bean.getQualityCourseList().get(0).getCourseName());
                 ivTrainingBoutiqueFirst.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(0).getCourseLogo()));
             }
         }
 
-        if(bean.getQualityCourseList().size()>1){
-            if(bean.getQualityCourseList().get(1)!=null){
+        if (bean.getQualityCourseList().size() > 1) {
+            if (bean.getQualityCourseList().get(1) != null) {
                 tvTrainingBoutiqueSecond.setText(bean.getQualityCourseList().get(1).getCourseName());
                 ivTrainingBoutiqueSecond.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(1).getCourseLogo()));
             }
         }
 
-        if(bean.getQualityCourseList().size()>2){
-            if(bean.getQualityCourseList().get(2)!=null){
+        if (bean.getQualityCourseList().size() > 2) {
+            if (bean.getQualityCourseList().get(2) != null) {
                 tvTrainingBoutiqueThird.setText(bean.getQualityCourseList().get(2).getCourseName());
                 ivTrainingBoutiqueThird.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(2).getCourseLogo()));
             }
         }
 
-        if(bean.getQualityCourseList().size()>3){
-            if(bean.getQualityCourseList().get(3)!=null){
+        if (bean.getQualityCourseList().size() > 3) {
+            if (bean.getQualityCourseList().get(3) != null) {
                 tvTrainingBoutiqueForth.setText(bean.getQualityCourseList().get(3).getCourseName());
                 ivTrainingBoutiqueForth.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(3).getCourseLogo()));
             }
@@ -476,7 +488,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
 
     public void requestHotAskData() {
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", hotPage + "");
@@ -486,7 +497,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             public void onRequestFinished(BaseParams params) {
 
                 if (params.result != null) {
-
                     ResultHotAskBean bean = (ResultHotAskBean) params.result;
 //                    if(){}
 
@@ -496,13 +506,14 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                         hotPage--;
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
 
-                    } else if(bean.getList().size() == 0 && hotPage == 1){      //  没有数据
+                    } else if (bean.getList().size() == 0 && hotPage == 1) {      //  没有数据
 
                         adapter.setNoDataMessage("暂无热门问答");
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                        noDataFlag = false;
 
 
-                    }else{
+                    } else {
 //                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 //                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
 
@@ -530,11 +541,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     }
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==stopAnimMsg){
+            if (msg.what == stopAnimMsg) {
                 stopAnim();
             }
         }
@@ -571,11 +582,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                             //发送消息
                             handler.sendMessage(msg);
                         }
-                    },800);
+                    }, 800);
                 } else {
 
                 }
-
 
 
             }
@@ -633,11 +643,14 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
 
-                    adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
+                    if (noDataFlag) {
+                        adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
-                    // 底部
-                    hotPage++;
-                    requestHotAskData();
+                        // 底部
+                        hotPage++;
+                        requestHotAskData();
+                    }
+
 
                 }
             }

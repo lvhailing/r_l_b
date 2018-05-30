@@ -91,7 +91,7 @@ public class PolicyRecordListFragment extends Fragment {
     }
 
     private void initView(View view) {
-        vs = (ViewSwitcher)view.findViewById(R.id.vs);
+        vs = (ViewSwitcher) view.findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
 
@@ -126,8 +126,8 @@ public class PolicyRecordListFragment extends Fragment {
 
     private void initLoadMoreListener() {
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            private int firstVisibleItem;
-            private int lastVisibleItem;
+            private int firstVisibleItem = 0;
+            private int lastVisibleItem = 0;
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

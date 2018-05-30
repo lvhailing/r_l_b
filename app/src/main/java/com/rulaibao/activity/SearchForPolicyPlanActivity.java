@@ -57,6 +57,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
     private Button bt_clear;//清除
     private TextView tv_search_cancel;
     private ViewSwitcher vs;
+    private ViewSwitcher vs_listview;
     private ListView listView;
     private PolicyPlanAdapter mAdapter;
     private MouldList<PolicyPlan3B> totalList = new MouldList<>();
@@ -97,6 +98,8 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
 
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new PolicyPlanAdapter(mContext, totalList);
@@ -136,7 +139,6 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
                     customerName=v.getText().toString();
                     //请求数据要搜索的内容
                     requestListData(customerName);
-                    mAdapter.notifyDataSetChanged();
                     return true;
                 }
                 return false;
@@ -173,7 +175,6 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
                 customerName = listString.get(position).toString();
                 //请求数据要搜索的内容
                 requestListData(customerName);
-                mAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -261,21 +262,24 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
             HtmlRequest.getPolicyPlanData(mContext, param, new BaseRequester.OnRequestListener() {
                 @Override
                 public void onRequestFinished(BaseParams params) {
-                    if (params.result == null) {
-                        Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    if (params == null || params.result == null) {
+                        vs_listview.setDisplayedChild(1);
                         return;
                     }
                     PolicyPlan2B data = (PolicyPlan2B) params.result;
                     if ("true".equals(data.getFlag())){
                         MouldList<PolicyPlan3B> everyList = data.getList();
-                        if ((everyList == null || everyList.size() == 0)){
-                            Toast.makeText(mContext, "啊哦，没有搜到保单！", Toast.LENGTH_SHORT).show();
-                        }
                         totalList.clear();
                         totalList.addAll(everyList);
+                        if (totalList.size() == 0) {
+                            vs_listview.setDisplayedChild(1);
+                        } else {
+                            vs_listview.setDisplayedChild(0);
+                        }
                         //刷新数据
                         mAdapter.notifyDataSetChanged();
                     }else{
+                        vs_listview.setDisplayedChild(1);
                         Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 

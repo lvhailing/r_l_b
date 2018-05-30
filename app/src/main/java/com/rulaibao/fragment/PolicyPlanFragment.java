@@ -55,6 +55,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
     private Button btn_login;
     private Intent intent;
     private Login2B bean;
+    private boolean isRefresh = true;      //  处理刷新数据
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,8 +83,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
             fl_nologin.setVisibility(View.GONE);
             vs.setVisibility(View.VISIBLE);
             iv_right_btn.setVisibility(View.VISIBLE);
-            if (totalList==null || totalList.size()==0){
-                initView(mView);
+            if(isRefresh){
                 requestListData();
             }
 
@@ -98,11 +98,11 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if (context != null) {
+                isRefresh = false;
                 if (PreferenceUtil.isLogin()) {
                     fl_nologin.setVisibility(View.GONE);
                     vs.setVisibility(View.VISIBLE);
                     iv_right_btn.setVisibility(View.VISIBLE);
-                    initView(mView);
                     requestListData();
 
                 } else {
@@ -113,7 +113,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
             }
 
         } else {
-
+            isRefresh = true;
         }
 
     }
@@ -214,7 +214,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
                         intent = new Intent(context, SearchForPolicyPlanActivity.class);
                         context.startActivity(intent);
                     }else{
-                        Toast.makeText(context, "请到账户中心进行认证", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "请到账户中心进行认证。", Toast.LENGTH_LONG).show();
                     }
                 }else{
                     intent = new Intent(context, LoginActivity.class);
@@ -229,4 +229,9 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isRefresh = true;
+    }
 }
