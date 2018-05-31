@@ -57,6 +57,7 @@ public class PolicyRecordListFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(KEY, param1);
         fragment.setArguments(bundle);
+        Log.i("hh", "PolicyRecordListFragment --" + fragment);
         return fragment;
     }
 
@@ -87,10 +88,17 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
-            Log.i("hh", this + " -- setUserVisibleHint --");
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
             totalList.clear();
             currentPage = 1;
             requestData();
+        } else {
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
+            if (policyRecordAdapter != null) {
+                totalList.clear();
+                currentPage = 1;
+                policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+            }
         }
     }
 
@@ -175,9 +183,9 @@ public class PolicyRecordListFragment extends Fragment {
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params==null || params.result == null) {
+                if (params == null || params.result == null) {
                     vs.setDisplayedChild(1);
-               //     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    //     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -207,6 +215,12 @@ public class PolicyRecordListFragment extends Fragment {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
                     totalList.clear();
                 }
+                //模拟数据
+//                if (everyList.size() != 0) {
+//                    while (everyList.size() < 10) {
+//                        everyList.add(everyList.get(0));
+//                    }
+//                }
                 totalList.addAll(everyList);
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
