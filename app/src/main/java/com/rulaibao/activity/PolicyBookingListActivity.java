@@ -119,7 +119,6 @@ public class PolicyBookingListActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }

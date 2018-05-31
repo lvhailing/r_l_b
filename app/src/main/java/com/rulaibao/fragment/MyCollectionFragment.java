@@ -43,6 +43,7 @@ public class MyCollectionFragment extends Fragment {
     private String type;
     private String userId;
     private ViewSwitcher vs;
+    private MouldList<MyCollectionList2B> everyList;
 
 
     public static MyCollectionFragment newInstance(String param1) {
@@ -63,6 +64,7 @@ public class MyCollectionFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            currentPage = 1;
             requestData();
         }
     }
@@ -93,7 +95,7 @@ public class MyCollectionFragment extends Fragment {
                 }
 
                 MyCollectionList1B data = (MyCollectionList1B) params.result;
-                MouldList<MyCollectionList2B> everyList = data.getList();
+                everyList = data.getList();
                 if (everyList == null) {
                     vs.setDisplayedChild(1);
                     return;
@@ -115,10 +117,15 @@ public class MyCollectionFragment extends Fragment {
                 }
                 vs.setDisplayedChild(0);
 
-                if (totalList.size() % 10 == 0) {
-                    myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.PULLUP_LOAD_MORE);
-                } else {
+                if (totalList.size() % 10 == 0 && everyList.size() == 0) {
+                    // 数据刚好是10条、20条、30条...等整数时，隐藏“数据加载中”的提示
                     myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.NO_LOAD_MORE);
+                } else if (totalList.size() % 10 != 0 && everyList.size() != 0) {
+                    // 数据小于10条并且当前屏幕没有占满时，也需隐藏“数据加载中”的提示
+                    myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.NO_LOAD_MORE);
+                } else {
+                    // 数据大于10条时，显示“数据加载中”的提示
+                    myCollectionRecycleAdapter.changeMoreStatus(myCollectionRecycleAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });
@@ -191,6 +198,10 @@ public class MyCollectionFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == myCollectionRecycleAdapter.getItemCount() && firstVisibleItem != 0) {
+                    if (everyList.size() == 0) {
+                        return;
+                    }
+
                     currentPage++;
                     requestData();
                 }

@@ -49,6 +49,7 @@ public class PolicyRecordListFragment extends Fragment {
     private String status = "";
     private String userId = "";
     private ViewSwitcher vs;
+    private MouldList<PolicyRecordList2B> everyList;
 
 
     public static PolicyRecordListFragment newInstance(String param1) {
@@ -86,6 +87,8 @@ public class PolicyRecordListFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
+            Log.i("hh", this + " -- setUserVisibleHint --");
+            currentPage = 1;
             requestData();
         }
     }
@@ -134,6 +137,9 @@ public class PolicyRecordListFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == policyRecordAdapter.getItemCount() && firstVisibleItem != 0) {
+                    if (everyList.size() == 0) {
+                        return;
+                    }
                     currentPage++;
                     requestData();
                 }
@@ -185,7 +191,7 @@ public class PolicyRecordListFragment extends Fragment {
                 // 更新顶部 Tab 数据
                 ((PolicyRecordListActivity) context).refreshTabTitle(data);
 
-                MouldList<PolicyRecordList2B> everyList = data.getList();
+                everyList = data.getList();
                 if (everyList == null) {
                     vs.setDisplayedChild(1);
                     return;
@@ -205,10 +211,19 @@ public class PolicyRecordListFragment extends Fragment {
                     return;
                 }
                 vs.setDisplayedChild(0);
-                if (totalList.size() % 10 == 0) {
-                    policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
-                } else {
+                if (totalList.size() % 10 == 0 && everyList.size() == 0) {
+                    // 数据刚好是10条、20条、30条...等整数时，隐藏“数据加载中”的提示
                     policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                } else if (totalList.size() % 10 != 0 && currentPage == 1) {
+                        policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                } else {
+                    if (totalList.size() % 10 != 0 && everyList.size() == 0) {
+                        // 数据小于10条并且当前屏幕没有占满时，也需隐藏“数据加载中”的提示
+                        policyRecordAdapter.changeMoreStatus(policyRecordAdapter.NO_LOAD_MORE);
+                    } else {
+                        // 数据大于10条时，显示“数据加载中”的提示
+                        policyRecordAdapter.changeMoreStatus(policyRecordAdapter.PULLUP_LOAD_MORE);
+                    }
                 }
             }
         });

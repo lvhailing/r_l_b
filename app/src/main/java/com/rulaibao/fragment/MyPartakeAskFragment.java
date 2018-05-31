@@ -28,7 +28,7 @@ import com.rulaibao.network.types.MouldList;
 import java.util.LinkedHashMap;
 
 /**
- * 我参与的 提问列表 Fragment
+ * 我参与的 -- 提问列表 Fragment
  */
 public class MyPartakeAskFragment extends Fragment {
     private static final String KEY = "param1";
@@ -43,6 +43,7 @@ public class MyPartakeAskFragment extends Fragment {
     private int currentPosition; // 当前tab位置（0：提问，1：话题）
     private String userId;
     private ViewSwitcher vs;
+    private MouldList<MyAskList2B> everyList;
 
 
     public static MyPartakeAskFragment newInstance(String param1) {
@@ -58,6 +59,8 @@ public class MyPartakeAskFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
+            Log.i("hh", this + " -- setUserVisibleHint --");
+            currentPage = 1;
             requestAskData();
 
         }
@@ -102,11 +105,15 @@ public class MyPartakeAskFragment extends Fragment {
         recycler_view.setItemAnimator(new DefaultItemAnimator());
     }
 
+    /**
+     * 获取提问列表数据
+     */
     public void requestAskData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);
         param.put("page", currentPage + "");
 
+        Log.i("hh", "我参与的 -- 提问列表 ---  page:" + currentPage);
 //        Log.i("hh", this + "-- userId:" + userId);
         HtmlRequest.getMyPartakeAskListData(context, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -123,7 +130,7 @@ public class MyPartakeAskFragment extends Fragment {
                 }
 
                 MyAskList1B data = (MyAskList1B) params.result;
-                MouldList<MyAskList2B> everyList = data.getList();
+                everyList = data.getList();
                 if (everyList == null) {
                     vs.setDisplayedChild(1);
                     return;
@@ -143,10 +150,15 @@ public class MyPartakeAskFragment extends Fragment {
                     return;
                 }
                 vs.setDisplayedChild(0);
-                if (totalList.size() % 10 == 0) {
-                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
-                } else {
+                if (totalList.size() % 10 == 0 && everyList.size() == 0) {
+                    // 数据刚好是10条、20条、30条...等整数时，隐藏“数据加载中”的提示
                     myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
+                } else if (totalList.size() % 10 != 0 && everyList.size() != 0) {
+                    // 数据大于10条且不是整十数据时，当最后一页加载的数据没有占满当前屏幕时，也需隐藏“数据加载中”的提示
+                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
+                } else {
+                    // 数据大于10条时，显示“数据加载中”的提示
+                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });
@@ -177,6 +189,9 @@ public class MyPartakeAskFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == myPartakeAskAdapter.getItemCount() && firstVisibleItem != 0) {
+                    if (everyList.size() == 0) {
+                        return;
+                    }
                     currentPage++;
                     requestAskData();
                 }
