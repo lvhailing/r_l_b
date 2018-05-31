@@ -165,7 +165,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="15dip"
                             android:text="@string/training_refresh"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:textColor="@color/txt_mark_gray"
+                            />
 
                     </LinearLayout>
 

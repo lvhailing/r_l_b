@@ -106,9 +106,9 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
                     //请求返回后，无论本次请求成功与否，都关闭下拉旋转
                     swipe_refresh.setRefreshing(false);
                 }
-                if (params.result == null) {
+                if (params==null || params.result == null) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(MyTopicActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                //    Toast.makeText(MyTopicActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 MyTopicList1B data = (MyTopicList1B) params.result;

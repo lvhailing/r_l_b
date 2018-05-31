@@ -219,8 +219,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         HtmlRequest.getMineData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+            //        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 data = (MineData2B) params.result;

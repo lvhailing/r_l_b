@@ -107,9 +107,9 @@ public class PlatformBulletinActivity extends BaseActivity {
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params.result == null) {
+                if (params==null || params.result == null) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(PlatformBulletinActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+               //     Toast.makeText(PlatformBulletinActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 

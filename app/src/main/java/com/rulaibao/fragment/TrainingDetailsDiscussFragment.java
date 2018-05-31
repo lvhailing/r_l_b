@@ -299,7 +299,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
 
     //评论
 
-    public void requestReply(String commentContent) {
+    public void requestReply(final String commentContent) {
 
         String userId = null;
         try {
@@ -328,6 +328,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
 
         }
 
+        final String finalUserId = userId;
         HtmlRequest.getClassDetailsDiscussReply(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
@@ -338,6 +339,24 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
                     if (bean.getFlag().equals("true")) {
 
                         if (!TextUtils.isEmpty(commentId)) {      //  回复
+
+                            ResultClassDetailsDiscussItemReplyBean itemBean = new ResultClassDetailsDiscussItemReplyBean();
+                            itemBean.setReplyContent(commentContent);
+
+                            itemBean.setReplyId(finalUserId);      //      回复人id
+                            itemBean.setReplyToId(toUserId);    //  被回复人id
+
+                            String realName = "";
+                            try {
+                                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            itemBean.setReplyName(realName);       //  回复人姓名
+                            itemBean.setReplyToName(commentName);      //  被回复人姓名
+
+                            list.get(index).getReplys().add(itemBean);
 
                             commentId = "";
 //                            hiddenInputLayout();
@@ -379,23 +398,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
 
         } else {              //  回复
 
-            ResultClassDetailsDiscussItemReplyBean itemBean = new ResultClassDetailsDiscussItemReplyBean();
-            itemBean.setReplyContent(commentContent);
 
-            itemBean.setReplyId(userId);      //      回复人id
-            itemBean.setReplyToId(toUserId);    //  被回复人id
-
-            String realName = "";
-            try {
-                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            itemBean.setReplyName(realName);       //  回复人姓名
-            itemBean.setReplyToName(commentName);      //  被回复人姓名
-
-            list.get(index).getReplys().add(itemBean);
 
             requestReply(commentContent);
 

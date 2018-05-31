@@ -336,7 +336,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         String id = "23232323";
         String url = Urls.URL_SHARED_ANSWER + questionId + "/" + answerId;
-        title.setActivityParameters(url, id, detailsBean.getAppAnswer().getTitle(), detailsBean.getAppAnswer().getAnswerContent());
+        title.setActivityParameters(url, id, detailsBean.getAppAnswer().getTitle(), "回答描述：" + detailsBean.getAppAnswer().getAnswerContent());
 
         tv_answer_details_title.setText(detailsBean.getAppAnswer().getTitle());
         ImageLoader.getInstance().displayImage(detailsBean.getAppAnswer().getAnswerPhoto(), iv_answer_detatils_manager, displayImageOptions);
@@ -438,25 +438,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                     hiddenInputLayout();
                 } else {              //  回复
 
-                    ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
-                    itemBean.setReplyContent(commentContent);
-
-                    itemBean.setReplyId(userId);      //      回复人id
-                    itemBean.setReplyToId(toUserId);    //  被回复人id
-
-                    String realName = "";
-                    try {
-                        realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    itemBean.setReplyName(realName);       //  回复人姓名
-                    itemBean.setReplyToName(replyToName);      //  被回复人姓名
-                    itemBean.setRid(commentId);
-
-                    commentItemBeans.get(index).getReplys().add(itemBean);
-                    adapter.notifyDataSetChanged();
                     requestReplyData(commentContent);
                     hiddenInputLayout();
                 }
@@ -472,10 +453,12 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-        if (TextUtils.isEmpty(commentId)) {
-            map.put("answerId", answerId);      //  话题id
+        if (TextUtils.isEmpty(commentId)) {            //   评论id
+            map.put("answerId", answerId);      //  回答id
             map.put("commentContent", commentContent);
             map.put("userId", userId);
+            map.put("linkId", linkId);
+
         } else {
             map.put("commentId", commentId);      //  话题id和
             map.put("answerId", answerId);
@@ -497,13 +480,33 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
                         if (!TextUtils.isEmpty(commentId)) {      //  回复
 
-                            commentId = "";
+                            ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
+                            itemBean.setReplyContent(commentContent);
 
+                            itemBean.setReplyId(userId);      //      回复人id
+                            itemBean.setReplyToId(toUserId);    //  被回复人id
+
+                            String realName = "";
+                            try {
+                                realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            itemBean.setReplyName(realName);       //  回复人姓名
+                            itemBean.setReplyToName(replyToName);      //  被回复人姓名
+                            itemBean.setRid(commentId);
+
+                            commentItemBeans.get(index).getReplys().add(itemBean);
+
+                            commentId = "";
+                            adapter.notifyDataSetChanged();
                         } else {          //  评论
                             page = 1;
                             commentItemBeans.clear();
                             requestComment();
                         }
+
                     } else {
 
 //                        ViewUtils.showDeleteDialog(TrainingAnswerDetailsActivity.this,detailsBean.getMessage());
@@ -564,11 +567,22 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvAnswerDetails.getLayoutManager();
         int index = layoutManager.findFirstVisibleItemPosition();
-        if (index > position) {
-            index = position;
+        try {
+            if (index > position) {
+                index = position;
+                if (isShowComment.get()) {
+                    bottomOffset = lvAnswerDetails.getChildAt(position - index).getBottom();
+                } else {
+                    bottomOffset = lvAnswerDetails.getChildAt(index - position).getBottom() - lvAnswerDetails.getChildAt(index - position).getHeight();
+                }
+            } else {
+                bottomOffset = lvAnswerDetails.getChildAt(position - index).getBottom();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        bottomOffset = lvAnswerDetails.getChildAt(position - index).getBottom();
         if (!deal(position)) showInputLyaout();
     }
 
@@ -602,8 +616,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     }
 
     private void putOffset(int offset) {
-        lvAnswerDetails.smoothScrollBy(0, offset);
-        oldPosition = index;
+        try {
+            lvAnswerDetails.smoothScrollBy(0, offset);
+            oldPosition = index;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -625,7 +644,13 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         if (position > index) {
             position = index;
         }
-        int set = lvAnswerDetails.getChildAt(index - position).getHeight();
+        int set = 0;
+        try {
+            set = lvAnswerDetails.getChildAt(index - position).getHeight();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return set;
     }
 

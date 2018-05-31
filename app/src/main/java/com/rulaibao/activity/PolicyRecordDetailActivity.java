@@ -134,8 +134,8 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
         HtmlRequest.getPolicyRecordDetail(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(PolicyRecordDetailActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+               //     Toast.makeText(PolicyRecordDetailActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 

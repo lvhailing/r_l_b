@@ -106,9 +106,9 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params.result == null) {
+                if (params==null || params.result == null) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+           //         Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 MyAskList1B data = (MyAskList1B) params.result;

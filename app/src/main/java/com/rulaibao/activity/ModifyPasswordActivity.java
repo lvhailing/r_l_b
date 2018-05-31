@@ -306,7 +306,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
      * 重新修改密码后调接口
      */
     private void modifyPassword() {
-        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
 
         param.put("userId", userId);
         param.put("password", oldPassword);
@@ -316,6 +316,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (params==null){
+                    return;
+                }
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {

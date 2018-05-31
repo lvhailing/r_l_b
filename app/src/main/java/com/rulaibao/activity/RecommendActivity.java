@@ -123,8 +123,8 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
         HtmlRequest.getRecommendInfo(RecommendActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(RecommendActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+         //           Toast.makeText(RecommendActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 

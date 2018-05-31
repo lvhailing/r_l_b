@@ -288,7 +288,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
         String id = "23232323";
         String url = Urls.URL_SHARED_ASK+questionId;
-        title.setActivityParameters(url,id, detailsBean.getAppQuestion().getTitle(), detailsBean.getAppQuestion().getDescript());
+        title.setActivityParameters(url,id, detailsBean.getAppQuestion().getTitle(), "问题描述："+detailsBean.getAppQuestion().getDescript());
 
         tv_askdetails_title.setText(bean.getAppQuestion().getTitle());
         ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager,displayImageOptions);

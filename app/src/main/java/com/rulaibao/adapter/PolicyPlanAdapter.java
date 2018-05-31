@@ -54,7 +54,7 @@ public class PolicyPlanAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.ac_policy_plan_item, null);
             holder.iv_plan = (ImageView) convertView.findViewById(R.id.iv_policy_plan);
             holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
-            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_policy_plan_name);
             holder.tv_amount = (TextView) convertView.findViewById(R.id.tv_amount);
             holder.tv_limit = (TextView) convertView.findViewById(R.id.tv_limit);
             convertView.setTag(holder);

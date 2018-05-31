@@ -260,7 +260,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
      * 获取验证码
      */
     private void requestSMS() {
-        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
 
         param.put("mobile", mobile);
         param.put("userId",userId);
@@ -270,6 +270,9 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
 
             @Override
             public void onRequestFinished(BaseParams params) {
+                if(params==null){
+                    return;
+                }
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {

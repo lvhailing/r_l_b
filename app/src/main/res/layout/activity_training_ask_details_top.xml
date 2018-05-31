@@ -43,6 +43,7 @@
             android:layout_toRightOf="@id/iv_ask_detatils_manager"
             android:layout_centerVertical="true"
             android:text="---"
+            android:textColor="@color/txt_black2"
             />
         <TextView
             android:id="@+id/tv_ask_details_time"
@@ -52,6 +53,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dip"
             android:text="1900-01-01"
+            android:textColor="@color/txt_mark_gray"
             />
     </RelativeLayout>
 

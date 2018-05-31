@@ -37,26 +37,30 @@ public final class ShareUtil {
         final OnekeyShare oks = new OnekeyShare();
         oks.disableSSOWhenAuthorize();// 关闭sso授权
         if (position==0){
-            oks.setText(text);
+            Toast.makeText(context,"该功能暂未开放",Toast.LENGTH_SHORT).show();
+            /*oks.setText(text);
             oks.setTitleUrl(url);
             oks.setTitle(title);
             oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setUrl(url);
-            oks.setPlatform(Wechat.NAME);
+            oks.setPlatform(Wechat.NAME);*/
+            return;
         }else if(position==1){
-            oks.setText(text);
+            Toast.makeText(context,"该功能暂未开放",Toast.LENGTH_SHORT).show();
+           /* oks.setText(text);
             oks.setTitle(title);
             oks.setTitleUrl(url);
             oks.setUrl(url);
             oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
-            oks.setPlatform(WechatMoments.NAME);
+            oks.setPlatform(WechatMoments.NAME);*/
+            return;
         }
         else if(position==2){
-            oks.setText(text);
             oks.setTitle(title);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+            oks.setText(text);
             oks.setTitleUrl(url);
             oks.setUrl(url);
+            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
             oks.setSite(context.getString(R.string.app_name));
             oks.setPlatform(QQ.NAME);
         }
@@ -69,7 +73,7 @@ public final class ShareUtil {
             oks.setPlatform(QZone.NAME);
         }
         else if(position==4){
-            oks.setText(text+url);
+            oks.setText(title+"\n"+text+"\n"+url);
             oks.setTitleUrl(url);
             oks.setUrl(url);
             oks.setPlatform(ShortMessage.NAME);
@@ -81,7 +85,7 @@ public final class ShareUtil {
                 randomNum.append(t);
             }
             ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            cm.setText(text+url);
+            cm.setText(url);
             Toast.makeText(context, "复制成功", Toast.LENGTH_SHORT).show();
             return;
         }

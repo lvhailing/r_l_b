@@ -1,11 +1,14 @@
 package com.rulaibao.network;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,6 +61,7 @@ import com.rulaibao.bean.ResultCircleDetailsTopicDetailsBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicListBean;
 import com.rulaibao.bean.ResultCircleIndexBean;
 import com.rulaibao.bean.ResultInfoBean;
+import com.rulaibao.common.MyApplication;
 import com.rulaibao.common.Urls;
 import com.rulaibao.bean.ResultCycleIndex2B;
 import com.rulaibao.bean.ResultHotAskBean;
@@ -222,7 +226,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      * @param result 处理数据
      * @return fanhuizhi
      */
-    public static Boolean resultEncrypt(Context c, String result) {
+    public static Boolean resultEncrypt(final Context c, String result) {
 
         if (result.equals("0000")) {
             return true;
@@ -244,9 +248,23 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 				i_login.putExtra("tomain", "23");
 				c.startActivity(i_login);*/
 
-
                 Intent i_account = new Intent();
                 i_account.setClass(c, MainActivity.class);
+                //子线程中更新UI
+                new Handler(c.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(c, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                /*((Activity) c).runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(c, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
                 i_account.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i_account.putExtra("selectIndex", 3);
 //				PreferenceUtil.setAutoLoginAccount("");

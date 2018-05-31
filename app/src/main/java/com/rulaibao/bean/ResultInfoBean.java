@@ -10,6 +10,15 @@ public class ResultInfoBean implements IMouldType {
 
     private String flag;
     private String message;
+    private String replyId;
+
+    public String getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(String replyId) {
+        this.replyId = replyId;
+    }
 
     public String getFlag() {
         return flag;

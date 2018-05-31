@@ -127,6 +127,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             Intent intent = new Intent(this, InsuranceProductDetailActivity.class);
             intent.putExtra("id", id);
             startActivity(intent);
+        } else if (type.equals("topic")) {  // 话题详情
+
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("appTopicId", id);
+            RlbActivityManager.toTrainingTopicDetailsActivity(this, map, false);
         }
     }
 

@@ -130,7 +130,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
         String shardId = "23232323";
         String url = Urls.URL_SHARED_CLASS + courseId;
-        String content = "演讲人:" + course.getCourseName() + "\n课程类型:" + course.getTypeName() + "\n课程时间:" + course.getCourseTime();
+        String content = "演讲人：" + course.getRealName() + "\n课程时间：" + course.getCourseTime() + "\n课程类型：" + course.getTypeName();
         title.setActivityParameters(url, shardId, course.getCourseName(), content);
 
 
@@ -289,7 +289,9 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
             }
         });
 
-        wvTrainingClassDetails.loadUrl(course.getCourseVideo());
+        if (!TextUtils.isEmpty(course.getCourseVideo())) {
+            wvTrainingClassDetails.loadUrl(course.getCourseVideo());
+        }
 
 
     }

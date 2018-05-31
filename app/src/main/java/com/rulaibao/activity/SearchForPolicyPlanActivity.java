@@ -99,7 +99,8 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
         vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
-        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
+        tv_empty.setText("暂无保单规划");
 
         listView= (ListView) findViewById(R.id.listView);
         mAdapter = new PolicyPlanAdapter(mContext, totalList);

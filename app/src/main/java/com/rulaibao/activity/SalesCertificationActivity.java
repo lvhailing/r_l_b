@@ -163,8 +163,8 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         HtmlRequest.getAppUserInfoData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+                 //   Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 UserInfo2B data = (UserInfo2B) params.result;
@@ -301,8 +301,8 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         HtmlRequest.UserInfoSubmit(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+               //     Toast.makeText(SalesCertificationActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 OK2B data = (OK2B) params.result;

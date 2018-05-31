@@ -137,16 +137,16 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
                     ResultClassDetailsPPTBean bean = (ResultClassDetailsPPTBean) params.result;
 
-                    if (bean.getPptImgs().size() == 0) {
-                        adapter.setNoDataMessage("暂无PPT信息");
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
-                    } else {
-                        adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
-
-                        pptImgs.addAll(bean.getPptImgs());
-                        adapter.notifyDataSetChanged();
+                    if (bean.getPptImgs() != null) {
+                        if (bean.getPptImgs().size() == 0) {
+                            adapter.setNoDataMessage("暂无PPT信息");
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                        } else {
+                            adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                            pptImgs.addAll(bean.getPptImgs());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
-
 
                 } else {
 

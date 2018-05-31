@@ -375,8 +375,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (param == null || params.result == null) {
-                    Toast.makeText(InsuranceProductDetailActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+            //        Toast.makeText(InsuranceProductDetailActivity.this, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
                     return;
                 }
                 result = (InsuranceDetail1B) params.result;
@@ -416,8 +415,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (param == null || params.result == null) {
-                    Toast.makeText(InsuranceProductDetailActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+             //       Toast.makeText(InsuranceProductDetailActivity.this, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
                     return;
                 }
                 Collection2B collection2B = (Collection2B) params.result;

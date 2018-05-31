@@ -26,6 +26,7 @@
             android:layout_marginLeft="10dip"
             android:text="---"
             android:layout_gravity="center_vertical"
+            android:textColor="@color/txt_black2"
             />
 
     </LinearLayout>
@@ -56,6 +57,7 @@
             android:layout_marginBottom="10dip"
             android:text="01-01 00:00"
             android:textSize="12sp"
+            android:textColor="@color/txt_mark_gray"
             />
 
         <LinearLayout

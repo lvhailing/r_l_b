@@ -241,8 +241,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         HtmlRequest.getAppUserInfoData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(MyInfoActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+                  //  Toast.makeText(MyInfoActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 data = (UserInfo2B) params.result;

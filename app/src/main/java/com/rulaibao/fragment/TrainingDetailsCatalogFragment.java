@@ -168,29 +168,33 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
                     ResultClassDetailsCatalogBean bean = (ResultClassDetailsCatalogBean) params.result;
 
-                    if(bean.getCourseList().size()==0){
-                        if(page!=1){
-                            page--;
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                    if(bean.getCourseList()!=null){
+                        if(bean.getCourseList().size()==0){
+                            if(page!=1){
+                                page--;
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }else{
+                                adapter.setNoDataMessage("暂无相关课程");
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                noDataFlag = false;
+                            }
+
                         }else{
-                            adapter.setNoDataMessage("暂无相关课程");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
-                            noDataFlag = false;
+                            courseList.addAll(bean.getCourseList());
+
+                            if(courseList.size()%10==0){
+                                adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
+                            }else{
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
+                            }
+
+
                         }
-
-                    }else{
-                        courseList.addAll(bean.getCourseList());
-
-                        if(courseList.size()%10==0){
-                            adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }
-
-
+                        adapter.notifyDataSetChanged();
                     }
 
-                    adapter.notifyDataSetChanged();
+
+
 //                    course = bean.getCourse();
 //                    setView();
                 } else {

@@ -236,7 +236,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
                 public void onRequestFinished(BaseParams params) {
                     if (params==null||params.result == null) {
                         vs.setDisplayedChild(1);
-                        Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                //        Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                         listView.postDelayed(new Runnable() {
                             @Override
                             public void run() {

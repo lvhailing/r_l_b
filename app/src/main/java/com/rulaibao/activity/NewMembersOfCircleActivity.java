@@ -163,9 +163,9 @@ public class NewMembersOfCircleActivity extends BaseActivity {
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params.result == null) {
+                if (params==null || params.result == null) {
                     vs.setDisplayedChild(1);
-                    Toast.makeText(NewMembersOfCircleActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(NewMembersOfCircleActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -210,8 +210,8 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         HtmlRequest.getCircleApplyAgreeData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+                //    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 OK2B data = (OK2B) params.result;
@@ -259,8 +259,8 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         HtmlRequest.getDeletCircleApplyData(mContext, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+              //      Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 OK2B data = (OK2B) params.result;

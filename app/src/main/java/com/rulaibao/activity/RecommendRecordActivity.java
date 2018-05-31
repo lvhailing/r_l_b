@@ -161,8 +161,8 @@ public class RecommendRecordActivity extends BaseActivity{
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params.result == null) {
-                    Toast.makeText(RecommendRecordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+                //    Toast.makeText(RecommendRecordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 

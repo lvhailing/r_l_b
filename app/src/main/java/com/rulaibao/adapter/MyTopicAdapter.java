@@ -138,7 +138,6 @@ public class MyTopicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("appTopicId", id);
-//                    map.put("circleId","");
                 RlbActivityManager.toTrainingTopicDetailsActivity(mContext, map, false);
             }
         });

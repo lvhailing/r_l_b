@@ -170,7 +170,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("appTopicId", topAppTopics.get(position).getTopicId());
-                map.put("circleId", circleId);
                 RlbActivityManager.toTrainingTopicDetailsActivity(TrainingCircleDetailsActivity.this, map, false);
             }
         });

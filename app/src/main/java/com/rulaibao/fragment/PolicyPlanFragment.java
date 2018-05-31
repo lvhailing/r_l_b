@@ -177,7 +177,7 @@ public class PolicyPlanFragment extends Fragment implements View.OnClickListener
                 public void onRequestFinished(BaseParams params) {
                     if (params == null || params.result == null) {
                         vs.setDisplayedChild(1);
-                        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                   //     Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                         return;
                     }
                     PolicyPlan2B data = (PolicyPlan2B) params.result;

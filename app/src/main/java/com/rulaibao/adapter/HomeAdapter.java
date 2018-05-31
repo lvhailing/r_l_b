@@ -45,7 +45,7 @@ public class HomeAdapter extends PagerAdapter {
 			tv_home_promotionMoney_no.setVisibility(View.GONE);
 			tv_home_promotionMoney.setVisibility(View.VISIBLE);
 			if (!TextUtils.isEmpty(promotionMoney)) {
-				tv_home_promotionMoney.setText(promotionMoney+"%");
+				tv_home_promotionMoney.setText(setTextStyle(context,promotionMoney));
 			} else {
 				tv_home_promotionMoney.setText("--");
 			}
@@ -84,17 +84,7 @@ public class HomeAdapter extends PagerAdapter {
 	public interface callBack {
 		public void callBack(int position);
 	}
-	private static SpannableStringBuilder  setTextStyle1(Context context, String str) {
-
-		String str1= str.substring(0,str.indexOf("."));
-		String str2=str1+str.substring(str.indexOf("."),str.length());
-		String str3=str2+"~";
-		SpannableStringBuilder ssb= StringUtil.setTextStyle(context, str1, str2, str3,
-				R.color.main_color_yellow, R.color.main_color_yellow, R.color.main_color_yellow,
-				30, 18, 18, 0, 0, 0);
-		return  ssb;
-	}
-	private static SpannableStringBuilder  setTextStyle2(Context context, String str) {
+	private static SpannableStringBuilder  setTextStyle(Context context, String str) {
 		String str1= str.substring(0,str.indexOf("."));
 		String str2=str1+str.substring(str.indexOf("."),str.length());
 		String str3=str2+"%";

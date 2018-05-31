@@ -157,7 +157,6 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
             public void onClick(View v) {
                 HashMap<String, Object> map = new HashMap<String, Object>();
                 map.put("appTopicId", arrayList.get(finalIndex).getTopicId());
-                map.put("circleId", circleId);
 
                 RlbActivityManager.toTrainingTopicDetailsActivity((BaseActivity) context, map, false);
             }

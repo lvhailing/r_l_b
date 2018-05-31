@@ -182,8 +182,8 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
         HtmlRequest.getFeedbackData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params.result == null) {
-                    Toast.makeText(ContactCustomerServiceActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params==null || params.result == null) {
+               //     Toast.makeText(ContactCustomerServiceActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 OK2B data = (OK2B) params.result;

@@ -239,8 +239,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (params==null || params.result==null){
-                    Toast.makeText(ProductAppointmentActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+               //     Toast.makeText(ProductAppointmentActivity.this, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
                     return;
                 }
                 OK2B b = (OK2B) params.result;

@@ -95,7 +95,7 @@
             android:paddingRight="15dip"
             android:paddingTop="5dip"
             android:text="设置权限"
-            android:textColor="@color/txt_black1"
+            android:textColor="@color/txt_black2"
             android:textSize="14sp" />
     </RelativeLayout>
 
@@ -103,9 +103,8 @@
         android:id="@+id/tv_circile_details_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
+        android:layout_marginLeft="30dip"
         android:layout_marginRight="15dip"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dip"
         android:text="----"
         android:textColor="@color/white"
