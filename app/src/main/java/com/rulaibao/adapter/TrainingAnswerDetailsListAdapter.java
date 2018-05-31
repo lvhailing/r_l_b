@@ -240,15 +240,15 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())) {
-
-                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, arrayList.get(index).getCid());
-
-                    } else {
+//                    if (replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())) {
+//
+//                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, arrayList.get(index).getCid());
+//
+//                    } else {
 
                         reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, list.get(position).getRid());
 
-                    }
+//                    }
                 }
             });
 

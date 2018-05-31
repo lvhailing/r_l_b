@@ -495,7 +495,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
                             itemBean.setReplyName(realName);       //  回复人姓名
                             itemBean.setReplyToName(replyToName);      //  被回复人姓名
-                            itemBean.setRid(commentId);
+                            itemBean.setRid(bean.getReplyId());
 
                             commentItemBeans.get(index).getReplys().add(itemBean);
 
