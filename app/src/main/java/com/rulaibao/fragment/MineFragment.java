@@ -207,7 +207,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-            Log.i("hh", "当前登录用户的userId --- " + userId);
+//            Log.i("hh", "当前登录用户的userId --- " + userId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -381,16 +381,17 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.iv_show_money: // 显示佣金金额
                 if (isShowMoney) {
+                    iv_show_money.setImageResource(R.mipmap.icon_hide_password);
+                    tv_total_commission.setText("****");
+                    isShowMoney = false;
+                } else {
+                    isShowMoney = true;
                     iv_show_money.setImageResource(R.mipmap.icon_open_password);
                     if (!TextUtils.isEmpty(totalCommission)) {
                         tv_total_commission.setText(totalCommission);
                     }
-                    isShowMoney = false;
-                } else {
-                    isShowMoney = true;
-                    iv_show_money.setImageResource(R.mipmap.icon_hide_password);
-                    tv_total_commission.setText("****");
                 }
+
                 break;
             case R.id.iv_commission_right_arrow: // 点累计佣金跳转到交易记录页
                 intent = new Intent(context, TransactionRecordActivity.class);

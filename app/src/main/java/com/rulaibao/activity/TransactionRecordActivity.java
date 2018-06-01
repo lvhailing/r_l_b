@@ -62,7 +62,7 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
              .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_transaction_record))
              .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 

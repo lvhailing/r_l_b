@@ -9,8 +9,7 @@ public class Urls {
     public static String URL_OUTER_NET_DEBUG = "http://123.126.102.219:30093/";
 
     // 正式环境IP
-//    public static String URL_OFFICIAL = "https://hwapp.cf360.com/";
-    public static String URL_OFFICIAL = "https://app.jdjufu.com/";  //( 再发版时用这个新的正式地址)
+    public static String URL_OFFICIAL = "http://app.ksghi.com/";
 
     //代树理
     public static final String URL_DSL = "http://192.168.1.106:9999/rulaibao-app/";
@@ -322,7 +321,8 @@ public class Urls {
 
     // 关于国恒保险
     public static final String URL_ABOUT_US = EC_HOST + "app/about/us";
-
+    // 注册协议
+    public static final String URL_SIGN_WEB = EC_HOST + "register/agreement";
     // 服务协议
     public static final String URL_SERVICE_AGREEMENT = EC_HOST + "app/service/agreement";
 

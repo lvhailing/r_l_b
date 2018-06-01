@@ -14,11 +14,12 @@
         <EditText
             android:id="@+id/et_consulting_questions"
             android:layout_width="match_parent"
-            android:layout_height="185dp"
+            android:layout_height="190dp"
             android:background="@color/white"
             android:gravity="top"
             android:hint="@string/et_consulting_questions"
             android:inputType="textMultiLine"
+            android:maxLength="200"
             android:padding="12dp"
             android:textSize="16sp"/>
 

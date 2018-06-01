@@ -82,7 +82,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 	private void initTopTitle() {
 		TitleBar title = (TitleBar) findViewById(R.id.rl_title);
 		title.setTitle(getResources().getString(R.string.title_null))
-				.setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+				.setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
 				.setCenterText(titleName)
 				.showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 

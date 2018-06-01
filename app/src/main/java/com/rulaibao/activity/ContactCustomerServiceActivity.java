@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +49,7 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
              .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_contact_customer_service))
              .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
@@ -88,6 +89,7 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                Log.i("hh", "onTextChanged -- " + s.length());
                 tv_change_text.setText(s.length() + "/200");
             }
 
@@ -95,7 +97,8 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
             public void afterTextChanged(Editable s) {
                 editStart = et_consulting_questions.getSelectionStart();
                 editEnd = et_consulting_questions.getSelectionEnd();
-                if (temp.length() > 200) {
+                if (s.length() > 200) {
+//                    Log.i("hh", "afterTextChanged -- " + s.length());
                     Toast.makeText(ContactCustomerServiceActivity.this, "您输入的字数已经超过限制！", Toast.LENGTH_SHORT).show();
                     s.delete(editStart - 1, editEnd);
                     int tempSelection = editStart;

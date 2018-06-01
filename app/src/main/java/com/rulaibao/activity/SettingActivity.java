@@ -54,7 +54,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
                 .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.setting_title))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 

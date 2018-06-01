@@ -55,7 +55,7 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
                 .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_commission_news))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 

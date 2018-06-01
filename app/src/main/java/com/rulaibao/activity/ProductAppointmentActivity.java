@@ -108,7 +108,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
         titleBar.showLeftImg(true);
         titleBar.setFromActivity("6000");//
         titleBar.setTitle(getResources().getString(R.string.title_null))
-                .setLogo(R.drawable.icons, false)
+                .setLogo(R.mipmap.logo, false)
                 .setIndicator(R.mipmap.icon_back)
                 .setCenterText(getResources().getString(R.string.title_product_appointment))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {

@@ -55,7 +55,7 @@ import java.util.List;
  * 首页模块
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private View mView;
     private Context context;
     private Intent intent;
@@ -69,9 +69,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     private String url; // url
     private String linkType; // 轮播图跳转类型（url:h5页面跳转、product:产品详情 为id、none:无跳转）
     private String name;
- //   private MarqueeView marqueeView;
+    //   private MarqueeView marqueeView;
     private TextView marqueeView;
-    private MouldList<Bulletin2B> bulletinlist=new MouldList<>();
+    private MouldList<Bulletin2B> bulletinlist = new MouldList<>();
 
     private TextView tv_project_plan;//计划书
     private TextView tv_disease_guarantee;//疾病保障
@@ -85,8 +85,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     //重磅推荐
     private ViewPager mViewPager;
     private ArrayList<View> viewList;
-    private ArrayList<ImageView> indicator_imgs=new ArrayList<>();
-    private MouldList<HomeViewPager2B> homeVpList=new MouldList<>();
+    private ArrayList<ImageView> indicator_imgs = new ArrayList<>();
+    private MouldList<HomeViewPager2B> homeVpList = new MouldList<>();
     private HomeAdapter homeAdapter;
     private View vIndicator;
     private LinearLayout ll_recommend;
@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     private MouldList<InsuranceProduct2B> totalList = new MouldList<>();
 
     private String userId;
- //   private HomeIndex2B homeIndexData;
+    //   private HomeIndex2B homeIndexData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -119,37 +119,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
     @Override
     public void onResume() {
         super.onResume();
+//        requestHomeData();      // 请求首页数据
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-                requestHomeData();// 请求首页数据
+            if(context!=null){
+
+            }
+            requestHomeData();// 请求首页数据
+
         } else {
 
         }
 
     }
+
     private void initView(View mView) {
         context = getContext();
         swipe_refresh = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         swipe_refresh.setColorSchemeResources(R.color.main_color_yellow);
 
-        scrollView= (ScrollView) mView.findViewById(R.id.scrollView);
+        scrollView = (ScrollView) mView.findViewById(R.id.scrollView);
         picList = new MouldList<CycleIndex2B>();
         ll_vp = (LinearLayout) mView.findViewById(R.id.ll_vp);
         ll_point_container = (LinearLayout) mView.findViewById(R.id.ll_point_container);
         marqueeView = (TextView) mView.findViewById(R.id.marqueeView);//公告
-        tv_project_plan= (TextView) mView.findViewById(R.id.tv_project_plan);//计划书
-        tv_disease_guarantee= (TextView) mView.findViewById(R.id.tv_disease_guarantee);//疾病保障
-        tv_pension_guarantee= (TextView) mView.findViewById(R.id.tv_pension_guarantee);//养老保障
-        tv_property_guarantee= (TextView) mView.findViewById(R.id.tv_property_guarantee);//资产保障
-        tv_accident_guarantee= (TextView) mView.findViewById(R.id.tv_accident_guarantee);//意外保障
-        tv_medical_guarantee= (TextView) mView.findViewById(R.id.tv_medical_guarantee);//医疗保障
-        tv_old_young= (TextView) mView.findViewById(R.id.tv_old_young);//一老一小
-        tv_enterprise_team= (TextView) mView.findViewById(R.id.tv_enterprise_team);//企业团
+        tv_project_plan = (TextView) mView.findViewById(R.id.tv_project_plan);//计划书
+        tv_disease_guarantee = (TextView) mView.findViewById(R.id.tv_disease_guarantee);//疾病保障
+        tv_pension_guarantee = (TextView) mView.findViewById(R.id.tv_pension_guarantee);//养老保障
+        tv_property_guarantee = (TextView) mView.findViewById(R.id.tv_property_guarantee);//资产保障
+        tv_accident_guarantee = (TextView) mView.findViewById(R.id.tv_accident_guarantee);//意外保障
+        tv_medical_guarantee = (TextView) mView.findViewById(R.id.tv_medical_guarantee);//医疗保障
+        tv_old_young = (TextView) mView.findViewById(R.id.tv_old_young);//一老一小
+        tv_enterprise_team = (TextView) mView.findViewById(R.id.tv_enterprise_team);//企业团
 
-        ll_recommend= (LinearLayout) mView.findViewById(R.id.ll_recommend);
+        ll_recommend = (LinearLayout) mView.findViewById(R.id.ll_recommend);
 
         marqueeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,12 +177,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
             }
         });
         //热销精品
-        listView= (MyListView) mView.findViewById(R.id.home_listview);
+        listView = (MyListView) mView.findViewById(R.id.home_listview);
         View view = View.inflate(getActivity(), R.layout.listview_home_footerview, null);
         listView.addFooterView(view);// 为listview添加footview
         mAdapter = new InsuranceProductAdapter(context, totalList);
         listView.setAdapter(mAdapter);
-
 
 
         swipe_refresh.setOnRefreshListener(this);
@@ -190,7 +196,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() { // item 点击监听
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
                 intent.putExtra("id", totalList.get(position).getId());
@@ -198,6 +204,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
             }
         });
     }
+
     //重磅推荐
     public void initViewPageData(final MouldList<HomeViewPager2B> homeVpList) {
         //重磅推荐
@@ -209,13 +216,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         viewList = new ArrayList<>();
         ((ViewGroup) vIndicator).removeAllViews();
         for (int i = 0; i < homeVpList.size(); i++) {
-            View view= LayoutInflater.from(context).inflate(R.layout.item_home_viewpager, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_home_viewpager, null);
             imgView = new ImageView(context);
             LinearLayout.LayoutParams params_linear = new LinearLayout.LayoutParams(
                     18, 18);
             params_linear.setMargins(7, 10, 7, 10);
             imgView.setLayoutParams(params_linear);
-            indicator_imgs.add(i,imgView);
+            indicator_imgs.add(i, imgView);
             if (i == 0) { // 初始化第一个为选中状态
                 indicator_imgs.get(i).setBackgroundResource(R.drawable.round_orange);
             } else {
@@ -224,7 +231,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
             ((ViewGroup) vIndicator).addView(indicator_imgs.get(i));
             viewList.add(view);
         }
-        homeAdapter = new HomeAdapter(context,viewList,homeVpList,new HomeAdapter.callBack() {
+        homeAdapter = new HomeAdapter(context, viewList, homeVpList, new HomeAdapter.callBack() {
             @Override
             public void callBack(int position) {
                 Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
@@ -236,67 +243,69 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
         // 绑定动作监听器：如翻页的动画
         mViewPager.setOnPageChangeListener(new MyListener());
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_project_plan://计划书
                 intent = new Intent(context, PlanActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_disease_guarantee://疾病保障---重疾险
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","重疾险");
+                intent.putExtra("category", "重疾险");
                 startActivity(intent);
                 break;
             case R.id.tv_pension_guarantee://养老保障---年金险
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","年金险");
+                intent.putExtra("category", "年金险");
                 startActivity(intent);
                 break;
             case R.id.tv_property_guarantee://资产保障---终身寿险
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","终身寿险");
+                intent.putExtra("category", "终身寿险");
                 startActivity(intent);
                 break;
             case R.id.tv_accident_guarantee://意外保障---意外险
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","意外险");
+                intent.putExtra("category", "意外险");
                 startActivity(intent);
                 break;
             case R.id.tv_medical_guarantee://医疗保障---医疗险
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","医疗险");
+                intent.putExtra("category", "医疗险");
                 startActivity(intent);
                 break;
             case R.id.tv_old_young://一老一小---
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","一老一小");
+                intent.putExtra("category", "一老一小");
                 startActivity(intent);
                 break;
             case R.id.tv_enterprise_team://企业团---企业团体
                 intent = new Intent(context, InsuranceProductActivity.class);
-                intent.putExtra("category","企业团体");
+                intent.putExtra("category", "企业团体");
                 startActivity(intent);
                 break;
         }
     }
+
     /**
      * 获取首页数据
      */
     private void requestHomeData() {
         try {
-            userId=null;
+            userId = null;
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
         } catch (Exception e) {
             e.printStackTrace();
         }
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-        param.put("userId",userId);
+        param.put("userId", userId);
         HtmlRequest.getHomeData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (params == null || params.result == null) {
-             //       Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    //       Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 HomeIndex2B homeIndex2B = (HomeIndex2B) params.result;
@@ -305,16 +314,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
                 freshVP();
 
                 //公告
-                bulletinlist=homeIndex2B.getBulletinlist();
-                if (bulletinlist.size()!=0){
+                bulletinlist = homeIndex2B.getBulletinlist();
+                if (bulletinlist.size() != 0) {
                     marqueeView.setText(bulletinlist.get(0).getBulletinTopic());
-                }else{
+                } else {
                     marqueeView.setText("暂无公告");
                 }
 
-                if (homeIndex2B.getRecommendlist().size()==0){
+                if (homeIndex2B.getRecommendlist().size() == 0) {
                     ll_recommend.setVisibility(View.GONE);
-                }else{
+                } else {
                     ll_recommend.setVisibility(View.VISIBLE);
                 }
                 indicator_imgs.clear();
@@ -364,11 +373,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
             rollViewPager.setOnMyListener(new MyRollViewPager.MyClickListener() {
                 @Override
                 public void onMyClick(int position) {
-                    if (picList != null && picList.size()!=0) {
+                    if (picList != null && picList.size() != 0) {
                         cycleIndex2B = picList.get(position);
                         url = cycleIndex2B.getTargetUrl();
                         name = cycleIndex2B.getName();
-                        linkType=cycleIndex2B.getLinkType();
+                        linkType = cycleIndex2B.getLinkType();
 
                         if ("url".equals(linkType)) { // 跳转h5网页
                             Intent intent = new Intent(context, WebActivity.class);
@@ -378,7 +387,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,Swipe
                             startActivity(intent);
                         } else if ("product".equals(linkType)) { // 产品详情
                             Intent intent = new Intent(context, InsuranceProductDetailActivity.class);
-                            intent.putExtra("id",url);
+                            intent.putExtra("id", url);
                             startActivity(intent);
                         } else if ("none".equals(linkType)) { // 无跳转
 

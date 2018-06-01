@@ -101,7 +101,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null))
-                .setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+                .setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
                 .setCenterText(getResources().getString(R.string.login_sign))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
@@ -179,9 +179,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.signup_web: //国恒保险
                 Intent intent = new Intent(SignActivity.this, WebActivity.class);
-                intent.putExtra("type", WebActivity.WEB_TYPE_ABOUT_US);
-                intent.putExtra("title", getResources().getString(R.string.setting_about));
-                intent.putExtra("url", Urls.URL_ABOUT_US /*+ SystemInfo.sVersionName*/);
+                intent.putExtra("type", WebActivity.WEB_TYPE_SING);
+                intent.putExtra("title", getResources().getString(R.string.app_name));
+                intent.putExtra("url", Urls.URL_SIGN_WEB /*+ SystemInfo.sVersionName*/);
                 startActivity(intent);
 
                 break;

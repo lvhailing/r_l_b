@@ -226,7 +226,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      * @param result 处理数据
      * @return fanhuizhi
      */
-    public static Boolean resultEncrypt(final Context c, String result) {
+    public static Boolean resultEncrypt(Context c, String result) {
 
         if (result.equals("0000")) {
             return true;
@@ -249,12 +249,21 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 				c.startActivity(i_login);*/
 
                 Intent i_account = new Intent();
+//                if(c==null){
+//                    try {
+//                        c = MainActivity.class.newInstance().mContext;
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//
+//                }
                 i_account.setClass(c, MainActivity.class);
                 //子线程中更新UI
+                final Context finalC = c;
                 new Handler(c.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(c, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(finalC, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -529,6 +538,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<HomeIndex2B> b = json.fromJson(data, new TypeToken<Repo<HomeIndex2B>>() {
                     }.getType());
+//                    b.setCode("9999");
                     if (resultEncrypt(context, b.getCode())){
                         return b.getData();
                     }else{

@@ -37,7 +37,9 @@ public class PhotoPreviewAc extends BaseActivity implements View.OnClickListener
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_house_detail)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
+             .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_house_detail))
+             .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
             @Override
             public void onMenu(int id) {
             }

@@ -172,12 +172,12 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:padding="5dp"
-        android:src="@mipmap/icon_back"
-        android:layout_margin="10dp"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_back"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:padding="5dp"-->
+        <!--android:src="@mipmap/icon_back"-->
+        <!--android:layout_margin="10dp"/>-->
 
 </RelativeLayout>

@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private Login2B bean;
     public static String GOTOMAIN = "1000";
     private String resultCode = "";
-    private ImageView iv_back;
+//    private ImageView iv_back;
     private boolean isOpen=false;
 
     private String username;
@@ -74,14 +74,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         btn_login = (Button) findViewById(R.id.btn_login);
         tv_login_forget_password = (TextView) findViewById(R.id.tv_login_forget_password);
         tv_login_sign = (TextView) findViewById(R.id.tv_login_sign);
-        iv_back= (ImageView) findViewById(R.id.iv_back);
+//        iv_back= (ImageView) findViewById(R.id.iv_back);
 
 
         btn_login.setOnClickListener(this);
         tv_login_sign.setOnClickListener(this);
         iv_hide_password.setOnClickListener(this);
         tv_login_forget_password.setOnClickListener(this);
-        iv_back.setOnClickListener(this);
+//        iv_back.setOnClickListener(this);
         /*et_login_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -218,9 +218,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Intent i_sign = new Intent(this, SignActivity.class);
                 startActivity(i_sign);
                 break;
-            case R.id.iv_back: // 返回
-                finish();
-                break;
+//            case R.id.iv_back: // 返回
+//                finish();
+//                break;
             default:
 
                 break;

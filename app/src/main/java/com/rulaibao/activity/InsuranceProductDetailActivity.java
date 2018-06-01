@@ -130,7 +130,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         titleBar = (TitleBar) findViewById(R.id.rl_title);
         titleBar.showLeftImg(true);
         titleBar.setFromActivity("1000");
-        titleBar.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+        titleBar.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
                 .setCenterText(getResources().getString(R.string.title_insurance_product_detail)).showMore(false).setTitleRightButton(R.drawable.ic_share_title)
                 .setOnActionListener(new TitleBar.OnActionListener() {
 

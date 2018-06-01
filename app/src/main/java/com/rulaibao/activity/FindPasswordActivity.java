@@ -94,7 +94,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null))
-                .setLogo(R.drawable.icons, false).setIndicator(R.mipmap.icon_back)
+                .setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
                 .setCenterText(getResources().getString(R.string.find_password_title))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 

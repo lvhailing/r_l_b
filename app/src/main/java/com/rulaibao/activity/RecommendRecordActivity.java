@@ -45,6 +45,7 @@ public class RecommendRecordActivity extends BaseActivity{
     private RecommendRecordAdapter recommendRecordAdapter;
     private int currentPage = 1;    //当前页
     private ViewSwitcher vs;
+    private MouldList<RecommendRecordList2B> everyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class RecommendRecordActivity extends BaseActivity{
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
              .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.setting_recommend_record)).showMore(false)
              .setOnActionListener(new TitleBar.OnActionListener() {
 
@@ -125,6 +126,9 @@ public class RecommendRecordActivity extends BaseActivity{
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==recommendRecordAdapter.getItemCount()&& firstVisibleItem != 0){
+                    if (everyList.size() == 0) {
+                        return;
+                    }
                     currentPage++;
                     getRecommendRecordData();
                 }
@@ -168,7 +172,7 @@ public class RecommendRecordActivity extends BaseActivity{
 
                 RecommendRecordList1B  data = (RecommendRecordList1B) params.result;
                 tv_amount_people.setText(data.getTotal());
-                MouldList<RecommendRecordList2B> everyList = data.getRecommendList();
+                everyList = data.getRecommendList();
                 if (everyList == null) {
                     vs.setDisplayedChild(1);
                     return;
@@ -188,10 +192,18 @@ public class RecommendRecordActivity extends BaseActivity{
                     return;
                 }
                 vs.setDisplayedChild(0);
-                if (totalList.size() % 10 == 0) {
-                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
-                } else {
+
+//                if (totalList.size() % 10 == 0) {
+//                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
+//                } else {
+//                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.NO_LOAD_MORE);
+//                }
+                if (everyList.size() != 10) {
+                    // 本次取回的数据为不是10条，代表取完了
                     recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.NO_LOAD_MORE);
+                } else {
+                    // 其他，均显示“数据加载中”的提示
+                    recommendRecordAdapter.changeMoreStatus(recommendRecordAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });

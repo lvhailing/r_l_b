@@ -121,7 +121,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         more.setOnClickListener(this);
         iv_right_btn.setOnClickListener(this);
 
-        options = ImageLoaderManager.initDisplayImageOptions(R.drawable.icons, R.drawable.icons, R.drawable.icons);
+        options = ImageLoaderManager.initDisplayImageOptions(R.mipmap.logo, R.mipmap.logo, R.mipmap.logo);
     }
 
     private ImageView red;
@@ -607,7 +607,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
 //		Toast.makeText(mContext, "setLogo picture=="+picture+" url=="+url+" logoName=="+logoName, Toast.LENGTH_LONG).show();
         if (b) {
             if (picture == null) {
-                left.setImageResource(R.drawable.icons);
+                left.setImageResource(R.mipmap.logo);
             } else {
                 left.setImageBitmap(picture);
             }

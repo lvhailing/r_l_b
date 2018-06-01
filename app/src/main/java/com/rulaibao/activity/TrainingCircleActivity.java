@@ -180,7 +180,7 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.drawable.icons, false)
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
                 .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_circle_all))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
             @Override

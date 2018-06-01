@@ -42,6 +42,7 @@ public class WebActivity extends Activity implements View.OnClickListener {
     public static final String WEBTYPE_SERVICE_AGREEMENT = "service_agreement "; // 服务协议
     public static final String WEB_TYPE_SIGN_AGREEMENT = "sign_agreement "; // 国恒保险协议
     public static final String WEB_TYPE_ABOUT_US = "about_us "; // 关于我们
+    public static final String WEB_TYPE_SING = "signup_web"; // 注册协议
     public static final String WEBTYPE_VERSION = "version "; // 版本号
     public static final String WEBTYPE_PROJECT_MATERIAL_DETAIL = "project_material_detail "; //项目材料
 
@@ -115,6 +116,9 @@ public class WebActivity extends Activity implements View.OnClickListener {
         } else if (type.equals(WEBTYPE_SERVICE_AGREEMENT)) {
             tv_web_title.setText(getIntent().getExtras().getString("title"));
         } else if (type.equals(WEB_TYPE_ABOUT_US)) { // 关于我们
+            tv_web_title.setText(getIntent().getExtras().getString("title"));
+
+        }else if (type.equals(WEB_TYPE_SING)) { // 注册协议
             tv_web_title.setText(getIntent().getExtras().getString("title"));
 
         } else if (type.equals(WEB_TYPE_SIGN_AGREEMENT)) { // 国恒保险协议
