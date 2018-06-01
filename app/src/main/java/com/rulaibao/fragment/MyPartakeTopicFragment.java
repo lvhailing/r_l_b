@@ -60,9 +60,17 @@ public class MyPartakeTopicFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //获取话题列表数据
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
             totalList.clear();
             currentPage = 1;
             requestTopicData();
+        } else {
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
+            if (myPartakeTopicAdapter != null) {
+                totalList.clear();
+                currentPage = 1;
+                myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.NO_LOAD_MORE);
+            }
         }
     }
 
@@ -147,16 +155,7 @@ public class MyPartakeTopicFragment extends Fragment {
                     return;
                 }
                 vs.setDisplayedChild(0);
-//                if (totalList.size() % 10 == 0 && everyList.size() == 0) {
-//                    // 数据刚好是10条、20条、30条...等整数时，隐藏“数据加载中”的提示
-//                    myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.NO_LOAD_MORE);
-//                } else if (totalList.size() % 10 != 0 && everyList.size() != 0) {
-//                    // 数据大于10条且不是整十数据时，当最后一页加载的数据没有占满当前屏幕时，也需隐藏“数据加载中”的提示
-//                    myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.NO_LOAD_MORE);
-//                } else {
-//                    // 数据大于10条时，显示“数据加载中”的提示
-//                    myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.PULLUP_LOAD_MORE);
-//                }
+
                 if (everyList.size() != 10) {
                     // 本次取回的数据为不是10条，代表取完了
                     myPartakeTopicAdapter.changeMoreStatus(myPartakeTopicAdapter.NO_LOAD_MORE);

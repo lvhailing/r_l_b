@@ -43,7 +43,7 @@ public class DeleteMessageDialog extends Dialog implements DialogInterface.OnCan
         this.onChanged = onChanged;
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mView = inflater.inflate(R.layout.dialog_cancel_normal, null);
+        View mView = inflater.inflate(R.layout.dialog_delete_messgae, null);
         setContentView(mView);
         // 设置window属性
         lp = getWindow().getAttributes();

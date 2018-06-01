@@ -22,6 +22,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.rulaibao.activity.TrainingCircleDetailsActivity;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.dialog.CancelNormalDialog;
+import com.rulaibao.dialog.DeleteMessageDialog;
 
 import java.util.HashMap;
 
@@ -343,7 +344,7 @@ public class ViewUtils {
 //  删除提示
 
 	public static void showDeleteDialog(final Activity context, String msg) {
-		CancelNormalDialog dialog = new CancelNormalDialog(context, new CancelNormalDialog.IsCancel() {
+		DeleteMessageDialog dialog = new DeleteMessageDialog(context, new DeleteMessageDialog.IsCancel() {
 			@Override
 			public void onConfirm() {
 				context.finish();

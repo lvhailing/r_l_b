@@ -149,8 +149,7 @@ public class PolicyBookingAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) { // 跳转到预约详情
                 Intent intent = new Intent(fragment.getContext(), PolicyBookingDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
-//                activity.startActivityForResult(intent, PolicyBookingListActivity.REQUEST_CODE);
-                activity.startActivity(intent);
+                activity.startActivityForResult(intent, PolicyBookingListActivity.REQUEST_CODE);
             }
         });
     }

@@ -39,6 +39,7 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
     private MouldList<MyAskList2B> totalList = new MouldList<>();
     private int currentPage = 1;    //当前页
     private ViewSwitcher vs;
+    private MouldList<MyAskList2B> everyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
                     return;
                 }
                 MyAskList1B data = (MyAskList1B) params.result;
-                MouldList<MyAskList2B> everyList = data.getList();
+                 everyList = data.getList();
                 if (everyList == null) {
                     return;
                 }
@@ -131,10 +132,17 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
                 } else {
                     vs.setDisplayedChild(0);
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
-                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
-                } else {
+//                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+//                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
+//                } else {
+//                    myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
+//                }
+                if (everyList.size() != 10) {
+                    // 本次取回的数据为不是10条，代表取完了
                     myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
+                } else {
+                    // 其他，均显示“数据加载中”的提示
+                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });
@@ -165,6 +173,9 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==myAskAdapter.getItemCount()&& firstVisibleItem != 0){
+                    if (everyList.size() == 0) {
+                        return;
+                    }
                     currentPage ++;
                     requestData();
                 }

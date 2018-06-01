@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
  * Created by junde on 2018/4/23.
  */
 
-public class MyTopicActivity extends BaseActivity implements View.OnClickListener {
+public class MyTopicActivity extends BaseActivity{
 
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
@@ -39,6 +39,7 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
     private MouldList<MyTopicList2B> totalList = new MouldList<>();
     private int currentPage = 1;    //当前页
     private ViewSwitcher vs;
+    private MouldList<MyTopicList2B> everyList;
 
 
     @Override
@@ -112,14 +113,12 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
                     return;
                 }
                 MyTopicList1B data = (MyTopicList1B) params.result;
-                MouldList<MyTopicList2B> everyList = data.getList();
+                 everyList = data.getList();
                 if (everyList == null) {
                     return;
                 }
                 if ((everyList.size() == 0) && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
-
-                    //没有加载更多了
                     myTopicAdapter.changeMoreStatus(myTopicAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
@@ -133,10 +132,17 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
                 } else {
                     vs.setDisplayedChild(0);
                 }
-                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
-                    myTopicAdapter.changeMoreStatus(myTopicAdapter.PULLUP_LOAD_MORE);
-                } else {
+//                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+//                    myTopicAdapter.changeMoreStatus(myTopicAdapter.PULLUP_LOAD_MORE);
+//                } else {
+//                    myTopicAdapter.changeMoreStatus(myTopicAdapter.NO_LOAD_MORE);
+//                }
+                if (everyList.size() != 10) {
+                    // 本次取回的数据为不是10条，代表取完了
                     myTopicAdapter.changeMoreStatus(myTopicAdapter.NO_LOAD_MORE);
+                } else {
+                    // 其他，均显示“数据加载中”的提示
+                    myTopicAdapter.changeMoreStatus(myTopicAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });
@@ -153,24 +159,6 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
             public void onRefresh() {  // 下拉刷新
                 currentPage = 1;
                 requestData();
-
-                //刷新完成
-                swipe_refresh.setRefreshing(false);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        List<String> headDatas = new ArrayList<String>();
-//                        for (int i = 20; i <30 ; i++) {
-//                            headDatas.add("Heard Item "+i);
-//                        }
-//                        transactionRecordAdapter.AddHeaderItem(headDatas);
-//
-//                        //刷新完成
-//                        swipe_refresh.setRefreshing(false);
-//                        Toast.makeText(TransactionRecordActivity.this, "更新了 "+headDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                    }
-//                }, 3000);
-
             }
         });
     }
@@ -185,30 +173,11 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
 
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleItem+1==myTopicAdapter.getItemCount()&& firstVisibleItem != 0){
-
-                    //设置正在加载更多
-//                    transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.LOADING_MORE);
-
+                    if (everyList.size() == 0) {
+                        return;
+                    }
                     currentPage ++;
                     requestData();
-
-                    //改为网络请求
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //
-//                            List<String> footerDatas = new ArrayList<String>();
-//                            for (int i = 0; i< 10; i++) {
-//                                footerDatas.add("footer  item" + i);
-//                            }
-//                            transactionRecordAdapter.AddFooterItem(footerDatas);
-//                            //设置回到上拉加载更多
-//                            transactionRecordAdapter.changeMoreStatus(transactionRecordAdapter.PULLUP_LOAD_MORE);
-//                            //没有加载更多了
-//                            //mRefreshAdapter.changeMoreStatus(mRefreshAdapter.NO_LOAD_MORE);
-//                            Toast.makeText(TransactionRecordActivity.this, "更新了 "+footerDatas.size()+" 条目数据", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 3000);
                 }
 
             }
@@ -222,10 +191,5 @@ public class MyTopicActivity extends BaseActivity implements View.OnClickListene
                 lastVisibleItem=layoutManager.findLastVisibleItemPosition();
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

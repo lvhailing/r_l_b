@@ -59,11 +59,17 @@ public class MyPartakeAskFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             //页面可见时调接口刷新数据
-            Log.i("hh", this + " -- setUserVisibleHint --");
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
             totalList.clear();
             currentPage = 1;
             requestAskData();
-
+        } else {
+            Log.i("hh", this + " -- setUserVisibleHint --" + isVisibleToUser);
+            if (myPartakeAskAdapter != null) {
+                totalList.clear();
+                currentPage = 1;
+                myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
+            }
         }
     }
 
@@ -124,9 +130,9 @@ public class MyPartakeAskFragment extends Fragment {
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params==null || params.result == null) {
+                if (params == null || params.result == null) {
                     vs.setDisplayedChild(1);
-            //        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    //        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -151,16 +157,7 @@ public class MyPartakeAskFragment extends Fragment {
                     return;
                 }
                 vs.setDisplayedChild(0);
-//                if (totalList.size() % 10 == 0 && everyList.size() == 0) {
-//                    // 数据刚好是10条、20条、30条...等整数时，隐藏“数据加载中”的提示
-//                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
-//                } else if (totalList.size() % 10 != 0 && everyList.size() != 0) {
-//                    // 数据大于10条且不是整十数据时，当最后一页加载的数据没有占满当前屏幕时，也需隐藏“数据加载中”的提示
-//                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);
-//                } else {
-//                    // 数据大于10条时，显示“数据加载中”的提示
-//                    myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.PULLUP_LOAD_MORE);
-//                }
+
                 if (everyList.size() != 10) {
                     // 本次取回的数据为不是10条，代表取完了
                     myPartakeAskAdapter.changeMoreStatus(myPartakeAskAdapter.NO_LOAD_MORE);

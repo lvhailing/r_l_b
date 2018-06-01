@@ -160,6 +160,10 @@ public class PolicyBookingListActivity extends BaseActivity {
         return titleView;
     }
 
+    /**
+     * 更新顶部 tab 各个状态的数据
+     * @param data
+     */
     public void refreshTabTitle(PolicyBookingList1B data) {
         View titleView1 = (View) tab_layout.getTabAt(0).getCustomView();
         TextView title1 = (TextView) titleView1.findViewById(R.id.tv_title);
