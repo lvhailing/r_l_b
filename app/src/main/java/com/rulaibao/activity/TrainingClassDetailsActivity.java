@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -259,7 +261,9 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     }
 
 
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled", "AddJavascriptInterface"})
     public void initPlayView() {
+
 
         WebSettings ws = wvTrainingClassDetails.getSettings();
         ws.setBuiltInZoomControls(true);// 隐藏缩放按钮
@@ -273,6 +277,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         ws.setDomStorageEnabled(true);
         ws.setSupportMultipleWindows(true);// 新加
 
+        wvTrainingClassDetails.addJavascriptInterface(new MyJavaScriptinterface(), "click");
         /**
          * 解决Android 5.0以后，WebView默认不支持同时加载Https和Http混合模式，
          * 当一个安全的站点（https）去加载一个非安全的站点（http）时，需要配置Webview加载内容的混合模式
@@ -293,6 +298,10 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
             wvTrainingClassDetails.loadUrl(course.getCourseVideo());
         }
 
+
+    }
+
+    public class MyJavaScriptinterface {
 
     }
 

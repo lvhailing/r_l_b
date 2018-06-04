@@ -195,8 +195,8 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         tv_appointmented_minimumPremium = (TextView) findViewById(R.id.tv_appointmented_minimumPremium);
         tv_appointmented_promotionmoney = (TextView) findViewById(R.id.tv_appointmented_promotionmoney);
 
-        vs = (ViewSwitcher)findViewById(R.id.vs);
-        tv_empty = (TextView)findViewById(R.id.tv_empty);
+        vs = (ViewSwitcher) findViewById(R.id.vs);
+        tv_empty = (TextView) findViewById(R.id.tv_empty);
     }
 
     private void initData() {

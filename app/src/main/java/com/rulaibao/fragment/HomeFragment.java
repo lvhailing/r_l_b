@@ -97,6 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
 
     private String userId;
     //   private HomeIndex2B homeIndexData;
+    private boolean isRefresh = true;      //  控制无数据不加载
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -119,20 +120,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
     @Override
     public void onResume() {
         super.onResume();
-//        requestHomeData();      // 请求首页数据
+//        if(isRefresh){
+//            requestHomeData();      // 请求首页数据
+//            isRefresh = false;
+//        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//        isRefresh = true;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(context!=null){
-
-            }
+//            if(context!=null){
+//                requestHomeData();// 请求首页数据
+//                isRefresh = false;
+//            }
             requestHomeData();// 请求首页数据
 
         } else {
-
+//            isRefresh = true;
         }
 
     }

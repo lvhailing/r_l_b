@@ -72,7 +72,7 @@ public class WebActivity extends Activity implements View.OnClickListener {
         initView();
     }
 
-    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void initView() {
 
         ActivityStack stack = ActivityStack.getActivityManage();

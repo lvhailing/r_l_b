@@ -178,6 +178,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         return rootView;
     }
 
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void setWebView(String html, WebView webView) {
         webView.getSettings().setJavaScriptEnabled(true);
         //支持屏幕缩放
@@ -189,11 +190,17 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setDefaultTextEncodingName("UTF-8");
         webView.getSettings().setBlockNetworkImage(false);
+        webView.addJavascriptInterface(new MyJavaScriptinterface(), "click");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webView.getSettings().setMixedContentMode(webView.getSettings()
                     .MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
         }
-        webView.loadDataWithBaseURL(null, getNewContent(html), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+    }
+
+    public class MyJavaScriptinterface {
+
     }
 
     private String getNewContent(String htmltext) {

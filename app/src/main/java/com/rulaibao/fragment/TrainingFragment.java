@@ -117,6 +117,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     RelativeLayout rlTrainingBoutiqueThird;
     @BindView(R.id.rl_training_boutique_forth)
     RelativeLayout rlTrainingBoutiqueForth;
+    @BindView(R.id.tv_boutique_nodata)
+    TextView tvBoutiqueNodata;
 
     private ArrayList<ResultCycleIndex2B> picList;
     private Animation mRefreshAnim;
@@ -457,30 +459,54 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
         if (bean.getQualityCourseList().size() > 0) {
             if (bean.getQualityCourseList().get(0) != null) {
+                tvBoutiqueNodata.setVisibility(View.GONE);
+                rlTrainingBoutiqueFirst.setVisibility(View.VISIBLE);
+                rlTrainingBoutiqueSecond.setVisibility(View.INVISIBLE);
                 tvTrainingBoutiqueFirst.setText(bean.getQualityCourseList().get(0).getCourseName());
                 ivTrainingBoutiqueFirst.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(0).getCourseLogo()));
             }
-        }
 
-        if (bean.getQualityCourseList().size() > 1) {
-            if (bean.getQualityCourseList().get(1) != null) {
-                tvTrainingBoutiqueSecond.setText(bean.getQualityCourseList().get(1).getCourseName());
-                ivTrainingBoutiqueSecond.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(1).getCourseLogo()));
-            }
-        }
+            if (bean.getQualityCourseList().size() > 1) {
+                if (bean.getQualityCourseList().get(1) != null) {
+                    rlTrainingBoutiqueSecond.setVisibility(View.VISIBLE);
+                    tvTrainingBoutiqueSecond.setText(bean.getQualityCourseList().get(1).getCourseName());
+                    ivTrainingBoutiqueSecond.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(1).getCourseLogo()));
+                }
+                if (bean.getQualityCourseList().size() > 2) {
+                    if (bean.getQualityCourseList().get(2) != null) {
+                        rlTrainingBoutiqueThird.setVisibility(View.VISIBLE);
+                        rlTrainingBoutiqueForth.setVisibility(View.INVISIBLE);
+                        tvTrainingBoutiqueThird.setText(bean.getQualityCourseList().get(2).getCourseName());
+                        ivTrainingBoutiqueThird.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(2).getCourseLogo()));
+                    }
+                    if (bean.getQualityCourseList().size() > 3) {
+                        if (bean.getQualityCourseList().get(3) != null) {
+                            rlTrainingBoutiqueForth.setVisibility(View.VISIBLE);
+                            tvTrainingBoutiqueForth.setText(bean.getQualityCourseList().get(3).getCourseName());
+                            ivTrainingBoutiqueForth.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(3).getCourseLogo()));
+                        }
+                    } else {
+                        rlTrainingBoutiqueForth.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    rlTrainingBoutiqueThird.setVisibility(View.GONE);
+                    rlTrainingBoutiqueForth.setVisibility(View.GONE);
+                }
 
-        if (bean.getQualityCourseList().size() > 2) {
-            if (bean.getQualityCourseList().get(2) != null) {
-                tvTrainingBoutiqueThird.setText(bean.getQualityCourseList().get(2).getCourseName());
-                ivTrainingBoutiqueThird.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(2).getCourseLogo()));
-            }
-        }
 
-        if (bean.getQualityCourseList().size() > 3) {
-            if (bean.getQualityCourseList().get(3) != null) {
-                tvTrainingBoutiqueForth.setText(bean.getQualityCourseList().get(3).getCourseName());
-                ivTrainingBoutiqueForth.setImageResource(getClassImgIndex(bean.getQualityCourseList().get(3).getCourseLogo()));
+            } else {
+                rlTrainingBoutiqueSecond.setVisibility(View.INVISIBLE);
+                rlTrainingBoutiqueThird.setVisibility(View.GONE);
+                rlTrainingBoutiqueForth.setVisibility(View.GONE);
             }
+
+
+        } else {          //  无精品课程
+            rlTrainingBoutiqueFirst.setVisibility(View.GONE);
+            rlTrainingBoutiqueSecond.setVisibility(View.GONE);
+            rlTrainingBoutiqueThird.setVisibility(View.GONE);
+            rlTrainingBoutiqueForth.setVisibility(View.GONE);
+            tvBoutiqueNodata.setVisibility(View.VISIBLE);
         }
 
 

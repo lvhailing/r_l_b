@@ -93,7 +93,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private MineData2B data;
     private int messageTotal;
 
-    private boolean isLogin = false;
+//    private boolean isLogin = false;
     private boolean isShowMoney = true; // 默认显示佣金额
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";  // 图片保存SD卡位置
     private int insuranceWarning;
@@ -182,14 +182,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-        if (PreferenceUtil.isLogin()) {
-            isLogin = true;
-            ll_user_name.setVisibility(View.VISIBLE);
-            rl_total_commission.setVisibility(View.VISIBLE);
-            tv_mine_login.setVisibility(View.GONE);
-            requestData();
-        } else {
-            isLogin = false;
+        if (!PreferenceUtil.isLogin()) { // 未登录 状态
+//            isLogin = false;
             tv_mine_login.setVisibility(View.VISIBLE);
             ll_user_name.setVisibility(View.GONE);
             rl_total_commission.setVisibility(View.GONE);
@@ -198,6 +192,12 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             // 未登录时，消息数和续保消息数都不可见
             tv_message_total.setVisibility(View.GONE);
             tv_renewal_numbers.setVisibility(View.GONE);
+        } else { // 已登录 状态
+//            isLogin = true;
+            ll_user_name.setVisibility(View.VISIBLE);
+            rl_total_commission.setVisibility(View.VISIBLE);
+            tv_mine_login.setVisibility(View.GONE);
+            requestData();
         }
     }
 
@@ -219,8 +219,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         HtmlRequest.getMineData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params==null || params.result == null) {
-            //        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                if (params == null || params.result == null) {
+                    //        Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 data = (MineData2B) params.result;

@@ -14,8 +14,7 @@
         android:id="@+id/swipe_training"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/fragment_title"
-        >
+        android:layout_below="@id/fragment_title">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/rsv_fragment_training"
@@ -29,9 +28,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:descendantFocusability="blocksDescendants"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,11 +142,10 @@
                         android:id="@+id/ll_training_recommend_refresh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        >
+                        android:orientation="horizontal">
 
 
                         <ImageView
@@ -165,66 +162,85 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="15dip"
                             android:text="@string/training_refresh"
-                            android:textSize="16sp"
                             android:textColor="@color/txt_mark_gray"
-                            />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/tv_boutique_nodata"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginTop="10dip"
+                    android:text="暂无精品课程"
+                    android:textColor="@color/gray_d"
+                    android:visibility="gone" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="290dip"
+                    android:layout_height="wrap_content"
                     android:background="@color/bg_white"
                     android:orientation="vertical"
                     android:paddingLeft="15dip"
                     android:paddingRight="15dip"
-                    android:paddingTop="15dip"
+                    android:paddingTop="10dip"
                     android:visibility="visible">
 
+
                     <LinearLayout
+                        android:id="@+id/ll_training_boutique_first"
                         android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        >
 
                         <RelativeLayout
                             android:id="@+id/rl_training_boutique_first"
                             android:layout_width="0dip"
-                            android:layout_height="match_parent"
+                            android:layout_height="145dip"
                             android:layout_marginRight="5dip"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tv_training_boutique_first"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:maxLines="1"
                                 android:ellipsize="end"
+                                android:maxLines="1"
                                 android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_first"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_above="@id/tv_training_boutique_first"
                                 android:layout_gravity="center"
                                 android:scaleType="fitXY"
                                 android:src="@mipmap/img_training_quality" />
+
+
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/rl_training_boutique_second"
                             android:layout_width="0dip"
-                            android:layout_height="match_parent"
+                            android:layout_height="145dip"
                             android:layout_marginLeft="5dip"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
 
                             <TextView
                                 android:id="@+id/tv_training_boutique_second"
@@ -233,14 +249,14 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:maxLines="1"
                                 android:ellipsize="end"
+                                android:maxLines="1"
                                 android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_second"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_above="@id/tv_training_boutique_second"
                                 android:layout_gravity="center"
                                 android:scaleType="fitXY"
@@ -249,18 +265,19 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_training_boutique_third"
                         android:layout_width="match_parent"
-                        android:layout_height="0dip"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <RelativeLayout
                             android:id="@+id/rl_training_boutique_third"
                             android:layout_width="0dip"
-                            android:layout_height="match_parent"
+                            android:layout_height="145dip"
                             android:layout_marginRight="5dip"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tv_training_boutique_third"
@@ -269,27 +286,30 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:maxLines="1"
                                 android:ellipsize="end"
+                                android:maxLines="1"
                                 android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_third"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_above="@id/tv_training_boutique_third"
                                 android:layout_gravity="center"
                                 android:scaleType="fitXY"
                                 android:src="@mipmap/img_training_quality" />
+
+
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/rl_training_boutique_forth"
                             android:layout_width="0dip"
-                            android:layout_height="match_parent"
+                            android:layout_height="145dip"
                             android:layout_marginLeft="5dip"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tv_training_boutique_forth"
@@ -298,18 +318,20 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginBottom="10dip"
                                 android:layout_marginTop="10dip"
-                                android:maxLines="1"
                                 android:ellipsize="end"
+                                android:maxLines="1"
                                 android:text="---" />
 
                             <ImageView
                                 android:id="@+id/iv_training_boutique_forth"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_above="@id/tv_training_boutique_forth"
                                 android:layout_gravity="center"
                                 android:scaleType="fitXY"
                                 android:src="@mipmap/img_training_quality" />
+
+
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
