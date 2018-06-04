@@ -93,12 +93,36 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private MineData2B data;
     private int messageTotal;
 
-//    private boolean isLogin = false;
     private boolean isShowMoney = true; // 默认显示佣金额
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";  // 图片保存SD卡位置
     private int insuranceWarning;
     private String totalCommission;
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (context != null) {
+                if (!PreferenceUtil.isLogin()) { // 未登录 状态
+                    tv_mine_login.setVisibility(View.VISIBLE);
+                    ll_user_name.setVisibility(View.GONE);
+                    rl_total_commission.setVisibility(View.GONE);
+                    iv_user_photo.setImageResource(R.mipmap.icon_user_photo);
+
+                    // 未登录时，消息数和续保消息数都不可见
+                    tv_message_total.setVisibility(View.GONE);
+                    tv_renewal_numbers.setVisibility(View.GONE);
+                } else { // 已登录 状态
+                    ll_user_name.setVisibility(View.VISIBLE);
+                    rl_total_commission.setVisibility(View.VISIBLE);
+                    tv_mine_login.setVisibility(View.GONE);
+                    requestData();
+                }
+            }
+
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -126,7 +150,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView(View mView) {
-
         iv_settings = (ImageView) mView.findViewById(R.id.iv_settings);
         iv_news = (ImageView) mView.findViewById(R.id.iv_news);
         iv_user_photo = (ImageView) mView.findViewById(R.id.iv_user_photo);
@@ -183,7 +206,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         super.onResume();
 
         if (!PreferenceUtil.isLogin()) { // 未登录 状态
-//            isLogin = false;
             tv_mine_login.setVisibility(View.VISIBLE);
             ll_user_name.setVisibility(View.GONE);
             rl_total_commission.setVisibility(View.GONE);
@@ -193,13 +215,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             tv_message_total.setVisibility(View.GONE);
             tv_renewal_numbers.setVisibility(View.GONE);
         } else { // 已登录 状态
-//            isLogin = true;
             ll_user_name.setVisibility(View.VISIBLE);
             rl_total_commission.setVisibility(View.VISIBLE);
             tv_mine_login.setVisibility(View.GONE);
             requestData();
         }
     }
+
 
     //我的主页面数据
     public void requestData() {

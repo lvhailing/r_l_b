@@ -18,31 +18,22 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-defaults.txt'), 'proguard-rules.pro'
 
-
-            android.applicationVariants.all { variant ->
-                variant.outputs.all{
-                        // apk_版本名称.apk
-                    outputFileName = "rulaibao_release_${defaultConfig.versionName}.apk"
-
-                    }
-            }
-
         }
         debug  {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-defaults.txt'), 'proguard-rules.pro'
 
-            android.applicationVariants.all { variant ->
-                variant.outputs.all{
-                    // apk_版本名称.apk
-                    outputFileName = "rulaibao_debug_${defaultConfig.versionName}.apk"
 
-                }
-            }
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all{
+            // apk_版本名称.apk
+            outputFileName = buildType.name+"_${defaultConfig.versionName}.apk"
 
+        }
+    }
 
 }
 

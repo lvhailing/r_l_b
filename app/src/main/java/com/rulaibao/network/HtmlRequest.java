@@ -226,7 +226,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      * @param result 处理数据
      * @return fanhuizhi
      */
-    public static Boolean resultEncrypt(Context c, String result) {
+    public static Boolean resultEncrypt(final Context c, String result) {
 
         if (result.equals("0000")) {
             return true;
@@ -249,21 +249,12 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 				c.startActivity(i_login);*/
 
                 Intent i_account = new Intent();
-//                if(c==null){
-//                    try {
-//                        c = MainActivity.class.newInstance().mContext;
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                    }
-//
-//                }
                 i_account.setClass(c, MainActivity.class);
                 //子线程中更新UI
-                final Context finalC = c;
                 new Handler(c.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(finalC, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(c, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -503,7 +494,57 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+    /**
+     * 打开app
+     *
+     * @param context  上下文
+     * @param listener 监听
+     * @return 返回数据
+     */
+    public static void getAppData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_OPEN_APP;
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                client.getResult();
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
 
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+                   return b;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
     /**
      * 首页
      *
@@ -538,12 +579,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<HomeIndex2B> b = json.fromJson(data, new TypeToken<Repo<HomeIndex2B>>() {
                     }.getType());
-//                    b.setCode("9999");
-                    if (resultEncrypt(context, b.getCode())){
-                        return b.getData();
-                    }else{
-                        return null;
-                    }
+                    return b.getData();
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;

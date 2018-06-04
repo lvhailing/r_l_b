@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.style.ParagraphStyle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,6 +36,8 @@ import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.HomeViewPager2B;
 import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.bean.InsuranceProduct3B;
+import com.rulaibao.bean.OK2B;
+import com.rulaibao.bean.Repo;
 import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -120,10 +123,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
     @Override
     public void onResume() {
         super.onResume();
-//        if(isRefresh){
-//            requestHomeData();      // 请求首页数据
-//            isRefresh = false;
-//        }
 
     }
 
@@ -137,14 +136,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-//            if(context!=null){
-//                requestHomeData();// 请求首页数据
-//                isRefresh = false;
-//            }
-            requestHomeData();// 请求首页数据
+            requestAppData();
 
         } else {
-//            isRefresh = true;
         }
 
     }
@@ -317,6 +311,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (params == null || params.result == null) {
+
                     //       Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -355,7 +350,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
 
         });
     }
+    /**
+     * 打开app接口 && 控制强制登录设置userid为空
+     */
+    private void requestAppData() {
+        try {
+            userId = null;
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", userId);
+        HtmlRequest.getAppData(context, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params == null || params.result == null) {
+                    return;
+                }
+                Repo<OK2B> b = (Repo<OK2B>) params.result;
+                String code=b.getCode();
+                if (code.equals("0000")){
 
+                }else{
+                    if (code.equals("9999")){
+                        PreferenceUtil.setAutoLoginPwd("");
+                        PreferenceUtil.setLogin(false);
+                        PreferenceUtil.setFirstLogin(true);
+//				PreferenceUtil.setPhone("");
+                        PreferenceUtil.setUserId("");
+                        PreferenceUtil.setUserNickName("");
+                        PreferenceUtil.setToken("");
+                        PreferenceUtil.setCheckStatus("");
+                        Toast.makeText(context, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                requestHomeData();
+
+            }
+
+        });
+    }
     /**
      * 请求轮播图数据
      */
@@ -419,7 +454,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
 
     @Override
     public void onRefresh() {
-        requestHomeData();// 请求首页数据
+        requestAppData();
     }
 
     /**

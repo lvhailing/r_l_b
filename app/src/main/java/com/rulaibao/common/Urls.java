@@ -209,6 +209,9 @@ public class Urls {
     public static final String URL_SHARED_TOPIC = EC_HOST + "appTopic/share/";
 
     /************************************************* 研修模块end *****************************************************************/
+    //打开app
+    public static final String URL_OPEN_APP = EC_HOST + "android/app/open";
+
     //首页
     public static final String URL_INDEX = EC_HOST + "product/index/list";
 

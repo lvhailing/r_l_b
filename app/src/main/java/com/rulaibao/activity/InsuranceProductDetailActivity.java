@@ -571,7 +571,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
             webView.getSettings().setMixedContentMode(webView.getSettings()
                     .MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
         }
-        webView.loadDataWithBaseURL(null, getNewContent(html), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 
     private String getNewContent(String htmltext) {
