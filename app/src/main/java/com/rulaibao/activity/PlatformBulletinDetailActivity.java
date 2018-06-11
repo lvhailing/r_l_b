@@ -17,6 +17,11 @@ public class PlatformBulletinDetailActivity extends BaseActivity {
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_platform_bulletin_detail);

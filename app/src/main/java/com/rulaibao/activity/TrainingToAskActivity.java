@@ -37,9 +37,6 @@ import butterknife.OnClick;
  */
 
 public class TrainingToAskActivity extends BaseActivity {
-
-//    @BindView(R.id.gv_training_toask)
-//    GridView gvTrainingToask;
     @BindView(R.id.et_toask_title)
     EditText etToaskTitle;
     @BindView(R.id.et_toask_content)
@@ -49,17 +46,20 @@ public class TrainingToAskActivity extends BaseActivity {
     @BindView(R.id.gv_training_toask)
     TagFlowLayout gv_training_toask;
     private TagAdapter<String> tagAdapter;
-
     private String string = "";
     private TrainingToAskListAdapter adapter;
     private String questionTitle = "";
     private String questionDesc = "";
     private int position = 0;
     private TextView tv;
-
     private ArrayList<ResultAskTypeItemBean> typeList;
-    private ArrayList<String> nameList=new ArrayList<>();
-    private ArrayList<String> codeList=new ArrayList<>();
+    private ArrayList<String> nameList = new ArrayList<>();
+    private ArrayList<String> codeList = new ArrayList<>();
+
+    @Override
+    public void initData() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +67,11 @@ public class TrainingToAskActivity extends BaseActivity {
         baseSetContentView(R.layout.activity_training_toask);
         initTopTitle();
         initView();
-
     }
 
     public void initView() {
-
         typeList = (ArrayList<ResultAskTypeItemBean>) getIntent().getSerializableExtra("type");
-        for(int i=0;i<typeList.size();i++){
+        for (int i = 0; i < typeList.size(); i++) {
             nameList.add(typeList.get(i).getTypeName());
             codeList.add(typeList.get(i).getTypeCode());
         }
@@ -81,51 +79,15 @@ public class TrainingToAskActivity extends BaseActivity {
             typeList.get(0).setFlag(true);
         }
         flowLayoutAsk();
-
-       /* adapter = new TrainingToAskListAdapter(gvTrainingToask, this, typeList);
-
-//        FullyLinearLayoutManager mLayoutManager = new FullyLinearLayoutManager(this);
-//        gvTrainingToask.setLa.setLayoutManager(mLayoutManager);
-
-
-        gvTrainingToask.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(gvTrainingToask);
-        gvTrainingToask.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(TrainingToAskActivity.this, "---" + position, Toast.LENGTH_SHORT).show();
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        gvTrainingToask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setPosition(position);
-                notifyData(position);
-                adapter.notifyDataSetChanged();
-
-//                Toast.makeText(TrainingToAskActivity.this,"-setOnItemClickListener--"+position,Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
-*/
     }
+
     //
     private void flowLayoutAsk() {
-        gv_training_toask.setAdapter(tagAdapter=new TagAdapter<String>(nameList){
+        gv_training_toask.setAdapter(tagAdapter = new TagAdapter<String>(nameList) {
             @Override
-            public View getView(FlowLayout parent, int position, String s){
+            public View getView(FlowLayout parent, int position, String s) {
                 tv = (TextView) LayoutInflater.from(TrainingToAskActivity.this).inflate(R.layout.ask_flow_item,
-                        gv_training_toask,false);
+                        gv_training_toask, false);
                 tv.setText(s);
                 if (typeList.get(position).getFlag()) {
                     tv.setBackgroundResource(R.drawable.shape_ring_orange);
@@ -134,12 +96,12 @@ public class TrainingToAskActivity extends BaseActivity {
                     tv.setBackgroundResource(R.drawable.shape_ring_gray);
                     tv.setTextColor(TrainingToAskActivity.this.getResources().getColor(R.color.txt_gray));
                 }
-                return tv;}
+                return tv;
+            }
         });
-
-        gv_training_toask.setOnTagClickListener(new TagFlowLayout.OnTagClickListener(){
+        gv_training_toask.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent){
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
                 setPosition(position);
 
                 notifyData(position);
@@ -147,10 +109,11 @@ public class TrainingToAskActivity extends BaseActivity {
                 return true;
             }
         });
-        gv_training_toask.setOnSelectListener(new TagFlowLayout.OnSelectListener(){
+        gv_training_toask.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
             @Override
-            public void onSelected(Set<Integer> selectPosSet){
-                setTitle("choose:" + selectPosSet.toString());}
+            public void onSelected(Set<Integer> selectPosSet) {
+                setTitle("choose:" + selectPosSet.toString());
+            }
         });
     }
 
@@ -170,15 +133,11 @@ public class TrainingToAskActivity extends BaseActivity {
         map.put("questionTitle", questionTitle);
         map.put("questionDesc", questionDesc);
         map.put("typeCode", codeList.get(getPosition()));
-
         btnTrainingToask.setClickable(false);
-
         HtmlRequest.getTrainingToAsk(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     ResultInfoBean b = (ResultInfoBean) params.result;
                     if (b.getFlag().equals("true")) {
                         Toast.makeText(TrainingToAskActivity.this, b.getMessage(), Toast.LENGTH_SHORT).show();
@@ -187,30 +146,22 @@ public class TrainingToAskActivity extends BaseActivity {
                         Toast.makeText(TrainingToAskActivity.this, b.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
-
-//                    indexItemBeans = b.getList();
-//                    initRecyclerView();
-
                 } else {
 
                 }
                 btnTrainingToask.setClickable(true);
             }
         });
-
     }
 
     public void notifyData(int position) {
-
         for (int i = 0; i < typeList.size(); i++) {
             if (i == position) {
                 typeList.get(i).setFlag(true);
             } else {
                 typeList.get(i).setFlag(false);
             }
-
         }
-
     }
 
     private void initTopTitle() {
@@ -246,38 +197,7 @@ public class TrainingToAskActivity extends BaseActivity {
             } else {
                 requestAsk();
             }
-
         }
-
-    }
-
-    public static void setListViewHeightBasedOnChildren(GridView listView) {
-        // 获取listview的adapter
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
-        // 固定列宽，有多少列
-        int col = 3;// listView.getNumColumns();
-        int totalHeight = 0;
-        // i每次加4，相当于listAdapter.getCount()小于等于4时 循环一次，计算一次item的高度，
-        // listAdapter.getCount()小于等于8时计算两次高度相加
-        for (int i = 0; i < listAdapter.getCount(); i += col) {
-            // 获取listview的每一个item
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            // 获取item的高度和
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        // 获取listview的布局参数
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        // 设置高度
-        params.height = totalHeight;
-        // 设置margin
-        ((ViewGroup.MarginLayoutParams) params).setMargins(10, 10, 10, 10);
-        // 设置参数
-        listView.setLayoutParams(params);
     }
 
     @Override

@@ -58,7 +58,7 @@ import butterknife.OnTouch;
  * 回答详情
  */
 
-public class TrainingAnswerDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener, SwipeRefreshLayout.OnRefreshListener {
+public class TrainingAnswerDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener {
 
 
     @BindView(R.id.lv_answer_details)
@@ -69,11 +69,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     EditText etAnswerDetails;
     @BindView(R.id.fl_answer_details)
     FrameLayout flAnswerDetails;
-    @BindView(R.id.swipe_answer_details)
-    SwipeRefreshLayout swipeAnswerDetails;
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
-
 
     private TextView tv_answer_details_title;       //  标题
     private CircularImage iv_answer_detatils_manager;       //  touxiang
@@ -112,7 +109,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         initView();
 
-
     }
 
     public void initData() {
@@ -121,7 +117,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         noDataFlag = true;
         request();
 
-
     }
 
     public void initView() {
@@ -129,18 +124,8 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         answerId = getIntent().getStringExtra("answerId");
         detailsBean = new ResultAnswerDetailsBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
-
-
-        //为SwipeRefreshLayout设置监听事件
-        swipeAnswerDetails.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeAnswerDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
+        setRereshEnable(true);
         initRecyclerView();
-
 
     }
 
@@ -153,11 +138,9 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         lvAnswerDetails.setAdapter(adapter);
 
-
         //为RecyclerView添加HeaderView和FooterView
         setHeaderView(lvAnswerDetails);
 //        setFooterView(lvAskDetails);
-
 
         lvAnswerDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
@@ -261,7 +244,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         } else {
                             adapter.setNoDataMessage("暂无评论");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                             noDataFlag = false;
                             tv_answer_details_comment_count.setVisibility(View.GONE);
                         }
@@ -276,10 +259,11 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
                         }
                     }
                     adapter.notifyDataSetChanged();
-                    swipeAnswerDetails.setRefreshing(false);
+
                 } else {
 
                 }
+                swipe.setRefreshing(false);
             }
         });
     }
@@ -662,8 +646,4 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         }
     }
 
-    @Override
-    public void onRefresh() {
-        initData();
-    }
 }

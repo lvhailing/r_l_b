@@ -42,6 +42,11 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
     private MouldList<MyAskList2B> everyList;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_same_list_layout);

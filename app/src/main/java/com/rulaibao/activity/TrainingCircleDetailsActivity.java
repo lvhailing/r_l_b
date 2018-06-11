@@ -54,14 +54,12 @@ import butterknife.OnClick;
  * 圈子详情
  */
 
-public class TrainingCircleDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class TrainingCircleDetailsActivity extends BaseActivity{
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
     @BindView(R.id.tv_circle_details_name)
     TextView tvCircleDetailsName;
     @BindView(R.id.sv_circle_details)
     NestedScrollView svCircleDetails;
-    @BindView(R.id.swipe_circle_details)
-    SwipeRefreshLayout swipeCircleDetails;
     @BindView(R.id.fl_issue_topic)
     FrameLayout flIssueTopic;
     @BindView(R.id.iv_back)
@@ -150,13 +148,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
         topAppTopics = new MouldList<ResultCircleDetailsTopItemBean>();
         appTopics = new MouldList<ResultCircleDetailsTopicItemBean>();
         appCircle = new ResultCircleDetailsItemBean();
-        //为SwipeRefreshLayout设置监听事件
-        swipeCircleDetails.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeCircleDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        setRereshEnable(true);
         initTopicAdapterData();
     }
 
@@ -169,8 +161,11 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("appTopicId", topAppTopics.get(position).getTopicId());
-                RlbActivityManager.toTrainingTopicDetailsActivity(TrainingCircleDetailsActivity.this, map, false);
+                if(topAppTopics!=null&&topAppTopics.size()!=0){
+                    map.put("appTopicId", topAppTopics.get(position).getTopicId());
+                    RlbActivityManager.toTrainingTopicDetailsActivity(TrainingCircleDetailsActivity.this, map, false);
+                }
+
             }
         });
     }
@@ -185,7 +180,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
             }
         };
         lvCircleTalk.setLayoutManager(layoutManager);
-        myCircleAdapterDetails = new TrainingMyCircleDetailsListAdapter(this, appTopics, circleId,!(status.equals("mine") || status.equals("join")));
+        myCircleAdapterDetails = new TrainingMyCircleDetailsListAdapter(this, appTopics, circleId, !(status.equals("mine") || status.equals("join")));
         lvCircleTalk.setAdapter(myCircleAdapterDetails);
         initLoadMoreListener();
     }
@@ -204,7 +199,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                     // 顶部
                 }
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         // 底部
                         myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
                         page++;
@@ -233,7 +228,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                         initTopAdapterData(bean.getAppCircle());
                         requestTopicData();
                     } else {
-                        ViewUtils.showDeleteDialog(TrainingCircleDetailsActivity.this,bean.getMessage());
+                        ViewUtils.showDeleteDialog(TrainingCircleDetailsActivity.this, bean.getMessage());
 //                        Toast.makeText(TrainingCircleDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 //                        finish();
                     }
@@ -264,7 +259,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                             myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
                         } else {
                             myCircleAdapterDetails.setNoDataMessage("暂无话题");
-                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                             noDataFlag = false;
 
 //                            myCircleAdapterDetails.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
@@ -280,11 +275,12 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                         }
 
                     }
-                    swipeCircleDetails.setRefreshing(false);
+
 
                 } else {
 
                 }
+                swipe.setRefreshing(false);
             }
         });
     }
@@ -352,7 +348,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                     if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
 
-                        ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
+                        ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
 
                     } else {
                         if (!(status.equals("mine") || status.equals("join"))) {
@@ -395,9 +391,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
 //                            .show();
 
 
-
-
-
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入
                     if (!PreferenceUtil.isLogin()) {
                         HashMap<String, Object> map = new HashMap<>();
@@ -405,7 +398,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
                     } else {
                         if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
-                            ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
+                            ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
 
                         } else {
                             requestAddCircle();
@@ -441,8 +434,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
     }
 
 
-
-
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setVisibility(View.GONE);
@@ -472,10 +463,5 @@ public class TrainingCircleDetailsActivity extends BaseActivity implements Swipe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onRefresh() {
-        initData();
     }
 }

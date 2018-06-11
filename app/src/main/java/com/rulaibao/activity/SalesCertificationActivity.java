@@ -99,6 +99,11 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_sales_certification);

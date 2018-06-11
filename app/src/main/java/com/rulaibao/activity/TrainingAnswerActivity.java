@@ -39,9 +39,13 @@ public class TrainingAnswerActivity extends BaseActivity {
     Button btnTrainingAnswer;
     @BindView(R.id.ll_training_answer)
     LinearLayout llTrainingAnswer;
-
     private String questionId = "";
     private String title = "";
+
+    @Override
+    public void initData() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +53,14 @@ public class TrainingAnswerActivity extends BaseActivity {
         baseSetContentView(R.layout.activity_training_answer);
         initTopTitle();
         initView();
-
     }
 
     public void initView() {
 
         questionId = getIntent().getStringExtra("questionId");
         title = getIntent().getStringExtra("title");
-
-
         tvAnswerTitle.setText(title);
-
     }
-
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
@@ -86,8 +85,6 @@ public class TrainingAnswerActivity extends BaseActivity {
 
     //回答
     public void requestAnswer(String answerContent) {
-
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("userId", userId);
@@ -110,27 +107,22 @@ public class TrainingAnswerActivity extends BaseActivity {
                         Toast.makeText(TrainingAnswerActivity.this, b.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
-                    btnTrainingAnswer.setClickable(true);
+
 //                    indexItemBeans = b.getList();
 //                    initRecyclerView();
 
                 } else {
 
                 }
-
+                btnTrainingAnswer.setClickable(true);
             }
         });
 
-
     }
-
 
     @OnClick(R.id.btn_training_answer)
     public void onClick() {
-
-
         requestAnswer(etAnswerContent.getText().toString());
-
     }
 
     @Override

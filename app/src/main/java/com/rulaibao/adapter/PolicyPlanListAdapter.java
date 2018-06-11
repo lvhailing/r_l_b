@@ -103,7 +103,6 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        super.onBindViewHolder(holder, position);
         if (holder instanceof ViewHolder) {
             initHolderData(holder, position);
         } else if (holder instanceof FooterViewHolder) {

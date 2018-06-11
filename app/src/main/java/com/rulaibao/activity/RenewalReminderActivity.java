@@ -43,6 +43,11 @@ public class RenewalReminderActivity extends BaseActivity implements View.OnClic
     private ViewSwitcher vs;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_renewal_reminder);

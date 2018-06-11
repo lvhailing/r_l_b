@@ -61,7 +61,7 @@ import butterknife.OnTouch;
  * 话题详情
  */
 
-public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener, SwipeRefreshLayout.OnRefreshListener {
+public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener {
 
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
@@ -74,8 +74,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     EditText etTopicDetails;
     @BindView(R.id.fy_training_topic_details)
     FrameLayout fyTrainingTopicDetails;
-    @BindView(R.id.swipe_topic_details)
-    SwipeRefreshLayout swipeTopicDetails;
 
     private CircularImage iv_answer_detatils_manager;
     private TextView tv_answer_details_manager_name;
@@ -137,16 +135,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
 
+        setRereshEnable(true);
 
-        //为SwipeRefreshLayout设置监听事件
-        swipeTopicDetails.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeTopicDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-//        test();
         initRecyclerView();
 
     }
@@ -388,7 +378,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                                 adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                             } else {
                                 adapter.setNoDataMessage("暂无评论");
-                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                                 noDataFlag = false;
                                 tv_answer_details_comment_count.setVisibility(View.GONE);
                             }
@@ -410,10 +400,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     }
 
 
-                    swipeTopicDetails.setRefreshing(false);
+
                 } else {
 
                 }
+                swipe.setRefreshing(false);
             }
         });
     }
@@ -815,8 +806,4 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         }
     }
 
-    @Override
-    public void onRefresh() {
-        initData();
-    }
 }

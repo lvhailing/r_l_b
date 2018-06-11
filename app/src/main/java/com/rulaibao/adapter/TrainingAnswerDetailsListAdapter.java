@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.AnswerDetailsViewHolder;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentItemBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
@@ -50,55 +51,22 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
     @Override
     public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.activity_training_answer_details_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        AnswerDetailsViewHolder holder = new AnswerDetailsViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-        if (holder instanceof ViewHolder) {
+        if (holder instanceof AnswerDetailsViewHolder) {
             initHolderData(holder, position);
         } else if (holder instanceof FooterViewHolder) {
-            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-            switch (mLoadMoreStatus) {
-                case PULLUP_LOAD_MORE:
-                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params1);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("数据加载中...");
-                    break;
-                case LOADING_MORE:
-                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params2);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("正加载更多...");
-                    break;
-                case NO_LOAD_MORE:
-                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params3);
-                    //隐藏加载更多
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
-                    break;
-
-                case NO_DATA:
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setPadding(0, 50, 0, 0);
-                    footerViewHolder.itemView.setLayoutParams(params);
-
-                    //没有数据
-                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
-                    footerViewHolder.tvFooterMore.setText(noDataMessage);
-                    break;
-            }
+            initFooterHolderData(holder);
         }
     }
 
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
-        ViewHolder holder1 = (ViewHolder) holder;
+        AnswerDetailsViewHolder holder1 = (AnswerDetailsViewHolder) holder;
         int index = position;
         if (getmHeaderView() != null) {
             index = position - 1;
@@ -141,30 +109,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             return arrayList.size() + 2;
         } else {
             return arrayList.size() + 1;
-        }
-    }
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_answer_details)
-        CircularImage ivAnswerDetails;
-        @BindView(R.id.tv_answer_details_name)
-        TextView tvAnswerDetailsName;
-        @BindView(R.id.tv_answer_details_date)
-        TextView tvAnswerDetailsDate;
-        @BindView(R.id.tv_answer_details_content)
-        TextView tvAnswerDetailsContent;
-        @BindView(R.id.tv_answer_details_reply)
-        TextView tvAnswerDetailsReply;
-        @BindView(R.id.lv_answer_details)
-        MyListView lvAnswerDetails;
-        @BindView(R.id.tv_answer_detailas_line)
-        TextView tvAnswerDetailasLine;
-
-        ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-
         }
     }
 
@@ -246,7 +190,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 //
 //                    } else {
 
-                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, list.get(position).getRid());
+                    reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, list.get(position).getRid());
 
 //                    }
                 }

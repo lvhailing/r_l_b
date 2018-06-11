@@ -30,7 +30,7 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.all{
             // apk_版本名称.apk
-            outputFileName = buildType.name+"_${defaultConfig.versionName}.apk"
+            outputFileName =buildType.name+"_RuLaiBao_${defaultConfig.versionName}.apk"
 
         }
     }

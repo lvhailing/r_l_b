@@ -41,6 +41,11 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
     private String allowClick = "true";     //  处理频繁点击攻击服务器参数
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_authority);

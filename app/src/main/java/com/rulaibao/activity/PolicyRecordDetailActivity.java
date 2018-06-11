@@ -60,6 +60,11 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_policy_record_detail);

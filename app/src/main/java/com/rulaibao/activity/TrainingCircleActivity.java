@@ -32,7 +32,7 @@ import butterknife.BindView;
  * 圈子
  */
 
-public class TrainingCircleActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class TrainingCircleActivity extends BaseActivity{
 
     @BindView(R.id.lv_mycircle)
     MyListView lvMycircle;
@@ -51,8 +51,6 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
     LinearLayout llMycircleJoin;
     @BindView(R.id.ll_recommend_circle)
     LinearLayout llRecommendCircle;
-    @BindView(R.id.swipe_circle)
-    SwipeRefreshLayout swipeCircle;
     @BindView(R.id.tv_empty)
     TextView tvEmpty;
     @BindView(R.id.vs_training_circle)
@@ -93,14 +91,7 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
         myAppCircle = new MouldList<ResultCircleIndexItemBean>();
         myJoinAppCircle = new MouldList<ResultCircleIndexItemBean>();
         myRecomAppCircle = new MouldList<ResultCircleIndexItemBean>();
-        //为SwipeRefreshLayout设置监听事件
-        swipeCircle.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeCircle.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-//        test();
+        setRereshEnable(true);
         vsTrainingCircle.setDisplayedChild(0);
     }
 
@@ -218,10 +209,11 @@ public class TrainingCircleActivity extends BaseActivity implements SwipeRefresh
                     myRecomAppCircle = bean.getMyRecomAppCircle();
 
                     initAdapterData();
-                    swipeCircle.setRefreshing(false);
+
                 } else {
 
                 }
+                swipe.setRefreshing(false);
             }
         });
     }

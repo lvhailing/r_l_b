@@ -81,7 +81,7 @@ public class PolicyRecordListActivity extends BaseActivity {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
     }
 
-    private void initData() {
+    public void initData() {
         titles = new String[]{"全部（0）", "待审核（0）", "已承保（0）", "问题件（0）", "回执签收（0）"};
         vpAdapter = new PolicyRrcordListVPAdapter(getSupportFragmentManager(), titles, this);
         ((PolicyRecordListFragment) vpAdapter.getItem(currentTabPosition)).getTabTitleCurrentPosition(currentTabPosition);

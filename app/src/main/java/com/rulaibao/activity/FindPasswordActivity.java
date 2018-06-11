@@ -63,6 +63,11 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_findpassword);

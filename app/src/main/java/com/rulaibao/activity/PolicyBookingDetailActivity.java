@@ -53,6 +53,11 @@ public class PolicyBookingDetailActivity extends BaseActivity implements View.On
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_policy_booking_detail);

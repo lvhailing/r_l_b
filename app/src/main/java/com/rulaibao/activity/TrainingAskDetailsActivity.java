@@ -58,17 +58,15 @@ import butterknife.OnClick;
  * 问题详情
  */
 
-public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class TrainingAskDetailsActivity extends BaseActivity {
 
 
     @BindView(R.id.lv_ask_details)
     RecyclerView lvAskDetails;
     @BindView(R.id.tv_ask_details_answer)
     TextView tvAskDetailsAnswer;
-    @BindView(R.id.swipe_ask_details)
-    SwipeRefreshLayout swipeAskDetails;
 
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
     private TextView tv_ask_detais_sort;        //
     private ImageView iv__ask_detais_sort;        //
@@ -98,7 +96,6 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_ask_details);
         initTopTitle();
-
         initView();
 
     }
@@ -109,30 +106,15 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
         page = 1;
         list.clear();
         request();
-
     }
 
     public void initView() {
 
         questionId = getIntent().getStringExtra("questionId");
-
         detailsBean = new ResultAskDetailsBean();
         list = new MouldList<ResultAskDetailsAnswerItemBean>();
-
-        //为SwipeRefreshLayout设置监听事件
-        swipeAskDetails.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeAskDetails.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
+        setRereshEnable(true);
         initRecyclerView();
-
-
-
-
-
     }
 
     public void initRecyclerView() {
@@ -156,7 +138,7 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
                         page++;
@@ -175,10 +157,8 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                 //最后一个可见的ITEM
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
-
             }
         });
-
     }
 
     //获取数据
@@ -204,11 +184,11 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                     } else {
                         if (detailsBean.getCode().equals("6001")) {      //  参数错误
 
-                            ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this,detailsBean.getMessage());
+                            ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this, detailsBean.getMessage());
 //                            Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
 //                            finish();
                         } else if (detailsBean.getCode().equals("6002")) {        //  该问题已删除
-                            ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this,detailsBean.getMessage());
+                            ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this, detailsBean.getMessage());
 //                            Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
 //                            finish();
                         }
@@ -244,9 +224,9 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
                         if (page != 1) {          //  非首次的无数据情况
                             page--;
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }else{
+                        } else {
                             adapter.setNoDataMessage("暂无回答");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                             noDataFlag = false;
                         }
 
@@ -257,28 +237,28 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
                         list.addAll(b.getList());
 
-                        if(list.size()%10==0){
+                        if (list.size() % 10 == 0) {
                             adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
+                        } else {
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
 
                     }
 
                     // 处理加载header闪跳的问题
-                    if(page==1 && TextUtils.isEmpty(sortType)){
-                        if(detailsBean!=null){
+                    if (page == 1 && TextUtils.isEmpty(sortType)) {
+                        if (detailsBean != null) {
                             setView(detailsBean);
                         }
 
                     }
 
                     adapter.notifyDataSetChanged();
-                    swipeAskDetails.setRefreshing(false);
+
                 } else {
 
                 }
-
+                swipe.setRefreshing(false);
             }
         });
     }
@@ -287,11 +267,11 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
 
         String id = "23232323";
-        String url = Urls.URL_SHARED_ASK+questionId;
-        title.setActivityParameters(url,id, detailsBean.getAppQuestion().getTitle(), "问题描述："+detailsBean.getAppQuestion().getDescript());
+        String url = Urls.URL_SHARED_ASK + questionId;
+        title.setActivityParameters(url, id, detailsBean.getAppQuestion().getTitle(), "问题描述：" + detailsBean.getAppQuestion().getDescript());
 
         tv_askdetails_title.setText(bean.getAppQuestion().getTitle());
-        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager,displayImageOptions);
+        ImageLoader.getInstance().displayImage(bean.getAppQuestion().getUserPhoto(), iv_ask_detatils_manager, displayImageOptions);
         tv_ask_details_manager_name.setText(bean.getAppQuestion().getUserName());
         tv_ask_details_time.setText(bean.getAppQuestion().getTime());
         tv_ask_details_content.setText(bean.getAppQuestion().getDescript());
@@ -520,21 +500,24 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
 
             case R.id.tv_ask_details_answer:
 
-                if(!PreferenceUtil.isLogin()){
+                if (!PreferenceUtil.isLogin()) {
 
-                    HashMap<String,Object> map = new HashMap<>();
-                    RlbActivityManager.toLoginActivity(this,map,false);
+                    HashMap<String, Object> map = new HashMap<>();
+                    RlbActivityManager.toLoginActivity(this, map, false);
 
-                }else{
-                    if(!PreferenceUtil.getCheckStatus().equals("success")){
-                        ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
+                } else {
+                    if (!PreferenceUtil.getCheckStatus().equals("success")) {
+                        ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
 
-                    }else{
+                    } else {
 
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("questionId", questionId);
-                        map.put("title", detailsBean.getAppQuestion().getTitle());
-                        RlbActivityManager.toTrainingAnswerActivity(this, map, false);
+                        if(detailsBean!=null){
+                            map.put("questionId", questionId);
+                            map.put("title", detailsBean.getAppQuestion().getTitle());
+                            RlbActivityManager.toTrainingAnswerActivity(this, map, false);
+                        }
+
 
                     }
                 }
@@ -577,8 +560,4 @@ public class TrainingAskDetailsActivity extends BaseActivity implements SwipeRef
         super.onDestroy();
     }
 
-    @Override
-    public void onRefresh() {
-        initData();
-    }
 }

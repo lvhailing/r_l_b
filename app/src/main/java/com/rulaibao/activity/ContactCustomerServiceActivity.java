@@ -39,6 +39,11 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
     private String realName;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_contact_customer_service);

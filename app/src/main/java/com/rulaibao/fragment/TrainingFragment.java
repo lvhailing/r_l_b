@@ -168,8 +168,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             }
 
 //            scrollView.smoothScrollTo(0, 0);
-        } else {
-
         }
 
     }
@@ -200,10 +198,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         //为SwipeRefreshLayout设置监听事件
         swipeTraining.setOnRefreshListener(this);
         //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-        swipeTraining.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+//        swipeTraining.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
 
 
         titleCenter.setText(getString(R.string.training));
@@ -290,9 +288,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 //                RlbActivityManager.toTrainingPromoteActivity(getActivity(), false);
 
                 Toast.makeText(context, "该功能暂未开放", Toast.LENGTH_SHORT).show();
-
-//                Intent i_login = new Intent(getActivity(), LoginActivity.class);
-//                startActivity(i_login);
 
 
                 break;
@@ -535,7 +530,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                     } else if (bean.getList().size() == 0 && hotPage == 1) {      //  没有数据
 
                         adapter.setNoDataMessage("暂无热门问答");
-                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                        adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_NO_PICTURE);
                         noDataFlag = false;
 
 

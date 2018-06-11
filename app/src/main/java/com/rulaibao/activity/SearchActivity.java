@@ -126,7 +126,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private void initData() {
+    public void initData() {
         company=getIntent().getStringArrayListExtra("companyList");
         bt_clear.setOnClickListener(this);
         tv_search_cancel.setOnClickListener(this);

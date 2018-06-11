@@ -129,7 +129,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void initData() {
+    public void initData() {
         bt_clear.setOnClickListener(this);
         tv_search_cancel.setOnClickListener(this);
         iv_delete_history.setOnClickListener(this);

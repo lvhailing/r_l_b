@@ -66,6 +66,11 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     private ImageView iv_hide_password;//隐藏密码
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_sign);

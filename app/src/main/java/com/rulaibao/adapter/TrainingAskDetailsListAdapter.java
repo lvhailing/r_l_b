@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.AskDetailsViewHolder;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskDetailsAnswerItemBean;
@@ -37,7 +38,6 @@ import butterknife.ButterKnife;
  * 问题详情 adapter
  */
 public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
-
     private MouldList<ResultAskDetailsAnswerItemBean> arrayList;
     private String questionId = "";
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
@@ -47,55 +47,26 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         super(context);
         this.arrayList = arrayList;
         this.questionId = questionId;
-
-
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-        if (holder instanceof ViewHolder) {
+        if (holder instanceof AskDetailsViewHolder) {
             initHolderData(holder, position);
         } else if (holder instanceof FooterViewHolder) {
-            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-            switch (mLoadMoreStatus) {
-                case PULLUP_LOAD_MORE:
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("数据加载中...");
-                    break;
-                case LOADING_MORE:
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("正加载更多...");
-                    break;
-                case NO_LOAD_MORE:
-                    //隐藏加载更多
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
-                    break;
-
-                case NO_DATA:
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setPadding(0, 50, 0, 0);
-                    footerViewHolder.itemView.setLayoutParams(params);
-
-                    //没有数据
-                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
-                    footerViewHolder.tvFooterMore.setText(noDataMessage);
-                    break;
-            }
+            initFooterHolderData(holder);
         }
     }
 
-    public ViewHolder inflateItemView(ViewGroup parent) {
+    public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.activity_training_ask_details_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        AskDetailsViewHolder holder = new AskDetailsViewHolder(view);
         return holder;
     }
 
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
-        final ViewHolder holder1 = (ViewHolder) holder;
+        final AskDetailsViewHolder holder1 = (AskDetailsViewHolder) holder;
         int index = position;
         if (getmHeaderView() != null) {
             index = position - 1;
@@ -111,33 +82,27 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         } else {
             holder1.ivAskDetailsZan.setImageResource(R.mipmap.img_zan_icon);
         }
-
-
         final int finalIndex = index;
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("questionId", questionId);
-                map.put("answerId", arrayList.get(finalIndex).getAnswerId());
-                RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity) context, map, false);
+                if (arrayList != null && arrayList.size() != 0) {
+                    map.put("questionId", questionId);
+                    map.put("answerId", arrayList.get(finalIndex).getAnswerId());
+                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity) context, map, false);
+                }
+
             }
         });
-
         holder1.llAskDetailsZan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                    RlbActivityManager.toTrainingAnswerDetailsActivity((BaseActivity)context,false);
-
-
                 if (!PreferenceUtil.isLogin()) {
                     HashMap<String, Object> map = new HashMap<>();
-
-
                     RlbActivityManager.toLoginActivity((BaseActivity) context, map, false);
                 } else {
                     if (!PreferenceUtil.getCheckStatus().equals("success")) {
-
                         ViewUtils.showToSaleCertificationDialog(context, "您还未认证，是否去认证");
                     } else {
 
@@ -145,26 +110,16 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
                             requestLikeData(arrayList.get(finalIndex).getAnswerId(), finalIndex);
                             holder1.llAskDetailsZan.setClickable(false);
                         }
-
-
                     }
                 }
-
-
-//                Toast.makeText(context,"别点我",Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
-
 
     //点赞
     public void requestLikeData(String answerId, final int index) {
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
         try {
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
         } catch (Exception e) {
@@ -173,13 +128,10 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         map.put("answerId", answerId);      //  问题id
         map.put("userId", userId);
 //        map.put("likeStatus", likeStatus);
-
         HtmlRequest.getTrainingAnswerZan(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if (bean.getFlag().equals("true")) {
                         arrayList.get(index).setLikeStatus("yes");
@@ -197,43 +149,12 @@ public class TrainingAskDetailsListAdapter extends RecyclerBaseAapter<RecyclerVi
         });
     }
 
-
     @Override
     public int getItem() {
         if (mHeaderView != null) {
             return arrayList.size() + 2;
         } else {
             return arrayList.size() + 1;
-        }
-
-
-    }
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_training_ask_details_manager)
-        CircularImage ivTrainingAskDetailsManager;
-        @BindView(R.id.tv_training_ask_details_manager_name)
-        TextView tvTrainingAskDetailsManagerName;
-        @BindView(R.id.tv_ask_details_content)
-        TextView tvAskDetailsContent;
-        @BindView(R.id.tv_ask_details_time)
-        TextView tvAskDetailsTime;
-        @BindView(R.id.tv_ask_details_message_count)
-        TextView tvAskDetailsMessageCount;
-        @BindView(R.id.iv_ask_details_zan)
-        ImageView ivAskDetailsZan;
-        @BindView(R.id.tv_ask_details_zan_count)
-        TextView tvAskDetailsZanCount;
-        @BindView(R.id.ll_ask_details_message)
-        LinearLayout llAskDetailsMessage;
-        @BindView(R.id.ll_ask_details_zan)
-        LinearLayout llAskDetailsZan;
-
-        ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-
         }
     }
 }

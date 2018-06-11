@@ -142,7 +142,7 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
                         course = bean.getCourse();
                         setView();
                     } else {
-                        ViewUtils.showDeleteDialog(getActivity(),bean.getMessage());
+                        ViewUtils.showDeleteDialog(getActivity(), bean.getMessage());
 //                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
 //                        getActivity().finish();
                     }

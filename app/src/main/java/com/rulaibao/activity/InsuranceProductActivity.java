@@ -162,7 +162,7 @@ public class InsuranceProductActivity extends BaseActivity implements View.OnCli
         }
 
     }
-    private void initData() {
+    public void initData() {
         vs = (ViewSwitcher) newview.get(mPreSelectItem).findViewById(R.id.vs);
         TextView tv_empty = (TextView)newview.get(mPreSelectItem).findViewById(R.id.tv_empty);
         tv_empty.setText("暂无产品");

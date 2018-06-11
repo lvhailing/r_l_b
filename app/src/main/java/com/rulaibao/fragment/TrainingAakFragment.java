@@ -38,7 +38,6 @@ import butterknife.ButterKnife;
 
 public class TrainingAakFragment extends BaseFragment {
 
-
     private static final String KEY = "title";
     @BindView(R.id.lv_training_ask)
     RecyclerView lvTrainingAsk;
@@ -66,23 +65,19 @@ public class TrainingAakFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-
         indexItemBeans = new MouldList<ResultAskIndexItemBean>();
-
         initRecyclerView();
-
     }
-
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(context!=null){
+            if (context != null) {
                 indexItemBeans.clear();
             }
             key = new ResultAskTypeItemBean();
-            key = (ResultAskTypeItemBean)getArguments().getSerializable(KEY);
+            key = (ResultAskTypeItemBean) getArguments().getSerializable(KEY);
             page = 1;
             noDataFlag = true;
             requestAsk(key);
@@ -90,32 +85,27 @@ public class TrainingAakFragment extends BaseFragment {
         } else {
 
         }
-
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
 
         lvTrainingAsk.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new TrainingAskListAdapter(getActivity(),indexItemBeans);
+        adapter = new TrainingAskListAdapter(getActivity(), indexItemBeans);
         lvTrainingAsk.setAdapter(adapter);
-
         lvTrainingAsk.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-
                         page++;
                         requestAsk(key);
                     }
-
-
                 }
-
             }
 
             @Override
@@ -124,75 +114,56 @@ public class TrainingAakFragment extends BaseFragment {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 //最后一个可见的ITEM
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
-
             }
         });
-
-
-
     }
 
     //获取问答
-    public void requestAsk(ResultAskTypeItemBean appQuestionType){
-
+    public void requestAsk(ResultAskTypeItemBean appQuestionType) {
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
-        map.put("appQuestionType",appQuestionType.getTypeCode());
-        map.put("page",page+"");
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("appQuestionType", appQuestionType.getTypeCode());
+        map.put("page", page + "");
 
         HtmlRequest.getTrainingAskIndex(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
-                if(params.result!=null){
-                    ResultAskIndexBean b = (ResultAskIndexBean)params.result;
-                    if(b.getList().size()==0){
-                        if(page!=1){
+                if (params.result != null) {
+                    ResultAskIndexBean b = (ResultAskIndexBean) params.result;
+                    if (b.getList().size() == 0) {
+                        if (page != 1) {
                             page--;
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
-                        }else{
+                        } else {
                             adapter.setNoDataMessage("暂无问答");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_MATCH_PARENT);
                             noDataFlag = false;
-
-
 //                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-
-                    }else{
+                    } else {
                         indexItemBeans.addAll(b.getList());
                         adapter.notifyDataSetChanged();
 
-                        if(indexItemBeans.size()%10==0){
+                        if (indexItemBeans.size() % 10 == 0) {
                             adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
+                        } else {
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_BLACK);
                         }
-
-
                     }
-
-
-                }else{
+                } else {
 
                 }
-
             }
         });
-
-
-
     }
 
     public static TrainingAakFragment newInstance(ResultAskTypeItemBean newsId) {
         TrainingAakFragment fragment = new TrainingAakFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
-        bundle.putSerializable(KEY,newsId);
+        bundle.putSerializable(KEY, newsId);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

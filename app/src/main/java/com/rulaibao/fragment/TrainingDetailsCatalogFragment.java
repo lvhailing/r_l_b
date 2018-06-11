@@ -52,8 +52,9 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     private ViewPagerForScrollView vp;
     private boolean noDataFlag = true;      //  控制无数据不加载
 
-    public TrainingDetailsCatalogFragment( ) {
+    public TrainingDetailsCatalogFragment() {
     }
+
     public TrainingDetailsCatalogFragment(ViewPagerForScrollView vp) {
         this.vp = vp;
     }
@@ -77,7 +78,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(courseList!=null){
+            if (courseList != null) {
                 courseList.clear();
             }
             page = 1;
@@ -99,10 +100,9 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
         initRecyclerView();
 
 
-
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context) {
             @Override
@@ -114,18 +114,19 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
         };
 
         lvTrainingClassDetailsCatalog.setLayoutManager(layoutManager);
-        adapter = new TrainingClassListAdapter(getActivity(),courseList);
+        adapter = new TrainingClassListAdapter(getActivity(), courseList);
         lvTrainingClassDetailsCatalog.setAdapter(adapter);
 
 
         lvTrainingClassDetailsCatalog.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
 
                         page++;
@@ -149,7 +150,6 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
         });
 
 
-
     }
 
     public void requestData() {
@@ -158,7 +158,7 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("speechmakeId", speechmakeId);      //  演讲人id
-        map.put("page", page+"");      //  课程id
+        map.put("page", page + "");      //  课程id
 
         HtmlRequest.getClassDetailsCatalog(context, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -168,23 +168,23 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
                     ResultClassDetailsCatalogBean bean = (ResultClassDetailsCatalogBean) params.result;
 
-                    if(bean.getCourseList()!=null){
-                        if(bean.getCourseList().size()==0){
-                            if(page!=1){
+                    if (bean.getCourseList() != null) {
+                        if (bean.getCourseList().size() == 0) {
+                            if (page != 1) {
                                 page--;
                                 adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                            }else{
+                            } else {
                                 adapter.setNoDataMessage("暂无相关课程");
-                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_MATCH_PARENT);
                                 noDataFlag = false;
                             }
 
-                        }else{
+                        } else {
                             courseList.addAll(bean.getCourseList());
 
-                            if(courseList.size()%10==0){
+                            if (courseList.size() % 10 == 0) {
                                 adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                            }else{
+                            } else {
                                 adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                             }
 
@@ -192,7 +192,6 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                         }
                         adapter.notifyDataSetChanged();
                     }
-
 
 
 //                    course = bean.getCourse();

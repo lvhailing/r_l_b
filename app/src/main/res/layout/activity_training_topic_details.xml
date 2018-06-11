@@ -1,70 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_topic_details"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/gray_light"
+    android:orientation="vertical"
+    tools:context="com.rulaibao.activity.MainActivity">
 
-    <RelativeLayout
+    <com.rulaibao.widget.MyRecyclerView
+        android:id="@+id/lv_topic_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_light"
-        android:orientation="vertical"
-        tools:context="com.rulaibao.activity.MainActivity">
+        android:layout_marginBottom="42dip"
+        android:divider="@color/white"
+        android:dividerHeight="0dip"
+        android:visibility="visible">
 
-        <com.rulaibao.widget.MyRecyclerView
-            android:id="@+id/lv_topic_details"
+    </com.rulaibao.widget.MyRecyclerView>
+
+    <FrameLayout
+        android:id="@+id/fy_training_topic_details"
+        android:layout_width="match_parent"
+        android:layout_height="42dip"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_light"
+        android:paddingBottom="5dip"
+        android:paddingLeft="12dip"
+        android:paddingRight="12dip"
+        android:paddingTop="5dip"
+        android:visibility="visible">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="42dip"
-            android:divider="@color/white"
-            android:dividerHeight="0dip"
-            android:visibility="visible">
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-        </com.rulaibao.widget.MyRecyclerView>
+            <Button
+                android:id="@+id/btn_topic_details"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@color/main_color_yellow"
+                android:text="@string/training_class_details_discuss_comment"
+                android:textColor="@color/bg_white"
+                android:textSize="16sp" />
 
-        <FrameLayout
-            android:id="@+id/fy_training_topic_details"
-            android:layout_width="match_parent"
-            android:layout_height="42dip"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray_light"
-            android:paddingBottom="5dip"
-            android:paddingLeft="12dip"
-            android:paddingRight="12dip"
-            android:paddingTop="5dip"
-            android:visibility="visible">
-
-            <RelativeLayout
+            <EditText
+                android:id="@+id/et_topic_details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-
-                <Button
-                    android:id="@+id/btn_topic_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="@color/main_color_yellow"
-                    android:text="@string/training_class_details_discuss_comment"
-                    android:textColor="@color/bg_white"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/et_topic_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/btn_topic_details"
-                    android:background="@color/bg_white"
-                    android:hint="@string/training_class_details_discuss_comment_hint"
-                    android:maxLength="500"
-                    android:paddingLeft="5dip"
-                    android:textColorHint="@color/txt_mark_gray"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-        </FrameLayout>
-    </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+                android:layout_toLeftOf="@id/btn_topic_details"
+                android:background="@color/bg_white"
+                android:hint="@string/training_class_details_discuss_comment_hint"
+                android:maxLength="500"
+                android:paddingLeft="5dip"
+                android:textColorHint="@color/txt_mark_gray"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>
 

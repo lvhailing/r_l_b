@@ -117,7 +117,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
 
     }
 
-    private void initData() {
+    public void initData() {
         bt_clear.setOnClickListener(this);
         tv_search_cancel.setOnClickListener(this);
         iv_delete_history.setOnClickListener(this);

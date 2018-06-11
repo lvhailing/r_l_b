@@ -110,6 +110,11 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     private TitleBar title = null;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_class_details);

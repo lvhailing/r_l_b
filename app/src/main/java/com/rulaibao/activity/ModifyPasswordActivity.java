@@ -46,6 +46,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private boolean isShowPassword = false; // 默认密码都不显示
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_modify_password);

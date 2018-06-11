@@ -14,6 +14,11 @@ import com.rulaibao.widget.TitleBar;
 public class TrainingPromoteActivity extends BaseActivity {
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_promote);

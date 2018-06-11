@@ -35,9 +35,7 @@ import butterknife.ButterKnife;
 
 
 /**
- *
  * 课程详情 --- PPT adapter
- *
  */
 
 public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
@@ -50,11 +48,11 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
     private static final int TYPE_ITEM = 0;     // item布局
     private static final int TYPE_FOOTER = 1;   //  footer布局
 
-
     private View itemview;
     private ImageView imageView;
 
-    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_traffining_recommend,R.mipmap.img_traffining_recommend,R.mipmap.img_traffining_recommend);
+    private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend);
+
     public TrainingClassPPTAdapter(Context context, ArrayList<String> arrayList) {
         super(context);
         this.context = context;
@@ -78,13 +76,12 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
             index = position - 1;
         }
 
-        ImageLoader.getInstance().displayImage(arrayList.get(position),holder1.ivPpt);
+        ImageLoader.getInstance().displayImage(arrayList.get(position), holder1.ivPpt);
 
         final int finalIndex = index;
         holder1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
 
                 imageView = new ImageView(context);
@@ -139,46 +136,9 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolder) {
-
-
             initHolderData(holder, position);
-
         } else if (holder instanceof FooterViewHolder) {
-            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-
-            switch (mLoadMoreStatus) {
-                case PULLUP_LOAD_MORE:
-                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params1);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("数据加载中...");
-                    break;
-                case LOADING_MORE:
-                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params2);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    footerViewHolder.tvFooterMore.setText("正加载更多...");
-                    break;
-                case NO_LOAD_MORE:
-                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params3);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    //隐藏加载更多
-                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
-                    break;
-
-                case NO_DATA:
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setPadding(0,50,0,0);
-                    footerViewHolder.itemView.setLayoutParams(params);
-
-                    //没有数据
-                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
-                    footerViewHolder.tvFooterMore.setText(noDataMessage);
-                    break;
-
-            }
+            initFooterHolderData(holder);
         }
 
     }
@@ -205,7 +165,6 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
     }
 
 
-
     /**
      * 更新加载更多状态
      *
@@ -216,29 +175,45 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
-    public interface LoadMoreData{
+    public interface LoadMoreData {
         public void getMoreData();
     }
 
     private final class TouchListener implements View.OnTouchListener {
 
-        /** 记录是拖拉照片模式还是放大缩小照片模式 */
+        /**
+         * 记录是拖拉照片模式还是放大缩小照片模式
+         */
         private int mode = 0;// 初始状态
-        /** 拖拉照片模式 */
+        /**
+         * 拖拉照片模式
+         */
         private static final int MODE_DRAG = 1;
-        /** 放大缩小照片模式 */
+        /**
+         * 放大缩小照片模式
+         */
         private static final int MODE_ZOOM = 2;
 
-        /** 用于记录开始时候的坐标位置 */
+        /**
+         * 用于记录开始时候的坐标位置
+         */
         private PointF startPoint = new PointF();
-        /** 用于记录拖拉图片移动的坐标位置 */
+        /**
+         * 用于记录拖拉图片移动的坐标位置
+         */
         private Matrix matrix = new Matrix();
-        /** 用于记录图片要进行拖拉时候的坐标位置 */
+        /**
+         * 用于记录图片要进行拖拉时候的坐标位置
+         */
         private Matrix currentMatrix = new Matrix();
 
-        /** 两个手指的开始距离 */
+        /**
+         * 两个手指的开始距离
+         */
         private float startDis;
-        /** 两个手指的中间点 */
+        /**
+         * 两个手指的中间点
+         */
         private PointF midPoint;
 
         @Override
@@ -268,7 +243,7 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
                         if (endDis > 10f) { // 两个手指并拢在一起的时候像素大于10
                             float scale = endDis / startDis;// 得到缩放倍数
                             matrix.set(currentMatrix);
-                            matrix.postScale(scale, scale,midPoint.x,midPoint.y);
+                            matrix.postScale(scale, scale, midPoint.x, midPoint.y);
                         }
                     }
                     break;
@@ -295,7 +270,9 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
             return true;
         }
 
-        /** 计算两个手指间的距离 */
+        /**
+         * 计算两个手指间的距离
+         */
         private float distance(MotionEvent event) {
             float dx = event.getX(1) - event.getX(0);
             float dy = event.getY(1) - event.getY(0);
@@ -303,7 +280,9 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
             return (float) Math.sqrt(dx * dx + dy * dy);
         }
 
-        /** 计算两个手指间的中间点 */
+        /**
+         * 计算两个手指间的中间点
+         */
         private PointF mid(MotionEvent event) {
             float midX = (event.getX(1) + event.getX(0)) / 2;
             float midY = (event.getY(1) + event.getY(0)) / 2;
@@ -311,6 +290,5 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
         }
 
     }
-
 
 }

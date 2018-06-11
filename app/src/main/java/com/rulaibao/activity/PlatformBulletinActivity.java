@@ -42,6 +42,11 @@ public class PlatformBulletinActivity extends BaseActivity {
     private ViewSwitcher vs;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_platform_bulletin);

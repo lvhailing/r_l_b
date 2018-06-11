@@ -87,7 +87,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
         rl_select_time.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
     }
-    private void initData() {
+    public void initData() {
         id=getIntent().getStringExtra("id");
         companyName=getIntent().getStringExtra("companyName");
         name=getIntent().getStringExtra("name");

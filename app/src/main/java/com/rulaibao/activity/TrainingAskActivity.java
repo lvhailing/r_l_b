@@ -51,6 +51,12 @@ public class TrainingAskActivity extends BaseActivity {
     private List<Fragment> fragments;
     private Context context;
     private ArrayList<ResultAskTypeItemBean> typeBean;
+
+    @Override
+    public void initData() {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +68,7 @@ public class TrainingAskActivity extends BaseActivity {
         requestAskType();
     }
 
-    public void initTabView(){
+    public void initTabView() {
 
         ResultAskTypeItemBean hot = new ResultAskTypeItemBean();
         hot.setTypeCode("");
@@ -70,7 +76,7 @@ public class TrainingAskActivity extends BaseActivity {
         listTitles.add(hot);
 
 
-        if(typeBean!=null){
+        if (typeBean != null) {
             listTitles.addAll(typeBean);
         }
 
@@ -109,7 +115,6 @@ public class TrainingAskActivity extends BaseActivity {
     }
 
 
-
     public void initView() {
 
 
@@ -120,9 +125,6 @@ public class TrainingAskActivity extends BaseActivity {
         fragments = new ArrayList<>();
 
     }
-
-
-
 
 
     private void initTopTitle() {
@@ -147,35 +149,34 @@ public class TrainingAskActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_training_ask)
-    public void onClick(){
+    public void onClick() {
 
-        if(!PreferenceUtil.isLogin()){
+        if (!PreferenceUtil.isLogin()) {
 
-            HashMap<String,Object> map = new HashMap<>();
-            RlbActivityManager.toLoginActivity(TrainingAskActivity.this,map,false);
+            HashMap<String, Object> map = new HashMap<>();
+            RlbActivityManager.toLoginActivity(TrainingAskActivity.this, map, false);
 
-        }else{
+        } else {
             String checkStatus = PreferenceUtil.getCheckStatus();
-            if(!checkStatus.equals("success")){
+            if (!checkStatus.equals("success")) {
 
 
-                ViewUtils.showToSaleCertificationDialog(this,"您还未认证，是否去认证");
+                ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
 
-            }else{
+            } else {
 
-                HashMap<String,Object> map = new HashMap<>();
-                if(typeBean!=null){
-                    if(typeBean.size()==0){
-                        Toast.makeText(context,"请联系管理员添加问题类型",Toast.LENGTH_SHORT).show();
-                    }else{
-                        map.put("type",typeBean);
-                        RlbActivityManager.toTrainingToAskActivity(this,map,false);
+                HashMap<String, Object> map = new HashMap<>();
+                if (typeBean != null) {
+                    if (typeBean.size() == 0) {
+                        Toast.makeText(context, "请联系管理员添加问题类型", Toast.LENGTH_SHORT).show();
+                    } else {
+                        map.put("type", typeBean);
+                        RlbActivityManager.toTrainingToAskActivity(this, map, false);
                     }
                 }
 
             }
         }
-
 
 
     }
@@ -195,7 +196,7 @@ public class TrainingAskActivity extends BaseActivity {
                 if (params.result != null) {
 
                     ResultAskTypeBean bean = (ResultAskTypeBean) params.result;
-                    if(typeBean==null){
+                    if (typeBean == null) {
                         typeBean = new MouldList<ResultAskTypeItemBean>();
                     }
                     typeBean.addAll(bean.getList());
@@ -211,7 +212,6 @@ public class TrainingAskActivity extends BaseActivity {
 
 
     }
-
 
 
     @Override

@@ -97,6 +97,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_info);

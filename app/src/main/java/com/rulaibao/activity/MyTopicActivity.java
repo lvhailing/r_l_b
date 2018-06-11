@@ -43,6 +43,11 @@ public class MyTopicActivity extends BaseActivity{
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_my_topic);

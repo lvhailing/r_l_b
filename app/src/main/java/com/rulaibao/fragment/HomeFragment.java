@@ -58,7 +58,7 @@ import java.util.List;
  * 首页模块
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends Fragment implements View.OnClickListener{
     private View mView;
     private Context context;
     private Intent intent;
@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            requestAppData();
+                requestAppData();
 
         } else {
         }
@@ -190,7 +190,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
         listView.setAdapter(mAdapter);
 
 
-        swipe_refresh.setOnRefreshListener(this);
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestAppData();
+            }
+        });
         tv_project_plan.setOnClickListener(this);
         tv_disease_guarantee.setOnClickListener(this);
         tv_pension_guarantee.setOnClickListener(this);
@@ -310,6 +315,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
         HtmlRequest.getHomeData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+
                 if (params == null || params.result == null) {
 
                     //       Toast.makeText(context, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
@@ -345,7 +351,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
                 mAdapter.notifyDataSetChanged();
                 scrollView.smoothScrollTo(0, 0);
 
-                swipe_refresh.setRefreshing(false);
             }
 
         });
@@ -365,6 +370,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
         HtmlRequest.getAppData(context, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
                 if (params == null || params.result == null) {
                     return;
                 }
@@ -450,11 +459,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Swip
             rollViewPager.setPicList(picList);
             rollViewPager.reStartRoll();
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        requestAppData();
     }
 
     /**

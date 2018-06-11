@@ -199,7 +199,7 @@ public class InsuranceProductDetailActivity extends BaseActivity implements View
         tv_empty = (TextView) findViewById(R.id.tv_empty);
     }
 
-    private void initData() {
+    public void initData() {
         id = getIntent().getStringExtra("id");
         iv_collect.setOnClickListener(this);
         rl_guarantee.setOnClickListener(this);

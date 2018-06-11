@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.TrainingCircleActivity;
 import com.rulaibao.activity.TrainingCircleDetailsActivity;
+import com.rulaibao.adapter.holder.CircleListViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCircleIndexItemBean;
 import com.rulaibao.bean.ResultInfoBean;
@@ -42,17 +43,15 @@ import butterknife.ButterKnife;
  */
 
 public class TrainingMyCircleListAdapter extends BaseAdapter {
-
     private Context context;
-
     private MouldList<ResultCircleIndexItemBean> arrayList;
     private LayoutInflater layoutInflater;
     private String type = "";
     private String userId = "";
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default
-            ,R.mipmap.ic_ask_photo_default,R.mipmap.ic_ask_photo_default);
+            , R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
-    public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type,String userId) {
+    public TrainingMyCircleListAdapter(Context context, MouldList<ResultCircleIndexItemBean> arrayList, String type, String userId) {
         this.context = context;
         this.arrayList = arrayList;
         this.type = type;
@@ -77,107 +76,58 @@ public class TrainingMyCircleListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-
+        CircleListViewHolder holder = null;
         if (convertView == null) {
-
             convertView = layoutInflater.inflate(R.layout.activity_my_circle_item, null);
-            holder = new ViewHolder(convertView);
-
+            holder = new CircleListViewHolder(convertView);
             convertView.setTag(holder);
         } else {
-
-            holder = (ViewHolder) convertView.getTag();
-
+            holder = (CircleListViewHolder) convertView.getTag();
         }
-
         holder.tvMycircleName.setText(arrayList.get(position).getCircleName());
         holder.tvMycircleDescription.setText(arrayList.get(position).getCircleDesc());
-
-        ImageLoader.getInstance().displayImage(arrayList.get(position).getCirclePhoto(),holder.ivMycircleSign,displayImageOptions);
-
-//        holder.tvCircleJoin.setText(arrayList.get(position).getCircleName());
-
-        if(type.equals(TrainingCircleActivity.RECOMMEND)){
-
+        ImageLoader.getInstance().displayImage(arrayList.get(position).getCirclePhoto(), holder.ivMycircleSign, displayImageOptions);
+        if (type.equals(TrainingCircleActivity.RECOMMEND)) {
             holder.tvCircleJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(!PreferenceUtil.isLogin()){
-                        HashMap<String,Object> map = new HashMap<>();
-
-                        RlbActivityManager.toLoginActivity((BaseActivity)context,map,false);
-
-                    }else{
-                        if(!PreferenceUtil.getCheckStatus().equals("success")){
-
-                            ViewUtils.showToSaleCertificationDialog(context,"您还未认证，是否去认证");
-
-
-
-                        }else{
-                            requestAddCircle(arrayList.get(position).getCircleId(),userId);
+                    if (!PreferenceUtil.isLogin()) {
+                        HashMap<String, Object> map = new HashMap<>();
+                        RlbActivityManager.toLoginActivity((BaseActivity) context, map, false);
+                    } else {
+                        if (!PreferenceUtil.getCheckStatus().equals("success")) {
+                            ViewUtils.showToSaleCertificationDialog(context, "您还未认证，是否去认证");
+                        } else {
+                            requestAddCircle(arrayList.get(position).getCircleId(), userId);
                         }
                     }
-
                 }
             });
-
-
-        }else{
+        } else {
             holder.tvCircleJoin.setVisibility(View.GONE);
-
         }
-
         return convertView;
     }
 
-    static class ViewHolder {
-        @BindView(R.id.iv_mycircle_sign)
-        CircularImage ivMycircleSign;
-        @BindView(R.id.tv_mycircle_name)
-        TextView tvMycircleName;
-        @BindView(R.id.tv_mycircle_description)
-        TextView tvMycircleDescription;
-        @BindView(R.id.tv_circle_join)
-        TextView tvCircleJoin;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
-
     //加入圈子
-    public void requestAddCircle(String circleId,String userId) {
-
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
+    public void requestAddCircle(String circleId, String userId) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-
         map.put("circleId", circleId);
         map.put("userId", userId);
-
         HtmlRequest.getTrainingAddCircle(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if (bean.getFlag().equals("true")) {
-
                         Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
-
                     } else {
                         Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
 
                 }
             }
         });
     }
-
 }

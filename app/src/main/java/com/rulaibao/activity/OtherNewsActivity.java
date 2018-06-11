@@ -39,6 +39,11 @@ public class OtherNewsActivity extends BaseActivity {
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_same_list_layout);

@@ -62,6 +62,11 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 
 
 	@Override
+	public void initData() {
+
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		baseSetContentView(R.layout.activity_gesture_edit);

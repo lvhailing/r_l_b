@@ -63,6 +63,12 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     private View v_hidden;
 
     private boolean isOpened = false;   //动画是否开启
+
+    @Override
+    public void initData() {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

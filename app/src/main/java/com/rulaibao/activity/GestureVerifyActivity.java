@@ -48,6 +48,11 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
     private TitleBar title;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_gesture_verify);

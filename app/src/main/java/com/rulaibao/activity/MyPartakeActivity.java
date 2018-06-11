@@ -61,7 +61,7 @@ public class MyPartakeActivity extends BaseActivity {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
     }
 
-    private void initData() {
+    public void initData() {
         titles = new String[]{"提问", "话题"};
         myPartakeVpAdapter = new MyPartakeVpAdapter(getSupportFragmentManager(), titles, this);
         ((MyPartakeAskFragment) myPartakeVpAdapter.getItem(0)).setUserId(userId);

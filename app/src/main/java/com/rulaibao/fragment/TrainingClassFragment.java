@@ -49,13 +49,11 @@ public class TrainingClassFragment extends BaseFragment {
 
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_training_class, container, false);
-
         } else {
             if (mView.getParent() != null) {
                 ((ViewGroup) mView.getParent()).removeView(mView);
             }
         }
-
         return mView;
     }
 
@@ -63,18 +61,16 @@ public class TrainingClassFragment extends BaseFragment {
     protected void initViews() {
 
         context = getActivity();
-
         courseList = new MouldList<ResultClassIndexItemBean>();
 
         initRecyclerView();
-
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if(context!=null){
+            if (context != null) {
                 courseList.clear();
             }
             typeCode = getArguments().getString(KEY);         //  解决初始点击fragment拿不到参数的问题
@@ -85,34 +81,29 @@ public class TrainingClassFragment extends BaseFragment {
         } else {
 
         }
-
     }
 
-
-    public void initRecyclerView(){
+    public void initRecyclerView() {
 
         lvTrainingClass.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new TrainingClassListAdapter(getActivity(),courseList);
+        adapter = new TrainingClassListAdapter(getActivity(), courseList);
         lvTrainingClass.setAdapter(adapter);
-
 
         lvTrainingClass.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    if(noDataFlag){
+                    if (noDataFlag) {
                         adapter.changeMoreStatus(RecyclerBaseAapter.LOADING_MORE);
 
                         page++;
                         requestIndexData();
                     }
-
-
                 }
-
             }
 
             @Override
@@ -122,71 +113,54 @@ public class TrainingClassFragment extends BaseFragment {
                 //最后一个可见的ITEM
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
-
             }
         });
-
-
 
     }
 
-    public void requestIndexData(){
-
-
+    public void requestIndexData() {
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
-        map.put("page",page);
-        map.put("typeCode",typeCode);
-
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("page", page);
+        map.put("typeCode", typeCode);
         HtmlRequest.getTrainingClassList(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
+                if (params.result != null) {
+                    ResultClassIndexBean bean = (ResultClassIndexBean) params.result;
+                    if (bean.getCourseList().size() == 0) {
 
-                if(params.result!=null){
-                    ResultClassIndexBean bean = (ResultClassIndexBean)params.result;
-                    if(bean.getCourseList().size()==0){
-
-                        if(page!=1){
+                        if (page != 1) {
                             page--;
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
-                        }else{
+                        } else {
                             adapter.setNoDataMessage("暂无课程");
-                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                            adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_MATCH_PARENT);
                             noDataFlag = false;
                         }
-
-
-                    }else{
+                    } else {
                         courseList.addAll(bean.getCourseList());
                         adapter.notifyDataSetChanged();
-
-                        if(courseList.size()%10==0){
+                        if (courseList.size() % 10 == 0) {
                             adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
-                        }else{
+                        } else {
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-
                     }
-
-                }else{
+                } else {
 
                 }
-
             }
         });
-
-
-
     }
 
     public static TrainingClassFragment newInstance(String newsId) {
         TrainingClassFragment fragment = new TrainingClassFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
-        bundle.putString(KEY,newsId);
+        bundle.putString(KEY, newsId);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

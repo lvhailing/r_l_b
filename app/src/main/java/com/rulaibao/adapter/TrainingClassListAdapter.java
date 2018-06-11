@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.holder.ClassListViewHolder;
 import com.rulaibao.adapter.holder.FooterViewHolder;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultClassIndexItemBean;
@@ -43,13 +44,13 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.activity_training_class_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        ClassListViewHolder holder = new ClassListViewHolder(view);
         return holder;
     }
 
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder holder1 = (ViewHolder) holder;
+        ClassListViewHolder holder1 = (ClassListViewHolder) holder;
         int index = position;
         if (getmHeaderView() != null) {
             index = position - 1;
@@ -86,72 +87,14 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        super.onBindViewHolder(holder, position);
-        if (holder instanceof ViewHolder) {
+        if (holder instanceof ClassListViewHolder) {
             initHolderData(holder, position);
         } else if (holder instanceof FooterViewHolder) {
-            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-            switch (mLoadMoreStatus) {
-                case PULLUP_LOAD_MORE:
-                    ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params1);
-                    footerViewHolder.tvFooterMore.setText("数据加载中...");
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    break;
-                case LOADING_MORE:
-                    ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params2);
-                    footerViewHolder.tvFooterMore.setText("正加载更多...");
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    break;
-                case NO_LOAD_MORE:
-                    ViewGroup.LayoutParams params3 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    footerViewHolder.itemView.setLayoutParams(params3);
-                    //隐藏加载更多
-                    footerViewHolder.tvFooterMore.setVisibility(View.GONE);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                    break;
-                case NO_DATA:
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    footerViewHolder.itemView.setLayoutParams(params);
-
-                    //没有数据
-                    footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
-                    footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
-                    footerViewHolder.tvFooterMore.setText(noDataMessage);
-
-                    break;
-                default:
-
-                    break;
-            }
+            initFooterHolderData(holder);
         }
 
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.tv_training_name)
-        TextView tvTrainingName;
-        @BindView(R.id.tv_training_class_time)
-        TextView tvTrainingClassTime;
-        @BindView(R.id.iv_training_recommend)
-        ImageView ivTrainingRecommend;
-        @BindView(R.id.tv_training_recommend_manager)
-        TextView tvTrainingRecommendManager;
-        @BindView(R.id.tv_training_recommend_manager_name)
-        TextView tvTrainingRecommendManagerName;
-        @BindView(R.id.rsv_fragment_training)
-        FrameLayout rsvFragmentTraining;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-//            tv_training_name = (TextView) itemView.findViewById(R.id.tv_training_name);
-
-        }
-    }
 
 
     @Override

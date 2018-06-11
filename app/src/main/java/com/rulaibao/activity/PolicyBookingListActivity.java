@@ -67,7 +67,7 @@ public class PolicyBookingListActivity extends BaseActivity {
         vp = (ViewPager) findViewById(R.id.vp);
     }
 
-    private void initData() {
+    public void initData() {
         titles = new String[]{"全部（）", "待确认（）", "已确认（）", "已驳回（）", "已取消（）"};
 
         vpAdapter = new PolicyBookingVpAdapter(getSupportFragmentManager(), titles, this);

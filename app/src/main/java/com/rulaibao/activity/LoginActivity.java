@@ -46,6 +46,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private String password;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_login);

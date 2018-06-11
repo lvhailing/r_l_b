@@ -43,6 +43,11 @@ public class TransactionDetailActivity extends BaseActivity implements View.OnCl
 
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_transaction_detail);

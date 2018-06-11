@@ -63,7 +63,7 @@ public class MyCollectionActivity extends BaseActivity {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
     }
 
-    private void initData() {
+    public void initData() {
         titles = new String[]{"全部", "重疾险","年金险","终身寿险","意外险", "医疗险","一老一小","企业团体"};
         myCollectionVpAdapter = new MyCollectionVpAdapter(getSupportFragmentManager(), titles, this);
         ((MyCollectionFragment) myCollectionVpAdapter.getItem(0)).setUserId(userId);

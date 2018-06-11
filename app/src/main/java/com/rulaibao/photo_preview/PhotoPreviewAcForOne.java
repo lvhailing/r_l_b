@@ -27,6 +27,11 @@ public class PhotoPreviewAcForOne extends BaseActivity implements View.OnClickLi
     private int currentPos;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_photo_preview);

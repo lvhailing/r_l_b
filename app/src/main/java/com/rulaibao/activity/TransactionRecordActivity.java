@@ -49,6 +49,11 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
     private ViewSwitcher vs;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_transaction_record);

@@ -240,7 +240,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mViewPager.setCurrentItem(i);
     }
 
-    private void initData() {
+    public void initData() {
         requestData(); //检查版本更新
     }
 

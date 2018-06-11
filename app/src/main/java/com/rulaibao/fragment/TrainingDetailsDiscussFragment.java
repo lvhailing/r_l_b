@@ -195,7 +195,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
     @Override
     public void onResume() {
         super.onResume();
-        if(isRefresh){
+        if (isRefresh) {
             courseId = getArguments().getString("courseId");
             speechmakeId = getArguments().getString("speechmakeId");
             if (list != null) {
@@ -205,7 +205,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
             page = 1;
             requestData();
         }
-        Log.e("222222","222");
+        Log.e("222222", "222");
 
     }
 
@@ -219,7 +219,7 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Log.e("222222","333");
+            Log.e("222222", "333");
             isRefresh = false;
             courseId = getArguments().getString("courseId");
             speechmakeId = getArguments().getString("speechmakeId");
@@ -253,14 +253,14 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
 
                     ResultClassDetailsDiscussBean bean = (ResultClassDetailsDiscussBean) params.result;
                     if (bean.getFlag().equals("true")) {
-                        if(bean.getList()!=null){
+                        if (bean.getList() != null) {
                             if (bean.getList().size() == 0) {
                                 if (page != 1) {
                                     page--;
                                     adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                                 } else {
                                     adapter.setNoDataMessage("暂无研讨信息");
-                                    adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA);
+                                    adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                                     noDataFlag = false;
                                     tvIntroductionDiscussCount.setVisibility(View.GONE);
                                 }
@@ -397,7 +397,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
             requestReply(commentContent);
 
         } else {              //  回复
-
 
 
             requestReply(commentContent);

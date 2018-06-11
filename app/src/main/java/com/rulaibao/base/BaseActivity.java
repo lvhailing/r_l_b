@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -35,20 +36,27 @@ import static com.rulaibao.uitls.StatusBarUtil.MIUI;
  * BaseActivity
  */
 
-public class BaseActivity extends FragmentActivity implements MyApplication.NetListener {
+public abstract class BaseActivity extends FragmentActivity implements MyApplication.NetListener, SwipeRefreshLayout.OnRefreshListener {
     public BaseActivity mContext;   //Activity 上下文
     public String userId = null;
     public String token = null;
     public String phone = null;
     public CustomProgressDialog dialog;
+    public SwipeRefreshLayout swipe;
+
+
+    /**
+     * 初始化/刷新 页面数据
+     */
+    public abstract void initData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-                userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
 //            token = DESUtil.decrypt(PreferenceUtil.getToken());
-                phone = DESUtil.decrypt(PreferenceUtil.getPhone());
+            phone = DESUtil.decrypt(PreferenceUtil.getPhone());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,23 +73,43 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
             StatusBarUtil.statusBarDarkMode(this,ANDROID_M);
         }*/
         setContentView(R.layout.base);
-
         MyApplication apl = (MyApplication) getApplicationContext();
-
         mContext = this;
-
-
-
         apl.registReceiver();
     }
 
     public void baseSetContentView(int layoutResId) {
         LinearLayout llContent = (LinearLayout) findViewById(R.id.content);
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
+
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         dialog = new CustomProgressDialog(this, "", R.drawable.frame_loading);
         View v = inflater.inflate(layoutResId, null);
         llContent.addView(v);
+        initSwipeView();
         ButterKnife.bind(mContext);
+    }
+
+    private void initSwipeView() {
+        //为SwipeRefreshLayout设置监听事件
+        swipe.setOnRefreshListener(this);
+        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
+//        swipe.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+        swipe.setEnabled(false);
+    }
+
+
+    /**
+     *
+     * 设置SwipeRefreshLayout刷新是否生效(true/false)  默认不生效
+     * @param refreshFlag true
+     *
+     */
+    public void setRereshEnable(boolean refreshFlag){
+        swipe.setEnabled(refreshFlag);
     }
 
     @Override
@@ -92,7 +120,7 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
         onNetWorkChange(apl.netType);
 
         try {
-            if (TextUtils.isEmpty(userId)){
+            if (TextUtils.isEmpty(userId)) {
                 userId = DESUtil.decrypt(PreferenceUtil.getUserId());
 //            token = DESUtil.decrypt(PreferenceUtil.getToken());
                 phone = DESUtil.decrypt(PreferenceUtil.getPhone());
@@ -150,17 +178,23 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
         apl.unRegisterNetListener();
     }
 
-    /** 子类可以重写改变状态栏颜色 GApp*/
+    /**
+     * 子类可以重写改变状态栏颜色 GApp
+     */
     protected int setStatusBarColor() {
         return getColorPrimary();
     }
 
-    /** 子类可以重写决定是否使用透明状态栏 */
+    /**
+     * 子类可以重写决定是否使用透明状态栏
+     */
     protected boolean translucentStatusBar() {
         return false;
     }
 
-    /** 设置状态栏颜色 */
+    /**
+     * 设置状态栏颜色
+     */
     protected void initSystemBarTint() {
         Window window = getWindow();
         if (translucentStatusBar()) {
@@ -183,25 +217,34 @@ public class BaseActivity extends FragmentActivity implements MyApplication.NetL
             window.setStatusBarColor(setStatusBarColor());
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //4.4-5.0使用三方工具类，有些4.4的手机有问题，这里为演示方便，不使用沉浸式
-    //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintColor(setStatusBarColor());
         }
     }
 
-    /** 获取主题色 */
+    /**
+     * 获取主题色
+     */
     public int getColorPrimary() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         return typedValue.data;
     }
 
-    /** 获取深主题色 */
+    /**
+     * 获取深主题色
+     */
     public int getDarkColorPrimary() {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
         return typedValue.data;
+    }
+
+    @Override
+    public void onRefresh() {
+        initData();
     }
 
 }
