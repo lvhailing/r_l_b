@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
@@ -27,8 +26,6 @@ import com.rulaibao.adapter.TagAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.InsuranceProduct1B;
 import com.rulaibao.bean.InsuranceProduct2B;
-import com.rulaibao.bean.InsuranceProduct3B;
-import com.rulaibao.bean.PolicyPlan2B;
 import com.rulaibao.dialog.DeleteHistoryDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -36,12 +33,10 @@ import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.FlowLayout;
 import com.rulaibao.uitls.ListDataSave;
-import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.TagFlowLayout;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -98,7 +93,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         mContext = this;
         dataSave = new ListDataSave(mContext, "search_pre");//搜索sp
         et_search = (EditText) findViewById(R.id.et_search);
-        bt_clear = (Button) findViewById(R.id.bt_clear);
+        bt_clear = (Button) findViewById(R.id.btn_clear);
         bt_clear.setVisibility(GONE);
         et_search.addTextChangedListener(this);
         tv_search_cancel= (TextView) findViewById(R.id.tv_search_cancel);
@@ -109,7 +104,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
-        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs);
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_empty.setText("暂无相关产品");
 
@@ -257,7 +252,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_clear:
+            case R.id.btn_clear:
                 et_search.setText("");
                 flowLayoutHistory();//重新加载搜索内容
                 vs.setDisplayedChild(0);
@@ -270,7 +265,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         new DeleteHistoryDialog.OnExitChanged() {
 
                             @Override
-                            public void onConfim() {
+                            public void onConfirm() {
                                 listString.clear();
                                 isDelete=true;
                                 flowLayoutHistory();//重新加载搜索内容

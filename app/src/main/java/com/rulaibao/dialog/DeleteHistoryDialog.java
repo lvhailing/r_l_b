@@ -20,147 +20,141 @@ import java.util.ArrayList;
 /**
  * 删除历史记录dialog
  */
-public class DeleteHistoryDialog extends Dialog implements
-		DialogInterface.OnCancelListener, DialogInterface.OnDismissListener{
+public class DeleteHistoryDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
-	private Context mContext;
-	private LayoutInflater inflater;
-	private LayoutParams lp;
-	private int percentageH = 4;
-	private int percentageW = 8;
-	private TextView txtConfim = null;
-	private TextView txtCancel = null;
-	private TextView txtInfo = null;
-	private ImageView iv_delete;
-	private String info = null;
+    private Context mContext;
+    private LayoutInflater inflater;
+    private LayoutParams lp;
+    private int percentageH = 4;
+    private int percentageW = 8;
+    private TextView txtConfirm = null;
+    private TextView txtCancel = null;
+    private TextView txtInfo = null;
+    private ImageView iv_delete;
+    private String info = null;
 
-	ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
-	ArrayList<OnDismissListener> m_arrDismissListeners = new ArrayList<OnDismissListener>();
-	private OnExitChanged onChanged = null;
+    ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
+    ArrayList<OnDismissListener> m_arrDismissListeners = new ArrayList<OnDismissListener>();
+    private OnExitChanged onChanged = null;
 
-	public DeleteHistoryDialog(Context context, OnExitChanged onChanged, String info) {
-		super(context, R.style.Dialog);
-		this.mContext = context;
-		this.onChanged = onChanged;
-		this.info = info;
-	}
+    public DeleteHistoryDialog(Context context, OnExitChanged onChanged, String info) {
+        super(context, R.style.Dialog);
+        this.mContext = context;
+        this.onChanged = onChanged;
+        this.info = info;
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		inflater = (LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View mView = inflater.inflate(R.layout.dialog_delete_history, null);
-		setContentView(mView);
-		// 设置window属性
-		lp = getWindow().getAttributes();
-		lp.gravity = Gravity.CENTER;
-		lp.dimAmount = 0.6f; // 去背景遮盖
-		lp.alpha = 1.0f;
-		int[] wh = initWithScreenWidthAndHeight(mContext);
-		lp.width = wh[0] - wh[0] / percentageW;
-		lp.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-		getWindow().setAttributes(lp);
-		setCanceledOnTouchOutside(false);
-		setOnDismissListener(this);
-		setOnCancelListener(this);
-		initView(mView);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mView = inflater.inflate(R.layout.dialog_delete_history, null);
+        setContentView(mView);
+        // 设置window属性
+        lp = getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.dimAmount = 0.6f; // 去背景遮盖
+        lp.alpha = 1.0f;
+        int[] wh = initWithScreenWidthAndHeight(mContext);
+        lp.width = wh[0] - wh[0] / percentageW;
+        lp.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+        getWindow().setAttributes(lp);
 
-	}
+        setCanceledOnTouchOutside(false);
+        setOnDismissListener(this);
+        setOnCancelListener(this);
 
-	private void initView(View mView) {
-		iv_delete= (ImageView) mView
-				.findViewById(R.id.iv_delete);
-		txtConfim = (TextView) mView
-				.findViewById(R.id.dialog_confirm);
-		txtCancel = (TextView) mView
-				.findViewById(R.id.dialog_cancel);
-		txtInfo = (TextView) mView
-				.findViewById(R.id.tv_unbind_info);
-		txtInfo.setText(info);
-		iv_delete.setOnClickListener(cancelListener);
-		txtConfim.setOnClickListener(confimListener);
-		txtCancel.setOnClickListener(cancelListener);
-	}
+        initView(mView);
+    }
 
-	private View.OnClickListener confimListener = new View.OnClickListener() {
+    private void initView(View mView) {
+        iv_delete = (ImageView) mView.findViewById(R.id.iv_delete);
+        txtConfirm = (TextView) mView.findViewById(R.id.dialog_confirm);
+        txtCancel = (TextView) mView.findViewById(R.id.dialog_cancel);
+        txtInfo = (TextView) mView.findViewById(R.id.tv_unbind_info);
+        txtInfo.setText(info);
 
-		@Override
-		public void onClick(View v) {
-			onChanged.onConfim();
-			onDismiss();
-		}
+        iv_delete.setOnClickListener(cancelListener);
+        txtConfirm.setOnClickListener(confirmListener);
+        txtCancel.setOnClickListener(cancelListener);
+    }
 
-	};
+    private View.OnClickListener confirmListener = new View.OnClickListener() {
 
-	private View.OnClickListener cancelListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onChanged.onConfirm();
+            onDismiss();
+        }
 
-		@Override
-		public void onClick(View v) {
-			onDismiss();
-		}
-	};
+    };
 
-	private void ondismiss() {
+    private View.OnClickListener cancelListener = new View.OnClickListener() {
 
-	}
+        @Override
+        public void onClick(View v) {
+            onDismiss();
+        }
+    };
 
-	@Override
-	public void onDismiss(DialogInterface dialog) {
-		if (m_arrDismissListeners != null) {
-			for (int x = 0; x < m_arrDismissListeners.size(); x++)
-				m_arrDismissListeners.get(x).onDismiss(dialog);
-		}
-		ondismiss();
-	}
+    private void ondismiss() {
 
-	@Override
-	public void onCancel(DialogInterface dialog) {
-		if (m_arrCancelListeners != null) {
-			for (int x = 0; x < m_arrDismissListeners.size(); x++)
-				m_arrCancelListeners.get(x).onCancel(dialog);
-		}
-	}
+    }
 
-	public void addListeners(OnCancelListener c, OnDismissListener d) {
-		m_arrDismissListeners.add(d);
-		m_arrCancelListeners.add(c);
-	}
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (m_arrDismissListeners != null) {
+            for (int x = 0; x < m_arrDismissListeners.size(); x++)
+                m_arrDismissListeners.get(x).onDismiss(dialog);
+        }
+        ondismiss();
+    }
 
-	public void removeListeners(OnCancelListener c, OnDismissListener d) {
-		m_arrDismissListeners.remove(d);
-		m_arrCancelListeners.remove(c);
-	}
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (m_arrCancelListeners != null) {
+            for (int x = 0; x < m_arrDismissListeners.size(); x++)
+                m_arrCancelListeners.get(x).onCancel(dialog);
+        }
+    }
 
-	private void onDismiss() {
-		if (this.isShowing()) {
-			this.dismiss();
-		}
+    public void addListeners(OnCancelListener c, OnDismissListener d) {
+        m_arrDismissListeners.add(d);
+        m_arrCancelListeners.add(c);
+    }
 
-	}
+    public void removeListeners(OnCancelListener c, OnDismissListener d) {
+        m_arrDismissListeners.remove(d);
+        m_arrCancelListeners.remove(c);
+    }
 
-	/**
-	 * 获取当前window width,height
-	 * 
-	 * @param context
-	 * @return
-	 */
-	private static int[] initWithScreenWidthAndHeight(Context context) {
-		int[] wh = new int[2];
-		DisplayMetrics dm = new DisplayMetrics();
-		((Activity) context).getWindowManager().getDefaultDisplay()
-				.getMetrics(dm);
-		wh[0] = dm.widthPixels;
-		wh[1] = dm.heightPixels;
-		return wh;
-	}
+    private void onDismiss() {
+        if (this.isShowing()) {
+            this.dismiss();
+        }
 
-	public interface OnExitChanged {
-		public void onConfim();
+    }
 
-		public void onCancel();
+    /**
+     * 获取当前window width,height
+     *
+     * @param context
+     * @return
+     */
+    private static int[] initWithScreenWidthAndHeight(Context context) {
+        int[] wh = new int[2];
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        wh[0] = dm.widthPixels;
+        wh[1] = dm.heightPixels;
+        return wh;
+    }
 
-	}
+    public interface OnExitChanged {
+        public void onConfirm();
+
+        public void onCancel();
+
+    }
 
 }

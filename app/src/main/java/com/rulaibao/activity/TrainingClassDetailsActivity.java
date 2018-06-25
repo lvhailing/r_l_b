@@ -253,8 +253,6 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
                         initTabView();
                     } else {
                         ViewUtils.showDeleteDialog(TrainingClassDetailsActivity.this, bean.getMessage());
-//                        Toast.makeText(TrainingClassDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
-//                        finish();
                     }
 
 

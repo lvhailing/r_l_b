@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
  * Created by junde on 2018/4/21.
  */
 
-public class MyAskActivity extends BaseActivity implements View.OnClickListener {
+public class MyAskActivity extends BaseActivity{
 
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
@@ -41,10 +41,6 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
     private ViewSwitcher vs;
     private MouldList<MyAskList2B> everyList;
 
-    @Override
-    public void initData() {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +84,11 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
         tv_empty.setText("暂未提问");
 
         initRecylerView();
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     private void initRecylerView() {
@@ -198,8 +199,4 @@ public class MyAskActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }

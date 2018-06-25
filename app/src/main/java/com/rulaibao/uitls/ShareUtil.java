@@ -10,6 +10,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
@@ -41,7 +43,8 @@ public final class ShareUtil {
             /*oks.setText(text);
             oks.setTitleUrl(url);
             oks.setTitle(title);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+//            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
             oks.setUrl(url);
             oks.setPlatform(Wechat.NAME);*/
             return;
@@ -51,7 +54,8 @@ public final class ShareUtil {
             oks.setTitle(title);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+//            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
             oks.setPlatform(WechatMoments.NAME);*/
             return;
         }
@@ -60,7 +64,10 @@ public final class ShareUtil {
             oks.setText(text);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+//            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+
+            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
+
             oks.setSite(context.getString(R.string.app_name));
             oks.setPlatform(QQ.NAME);
         }
@@ -69,7 +76,8 @@ public final class ShareUtil {
             oks.setText(text);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+//            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
+            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
             oks.setPlatform(QZone.NAME);
         }
         else if(position==4){
@@ -123,5 +131,10 @@ public final class ShareUtil {
 
         // 启动分享GUI
         oks.show(context);
+    }
+
+    private static Bitmap drawableToBitamp(Drawable drawable) {
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        return bd.getBitmap();
     }
 }

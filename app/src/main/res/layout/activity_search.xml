@@ -38,7 +38,7 @@
 
         <include layout="@layout/ac_search_view"/>
         <ViewSwitcher
-            android:id="@+id/vs_listview"
+            android:id="@+id/vs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gray_light">

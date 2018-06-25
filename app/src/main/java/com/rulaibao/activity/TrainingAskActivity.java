@@ -118,8 +118,6 @@ public class TrainingAskActivity extends BaseActivity {
     public void initView() {
 
 
-//        typeBean = (ArrayList<ResultAskTypeItemBean>)getIntent().getSerializableExtra("type");
-
         context = this;
         listTitles = new ArrayList<>();
         fragments = new ArrayList<>();
@@ -201,7 +199,6 @@ public class TrainingAskActivity extends BaseActivity {
                     }
                     typeBean.addAll(bean.getList());
                     initTabView();
-//                    Toast.makeText(context,params.result.toString(),Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -210,14 +207,12 @@ public class TrainingAskActivity extends BaseActivity {
             }
         });
 
-
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
 
     }
 

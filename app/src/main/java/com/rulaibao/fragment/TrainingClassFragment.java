@@ -119,7 +119,6 @@ public class TrainingClassFragment extends BaseFragment {
     }
 
     public void requestIndexData() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", page);
         map.put("typeCode", typeCode);

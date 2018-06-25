@@ -108,9 +108,6 @@ public class TrainingAnswerActivity extends BaseActivity {
 
                     }
 
-//                    indexItemBeans = b.getList();
-//                    initRecyclerView();
-
                 } else {
 
                 }

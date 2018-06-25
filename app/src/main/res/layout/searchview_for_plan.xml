@@ -35,7 +35,7 @@
             android:textColorHint="#ff999999" />
 
         <Button
-            android:id="@+id/bt_clear"
+            android:id="@+id/btn_clear"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:padding="5dp"

@@ -124,7 +124,6 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
 
     public void requestData() {
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("id", courseId);      //

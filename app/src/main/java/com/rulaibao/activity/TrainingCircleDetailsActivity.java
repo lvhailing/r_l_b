@@ -54,7 +54,7 @@ import butterknife.OnClick;
  * 圈子详情
  */
 
-public class TrainingCircleDetailsActivity extends BaseActivity{
+public class TrainingCircleDetailsActivity extends BaseActivity {
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
     @BindView(R.id.tv_circle_details_name)
     TextView tvCircleDetailsName;
@@ -161,7 +161,7 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, Object> map = new HashMap<String, Object>();
-                if(topAppTopics!=null&&topAppTopics.size()!=0){
+                if (topAppTopics != null && topAppTopics.size() != 0) {
                     map.put("appTopicId", topAppTopics.get(position).getTopicId());
                     RlbActivityManager.toTrainingTopicDetailsActivity(TrainingCircleDetailsActivity.this, map, false);
                 }
@@ -213,7 +213,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
 
     // 获取详情数据
     public void requestTopData() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("circleId", circleId);
         map.put("userId", userId);
@@ -229,8 +228,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
                         requestTopicData();
                     } else {
                         ViewUtils.showDeleteDialog(TrainingCircleDetailsActivity.this, bean.getMessage());
-//                        Toast.makeText(TrainingCircleDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
-//                        finish();
                     }
                 } else {
 
@@ -241,8 +238,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
 
     //  获取话题列表
     public void requestTopicData() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
-//        page = 10;
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("circleId", circleId);
         map.put("userId", userId);
@@ -287,7 +282,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
 
     //加入圈子
     public void requestAddCircle() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("circleId", circleId);
@@ -313,7 +307,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
 
     //退出圈子
     public void requestOutCircle() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("circleId", circleId);
         map.put("userId", userId);
@@ -372,25 +365,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
                     showDialog(msg);
 
 
-//                    new AlertDialog.Builder(this)
-//                            .setMessage(msg)
-//                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    requestOutCircle();
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .show();
-
-
                 } else if (status.equals("other")) {       //  其他圈子   -----    加入
                     if (!PreferenceUtil.isLogin()) {
                         HashMap<String, Object> map = new HashMap<>();
@@ -420,7 +394,6 @@ public class TrainingCircleDetailsActivity extends BaseActivity{
         CancelNormalDialog dialog = new CancelNormalDialog(TrainingCircleDetailsActivity.this, new CancelNormalDialog.IsCancel() {
             @Override
             public void onConfirm() {
-//                Toast.makeText(context, "取消成功", Toast.LENGTH_LONG).show();
                 requestOutCircle();
             }
 

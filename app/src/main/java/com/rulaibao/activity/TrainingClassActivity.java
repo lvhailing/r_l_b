@@ -138,7 +138,6 @@ public class TrainingClassActivity extends BaseActivity {
 
     public void requestIndexData(){
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
         map.put("page",1+"");
         map.put("typeCode","");

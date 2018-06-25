@@ -24,16 +24,16 @@ public class ListDataSave {
 
     /**
      * 保存List(保险产品搜索、计划书)
+     *
      * @param tag
-     * @param datalist
+     * @param dataList
      */
-    public <T> void setDataList(String tag, List<T> datalist) {
-        if (null == datalist || datalist.size() <= 0)
-            return;
+    public <T> void setDataList(String tag, List<T> dataList) {
+        if (null == dataList || dataList.size() <= 0) return;
 
         Gson gson = new Gson();
         //转换成json数据，再保存
-        String strJsonSet = gson.toJson(datalist);
+        String strJsonSet = gson.toJson(dataList);
         editor.clear();
         editor.putString(tag, strJsonSet);
         editor.commit();
@@ -42,28 +42,29 @@ public class ListDataSave {
 
     /**
      * 获取List(保险产品搜索、计划书)
+     *
      * @param tag
      * @return
      */
-    public <T> List<T> getDataList(String tag,boolean isDelete) {
-        List<T> datalist=new ArrayList<T>();
+    public <T> List<T> getDataList(String tag, boolean isDelete) {
+        List<T> dataList = new ArrayList<T>();
         strJson = preferences.getString(tag, null);
         if (isDelete) {
             strJson = null;
             Gson gson = new Gson();
             //转换成json数据，再保存
-            String strJsonSet = gson.toJson(datalist);
+            String strJsonSet = gson.toJson(dataList);
             editor.clear();
             editor.putString(tag, strJsonSet);
             editor.commit();
         }
         if (null == strJson) {
-            return datalist;
+            return dataList;
         }
-            Gson gson = new Gson();
-            datalist = gson.fromJson(strJson, new TypeToken<List<T>>() {
-            }.getType());
-        return datalist;
+        Gson gson = new Gson();
+        dataList = gson.fromJson(strJson, new TypeToken<List<T>>() {
+        }.getType());
+        return dataList;
 
     }
 }

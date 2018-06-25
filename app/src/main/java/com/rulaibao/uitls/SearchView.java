@@ -33,7 +33,7 @@ public class SearchView extends LinearLayout implements TextWatcher, View.OnClic
         LayoutInflater.from(context).inflate(R.layout.searchview, this, true);
         /***找出控件*/
         et_search = (EditText) findViewById(R.id.et_search);
-        bt_clear = (Button) findViewById(R.id.bt_clear);
+        bt_clear = (Button) findViewById(R.id.btn_clear);
         bt_clear.setVisibility(GONE);
         et_search.addTextChangedListener(this);
         bt_clear.setOnClickListener(this);

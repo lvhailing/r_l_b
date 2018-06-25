@@ -28,11 +28,11 @@ import com.rulaibao.widget.TitleBar;
 import java.util.HashMap;
 
 /**
- *  佣金消息
+ * 佣金消息
  * Created by junde on 2018/4/21.
  */
 
-public class CommissionNewsActivity extends BaseActivity implements View.OnClickListener{
+public class CommissionNewsActivity extends BaseActivity{
 
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
@@ -41,11 +41,6 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
     private int currentPage = 1;  //当前页
     private ViewSwitcher vs;
 
-
-    @Override
-    public void initData() {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +55,8 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_commission_news))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
+             .setCenterText(getResources().getString(R.string.title_commission_news)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -96,6 +90,13 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         initLoadMoreListener();
     }
 
+    @Override
+    public void initData() {
+    }
+
+    /**
+     *  初始化SwipeRefreshLayout下拉刷新
+     */
     private void initPullRefresh() {
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,6 +107,9 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         });
     }
 
+    /**
+     * 初始化 RecyclerView 加载更多的监听
+     */
     private void initLoadMoreListener() {
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             private int firstVisibleItem = 0;
@@ -131,6 +135,9 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         });
     }
 
+    /**
+     *  初始化RecyclerView
+     */
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         commissionNewsAdapter = new CommissionNewsAdapter(this, totalList);
@@ -140,12 +147,14 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
 
     }
 
+    /**
+     *  获取佣金消息/保单消息/其它消息等列表数据
+     */
     private void requestData() {
-// userId: "18042709525931594357"
         HashMap<String, Object> param = new HashMap<>();
-        param.put("userId",userId);
+        param.put("userId", userId);
         param.put("busiType", "commission");
-        param.put("page", currentPage+"");
+        param.put("page", currentPage + "");
 
         HtmlRequest.getMessageListData(CommissionNewsActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
@@ -155,9 +164,9 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
                     swipe_refresh.setRefreshing(false);
                 }
 
-                if (params==null || params.result == null) {
+                if (params == null || params.result == null) {
                     vs.setDisplayedChild(1);
- //                   Toast.makeText(CommissionNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(CommissionNewsActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -191,10 +200,4 @@ public class CommissionNewsActivity extends BaseActivity implements View.OnClick
         });
     }
 
-
-
-    @Override
-    public void onClick(View v) {
-
-    }
 }

@@ -121,7 +121,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
 
         lvAskDetails.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrainingAskDetailsListAdapter(this, list, questionId);
-//        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvAskDetails.setAdapter(adapter);
 
 
@@ -176,7 +175,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                 if (params.result != null) {
 
                     detailsBean = (ResultAskDetailsBean) params.result;
-//                    indexItemBeans = b.getList();
                     if (detailsBean.getFlag().equals("true")) {
 
                         requestAnswerList();
@@ -185,12 +183,8 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                         if (detailsBean.getCode().equals("6001")) {      //  参数错误
 
                             ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this, detailsBean.getMessage());
-//                            Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
-//                            finish();
                         } else if (detailsBean.getCode().equals("6002")) {        //  该问题已删除
                             ViewUtils.showDeleteDialog(TrainingAskDetailsActivity.this, detailsBean.getMessage());
-//                            Toast.makeText(TrainingAskDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
-//                            finish();
                         }
                     }
 

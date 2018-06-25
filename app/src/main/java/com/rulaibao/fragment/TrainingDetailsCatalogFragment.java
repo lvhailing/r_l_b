@@ -154,7 +154,6 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
 
     public void requestData() {
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("speechmakeId", speechmakeId);      //  演讲人id
@@ -193,9 +192,6 @@ public class TrainingDetailsCatalogFragment extends BaseFragment {
                         adapter.notifyDataSetChanged();
                     }
 
-
-//                    course = bean.getCourse();
-//                    setView();
                 } else {
 
                 }

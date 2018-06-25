@@ -26,6 +26,7 @@ import com.rulaibao.widget.TitleBar;
 import java.util.LinkedHashMap;
 
 /**
+ *  修改密码 页面
  * Created by junde on 2018/5/14.
  */
 
@@ -45,10 +46,6 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private String confirmPassword;
     private boolean isShowPassword = false; // 默认密码都不显示
 
-    @Override
-    public void initData() {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +156,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 setButton(oldPassword, newPassword, confirmPassword, btn_sure);
             }
         });
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     private static void setButton(String str1, String str2, String str3, Button btn_sure) {

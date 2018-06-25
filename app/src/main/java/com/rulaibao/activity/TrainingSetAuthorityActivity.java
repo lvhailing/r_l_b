@@ -92,12 +92,8 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
     //设置权限
     public void requestSetAuthorityData(){
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
 
-//        final String content  = etIssueTopicContent.getText().toString();
-//
-//        map.put("circleId",circleId);
         map.put("userId",userId);
         map.put("circleId",circleId);
         map.put("auditStatus",auditStatus);
@@ -134,8 +130,6 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
                             auditStatus = "yes";
                         }
                     }
-//                    appTopics = bean.getAppTopics();
-//                    initTopicAdapterData();
 
                 }else{
 

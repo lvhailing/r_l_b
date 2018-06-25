@@ -40,7 +40,6 @@ import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -89,7 +88,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
         mContext = getApplicationContext();
         dataSave = new ListDataSave(mContext, "search_pre_policy_plan");//搜索sp
         et_search = (EditText) findViewById(R.id.et_search);
-        bt_clear = (Button) findViewById(R.id.bt_clear);
+        bt_clear = (Button) findViewById(R.id.btn_clear);
         bt_clear.setVisibility(GONE);
         et_search.addTextChangedListener(this);
         tv_search_cancel= (TextView) findViewById(R.id.tv_search_cancel);
@@ -98,7 +97,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
-        vs_listview= (ViewSwitcher) findViewById(R.id.vs_listview);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs);
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_empty.setText("暂无保单规划");
 
@@ -188,7 +187,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_clear:
+            case R.id.btn_clear:
                 et_search.setText("");
                 flowLayoutHistory();//重新加载搜索内容
                 vs.setDisplayedChild(0);
@@ -201,7 +200,7 @@ public class SearchForPolicyPlanActivity extends BaseActivity implements View.On
                         new DeleteHistoryDialog.OnExitChanged() {
 
                             @Override
-                            public void onConfim() {
+                            public void onConfirm() {
                                 listString.clear();
                                 isDelete=true;
                                 flowLayoutHistory();//重新加载搜索内容

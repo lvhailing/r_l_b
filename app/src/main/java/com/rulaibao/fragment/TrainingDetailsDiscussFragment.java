@@ -77,7 +77,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
     @BindView(R.id.fl_details_discuss)
     FrameLayout flDetailsDiscuss;
 
-
     private ArrayList arrayList = new ArrayList();
 
     private TrainingClassDiscussAdapter adapter;
@@ -205,7 +204,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
             page = 1;
             requestData();
         }
-        Log.e("222222", "222");
 
     }
 
@@ -219,7 +217,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Log.e("222222", "333");
             isRefresh = false;
             courseId = getArguments().getString("courseId");
             speechmakeId = getArguments().getString("speechmakeId");
@@ -285,8 +282,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
 
                         ViewUtils.showDeleteDialog(getActivity(), bean.getMessage());
 
-//                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
-//                        getActivity().finish();
                     }
 
 
@@ -307,8 +302,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        courseId = "2222";
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         if (TextUtils.isEmpty(commentId)) {
@@ -372,8 +365,6 @@ public class TrainingDetailsDiscussFragment extends BaseFragment implements MyRe
                         Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
-//                    list.addAll(bean.getList());
-//                    adapter.notifyDataSetChanged();
 
                 } else {
 

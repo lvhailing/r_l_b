@@ -146,7 +146,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         lvTopicDetails.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans, TrainingTopicDetailsActivity.this);
 
-//        adapter = new TrainingClassListAdapter(getActivity(),arrayList);
         lvTopicDetails.setOnResizeListener(this);
 
         lvTopicDetails.setAdapter(adapter);

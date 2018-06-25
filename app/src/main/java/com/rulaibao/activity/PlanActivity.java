@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,14 +49,14 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     private String category="";
     private Intent intent;
     private Plan2B data;
-    private ImageView iv_right_btn;
+    private ImageView iv_search; // 搜索
     private ImageView iv_back;
 
     private TagFlowLayout mFlowLayout;
     private TagAdapter<String> tagAdapter;
     private LinearLayout ll_insurance;
     private ImageView iv_arrows;
-    private LinearLayout fl_insurance;
+    private LinearLayout ll_insurance_company;
     private TextView tv_reset;
     private TextView tv_ok;
     private View v_hidden;
@@ -85,16 +84,16 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
-        iv_right_btn= (ImageView) findViewById(R.id.iv_right_plan);
+        iv_search = (ImageView) findViewById(R.id.iv_search);
         iv_back= (ImageView) findViewById(R.id.iv_back);
         ll_insurance= (LinearLayout) findViewById(R.id.ll_insurance);
         v_hidden = findViewById(R.id.v_hidden);
         iv_arrows= (ImageView) findViewById(R.id.iv_arrows);
-        fl_insurance= (LinearLayout) findViewById(R.id.fl_insurance);
+        ll_insurance_company = (LinearLayout) findViewById(R.id.ll_insurance_company);
         tv_reset= (TextView) findViewById(R.id.tv_reset);
         tv_ok= (TextView) findViewById(R.id.tv_ok);
 
-        iv_right_btn.setOnClickListener(this);
+        iv_search.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         ll_insurance.setOnClickListener(this);
         tv_reset.setOnClickListener(this);
@@ -278,7 +277,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_right_plan:
+            case R.id.iv_search: // 搜索 图标
                 if (PreferenceUtil.isLogin()) {
                     intent = new Intent(mContext, SearchForPlanActivity.class);
                     mContext.startActivity(intent);
@@ -290,21 +289,21 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.ll_insurance:
+            case R.id.ll_insurance: // 保险公司
 
                 if (isOpened) {
                     //动画是开启状态
                     iv_arrows.setBackgroundResource(R.mipmap.ic_drop_down_unselected);
-                        closeShopping(fl_insurance);
+                        closeShopping(ll_insurance_company);
                 } else {
                     //动画是关闭状态
-                    openShopping(fl_insurance);
+                    openShopping(ll_insurance_company);
                     iv_arrows.setBackgroundResource(R.mipmap.ic_drop_down_selected);
                 }
 
                 break;
             case R.id.v_hidden:  // 隐藏布局 关闭动画
-       ///         closeShopping(fl_insurance);
+       ///         closeShopping(ll_insurance_company);
                 break;
             case R.id.tv_reset:  // 重置
                 category="";
@@ -322,7 +321,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
 
                 //该按钮被点击了 则类型一定处于展开状态，此时需关闭动画，且箭头置成向下
                 iv_arrows.setBackgroundResource(R.mipmap.ic_drop_down_unselected);
-                closeShopping(fl_insurance);
+                closeShopping(ll_insurance_company);
                 break;
         }
     }

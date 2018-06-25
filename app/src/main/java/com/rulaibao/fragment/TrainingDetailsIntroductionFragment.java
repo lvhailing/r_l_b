@@ -100,7 +100,6 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         context = getActivity();
         id = getArguments().getString("id");
         course = new ResultClassDetailsIntroductionItemBean();
-//        course = (ResultClassDetailsIntroductionItemBean)getArguments().getSerializable("course");
         requestData();
 //
 
@@ -143,8 +142,6 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
                         setView();
                     } else {
                         ViewUtils.showDeleteDialog(getActivity(), bean.getMessage());
-//                        Toast.makeText(context, bean.getMessage(), Toast.LENGTH_SHORT).show();
-//                        getActivity().finish();
                     }
 
                 } else {
@@ -162,9 +159,6 @@ public class TrainingDetailsIntroductionFragment extends BaseFragment {
         tvIntroductionClassName.setText(course.getCourseName());
         tvIntroductionClassTime.setText(course.getCourseTime());
         tvIntroductionClassType.setText(course.getTypeName());
-
-
-//        tvIntroductionContent.setText(course.getCourseContent());
 
         setWebView(course.getCourseContent(), tvIntroductionContent);
     }

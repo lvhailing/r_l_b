@@ -194,18 +194,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         list = new MouldList<ResultHotAskItemBean>();
         bean = new ResultClassIndexBean();
 
-
-        //为SwipeRefreshLayout设置监听事件
         swipeTraining.setOnRefreshListener(this);
-        //为SwipeRefreshLayout设置刷新时的颜色变化，最多可以设置4种
-//        swipeTraining.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-
-
         titleCenter.setText(getString(R.string.training));
-
         mRefreshAnim = AnimationUtils.loadAnimation(context, R.anim.anim_rotate_refresh);
         setAdapterData();
 
@@ -230,32 +220,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 //        lvTrainingHotAsk.addItemDecoration(new RecyclerViewDivider(getActivity(), LinearLayoutManager.VERTICAL, R.drawable.shape_divider_training));
 
         initLoadMoreListener();
-
-    }
-
-    /**
-     * ceshi
-     */
-    private void requestData() {
-
-        LinkedHashMap<String, Object> param1 = new LinkedHashMap<>();
-        param1.put("params", "params");
-
-        HtmlRequest.getTest(context, param1, new BaseRequester.OnRequestListener() {
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (params != null) {
-                    if (params.result != null) {
-                        MouldList<ResultCycleIndex2B> b = (MouldList<ResultCycleIndex2B>) params.result;
-//                        picList = params.result;
-                        Toast.makeText(context, "----" + b.get(0).getPicture(), Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-
-
-        });
 
     }
 
@@ -406,7 +370,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     public void requestIndexData() {
 
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         HtmlRequest.getTrainingIndexClass(context, map, new BaseRequester.OnRequestListener() {
@@ -418,7 +381,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                     bean = (ResultClassIndexBean) params.result;
                     qualityCount = bean.getCount();
                     setView();
-//                    Toast.makeText(context,params.result.toString(),Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -504,12 +466,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             tvBoutiqueNodata.setVisibility(View.VISIBLE);
         }
 
-
     }
 
 
     public void requestHotAskData() {
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", hotPage + "");
 
@@ -519,10 +479,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 if (params.result != null) {
                     ResultHotAskBean bean = (ResultHotAskBean) params.result;
-//                    if(){}
-
-//                    bean.getList().clear();
-//                    hotPage = 1;
                     if (bean.getList().size() == 0 && hotPage != 1) {     //  非首次的无数据情况
                         hotPage--;
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
@@ -532,33 +488,23 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                         adapter.setNoDataMessage("暂无热门问答");
                         adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_NO_PICTURE);
                         noDataFlag = false;
-
-
                     } else {
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-//                        adapter.changeMoreStatus(TrainingHotAskListAdapter.PULLUP_LOAD_MORE);
 
                         list.addAll(bean.getList());
-
                         if (list.size() % 10 == 0) {
                             adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
                         } else {
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-
                     }
-                    swipeTraining.setRefreshing(false);
+
                     adapter.notifyDataSetChanged();
-
-//                    Toast.makeText(context,bean.getList().get(0).getTitle(),Toast.LENGTH_SHORT).show();
-
                 } else {
 
                 }
-
+                swipeTraining.setRefreshing(false);
             }
         });
-
 
     }
 
@@ -575,11 +521,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     public void requestRefreshClassData() {
 
-
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", classPage + "");
-
 
         HtmlRequest.getTrainingRefreshClass(context, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -587,13 +530,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 if (params.result != null) {
                     ResultClassIndexBean qualityBean = (ResultClassIndexBean) params.result;
-//                    setQualityView();
-//                    bean.getCount();
                     if (qualityBean.getQualityCourseList().size() == 4) {
                         bean.setQualityCourseList(qualityBean.getQualityCourseList());
                         setQualityView();
                     }
-
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
@@ -607,13 +547,10 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                 } else {
 
                 }
-
-
             }
         });
 
     }
-
 
     public void stopAnim() {
         mRefreshAnim.reset();
@@ -636,13 +573,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         return rootView;
     }
 
-
     @Override
     public void getMoreData() {
 
         hotPage++;
         requestHotAskData();
-
     }
 
     public void initLoadMoreListener() {
@@ -671,8 +606,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                         hotPage++;
                         requestHotAskData();
                     }
-
-
                 }
             }
         });
@@ -681,10 +614,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     @Override
     public void onRefresh() {
-
-//        swipeTraining.setRefreshing(false);
         initData();
-
-
     }
 }

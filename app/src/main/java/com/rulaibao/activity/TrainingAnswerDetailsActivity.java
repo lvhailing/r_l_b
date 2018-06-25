@@ -180,8 +180,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     //获取回答详情数据
     public void request() {
 
-
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("questionId", questionId);
         map.put("answerId", answerId);
@@ -203,20 +201,14 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
 
                             ViewUtils.showDeleteDialog(TrainingAnswerDetailsActivity.this, detailsBean.getMessage());
-//                            Toast.makeText(TrainingAnswerDetailsActivity.this, "该回答已删除", Toast.LENGTH_SHORT).show();
-//                            finish();
 
                         } else if (detailsBean.getCode().equals("6012")) {        //  该回答已删除
 
                             ViewUtils.showDeleteDialog(TrainingAnswerDetailsActivity.this, detailsBean.getMessage());
-//                            Toast.makeText(TrainingAnswerDetailsActivity.this, "该回答已删除", Toast.LENGTH_SHORT).show();
-//                            finish();
                         } else {
                             Toast.makeText(TrainingAnswerDetailsActivity.this, detailsBean.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
-//                    indexItemBeans = b.getList();
 
                 } else {
 
@@ -370,7 +362,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     public void requestLikeData() {
 
         iv_answer_detailas_zan.setClickable(false);
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("answerId", answerId);      //  话题id

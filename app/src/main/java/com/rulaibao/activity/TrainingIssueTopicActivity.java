@@ -87,7 +87,6 @@ public class TrainingIssueTopicActivity extends BaseActivity {
     //发布话题
     public void requestAddTopicData(){
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
 
         final String content  = etIssueTopicContent.getText().toString();
@@ -111,16 +110,10 @@ public class TrainingIssueTopicActivity extends BaseActivity {
                         Toast.makeText(TrainingIssueTopicActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                         finish();
 
-//                        HashMap<String,Object> map = new HashMap<String,Object>();
-//                        map.put("circleId",circleId);
-//                        RlbActivityManager.toTrainingCircleDetailsActivity(TrainingIssueTopicActivity.this,map,true);
-
                     }else{
                         Toast.makeText(TrainingIssueTopicActivity.this,bean.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                     btnTrainingIssueTopic.setClickable(true);
-//                    appTopics = bean.getAppTopics();
-//                    initTopicAdapterData();
 
                 }else{
 

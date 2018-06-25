@@ -38,10 +38,6 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
     private String content = "";
     private String realName;
 
-    @Override
-    public void initData() {
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +141,10 @@ public class ContactCustomerServiceActivity extends BaseActivity implements View
             }
         });
 
+    }
+
+    @Override
+    public void initData() {
     }
 
     @Override

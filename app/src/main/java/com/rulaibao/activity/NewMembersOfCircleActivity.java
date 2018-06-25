@@ -239,7 +239,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         DeleteHistoryDialog dialog = new DeleteHistoryDialog(mContext, new DeleteHistoryDialog.OnExitChanged() {
 
             @Override
-            public void onConfim() {
+            public void onConfirm() {
                 requestDeleteData(position);
             }
 

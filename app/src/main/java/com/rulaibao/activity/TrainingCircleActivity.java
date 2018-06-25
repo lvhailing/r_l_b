@@ -193,7 +193,6 @@ public class TrainingCircleActivity extends BaseActivity{
 
     public void requestIndexData() {
 
-//        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         map.put("userId", userId);
