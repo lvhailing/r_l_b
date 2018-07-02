@@ -57,6 +57,6 @@
                 android:scrollbars="vertical"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <include layout="@layout/ac_empty_view"/>
+        <include layout="@layout/activity_empty_view"/>
     </ViewSwitcher>
 </LinearLayout>

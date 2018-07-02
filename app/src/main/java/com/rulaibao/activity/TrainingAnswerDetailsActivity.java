@@ -73,7 +73,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
     private TextView tv_answer_details_title;       //  标题
-    private CircularImage iv_answer_detatils_manager;       //  touxiang
+    private CircularImage iv_answer_detatils_manager;       //  头像
     private TextView tv_answer_details_manager_name;        //
     private TextView tv_answer_details_time;
     private TextView tv_answer_details_content;
@@ -366,7 +366,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
         map.put("answerId", answerId);      //  话题id
         map.put("userId", userId);
-//        map.put("likeStatus", likeStatus);
 
         HtmlRequest.getTrainingAnswerZan(this, map, new BaseRequester.OnRequestListener() {
             @Override
@@ -484,7 +483,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
                     } else {
 
-//                        ViewUtils.showDeleteDialog(TrainingAnswerDetailsActivity.this,detailsBean.getMessage());
                         Toast.makeText(TrainingAnswerDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 

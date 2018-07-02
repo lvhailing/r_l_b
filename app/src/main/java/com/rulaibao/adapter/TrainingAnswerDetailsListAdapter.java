@@ -34,7 +34,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
     private MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList;
     private Reply reply;
-    private int index = 0;
     private ResultCircleDetailsTopicCommentReplyItemBean replyItemBean;
     private ReplyAdapter replyAdapter;
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
@@ -71,8 +70,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         if (getmHeaderView() != null) {
             index = position - 1;
         }
-//        holder1.tvAnswerDetailsName.setText(arrayList.get(index).getTitle());
-
 
         ImageLoader.getInstance().displayImage(arrayList.get(index).getCommentPhoto(), holder1.ivAnswerDetails, displayImageOptions);
 
@@ -114,7 +111,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
     public interface Reply {
 
-        public void reply(String commentId, String toUserId, String replyToName, int index, String linkId);
+        void reply(String commentId, String toUserId, String replyToName, int index, String linkId);
 
     }
 
@@ -124,9 +121,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
     }
 
-    public void refresh() {
-//        replyAdapter.notifyDataSetChanged();
-    }
 
     class ReplyAdapter extends BaseAdapter {
 
@@ -184,15 +178,8 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             holder1.tvCommit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    if (replyItemBean.getReplyId().equals(replyItemBean.getReplyToId())) {
-//
-//                        reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, arrayList.get(index).getCid());
-//
-//                    } else {
 
                     reply.reply(arrayList.get(index).getCid(), list.get(position).getReplyId(), list.get(position).getReplyName(), index, list.get(position).getRid());
-
-//                    }
                 }
             });
 

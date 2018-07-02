@@ -43,8 +43,8 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
 
     public static final int NO_DATA_NO_PICTURE = 6;
 
-    //上拉加载更多状态-默认为0
-    protected int mLoadMoreStatus = 1;
+    //上拉加载更多状态-默认为2
+    protected int mLoadMoreStatus = 2;
 
     protected String noDataMessage = "";
 
@@ -132,7 +132,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
                 ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 footerViewHolder.itemView.setLayoutParams(params1);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
-                footerViewHolder.tvFooterMore.setText("数据加载中...");
+                footerViewHolder.tvFooterMore.setText("上拉加载更多...");
                 break;
             case LOADING_MORE:
                 ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

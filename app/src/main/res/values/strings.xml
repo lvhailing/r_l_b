@@ -17,6 +17,7 @@
     <string name="training_circle">圈子</string>
     <string name="training_promote">展业</string>
     <string name="training_circle_all">全部圈子</string>
+    <string name="test_idol">偶像练习工程师</string>
 
     <string name="training_toask">我要提问</string>
     <string name="training_answer">回答</string>
@@ -235,6 +236,8 @@
 
 
     <string name="three_month_renewal_reminder">当前3个月内待续保的保单：</string>
+    <string name="head_photo">头像</string>
+    <string name="no_certified">未认证</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

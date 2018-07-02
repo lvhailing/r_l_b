@@ -36,7 +36,7 @@
         android:layout_below="@+id/ll_top"
         android:orientation="vertical">
 
-        <include layout="@layout/ac_search_view_policy_plan"/>
+        <include layout="@layout/activity_search_view_policy_plan"/>
         <ViewSwitcher
             android:id="@+id/vs"
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_height="match_parent"
                 android:divider="@color/gray_light"
                 android:dividerHeight="15dp"/>
-            <include layout="@layout/ac_empty_view"/>
+            <include layout="@layout/activity_empty_view"/>
         </ViewSwitcher>
     </ViewSwitcher>
 </RelativeLayout>

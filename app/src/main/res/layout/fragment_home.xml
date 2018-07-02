@@ -84,7 +84,7 @@
                     app:mvInterval="3000"
                     app:mvSingleLine="true"/>-->
             </LinearLayout>
-            <include layout="@layout/ac_home_view"/>
+            <include layout="@layout/activity_home_view"/>
             <LinearLayout
                 android:id="@+id/ll_recommend"
                 android:layout_width="match_parent"

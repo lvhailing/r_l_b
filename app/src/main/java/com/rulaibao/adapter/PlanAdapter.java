@@ -12,12 +12,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.bean.InsuranceProduct3B;
 import com.rulaibao.bean.Plan3B;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
-
-import static com.rulaibao.uitls.ImageLoaderManager.options;
 
 public class PlanAdapter extends BaseAdapter {
     private MouldList<Plan3B> list;
@@ -52,7 +49,7 @@ public class PlanAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = inflater.inflate(R.layout.ac_plan_item, null);
+            convertView = inflater.inflate(R.layout.activity_plan_item, null);
             holder.iv_plan = (ImageView) convertView.findViewById(R.id.iv_plan);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_plan_name);
             holder.tv_recommendations = (TextView) convertView.findViewById(R.id.tv_info);

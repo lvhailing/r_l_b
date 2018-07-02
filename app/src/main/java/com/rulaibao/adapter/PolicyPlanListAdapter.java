@@ -40,7 +40,7 @@ public class PolicyPlanListAdapter extends RecyclerBaseAapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder inflateItemView(ViewGroup parent) {
-        View view = layoutInflater.inflate(R.layout.ac_policy_plan_item, parent,false);
+        View view = layoutInflater.inflate(R.layout.activity_policy_plan_item, parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

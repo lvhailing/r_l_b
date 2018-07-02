@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.ClassListViewHolder;
@@ -19,22 +16,16 @@ import com.rulaibao.uitls.RlbActivityManager;
 
 import java.util.HashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static com.rulaibao.uitls.ImageUtils.getClassImgIndex;
 
 /**
- * 课程列表
+ *
  */
 
-public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
-
-
+public class TestClassListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
     private MouldList<ResultClassIndexItemBean> arrayList;
-    private LoadMoreData loadMoreData;
 
-    public TrainingClassListAdapter(Context context, MouldList<ResultClassIndexItemBean> arrayList) {
+    public TestClassListAdapter(Context context, MouldList<ResultClassIndexItemBean> arrayList) {
         super(context);
         this.arrayList = arrayList;
     }
@@ -82,6 +73,7 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
         }
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
@@ -92,10 +84,4 @@ public class TrainingClassListAdapter extends RecyclerBaseAapter<RecyclerView.Vi
         }
 
     }
-
-    public interface LoadMoreData {
-        public void getMoreData();
-    }
-
-
 }

@@ -269,7 +269,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         tv_ask_details_manager_name.setText(bean.getAppQuestion().getUserName());
         tv_ask_details_time.setText(bean.getAppQuestion().getTime());
         tv_ask_details_content.setText(bean.getAppQuestion().getDescript());
-//        tv_ask_details_ask_count.setText(bean.getAppQuestion().getTitle());
 
     }
 
@@ -303,47 +302,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
         lvAskDetails.getItemAnimator().setChangeDuration(0);
     }
 
-//    private void setFooterView(RecyclerView view){
-//        View footer = LayoutInflater.from(this).inflate(R.layout.footer, view, false);
-//        adapter.setmFooterView(footer);
-//    }
-
-
-    public void initDialog(View view) {
-
-        Dialog customizeDialog =
-                new Dialog(this, R.style.SortDialog);
-        final View dialogView = LayoutInflater.from(this)
-                .inflate(R.layout.pw_sort, null);
-        customizeDialog.setContentView(dialogView);
-
-
-        Window window = customizeDialog.getWindow();
-        //设置窗口的位置
-        //window.setGravity(Gravity.LEFT | Gravity.TOP);
-
-        //设置窗口的属性，以便设设置
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-
-        layoutParams.x = view.getWidth() + 130;//x 位置设置
-        layoutParams.y = view.getHeight() - 180;//y 位置设置
-
-             /*  ViewGroup.LayoutParams params=new
-             ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-             ViewGroup.LayoutParams.WRAP_CONTENT);*/
-        //layoutParams.width = params.width; // 宽度
-        //layoutParams.height = params.height; // 高度
-
-        //layoutParams.width = 200; // 宽度
-        //layoutParams.height = 200; // 高度
-
-        layoutParams.alpha = 0.6f; // 透明度
-
-        window.setAttributes(layoutParams);
-
-        customizeDialog.show();
-
-    }
 
     public void showPopupWindow(View view) {
 
@@ -411,59 +369,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     }
 
 
-    private void showPopupMenu(View view) {
-
-        // View当前PopupMenu显示的相对View的位置
-        PopupMenu popupMenu = new PopupMenu(this, view);
-
-        // menu布局
-        popupMenu.getMenuInflater().inflate(R.menu.sort_menu, popupMenu.getMenu());
-
-        Menu menu = popupMenu.getMenu();
-
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
-            }
-        });
-//        popupMenu.
-        popupMenu.show();
-    }
-
-
-    public void initTabMenu(View view) {
-
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View itemView = inflater.inflate(R.layout.pw_sort, null);
-
-        tabMenu = new TabMenu(this, null, R.mipmap.ic_launcher, "设置",
-                10, R.color.blue, R.color.white, R.style.PopupAnimation);
-
-
-        tabMenu.setContentView(itemView);
-
-        //点击空白区域PopupWindow消失，这里必须先设置setBackgroundDrawable，否则点击无反应
-        tabMenu.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        tabMenu.setOutsideTouchable(true);
-
-        tabMenu.showAsDropDown(view);
-
-
-    }
-
     private void initTopTitle() {
         title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
@@ -506,7 +411,7 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                     } else {
 
                         HashMap<String, Object> map = new HashMap<>();
-                        if(detailsBean!=null){
+                        if (detailsBean != null) {
                             map.put("questionId", questionId);
                             map.put("title", detailsBean.getAppQuestion().getTitle());
                             RlbActivityManager.toTrainingAnswerActivity(this, map, false);

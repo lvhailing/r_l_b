@@ -325,6 +325,10 @@
             android:screenOrientation="portrait"/>
 
         <service android:name=".service.AppUpgradeService" />
+
+        <activity
+            android:name="com.rulaibao.activity.TestActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

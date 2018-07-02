@@ -38,7 +38,7 @@ public class TrainingSetAuthorityActivity extends BaseActivity {
 
     private String auditStatus = "";        //  是否需要验证
     private String circleId = "";
-    private String allowClick = "true";     //  处理频繁点击攻击服务器参数
+    private String allowClick = "true";     //  处理频繁点击
 
     @Override
     public void initData() {

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.rulaibao.R;
 import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.network.types.MouldList;
-import com.rulaibao.uitls.PreferenceUtil;
 
 public class InsuranceProductAdapter extends BaseAdapter {
     private MouldList<InsuranceProduct2B> list;
@@ -44,7 +43,7 @@ public class InsuranceProductAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = inflater.inflate(R.layout.ac_insurance_product_item, null);
+            convertView = inflater.inflate(R.layout.activity_insurance_product_item, null);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
             holder.tv_companyName = (TextView) convertView.findViewById(R.id.tv_companyName);
             holder.tv_minimumPremium = (TextView) convertView.findViewById(R.id.tv_minimumPremium);

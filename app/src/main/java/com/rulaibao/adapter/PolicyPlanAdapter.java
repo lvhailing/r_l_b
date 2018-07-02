@@ -16,8 +16,6 @@ import com.rulaibao.bean.PolicyPlan3B;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 
-import static com.rulaibao.uitls.ImageLoaderManager.options;
-
 public class PolicyPlanAdapter extends BaseAdapter {
     private MouldList<PolicyPlan3B> list;
     private Context context;
@@ -51,7 +49,7 @@ public class PolicyPlanAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = inflater.inflate(R.layout.ac_policy_plan_item, null);
+            convertView = inflater.inflate(R.layout.activity_policy_plan_item, null);
             holder.iv_plan = (ImageView) convertView.findViewById(R.id.iv_policy_plan);
             holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_policy_plan_name);

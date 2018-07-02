@@ -1,6 +1,7 @@
 package com.rulaibao.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.TestActivity;
 import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultClassIndexBean;
@@ -253,6 +255,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 Toast.makeText(context, "该功能暂未开放", Toast.LENGTH_SHORT).show();
 
+                /*Intent intent = new Intent(getContext(), TestActivity.class);
+                startActivity(intent);*/
 
                 break;
 

@@ -120,7 +120,7 @@
                 android:paddingTop="20dp"
                 android:scrollbars="vertical"/>
 
-            <include layout="@layout/ac_empty_view"/>
+            <include layout="@layout/activity_empty_view"/>
         </ViewSwitcher>
     </android.support.v4.widget.SwipeRefreshLayout>
 

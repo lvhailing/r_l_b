@@ -5,15 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultAskTypeItemBean;
 import com.rulaibao.bean.ResultClassIndexBean;
 import com.rulaibao.bean.ResultClassIndexItemBean;
+import com.rulaibao.fragment.TestClassFragment;
 import com.rulaibao.fragment.TrainingClassFragment;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -25,91 +23,87 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
- * 课程
+ * 偶像练习工程师
  */
 
-public class TrainingClassActivity extends BaseActivity {
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private List<ResultAskTypeItemBean> listTitles;
+public class TestActivity extends BaseActivity {
+
+
+    @BindView(R.id.tl_test)
+    TabLayout tlTest;
+    @BindView(R.id.vp_test)
+    ViewPager vpTest;
+    private List<ResultAskTypeItemBean> titlesList;
     private List<Fragment> fragments;
     private MouldList<ResultClassIndexItemBean> courseTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        baseSetContentView(R.layout.activity_training_class);
+        baseSetContentView(R.layout.activity_test_idol);
         initTopTitle();
         initView();
         requestIndexData();
     }
 
     public void initView() {
-
-        listTitles = new ArrayList<ResultAskTypeItemBean>();
-        fragments = new ArrayList<>();
-        courseTypeList = new MouldList<ResultClassIndexItemBean>();
-
-        mTabLayout = (TabLayout) findViewById(R.id.zx_tl);
-        mViewPager = (ViewPager) findViewById(R.id.zx_vp);
-
+        titlesList=new ArrayList<>();
+        fragments=new ArrayList<>();
+        courseTypeList=new MouldList<>();
     }
 
-    public void initData(){
+    public void initData() {
 
-
-
-        ResultAskTypeItemBean itemBean = new ResultAskTypeItemBean();
+        ResultAskTypeItemBean itemBean=new ResultAskTypeItemBean();
         itemBean.setTypeName("热门推荐");
         itemBean.setTypeCode("");
-        listTitles.add(itemBean);
+        titlesList.add(itemBean);
 
         for(int i=0;i<courseTypeList.size();i++){
-            ResultAskTypeItemBean itemBean1 = new ResultAskTypeItemBean();
+            ResultAskTypeItemBean itemBean1=new ResultAskTypeItemBean();
             itemBean1.setTypeName(courseTypeList.get(i).getTypeName());
             itemBean1.setTypeCode(courseTypeList.get(i).getTypeCode());
-            listTitles.add(itemBean1);
+            titlesList.add(itemBean1);
         }
 
-
-        for (int i = 0; i < listTitles.size(); i++) {
-            TrainingClassFragment fragment = TrainingClassFragment.newInstance(listTitles.get(i).getTypeCode());
+        for (int i=0;i<titlesList.size();i++){
+            TestClassFragment fragment= TestClassFragment.newInstance(titlesList.get(i).getTypeCode());
             fragments.add(fragment);
-
-        }
-        //mTabLayout.setTabMode(TabLayout.SCROLL_AXIS_HORIZONTAL);//设置tab模式，当前为系统默认模式
-        for (int i=0;i<listTitles.size();i++){
-            mTabLayout.addTab(mTabLayout.newTab().setText(listTitles.get(i).getTypeName()));//添加tab选项
         }
 
-        FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return fragments.get(position);
-            }
+        for (int i=0;i<titlesList.size();i++){
+            tlTest.addTab(tlTest.newTab().setText(titlesList.get(i).getTypeName()));//添加tab选项
+        }
+
+        FragmentPagerAdapter mAdapter=new FragmentPagerAdapter(getSupportFragmentManager()) {
 
             @Override
             public int getCount() {
                 return fragments.size();
             }
+
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
             //ViewPager与TabLayout绑定后，这里获取到PageTitle就是Tab的Text
             @Override
             public CharSequence getPageTitle(int position) {
-                return listTitles.get(position).getTypeName();
+                return titlesList.get(position).getTypeName();
             }
         };
-        mViewPager.setAdapter(mAdapter);
-
-        mTabLayout.setupWithViewPager(mViewPager);//将TabLayout和ViewPager关联起来。
-        mTabLayout.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
-
+        vpTest.setAdapter(mAdapter);
+        tlTest.setupWithViewPager(vpTest);//将TabLayout和ViewPager关联起来。
+        tlTest.setTabsFromPagerAdapter(mAdapter);//给Tabs设置适配器
     }
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_class))
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.test_idol))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
             @Override
             public void onMenu(int id) {
@@ -127,9 +121,9 @@ public class TrainingClassActivity extends BaseActivity {
         });
     }
 
-    public void requestIndexData(){
+    public void requestIndexData() {
 
-        LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
+       LinkedHashMap<String,Object> map = new LinkedHashMap<String,Object>();
         map.put("page",1+"");
         map.put("typeCode","");
 
@@ -140,8 +134,6 @@ public class TrainingClassActivity extends BaseActivity {
                 if(params.result!=null){
 
                     ResultClassIndexBean bean = (ResultClassIndexBean)params.result;
-//                    courseList.addAll(bean.getCourseList());
-//                    adapter.notifyDataSetChanged();
                     courseTypeList = bean.getCourseTypeList();
                     initData();
                 }else{
@@ -150,7 +142,6 @@ public class TrainingClassActivity extends BaseActivity {
 
             }
         });
-
 
 
     }

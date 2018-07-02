@@ -40,7 +40,7 @@
         android:background="@color/gray_light"
         android:orientation="vertical">
 
-        <include layout="@layout/ac_search_view_plan"/>
+        <include layout="@layout/activity_search_view_plan"/>
 
         <ViewSwitcher
             android:id="@+id/vs_list_view"
@@ -56,7 +56,7 @@
                 android:divider="@color/gray_light"
                 android:dividerHeight="1dp"/>
 
-            <include layout="@layout/ac_empty_view"/>
+            <include layout="@layout/activity_empty_view"/>
         </ViewSwitcher>
     </ViewSwitcher>
 </RelativeLayout>
