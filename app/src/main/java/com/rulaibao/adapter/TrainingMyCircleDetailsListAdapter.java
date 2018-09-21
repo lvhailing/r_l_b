@@ -2,6 +2,7 @@ package com.rulaibao.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,11 +115,15 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
 
             }
         });
-        if (arrayList.get(index).getLikeStatus().equals("yes")) {
-            holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zaned_icon);
-        } else {
-            holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zan_icon);
+
+        if(!TextUtils.isEmpty(arrayList.get(index).getLikeStatus())){
+            if (arrayList.get(index).getLikeStatus().equals("yes")) {
+                holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zaned_icon);
+            } else {
+                holder1.ivCircleDetailsZan.setImageResource(R.mipmap.img_zan_icon);
+            }
         }
+
         final int finalIndex1 = index;
         holder1.llCircleDetailsZan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,14 +135,17 @@ public class TrainingMyCircleDetailsListAdapter extends RecyclerBaseAapter<Recyc
                     if (!PreferenceUtil.getCheckStatus().equals("success")) {
                         ViewUtils.showToSaleCertificationDialog(context, "您还未认证，是否去认证");
                     } else {
-                        if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
-                            if (isJoin) {
-                                Toast.makeText(context, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
-                            } else {
-                                requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
-                                holder1.llCircleDetailsZan.setClickable(false);
+                        if (!TextUtils.isEmpty(arrayList.get(finalIndex).getLikeStatus())) {
+                            if (arrayList.get(finalIndex).getLikeStatus().equals("no")) {
+                                if (isJoin) {
+                                    Toast.makeText(context, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    requestLikeData(arrayList.get(finalIndex).getTopicId(), finalIndex);
+                                    holder1.llCircleDetailsZan.setClickable(false);
+                                }
                             }
                         }
+
                     }
                 }
             }

@@ -13,6 +13,15 @@ public class ResultClassDetailsPPTBean implements IMouldType {
     private ArrayList<String> pptImgs;      //
     private String flag;
     private String message;
+    private ResultPPTFileBean attachmentFile;
+
+    public ResultPPTFileBean getAttachmentFile() {
+        return attachmentFile;
+    }
+
+    public void setAttachmentFile(ResultPPTFileBean attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
 
     public String getFlag() {
         return flag;

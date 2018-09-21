@@ -248,7 +248,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             Toast.makeText(context,"请选择服务协议",Toast.LENGTH_SHORT).show();
             return;
         }
-        signup();
+        requestRegister();
     }
 
     /**
@@ -294,7 +294,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 立即注册
      */
-    private void signup() {
+    private void requestRegister() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
 
         param.put("mobile", mobile);
@@ -305,7 +305,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         param.put("appid", "");
         param.put("terminal", "");
 
-        HtmlRequest.signup(SignActivity.this, param,new BaseRequester.OnRequestListener() {
+        HtmlRequest.getRegisterData(SignActivity.this, param,new BaseRequester.OnRequestListener() {
 
             @Override
             public void onRequestFinished(BaseParams params) {

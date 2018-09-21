@@ -39,7 +39,6 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
-import com.rulaibao.test.TabMenu;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
@@ -80,7 +79,6 @@ public class TrainingAskDetailsActivity extends BaseActivity {
     private ArrayList<TestBean> arrayList = new ArrayList<TestBean>();
     private String string = "";
     private TrainingAskDetailsListAdapter adapter;
-    private TabMenu tabMenu;
     private LinearLayout ll_ask_details_sort;
     private PopupWindow popupWindow;
     private String questionId = "";
@@ -230,13 +228,11 @@ public class TrainingAskDetailsActivity extends BaseActivity {
                         tv_ask_details_ask_count.setText(b.getTotal() + "回答");
 
                         list.addAll(b.getList());
-
                         if (list.size() % 10 == 0) {
                             adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
                         } else {
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                         }
-
                     }
 
                     // 处理加载header闪跳的问题

@@ -76,8 +76,10 @@ public final class ShareUtil {
             oks.setText(text);
             oks.setTitleUrl(url);
             oks.setUrl(url);
-//            oks.setImagePath(Environment.getExternalStorageDirectory() + "/rulaibao/imgs/share.png");
-            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
+            oks.setImagePath(Environment.getExternalStorageDirectory() +"/rulaibao/imgs/rulaibao.png");
+//            oks.setImageData(drawableToBitamp(context.getResources().getDrawable(R.mipmap.ic_share)));
+            // 从网络获取图片
+//            oks.setImageUrl("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3208696326,3417130916&fm=173&s=2FE67A221AB13BAB5634185B0100C060&w=343&h=345&img.JPG");
             oks.setPlatform(QZone.NAME);
         }
         else if(position==4){

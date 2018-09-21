@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -197,11 +199,31 @@ public class AppUpgradeService extends Service {
 	}
 
 	public void install(File apkFile) {
-		Uri uri = Uri.fromFile(apkFile);
+
+		/*Uri uri = Uri.fromFile(apkFile);
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setDataAndType(uri, "application/vnd.android.package-archive");
-		startActivity(intent);
+		startActivity(intent);*/
+
+		if (Build.VERSION.SDK_INT >= 24) {//判读版本是否在7.0以上
+			Uri apkUri = FileProvider.getUriForFile(this, "com.rulaibao.fileprovider", apkFile);//在AndroidManifest中的android:authorities值
+			Intent install = new Intent(Intent.ACTION_VIEW);
+			install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
+			install.setDataAndType(apkUri, "application/vnd.android.package-archive");
+			startActivity(install);
+		} else {
+			Intent install = new Intent(Intent.ACTION_VIEW);
+			install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+			install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(install);
+
+		}
+
+
+
+
 	}
 	
 	@Override

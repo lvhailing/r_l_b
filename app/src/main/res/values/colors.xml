@@ -21,6 +21,8 @@
     <color name="bg_red_orange">#ff0200</color>
     <color name="bg_purple">#6e83e7</color>
     <color name="bg_black_trans">#66000000</color>
+    <color name="bg_training_class_ppt">#fef5e5</color>
+    <color name="txt_training_class_ppt_">#F5A003</color>
 
     <!--悬浮框背景-->
     <color name="bg_ask_details">#fcedcb</color>

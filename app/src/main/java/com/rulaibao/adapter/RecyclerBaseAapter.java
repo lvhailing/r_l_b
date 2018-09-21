@@ -43,14 +43,28 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
 
     public static final int NO_DATA_NO_PICTURE = 6;
 
+    //  更多数据（含下载）
+    public static final int NO_DATA_DOWNLOAD = 7;
+
     //上拉加载更多状态-默认为2
     protected int mLoadMoreStatus = 2;
 
     protected String noDataMessage = "";
 
+    protected String pdfName = "";
+
 
     public View mHeaderView;
     public View mFooterView;
+
+
+    public String getPdfName() {
+        return pdfName;
+    }
+
+    public void setPdfName(String pdfName) {
+        this.pdfName = pdfName;
+    }
 
     public View getmHeaderView() {
         return mHeaderView;
@@ -132,12 +146,14 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
                 ViewGroup.LayoutParams params1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 footerViewHolder.itemView.setLayoutParams(params1);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.tvFooterMore.setText("上拉加载更多...");
                 break;
             case LOADING_MORE:
                 ViewGroup.LayoutParams params2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 footerViewHolder.itemView.setLayoutParams(params2);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.tvFooterMore.setText("正加载更多...");
                 break;
             case NO_LOAD_MORE:
@@ -145,6 +161,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
                 footerViewHolder.itemView.setLayoutParams(params3);
                 //隐藏加载更多
                 footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.tvFooterMore.setVisibility(View.GONE);
                 break;
             case NO_LOAD_BLACK:
@@ -152,6 +169,8 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
                 footerViewHolder.itemView.setLayoutParams(params4);
                 //隐藏加载更多  留空白
                 footerViewHolder.tvFooterMore.setText("");
+                footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 ViewGroup.LayoutParams lp = footerViewHolder.tvFooterMore.getLayoutParams();
                 lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 lp.height = ViewUtils.dip2px(context, 40);//lp.height=LayoutParams.WRAP_CONTENT;
@@ -165,6 +184,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
 
                 //没有数据
                 footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
                 footerViewHolder.tvFooterMore.setText(noDataMessage);
                 break;
@@ -175,6 +195,7 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
 
                 //没有数据
                 footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.VISIBLE);
                 footerViewHolder.tvFooterMore.setText(noDataMessage);
                 break;
@@ -182,7 +203,21 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
                 //没有数据
                 footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
                 footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.GONE);
                 footerViewHolder.tvFooterMore.setText(noDataMessage);
+                break;
+            case NO_DATA_DOWNLOAD:
+                footerViewHolder.tvFooterMore.setVisibility(View.VISIBLE);
+                footerViewHolder.ivHotAskFooter.setVisibility(View.GONE);
+                footerViewHolder.tv_footer_more_download.setVisibility(View.VISIBLE);
+                footerViewHolder.tvFooterMore.setText(noDataMessage);
+                footerViewHolder.tv_footer_more_download.setText(pdfName);
+                footerViewHolder.tv_footer_more_download.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getDownload();
+                    }
+                });
                 break;
             default:
 
@@ -190,7 +225,11 @@ public abstract class RecyclerBaseAapter<T> extends RecyclerView.Adapter<Recycle
         }
     }
 
+
+
     public abstract int getItem();
+    public void getDownload(){
+    }
 
     @Override
     public int getItemViewType(int position) {

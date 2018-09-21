@@ -27,7 +27,7 @@ public class UserLoadout {
 	public void requestData() {
 		LinkedHashMap<String, Object> param = new LinkedHashMap<>();
 		param.put("userId", userId);
-		HtmlRequest.loginoff(context,param, new BaseRequester.OnRequestListener() {
+		HtmlRequest.loginOff(context,param, new BaseRequester.OnRequestListener() {
 
 			@Override
 			public void onRequestFinished(BaseParams params) {

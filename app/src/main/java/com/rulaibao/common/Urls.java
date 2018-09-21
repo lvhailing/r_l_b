@@ -27,7 +27,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DEBUG;
+    private static String EC_HOST = URL_OFFICIAL;
 
     /**
      * 版本更新
@@ -208,7 +208,7 @@ public class Urls {
     // 话题详情（H5）
     public static final String URL_SHARED_TOPIC = EC_HOST + "appTopic/share/";
 
-    /************************************************* 研修模块end *****************************************************************/
+    /************************************************* 研修模块 end *****************************************************************/
     //打开app
     public static final String URL_OPEN_APP = EC_HOST + "android/app/open";
 
@@ -235,6 +235,12 @@ public class Urls {
 
     // 保险详情
     public static final String URL_INSURANCE_DETAILS = EC_HOST + "product/detail";
+
+    // 保险详情----new
+    public static final String URL_INSURANCE_DETAILS_NEW = EC_HOST + "product/detail/other";
+
+    // 保险详情H5----new
+    public static final String URL_INSURANCE_DETAILS_NEW_HTML5 = EC_HOST + "product/h5/detail";
 
     // 保险详情---收藏取消收藏
     public static final String URL_COLLECTION = EC_HOST + "collection/update";

@@ -38,7 +38,7 @@
 
         <include layout="@layout/activity_search_view_policy_plan"/>
         <ViewSwitcher
-            android:id="@+id/vs"
+            android:id="@+id/vs_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/gray_light">

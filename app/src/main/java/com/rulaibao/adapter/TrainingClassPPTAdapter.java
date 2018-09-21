@@ -1,21 +1,19 @@
 package com.rulaibao.adapter;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,14 +22,15 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.FooterViewHolder;
+import com.rulaibao.bean.ResultPPTFileBean;
+import com.rulaibao.activity.FileDisplayActivity;
 import com.rulaibao.uitls.ImageLoaderManager;
-import com.rulaibao.widget.DoubleScaleImageView;
-import com.rulaibao.widget.ZoomImageView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 /**
@@ -53,11 +52,22 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend);
 
+    private ResultPPTFileBean attachmentFile;
+
     public TrainingClassPPTAdapter(Context context, ArrayList<String> arrayList) {
         super(context);
         this.context = context;
         this.arrayList = arrayList;
         layoutInflater = LayoutInflater.from(context);
+        attachmentFile = new ResultPPTFileBean();
+    }
+
+    public ResultPPTFileBean getAttachmentFile() {
+        return attachmentFile;
+    }
+
+    public void setAttachmentFile(ResultPPTFileBean attachmentFile) {
+        this.attachmentFile = attachmentFile;
     }
 
     @Override
@@ -124,12 +134,38 @@ public class TrainingClassPPTAdapter extends RecyclerBaseAapter<RecyclerView.Vie
     }
 
     @Override
+    public void getDownload() {
+        super.getDownload();
+        String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+//                filePath = getFilePath(position);
+
+//        String filePath = "http://video.ch9.ms/build/2011/slides/TOOL-532T_Sutter.pptx";
+        if (getAttachmentFile() != null) {
+            String filePath = attachmentFile.getCourseFilePath();
+            if (!TextUtils.isEmpty(filePath)) {
+                if (!EasyPermissions.hasPermissions(context, perms)) {
+                    EasyPermissions.requestPermissions((Activity) context, "需要访问手机存储权限！", 10086, perms);
+                } else {
+                    FileDisplayActivity.show(context, filePath);
+                }
+
+            }
+
+        }
+
+    }
+
+    @Override
     public int getItem() {
         if (mHeaderView != null) {
             return arrayList.size() + 2;
         } else {
             return arrayList.size() + 1;
         }
+
+//        return 5;
     }
 
     @Override

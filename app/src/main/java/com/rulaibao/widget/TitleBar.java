@@ -375,7 +375,8 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         int r = ViewUtils.dip2px(mContext, 20);
         int b = ViewUtils.dip2px(mContext, 10);
 //        child.setVisibility(ishow);
-        LinearLayout.LayoutParams LayoutParams_l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams LayoutParams_l = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams_l.setMargins(l, t, r, b);
         actions.addView(child, LayoutParams_l);
         return TitleBar.this;
@@ -389,13 +390,10 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
      */
 
     public void setChildBankground(int background, boolean isClick) {
-
-
         child.setBackgroundResource(background);
         child.setClickable(isClick);
 
     }
-
 
     /**
      * 在标题栏中添加一个可点击的button 带数字的
@@ -823,10 +821,10 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
                         e.printStackTrace();
                     }
                     if (!TextUtils.isEmpty(shareId)) {
-                        ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
+                        ShareSDKDialog dialog = new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
                             @Override
                             public void onConfirm(int position) {
-                                    ShareUtil.sharedSDK(mContext, position,shareTitle, shareText, shareUrl);
+                                   ShareUtil.sharedSDK(mContext, position,shareTitle, shareText, shareUrl);
                             }
 
                             @Override

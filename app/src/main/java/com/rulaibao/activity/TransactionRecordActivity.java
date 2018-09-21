@@ -35,7 +35,7 @@ import java.util.List;
  * 交易记录页面
  * Created by hong on 2018/4/10
  */
-public class TransactionRecordActivity extends BaseActivity implements View.OnClickListener {
+public class TransactionRecordActivity extends BaseActivity {
 
     private ActivityStack stack;
     private Intent intent;
@@ -50,7 +50,6 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void initData() {
-
     }
 
     @Override
@@ -224,25 +223,4 @@ public class TransactionRecordActivity extends BaseActivity implements View.OnCl
 
     }
 
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-//            case R.id.rl_setting_change_gesture_password: // 修改手势密码
-//                intent = new Intent(TransactionRecordActivity.this, GestureVerifyActivity.class);
-//                intent.putExtra("from", Urls.ACTIVITY_CHANGE_GESTURE);
-//                intent.putExtra("title", getResources().getString(R.string.title_changegesture));
-//                intent.putExtra("message", getResources().getString(R.string.set_gesture_pattern_old));
-//                startActivityForResult(intent, 1001);
-//
-//                break;
-
-
-            default:
-
-                break;
-
-        }
-
-    }
 }

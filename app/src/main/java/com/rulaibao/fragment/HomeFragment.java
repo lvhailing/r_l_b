@@ -221,6 +221,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         //重磅推荐
 
         mViewPager = (ViewPager) mView.findViewById(R.id.home_viewpager);
+        mViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        swipe_refresh.setEnabled(false);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        swipe_refresh.setEnabled(true);
+                        break;
+                }
+                return false;
+            }
+        });
         vIndicator = mView.findViewById(R.id.home_indicator);// 线性水平布局，负责动态调整导航图标
 
         ImageView imgView;

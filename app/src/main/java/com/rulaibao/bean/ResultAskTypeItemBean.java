@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 public class ResultAskTypeItemBean implements IMouldType,Serializable {
 
-    private String typeCode;        //  问题类型编码
-    private String typeName;        //  问题类型名称
-    private boolean flag;           // 当前是否被点击  （适用于我要提问）
+    private String typeCode; // 问题类型编码
+    private String typeName;  //问题类型名称
+    private boolean flag; // 当前是否被点击  （适用于我要提问）
 
     public boolean getFlag() {
         return flag;

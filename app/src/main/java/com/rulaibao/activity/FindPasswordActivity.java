@@ -56,7 +56,7 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
     private String btnString;
     private int time = 60;
     private Context context;
-    private boolean isOpenOne=true;
+    private boolean isOpenOne=false;
     private boolean isOpenTwo=false;
     private ImageView iv_hide_password;//隐藏密码
     private ImageView iv_hide_password_again;//隐藏密码

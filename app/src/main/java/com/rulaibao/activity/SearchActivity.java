@@ -104,7 +104,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ll_delete_history= (LinearLayout) findViewById(R.id.ll_delete_history);
         tv_search_history_lines= (TextView) findViewById(R.id.tv_search_history_lines);
         vs= (ViewSwitcher) findViewById(R.id.vs);
-        vs_listview= (ViewSwitcher) findViewById(R.id.vs);
+        vs_listview= (ViewSwitcher) findViewById(R.id.vs_list_view);
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_empty.setText("暂无相关产品");
 

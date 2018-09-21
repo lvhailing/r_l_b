@@ -24,6 +24,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+
     <application
         android:name="com.rulaibao.common.MyApplication"
         android:allowBackup="true"
@@ -36,7 +37,8 @@
 
         <activity
             android:name="com.rulaibao.activity.SplashActivity"
-            android:theme="@style/AppThemeSplah">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,7 +70,9 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -106,7 +110,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="com.rulaibao.activity.TrainingClassActivity"
+            android:name="com.rulaibao.activity.TrainingClassListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.rulaibao.activity.TrainingAskActivity"
@@ -155,6 +159,9 @@
 
         <activity
             android:name="com.rulaibao.activity.TrainingSetAuthorityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.rulaibao.activity.FileDisplayActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -327,8 +334,19 @@
         <service android:name=".service.AppUpgradeService" />
 
         <activity
-            android:name="com.rulaibao.activity.TestActivity"
+            android:name="com.rulaibao.activity.CxyTestActivity"
             android:screenOrientation="portrait" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.rulaibao.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>

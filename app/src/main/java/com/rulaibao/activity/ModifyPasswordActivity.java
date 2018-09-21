@@ -44,7 +44,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     private String oldPassword;
     private String newPassword;
     private String confirmPassword;
-    private boolean isShowPassword = false; // 默认密码都不显示
+    private boolean isShowPasswordOld = false; // 旧密码
+    private boolean isShowPasswordNew = false; // 新密码
+    private boolean isShowPasswordAgain = false; // 确认密码
 
 
     @Override
@@ -192,16 +194,16 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     return;
                 }
 
-                if (!isShowPassword) {
+                if (!isShowPasswordOld) {
                     // 显示为普通文本
                     et_old_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_old_password.getText();
                     Selection.setSelection(etable, etable.length());
                     iv_old_hide_password.setImageResource(R.mipmap.icon_open_password);
-                    isShowPassword = true;
+                    isShowPasswordOld = true;
                 } else {
-                    isShowPassword = false;
+                    isShowPasswordOld = false;
                     // 显示为密码
                     et_old_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 使光标始终在最后位置
@@ -215,16 +217,16 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 if (TextUtils.isEmpty(newPassword)) {
                     return;
                 }
-                if (!isShowPassword) {
+                if (!isShowPasswordNew) {
                     // 显示为普通文本
                     et_new_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_new_password.getText();
                     Selection.setSelection(etable, etable.length());
                     iv_new_hide_password.setImageResource(R.mipmap.icon_open_password);
-                    isShowPassword = true;
+                    isShowPasswordNew = true;
                 } else {
-                    isShowPassword = false;
+                    isShowPasswordNew = false;
                     // 显示为密码
                     et_new_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 使光标始终在最后位置
@@ -238,16 +240,16 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                 if (TextUtils.isEmpty(confirmPassword)) {
                     return;
                 }
-                if (!isShowPassword) {
+                if (!isShowPasswordAgain) {
                     // 显示为普通文本
                     et_confirm_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     // 使光标始终在最后位置
                     Editable etable = et_confirm_password.getText();
                     Selection.setSelection(etable, etable.length());
                     iv_confirm_hide_password.setImageResource(R.mipmap.icon_open_password);
-                    isShowPassword = true;
+                    isShowPasswordAgain = true;
                 } else {
-                    isShowPassword = false;
+                    isShowPasswordAgain = false;
                     // 显示为密码
                     et_confirm_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 使光标始终在最后位置

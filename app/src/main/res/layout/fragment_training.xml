@@ -7,7 +7,6 @@
     <include
         android:id="@+id/fragment_title"
         layout="@layout/fragment_titlebar"
-
         />
 
     <android.support.v4.widget.SwipeRefreshLayout

@@ -29,6 +29,7 @@ public class InsuranceDetail1B implements IMouldType {
     private String category;
     private String prospectusStatus;
     private String productStatus;
+    private String attachmentPath;
 
     public String getId() {
         return id;
@@ -236,5 +237,13 @@ public class InsuranceDetail1B implements IMouldType {
 
     public void setProductStatus(String productStatus) {
         this.productStatus = productStatus;
+    }
+
+    public String getAttachmentPath() {
+        return attachmentPath;
+    }
+
+    public void setAttachmentPath(String attachmentPath) {
+        this.attachmentPath = attachmentPath;
     }
 }

@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 import static com.rulaibao.activity.RecommendActivity.getSDPath;
 
 
@@ -69,16 +72,30 @@ public class SplashActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView(PreferenceUtil.isFirst());
+//        try {
+//            saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
-            saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+            if (!EasyPermissions.hasPermissions(this, perms)) {
+                EasyPermissions.requestPermissions(this, "需要访问手机存储权限！", 10086, perms);
+            } else {
+                saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         requestData();
     }
 
-    // 用于统计用户的登录情况
+    /**
+     * 用于统计用户的登录情况
+     */
     private void requestData() {
         try {
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
@@ -107,7 +124,6 @@ public class SplashActivity extends FragmentActivity {
 
     /**
      * 保存图片的方法 保存到sdcard
-     *
      * @throws Exception
      */
     public static void saveImage(Bitmap bitmap, String imageName) throws Exception {
@@ -130,7 +146,6 @@ public class SplashActivity extends FragmentActivity {
 
     /**
      * 获取缓存文件夹目录 如果不存在创建 否则则创建文件夹
-     *
      * @return filePath
      */
     private static String isExistsFilePath() {
@@ -166,12 +181,10 @@ public class SplashActivity extends FragmentActivity {
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         isForeground = true;
-
     }
 
     @Override
@@ -180,9 +193,7 @@ public class SplashActivity extends FragmentActivity {
         isForeground = false;
     }
 
-
     private void initView(boolean is) {
-
         ImageView iv = (ImageView) findViewById(R.id.splash_img);
         mViewPager = (ViewPager) findViewById(R.id.splashviewpager);
         mViewPager.setVisibility(View.GONE);
@@ -196,8 +207,6 @@ public class SplashActivity extends FragmentActivity {
         mRunnable = new MyRunnable();
         mThread = new Thread(mRunnable);
         mThread.start();
-
-
     }
     @Override
     protected void onDestroy() {
@@ -209,7 +218,6 @@ public class SplashActivity extends FragmentActivity {
         PreferenceUtil.setFirst(false);
         unbindDrawables(mViewPager);
         System.gc();
-
 
         super.onDestroy();
     }
@@ -308,7 +316,6 @@ public class SplashActivity extends FragmentActivity {
                 e.printStackTrace();
             }
         }
-
     }
 
     private static final String SHAREDPREFERENCES_NAME = "my_pref";
@@ -316,7 +323,6 @@ public class SplashActivity extends FragmentActivity {
 
     /**
      * 判断应用是否初次加载，读取SharedPreferences中的guide_activity字段
-     *
      * @param context
      * @param className
      * @return

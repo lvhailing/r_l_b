@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
-import com.rulaibao.activity.TestActivity;
+import com.rulaibao.activity.CxyTestActivity;
 import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultClassIndexBean;
@@ -55,7 +55,6 @@ import static com.rulaibao.uitls.ImageUtils.getClassImgIndex;
  */
 
 public class TrainingFragment extends BaseFragment implements TrainingHotAskListAdapter.LoadMoreData, SwipeRefreshLayout.OnRefreshListener {
-
 
     private static final int stopAnimMsg = 001;
 
@@ -135,8 +134,8 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     private int hotPage = 1;
     private int classPage = 1;
 
-    private int qualityCount = 1;        //  精品课程总页数
-    private boolean noDataFlag = true;      //  控制无数据不加载
+    private int qualityCount = 1;  // 精品课程总页数
+    private boolean noDataFlag = true; // 控制无数据不加载
 
     /**
      * 绑定布局文件
@@ -179,7 +178,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
         noDataFlag = true;
         list.clear();
         requestIndexData();// 获取研修首页数据
-        requestHotAskData();// 获取
+        requestHotAskData();// 获取研修首页热门问答的数据
 
 
     }
@@ -226,42 +225,31 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
     }
 
 
-    @OnClick({R.id.tv_training_class, R.id.tv_training_ask, R.id.tv_training_circle, R.id.tv_training_promote, R.id.iv_training_recommend, R.id.ll_training_recommend_refresh, R.id.rl_training_boutique_first, R.id.rl_training_boutique_second, R.id.rl_training_boutique_third, R.id.rl_training_boutique_forth})
+    @OnClick({R.id.tv_training_class, R.id.tv_training_ask, R.id.tv_training_circle, R.id.tv_training_promote,
+            R.id.iv_training_recommend, R.id.ll_training_recommend_refresh, R.id.rl_training_boutique_first,
+            R.id.rl_training_boutique_second, R.id.rl_training_boutique_third, R.id.rl_training_boutique_forth})
     public void onclick(View view) {
         switch (view.getId()) {
-
-            case R.id.tv_training_class:        //  课程
-
+            case R.id.tv_training_class: //  课程
                 RlbActivityManager.toTrainingClassActivity(getActivity(), false);
-
                 break;
-
-            case R.id.tv_training_ask:          // 问答
+            case R.id.tv_training_ask: // 问答
                 HashMap<String, Object> map = new HashMap<>();
-
                 RlbActivityManager.toTrainingAskActivity(getActivity(), map, false);
-
                 break;
-
-            case R.id.tv_training_circle:           //  圈子
-
+            case R.id.tv_training_circle: // 圈子
                 RlbActivityManager.toTrainingCircleActivity(getActivity(), false);
-
                 break;
-
-            case R.id.tv_training_promote:          // 展业
-
+            case R.id.tv_training_promote: // 展业
 //                RlbActivityManager.toTrainingPromoteActivity(getActivity(), false);
 
                 Toast.makeText(context, "该功能暂未开放", Toast.LENGTH_SHORT).show();
 
-                /*Intent intent = new Intent(getContext(), TestActivity.class);
+              /*  Intent intent = new Intent(getContext(), CxyTestActivity.class);
                 startActivity(intent);*/
-
                 break;
 
-            case R.id.iv_training_recommend:        //  推荐课程(跳转课程详情)
-
+            case R.id.iv_training_recommend: // 推荐课程(跳转课程详情)
                 HashMap<String, Object> classMap = new HashMap<>();
                 if (bean != null) {
                     if (bean.getCourseRecommend() != null) {
@@ -272,13 +260,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                             RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classMap, false);
                         }
                     }
-
                 }
-
                 break;
-
-            case R.id.ll_training_recommend_refresh:          //  精品课程 刷新（换一换）
-
+            case R.id.ll_training_recommend_refresh: //  精品课程 刷新（换一换）
                 if (qualityCount < 1) {
                     qualityCount = 1;
                 }
@@ -289,7 +273,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 break;
 
-            case R.id.rl_training_boutique_first:
+            case R.id.rl_training_boutique_first: // 精品课程一
                 HashMap<String, Object> classFirstMap = new HashMap<>();
                 if (bean != null) {
                     if (bean.getQualityCourseList() != null) {
@@ -302,12 +286,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                             }
                         }
                     }
-
                 }
-
                 break;
-
-            case R.id.rl_training_boutique_second:
+            case R.id.rl_training_boutique_second: // 精品课程二
                 HashMap<String, Object> classSecondMap = new HashMap<>();
                 if (bean != null) {
                     if (bean.getQualityCourseList() != null) {
@@ -320,12 +301,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                             }
                         }
                     }
-
                 }
-
                 break;
-
-            case R.id.rl_training_boutique_third:
+            case R.id.rl_training_boutique_third:  // 精品课程三
                 HashMap<String, Object> classThirdMap = new HashMap<>();
                 if (bean != null) {
                     if (bean.getQualityCourseList() != null) {
@@ -336,16 +314,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                                 classThirdMap.put("courseId", bean.getQualityCourseList().get(2).getCourseId());
                                 RlbActivityManager.toTrainingClassDetailsActivity(getActivity(), classThirdMap, false);
                             }
-
                         }
                     }
-
-
                 }
-
                 break;
-
-            case R.id.rl_training_boutique_forth:
+            case R.id.rl_training_boutique_forth: // 精品课程四
                 HashMap<String, Object> classforthMap = new HashMap<>();
                 if (bean != null) {
                     if (bean.getQualityCourseList() != null) {
@@ -358,7 +331,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                             }
                         }
                     }
-
                 }
 
                 break;
@@ -371,28 +343,24 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     }
 
+    /**
+     *  获取研修首页数据
+     */
     public void requestIndexData() {
-
-
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
         HtmlRequest.getTrainingIndexClass(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
-                if (params.result != null) {
-
-                    bean = (ResultClassIndexBean) params.result;
-                    qualityCount = bean.getCount();
-                    setView();
-
-                } else {
-
+                if (params.result == null) {
+                   return;
                 }
 
+                bean = (ResultClassIndexBean) params.result;
+                qualityCount = bean.getCount();
+                setView();
             }
         });
-
     }
 
     public void setView() {
@@ -403,7 +371,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                 ivTrainingRecommend.setImageResource(getClassImgIndex(bean.getCourseRecommend().getCourseLogo()));
                 tvTrainingRecommendManager.setText(bean.getCourseRecommend().getCourseName());
                 tvTrainingRecommendManagerName.setText(bean.getCourseRecommend().getSpeechmakeName() + "  " + bean.getCourseRecommend().getPosition());
-
             } else {
                 llTrainingRecommend.setVisibility(View.GONE);
             }
@@ -411,13 +378,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
             llTrainingRecommend.setVisibility(View.GONE);
         }
 
-
         setQualityView();
 
     }
 
     public void setQualityView() {
-
         if (bean.getQualityCourseList().size() > 0) {
             if (bean.getQualityCourseList().get(0) != null) {
                 tvBoutiqueNodata.setVisibility(View.GONE);
@@ -453,15 +418,11 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                     rlTrainingBoutiqueThird.setVisibility(View.GONE);
                     rlTrainingBoutiqueForth.setVisibility(View.GONE);
                 }
-
-
             } else {
                 rlTrainingBoutiqueSecond.setVisibility(View.INVISIBLE);
                 rlTrainingBoutiqueThird.setVisibility(View.GONE);
                 rlTrainingBoutiqueForth.setVisibility(View.GONE);
             }
-
-
         } else {          //  无精品课程
             rlTrainingBoutiqueFirst.setVisibility(View.GONE);
             rlTrainingBoutiqueSecond.setVisibility(View.GONE);
@@ -472,7 +433,9 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
     }
 
-
+    /**
+     *  获取研修首页热门问答的数据
+     */
     public void requestHotAskData() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", hotPage + "");

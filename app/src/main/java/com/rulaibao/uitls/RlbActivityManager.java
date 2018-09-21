@@ -12,7 +12,7 @@ import com.rulaibao.activity.TrainingAskActivity;
 import com.rulaibao.activity.TrainingAskDetailsActivity;
 import com.rulaibao.activity.TrainingCircleActivity;
 import com.rulaibao.activity.TrainingCircleDetailsActivity;
-import com.rulaibao.activity.TrainingClassActivity;
+import com.rulaibao.activity.TrainingClassListActivity;
 import com.rulaibao.activity.TrainingClassDetailsActivity;
 import com.rulaibao.activity.TrainingIssueTopicActivity;
 import com.rulaibao.activity.TrainingPromoteActivity;
@@ -23,7 +23,6 @@ import com.rulaibao.base.BaseActivity;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -139,16 +138,16 @@ public class RlbActivityManager {
 
     /**
      * 前往课程页面
-     * @param activity TrainingClassActivity
+     * @param activity TrainingClassListActivity
      * @param isFinish  是否关闭当前页面  true  false
      *
      */
 
     public static void toTrainingClassActivity(Activity activity, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity, TrainingClassActivity.class);
+            startActivityAndFinish(activity, TrainingClassListActivity.class);
         } else {
-            startActivity(activity, TrainingClassActivity.class);
+            startActivity(activity, TrainingClassListActivity.class);
         }
     }
 

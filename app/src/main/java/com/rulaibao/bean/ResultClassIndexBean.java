@@ -7,7 +7,6 @@ import com.rulaibao.network.types.MouldList;
 // 研修首页 课程
 public class ResultClassIndexBean implements IMouldType {
 
-
     /**
      *
      * "courseRecommend": {
@@ -66,10 +65,10 @@ public class ResultClassIndexBean implements IMouldType {
      */
 
     private ResultClassIndexRecommendBean courseRecommend;
-    private MouldList<ResultClassIndexQualityBean> qualityCourseList;       //
-    private MouldList<ResultClassIndexItemBean> courseList;     //  课程列表
-    private MouldList<ResultClassIndexItemBean> courseTypeList;     //  课程类型列表
-    private int count;       //  精品课程数量
+    private MouldList<ResultClassIndexQualityBean> qualityCourseList; // 精品课程列表
+    private MouldList<ResultClassIndexItemBean> courseList; // 课程列表
+    private MouldList<ResultClassIndexItemBean> courseTypeList; // 课程类型列表
+    private int count; // 精品课程数量
 
     public int getCount() {
         return count;

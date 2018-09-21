@@ -5,24 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.RecyclerBaseAapter;
-import com.rulaibao.adapter.TrainingClassDiscussAdapter;
-import com.rulaibao.adapter.TrainingClassListAdapter;
 import com.rulaibao.adapter.TrainingClassPPTAdapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
-import com.rulaibao.bean.ResultClassDetailsDiscussBean;
 import com.rulaibao.bean.ResultClassDetailsPPTBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
-import com.rulaibao.uitls.PreferenceUtil;
-import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.ViewPagerForScrollView;
 
 import java.util.ArrayList;
@@ -39,6 +35,8 @@ import butterknife.ButterKnife;
 public class TrainingDetailsPPTFragment extends BaseFragment {
     @BindView(R.id.lv_ppt)
     RecyclerView lvPpt;
+    @BindView(R.id.ll_training_details)
+    LinearLayout llTrainingDetails;
 
     private ArrayList arrayList = new ArrayList();
 
@@ -141,8 +139,21 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
                             adapter.setNoDataMessage("暂无PPT信息");
                             adapter.changeMoreStatus(RecyclerBaseAapter.NO_DATA_WRAP_CONTENT);
                         } else {
-                            adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_LOAD_MORE);
+                            adapter.setNoDataMessage("更多PPT信息请查看下方PDF文件");
+                            adapter.changeMoreStatus(TrainingHotAskListAdapter.NO_DATA_DOWNLOAD);
                             pptImgs.addAll(bean.getPptImgs());
+                            if (bean.getAttachmentFile() != null) {
+                                if (!TextUtils.isEmpty(bean.getAttachmentFile().getCourseFileName())) {
+                                    adapter.setAttachmentFile(bean.getAttachmentFile());
+                                    adapter.setPdfName(bean.getAttachmentFile().getCourseFileName());
+                                } else {
+                                    adapter.setPdfName("暂无PDF文件");
+                                }
+
+                            } else {
+                                adapter.setPdfName("暂无PDF文件");
+                            }
+
                             adapter.notifyDataSetChanged();
                         }
                     }
@@ -161,4 +172,6 @@ public class TrainingDetailsPPTFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         return rootView;
     }
+
+
 }

@@ -226,7 +226,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      * @param result 处理数据
      * @return fanhuizhi
      */
-    public static Boolean resultEncrypt(final Context c, String result) {
+    public static Boolean resultEncrypt(final Context context, String result) {
 
         if (result.equals("0000")) {
             return true;
@@ -249,12 +249,12 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 				c.startActivity(i_login);*/
 
                 Intent i_account = new Intent();
-                i_account.setClass(c, MainActivity.class);
+                i_account.setClass(context, MainActivity.class);
                 //子线程中更新UI
-                new Handler(c.getMainLooper()).post(new Runnable() {
+                new Handler(context.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(c, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "您已被禁止登录，请联系客服", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -276,21 +276,22 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 PreferenceUtil.setUserNickName("");
                 PreferenceUtil.setToken("");
                 PreferenceUtil.setCheckStatus("");
-                c.startActivity(i_account);
+                context.startActivity(i_account);
                 return false;
             }
         }
         return true;
     }
     /**
-     *注册
+     * 注册
      *
      * @param context  上下文
      * @param listener 监听事件
      */
-    public static void signup(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+    public static void getRegisterData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_SIGN_UP;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -321,12 +322,10 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     }else{
                         return null;
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -344,9 +343,10 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      * @param context  上下文
      * @param listener 监听事件
      */
-    public static void loginoff(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+    public static void loginOff(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_LOGINOFF;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -377,7 +377,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -388,6 +387,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
     /**
      * 找回密码
      *
@@ -430,7 +430,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -441,6 +440,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
     /**
      * 发送验证码
      *
@@ -494,6 +494,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
     /**
      * 打开app
      *
@@ -504,6 +505,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getAppData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_OPEN_APP;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -534,7 +536,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -542,9 +543,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
+
     /**
      * 首页
      *
@@ -555,6 +556,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getHomeData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -584,7 +586,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -592,9 +593,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
+
     /**
      * 版本检查更新
      *
@@ -651,7 +652,13 @@ public class HtmlRequest<T> extends BaseRequester<T> {
             }
         });
     }
-    // 首页---保险产品数据
+
+    /**
+     * 首页---保险产品数据
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getInsuranceProductData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_INSURANCE_PRODUCT;
@@ -689,7 +696,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -700,7 +706,13 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-    // 保险产品搜索
+
+    /**
+     * 保险产品搜索
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getInsuranceProductSearch(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_INSURANCE_PRODUCT_SEARCH;
@@ -726,7 +738,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
 //                    b.setCode("9999");
@@ -739,7 +750,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -750,7 +760,13 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-    // 首页---计划书数据
+
+    /**
+     * 首页---计划书数据
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getPlanData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_PLAN;
@@ -788,7 +804,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -796,10 +811,15 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-    // 计划书搜索
+
+    /**
+     * 计划书搜索
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getPlanSearch(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_PLAN_SEARCH;
@@ -825,7 +845,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-
                     Repo<Plan2B> b = json.fromJson(data, new TypeToken<Repo<Plan2B>>() {
                     }.getType());
                     if (resultEncrypt(context, b.getCode())){
@@ -837,7 +856,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -848,7 +866,13 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-    // 首页---保单规划数据
+
+    /**
+     * 首页---保单规划数据
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getPolicyPlanData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_POLICY_PLAN;
@@ -874,7 +898,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-
                     Repo<PolicyPlan2B> b = json.fromJson(data, new TypeToken<Repo<PolicyPlan2B>>() {
                     }.getType());
                     if (resultEncrypt(context, b.getCode())){
@@ -886,7 +909,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -897,10 +919,62 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-    // 保险详情
+
+    /**
+     * 保险详情
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getInsuranceDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_INSURANCE_DETAILS;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Repo<InsuranceDetail1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceDetail1B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+    // 保险详情----new
+    public static void getInsuranceDetailsNew(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_INSURANCE_DETAILS_NEW;
 
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
@@ -947,7 +1021,12 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
-    // 保险详情--收藏取消收藏
+    /**
+     * 保险详情--收藏取消收藏
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void collection(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_COLLECTION;
@@ -985,7 +1064,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -993,10 +1071,15 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-    // 保险详情--预约
+
+    /**
+     * 保险详情--预约
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void apponitmentAdd(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_APPOINTMENT_ADD;
@@ -1034,7 +1117,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1042,13 +1124,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
     /**
      * 测试
-     *
      * @param context  上下文
      * @param listener 监听事件
      */
@@ -1095,7 +1175,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1186,7 +1265,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "个人信息/销售认证页面数据：" + data);
+//                    Log.i("hh", "个人信息/销售认证页面数据：" + data);
 
                     Repo<UserInfo2B> b = json.fromJson(data, new TypeToken<Repo<UserInfo2B>>() {
                     }.getType());
@@ -1199,7 +1278,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1207,7 +1285,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1242,7 +1319,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "提交认证接口：" + data);
+//                    Log.i("hh", "提交认证接口：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -1255,7 +1332,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1263,7 +1339,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1298,7 +1373,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "未读消息数口：" + data);
+//                    Log.i("hh", "未读消息数口：" + data);
 
                     Repo<UnreadNewsCount2B> b = json.fromJson(data, new TypeToken<Repo<UnreadNewsCount2B>>() {
                     }.getType());
@@ -1311,7 +1386,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1319,7 +1393,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1354,7 +1427,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "佣金/保单/其它等消息列表：" + data);
+//                    Log.i("hh", "佣金/保单/其它等消息列表：" + data);
 
                     Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
                     }.getType());
@@ -1367,7 +1440,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1375,7 +1447,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1410,7 +1481,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "互动消息列表：" + data);
+//                    Log.i("hh", "互动消息列表：" + data);
 
                     Repo<InteractiveNewsList1B> b = json.fromJson(data, new TypeToken<Repo<InteractiveNewsList1B>>() {
                     }.getType());
@@ -1423,7 +1494,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1431,7 +1501,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1466,7 +1535,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "同意新成员加入申请：" + data);
+//                    Log.i("hh", "同意新成员加入申请：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -1479,7 +1548,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1487,7 +1555,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1522,7 +1589,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "删除成员申请信息：" + data);
+//                    Log.i("hh", "删除成员申请信息：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -1535,7 +1602,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1543,7 +1609,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1578,7 +1643,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "圈子新成员列表：" + data);
+//                    Log.i("hh", "圈子新成员列表：" + data);
 
                     Repo<NewMembersCircleList1B> b = json.fromJson(data, new TypeToken<Repo<NewMembersCircleList1B>>() {
                     }.getType());
@@ -1591,7 +1656,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1599,7 +1663,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1634,7 +1697,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "推荐app给好友：" + data);
+//                    Log.i("hh", "推荐app给好友：" + data);
 
                     Repo<Recommend1B> b = json.fromJson(data, new TypeToken<Repo<Recommend1B>>() {
                     }.getType());
@@ -1647,7 +1710,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1655,7 +1717,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1690,7 +1751,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "推荐记录：" + data);
+//                    Log.i("hh", "推荐记录：" + data);
 
                     Repo<RecommendRecordList1B> b = json.fromJson(data, new TypeToken<Repo<RecommendRecordList1B>>() {
                     }.getType());
@@ -1703,7 +1764,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1711,7 +1771,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1746,7 +1805,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "交易记录：" + data);
+//                    Log.i("hh", "交易记录：" + data);
 
                     Repo<TrackingList1B> b = json.fromJson(data, new TypeToken<Repo<TrackingList1B>>() {
                     }.getType());
@@ -1759,7 +1818,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1802,7 +1860,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "交易记录--明细：" + data);
+//                    Log.i("hh", "交易记录--明细：" + data);
 
                     Repo<TrackingDetail1B> b = json.fromJson(data, new TypeToken<Repo<TrackingDetail1B>>() {
                     }.getType());
@@ -1815,7 +1873,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1823,7 +1880,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1858,7 +1914,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "保单列表：" + data);
+//                    Log.i("hh", "保单列表：" + data);
 
                     Repo<PolicyRecordList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordList1B>>() {
                     }.getType());
@@ -1871,7 +1927,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1879,7 +1934,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1914,7 +1968,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "保单详情：" + data);
+//                    Log.i("hh", "保单详情：" + data);
 
                     Repo<PolicyRecordDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordDetail1B>>() {
                     }.getType());
@@ -1927,7 +1981,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1935,7 +1988,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -1970,7 +2022,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "续保提醒列表：" + data);
+//                    Log.i("hh", "续保提醒列表：" + data);
 
                     Repo<RenewalReminderList1B> b = json.fromJson(data, new TypeToken<Repo<RenewalReminderList1B>>() {
                     }.getType());
@@ -1983,7 +2035,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -1991,7 +2042,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2026,7 +2076,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我的--预约列表：" + data);
+//                    Log.i("hh", "我的--预约列表：" + data);
 
                     Repo<PolicyBookingList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingList1B>>() {
                     }.getType());
@@ -2082,7 +2132,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "预约详情：" + data);
+//                    Log.i("hh", "预约详情：" + data);
 
                     Repo<PolicyBookingDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingDetail1B>>() {
                     }.getType());
@@ -2136,7 +2186,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "取消预约：" + data);
+//                    Log.i("hh", "取消预约：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -2190,7 +2240,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我的提问列表：" + data);
+//                    Log.i("hh", "我的提问列表：" + data);
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
@@ -2245,7 +2295,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我参与的---提问列表：" + data);
+//                    Log.i("hh", "我参与的---提问列表：" + data);
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
@@ -2258,7 +2308,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2266,7 +2315,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2301,7 +2349,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我参与的---话题列表：" + data);
+//                    Log.i("hh", "我参与的---话题列表：" + data);
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
@@ -2314,7 +2362,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2322,7 +2369,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2358,7 +2404,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我的话题列表：" + data);
+//                    Log.i("hh", "我的话题列表：" + data);
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
@@ -2371,7 +2417,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2379,7 +2424,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2414,7 +2458,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "公告列表：" + data);
+//                    Log.i("hh", "公告列表：" + data);
 
                     Repo<PlatformBulletinList1B> b = json.fromJson(data, new TypeToken<Repo<PlatformBulletinList1B>>() {
                     }.getType());
@@ -2427,7 +2471,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2435,7 +2478,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2469,7 +2511,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "联系客服：" + data);
+//                    Log.i("hh", "联系客服：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -2482,7 +2524,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2490,7 +2531,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2525,7 +2565,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "我的收藏列表：" + data);
+//                    Log.i("hh", "我的收藏列表：" + data);
 
                     Repo<MyCollectionList1B> b = json.fromJson(data, new TypeToken<Repo<MyCollectionList1B>>() {
                     }.getType());
@@ -2538,7 +2578,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2546,7 +2585,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2581,7 +2619,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-                    Log.i("hh", "修改登录密码：" + data);
+//                    Log.i("hh", "修改登录密码：" + data);
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
@@ -2594,7 +2632,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -2602,12 +2639,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-
-
-    /************************************************* 研修模块start *****************************************************************/
 
     /**
      * 研修首页课程
@@ -2618,7 +2651,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingIndexClass(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_RESEARCH;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -2660,7 +2693,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2715,7 +2747,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2728,7 +2759,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingRefreshClass(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_REFRESH;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -2770,7 +2801,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2826,7 +2856,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -2841,7 +2870,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleIndex(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_INDEX;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -2883,11 +2912,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-
-
 
     /**
      * 研修圈子详情
@@ -2898,7 +2924,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_DETAILS;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -2944,8 +2970,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
-
-
     /**
      * 研修圈子详情话题列表
      *
@@ -2955,7 +2979,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleDetailsTopic(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_DETAILS_TOPIC;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -2997,7 +3021,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3011,7 +3034,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleDetailsTopicDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_DETAILS_TOPIC_DETAILS;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3053,11 +3076,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-
-
 
     /**
      * 研修圈子详情---话题详情 评论列表
@@ -3068,7 +3088,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleCommentList(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_COMMENT_LIST;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3110,7 +3130,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3123,7 +3142,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleReply(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_REPLY;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3165,10 +3184,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-
 
     /**
      * 研修圈子详情---点赞
@@ -3179,7 +3196,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleZan(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_LIKE;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3221,7 +3238,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3234,7 +3250,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleAddTopic(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_ADD_TOPIC;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3276,7 +3292,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3289,7 +3304,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleSetAuthority(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_SET_AUTHORITY;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3331,7 +3346,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3344,7 +3358,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingCircleSetTop(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_SET_TOP;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3386,7 +3400,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3399,7 +3412,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAddCircle(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_JOIN;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3441,7 +3454,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3454,7 +3466,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingOutCircle(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_CIRCLE_OUT;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3509,7 +3521,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAskType(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ASK_TYPE;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3552,7 +3564,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3565,7 +3576,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAskIndex(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ASK_INDEX;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3607,7 +3618,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3620,7 +3630,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAskDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ASK_DETAILS;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3662,7 +3672,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3675,7 +3684,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAskDetailsAnswer(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ASK_DETAILS_ANSWER;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3717,7 +3726,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3730,7 +3738,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingAnswerDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ANSWER_DETAILS;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3772,7 +3780,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
 
@@ -3786,7 +3793,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingDetailsAnswerConmment(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_ASK_DETAILS_ANSWER_COMMENT;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {
@@ -3828,10 +3835,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
-
 
     /**
      * 发布提问
@@ -3842,7 +3847,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     public static void getTrainingToAsk(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_TRAINING_TOASK;
-//        final String url = Urls.URL_INDEX;
+
         getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
             @Override
             public Object doTask(BaseParams params) {

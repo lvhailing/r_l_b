@@ -48,7 +48,7 @@
     <string name="translate_up_down_behavior">com.rulaibao.test.TranslateUpDownBehavior</string>
 
     <!-- 登录 -->
-    <string name="login_title">道德    专业    平等    利它</string>
+    <string name="login_title">道德    专业    平等    利他</string>
     <string name="login_phone">手机号：</string>
     <string name="login_password">密码：</string>
     <string name="login_forget_password">忘记密码？</string>

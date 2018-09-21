@@ -308,6 +308,16 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         mDialog.show();
     }
 
+    /***
+     *   从相册选取图片
+     */
+    private void pickPhoto() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
     /**
      * 拍照获取图片
      */
@@ -336,21 +346,16 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    /***
-     *   从相册选取图片
+    /**
+     * 根据用户选择，返回图片资源
+     * @param requestCode
+     * @param resultCode
+     * @param data
      */
-    private void pickPhoto() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
-    }
-
-    // 根据用户选择，返回图片资源
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //			doPhoto(requestCode, data);
-        if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {
+        if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {  // 表示用的相机
             Bitmap photoBmp = null;
 
             if (photoUri != null) {
@@ -367,7 +372,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 }
 
             }
-        } else if (requestCode == GALLERY_REQUEST_CODE) {
+        } else if (requestCode == GALLERY_REQUEST_CODE) {  // 表示用的相册
             if (data == null) {
                 return;
             }
@@ -547,7 +552,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     /**
-     * 调接口，上传图片
+     * 调接口，上传图片到服务器
      *
      * @param bm
      */

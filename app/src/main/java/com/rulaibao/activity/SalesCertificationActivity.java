@@ -250,10 +250,10 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
                     Toast.makeText(SalesCertificationActivity.this, "真实姓名不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-//                if (TextUtils.isEmpty(idNo)) {
-//                    Toast.makeText(SalesCertificationActivity.this, "身份证号不能为空", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
+                if (TextUtils.isEmpty(idNo)) {
+                    Toast.makeText(SalesCertificationActivity.this, "身份证号不能为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (!TextUtils.isEmpty(idNo) && !IdCardCheckUtils.isIdCard((idNo.toUpperCase()))) {
                     Toast.makeText(SalesCertificationActivity.this, "请输入正确的身份证号", Toast.LENGTH_LONG).show();
                     return;

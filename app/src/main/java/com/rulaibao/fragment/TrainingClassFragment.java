@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class TrainingClassFragment extends BaseFragment {
 
-
     @BindView(R.id.lv_training_class)
     RecyclerView lvTrainingClass;
 
@@ -42,7 +41,7 @@ public class TrainingClassFragment extends BaseFragment {
     private int page = 1;
     private String typeCode = "";
     private MouldList<ResultClassIndexItemBean> courseList;
-    private boolean noDataFlag = true;      //  控制无数据不加载
+    private boolean noDataFlag = true; //  控制无数据不加载
 
     @Override
     protected View attachLayoutRes(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class TrainingClassFragment extends BaseFragment {
             if (context != null) {
                 courseList.clear();
             }
-            typeCode = getArguments().getString(KEY);         //  解决初始点击fragment拿不到参数的问题
+            typeCode = getArguments().getString(KEY);  // 解决初始点击fragment拿不到参数的问题
             page = 1;
             noDataFlag = true;
             requestIndexData();//
@@ -122,6 +121,7 @@ public class TrainingClassFragment extends BaseFragment {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("page", page);
         map.put("typeCode", typeCode);
+
         HtmlRequest.getTrainingClassList(context, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {

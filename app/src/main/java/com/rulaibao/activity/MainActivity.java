@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -43,6 +44,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private ViewPager mViewPager;
     private FragmentPagerAdapter mAdapter;
@@ -75,7 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private String id = "";  //
     private String questionId = "";  // 问题id
     private String answerId = "";   // 回答id
-    private String speechMakeId = "";  // 演讲id
+    private String speechmakeId = "";  // 演讲id
 
     private File destDir = null;
 
@@ -93,7 +96,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             id = uri.getQueryParameter("id");
             questionId = uri.getQueryParameter("questionId");
             answerId = uri.getQueryParameter("answerId");
-            speechMakeId = uri.getQueryParameter("speechMakeId");
+            speechmakeId = uri.getQueryParameter("speechmakeId");
         }
 
         if (!TextUtils.isEmpty(type)) {
@@ -120,7 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         } else if (type.equals("course")) { // 课程详情
             HashMap<String, Object> classMap = new HashMap<>();
             classMap.put("id", id);
-            classMap.put("speechMakeId", speechMakeId);
+            classMap.put("speechmakeId", speechmakeId);
             classMap.put("courseId", id);
             RlbActivityManager.toTrainingClassDetailsActivity(this, classMap, false);
         } else if (type.equals("product")) {  // 产品详情
@@ -149,7 +152,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 id = uri.getQueryParameter("id");
                 questionId = uri.getQueryParameter("questionId");
                 answerId = uri.getQueryParameter("answerId");
-                speechMakeId = uri.getQueryParameter("speechMakeId");
+                speechmakeId = uri.getQueryParameter("speechmakeId");
             }
 
             if (!TextUtils.isEmpty(type)) {
@@ -344,21 +347,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     final ResultCheckVersionContentBean b = (ResultCheckVersionContentBean) params.result;
                     if (!TextUtils.isEmpty(b.getVersion())) {
                         if (!b.getVersion().equals(SystemInfo.sVersionName)) {
-                            CheckVersionDialog dialog = new CheckVersionDialog(MainActivity.this, new CheckVersionDialog.OnCheckVersion() {
-                                @Override
-                                public void onConfim() {
-                                    Intent updateIntent = new Intent(MainActivity.this, AppUpgradeService.class);
-                                    updateIntent.putExtra("titleId", R.string.app_chinesename);
-                                    updateIntent.putExtra("downloadUrl", b.getUrl());
-                                    MainActivity.this.startService(updateIntent);
-                                }
 
-                                @Override
-                                public void onCancel() {
-                                }
-                            }, "发现新版本,是否更新", "false");
-                            dialog.setCancelable(false);
-                            dialog.show();
+
+                            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+                            if (!EasyPermissions.hasPermissions(mContext, perms)) {
+                                EasyPermissions.requestPermissions(mContext, "需要访问手机存储权限！", 10086, perms);
+                            }
+
+
+                            showDialog(b);
                         } else {
                             if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
                                 if (destDir == null) {
@@ -373,5 +372,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             }
         });
     }
+
+    public void showDialog(final ResultCheckVersionContentBean b){
+
+        CheckVersionDialog dialog = new CheckVersionDialog(MainActivity.this, new CheckVersionDialog.OnCheckVersion() {
+            @Override
+            public void onConfim() {
+                Intent updateIntent = new Intent(MainActivity.this, AppUpgradeService.class);
+                updateIntent.putExtra("titleId", R.string.app_chinesename);
+                updateIntent.putExtra("downloadUrl", b.getUrl());
+                MainActivity.this.startService(updateIntent);
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        }, "发现新版本,是否更新", "false");
+        dialog.setCancelable(false);
+        dialog.show();
+
+
+    }
+
+
 
 }

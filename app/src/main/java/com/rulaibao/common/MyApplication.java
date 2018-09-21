@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rulaibao.R;
 import com.rulaibao.network.http.APNManager;
 import com.rulaibao.photo_preview.fresco.ImageLoader;
+import com.rulaibao.widget.superfile.ExceptionHandler;
 import com.rulaibao.uitls.AuthImageDownloader;
 import com.rulaibao.uitls.CityDataHelper;
 import com.rulaibao.uitls.ImageLoaderManager;
@@ -25,6 +26,7 @@ import com.rulaibao.uitls.NetworkUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.SystemInfo;
 import com.mob.MobSDK;
+import com.tencent.smtt.sdk.QbSdk;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,6 +62,11 @@ public class MyApplication extends Application {
         PreferenceUtil.initialize(this);
         SystemInfo.initialize(this);
         initNetReceiver();
+
+
+        //初始化预览ppt控件增加这句话
+        QbSdk.initX5Environment(this,null);
+        ExceptionHandler.getInstance().initConfig(this);
 
         //imageLoader初始化
         initImageLoader();

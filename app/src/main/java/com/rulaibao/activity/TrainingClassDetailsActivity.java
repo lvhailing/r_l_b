@@ -35,6 +35,7 @@ import com.rulaibao.fragment.TrainingDetailsCatalogFragment;
 import com.rulaibao.fragment.TrainingDetailsDiscussFragment;
 import com.rulaibao.fragment.TrainingDetailsIntroductionFragment;
 import com.rulaibao.fragment.TrainingDetailsPPTFragment;
+import com.rulaibao.fragment.TrainingDetailsPPT_2Fragment;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -60,13 +61,6 @@ import butterknife.OnClick;
 
 public class TrainingClassDetailsActivity extends BaseActivity implements TrainingClassDiscussAdapter.DiscussReply {
 
-
-    static final String iframeStr = "<iframe height=498 width=510 src='http://player.youku.com/embed/XOTMyOTAwNDE2' frameborder=0 'allowfullscreen'></iframe>";
-    static final String url1 = "http://player.youku.com/embed/XMzQ3MDUwMzkyMA"; // 优酷地址
-    static final String url2 = "https://v.qq.com/iframe/player.html?vid=m1424gnxctl&tiny=0&auto=0"; // 腾讯地址
-    static final String url3 = "https://v.qq.com/iframe/player.html?vid=b0517fv9m0z&tiny=0&auto=0"; // 腾讯地址
-
-
     @BindView(R.id.wv_training_class_details)
     WebView wvTrainingClassDetails;
     @BindView(R.id.tl_class_details)
@@ -82,8 +76,6 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     EditText etDetailDiscuss;
     @BindView(R.id.btn_details_discuss)
     Button btnDetailsDiscuss;
-
-    private String url = "http://player.youku.com/player.php/sid/XMzUxMzM5MzQyMA==/v.swf";
 
     private TrainingDetailsIntroductionFragment introdutionFragment;            //  简介模块
     private TrainingDetailsCatalogFragment catalogFragment;            //  目录模块
@@ -168,6 +160,10 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         pptFragment = new TrainingDetailsPPTFragment();
         pptFragment.setArguments(bundle);
         fragments.add(pptFragment);
+
+//        pptFragment = new TrainingDetailsPPT_2Fragment();
+//        pptFragment.setArguments(bundle);
+//        fragments.add(pptFragment);
 
 
         listTitles.add("简介");
@@ -382,7 +378,12 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         }
     }
 
-
+    /**
+     * 代码设置tablayout底部tabIndicator距左右的距离
+     * @param tabs
+     * @param leftDip
+     * @param rightDip
+     */
     public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;

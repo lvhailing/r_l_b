@@ -153,11 +153,11 @@ public class RecommendActivity extends BaseActivity implements View.OnClickListe
 
         switch (view.getId()) {
             case R.id.btn_recommend: // 推荐App给朋友
-                final String shareTitle=getString(R.string.shared_title);
-                final String shareText=getString(R.string.shared_message);
+                final String shareTitle = getString(R.string.shared_title);
+                final String shareText = getString(R.string.shared_message);
                 final String shareUrl = Urls.URL + "register/" + recommendCode + "/recommend";
 
-                ShareSDKDialog dialog=new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
+                ShareSDKDialog dialog = new ShareSDKDialog(mContext, new ShareSDKDialog.OnShare() {
                     @Override
                     public void onConfirm(int position) {
                         ShareUtil.sharedSDK(mContext, position,shareTitle, shareText, shareUrl);
