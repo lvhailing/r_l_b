@@ -1,9 +1,13 @@
 package com.rulaibao.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,11 +15,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JavascriptInterface;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.TrainingClassDiscussAdapter;
@@ -35,15 +41,21 @@ import com.rulaibao.fragment.TrainingDetailsCatalogFragment;
 import com.rulaibao.fragment.TrainingDetailsDiscussFragment;
 import com.rulaibao.fragment.TrainingDetailsIntroductionFragment;
 import com.rulaibao.fragment.TrainingDetailsPPTFragment;
-import com.rulaibao.fragment.TrainingDetailsPPT_2Fragment;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.test.X5WebView;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.SystemInfo;
 import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -54,6 +66,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.webkit.WebSettings.LayoutAlgorithm.NARROW_COLUMNS;
+
 /**
  * 课程详情
  */
@@ -61,8 +75,6 @@ import butterknife.OnClick;
 
 public class TrainingClassDetailsActivity extends BaseActivity implements TrainingClassDiscussAdapter.DiscussReply {
 
-    @BindView(R.id.wv_training_class_details)
-    WebView wvTrainingClassDetails;
     @BindView(R.id.tl_class_details)
     TabLayout tlClassDetails;
 //    @BindView(R.id.vp_class_details)
@@ -76,6 +88,8 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     EditText etDetailDiscuss;
     @BindView(R.id.btn_details_discuss)
     Button btnDetailsDiscuss;
+    @BindView(R.id.x5_webview)
+    X5WebView x5Webview;
 
     private TrainingDetailsIntroductionFragment introdutionFragment;            //  简介模块
     private TrainingDetailsCatalogFragment catalogFragment;            //  目录模块
@@ -251,7 +265,6 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
                         ViewUtils.showDeleteDialog(TrainingClassDetailsActivity.this, bean.getMessage());
                     }
 
-
                 } else {
 
                 }
@@ -264,9 +277,9 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     public void initPlayView() {
 
 
-        WebSettings ws = wvTrainingClassDetails.getSettings();
+        com.tencent.smtt.sdk.WebSettings ws = x5Webview.getSettings();
         ws.setBuiltInZoomControls(true);// 隐藏缩放按钮
-        ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);// 排版适应屏幕
+        ws.setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.NARROW_COLUMNS);// 排版适应屏幕
         ws.setUseWideViewPort(true);// 可任意比例缩放
         ws.setLoadWithOverviewMode(true);// setUseWideViewPort方法设置webview推荐使用的窗口。setLoadWithOverviewMode方法是设置webview加载的页面的模式。
         ws.setSavePassword(true);
@@ -276,29 +289,162 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         ws.setDomStorageEnabled(true);
         ws.setSupportMultipleWindows(true);// 新加
 
-        wvTrainingClassDetails.addJavascriptInterface(new MyJavaScriptinterface(), "click");
+//        x5Webview.addJavascriptInterface(new MyJavaScriptinterface(), "click");
+
+        x5Webview.setWebChromeClient(new com.tencent.smtt.sdk.WebChromeClient());
+        x5Webview.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView webView, String s) {
+
+                return true;
+            }
+        });
+
+
         /**
          * 解决Android 5.0以后，WebView默认不支持同时加载Https和Http混合模式，
          * 当一个安全的站点（https）去加载一个非安全的站点（http）时，需要配置Webview加载内容的混合模式
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            wvTrainingClassDetails.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            x5Webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
-        wvTrainingClassDetails.setWebChromeClient(new WebChromeClient());
-        wvTrainingClassDetails.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
 
         if (!TextUtils.isEmpty(course.getCourseVideo())) {
-            wvTrainingClassDetails.loadUrl(course.getCourseVideo());
+//            wvTrainingClassDetails.loadUrl(course.getCourseVideo());
+//            wvTrainingClassDetails.loadUrl(url1);
+//            setWebView(url1,wvTrainingClassDetails);
+//            wvTrainingClassDetails.addJavascriptInterface(new JsObject(TrainingClassDetailsActivity.this), "console");
+            String url = Urls.URL_TRAINGCLASS+"?videoPath="+course.getCourseVideo();
+
+            startPlay(url);
+
         }
 
-
     }
+
+    /**
+     * 使用自定义webview播放视频
+     * @param vedioUrl 视频地址
+     */
+    private void startPlay(String vedioUrl) {
+        x5Webview.loadUrl(vedioUrl);
+//        setWebView(vedioUrl,x5Webview);
+//        x5Webview.loadDataWithBaseURL(null, vedioUrl, "text/html", "UTF-8", null);
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        x5Webview.getView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        x5Webview.setWebChromeClient(new com.tencent.smtt.sdk.WebChromeClient());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // TODO Auto-generated method stub
+        try {
+            super.onConfigurationChanged(newConfig);
+            if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                getWindow().addFlags(
+                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            }
+            else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                getWindow().clearFlags(
+                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 处理Javascript的对话框、网站图标、网站标题以及网页加载进度等
+     *
+     * @author
+     */
+    /*public class xWebChromeClient extends WebChromeClient {
+        private Bitmap xdefaltvideo;
+        private View xprogressvideo;
+
+        @Override
+        // 播放网络视频时全屏会被调用的方法
+        public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+            if(a!=null){
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+            if(webview!=null){
+                webview.setVisibility(View.GONE);
+            }
+            // 如果一个视图已经存在，那么立刻终止并新建一个
+            if (xCustomView != null&&callback!=null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+            if (view != null&&videoview!=null) {
+                videoview.addView(view);
+                xCustomView = view;
+            }
+            if(xCustomViewCallback!=null){
+                xCustomViewCallback = callback;
+            }
+            if(videoview!=null){
+                videoview.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @SuppressLint("NewApi")
+        @Override
+        // 视频播放退出全屏会被调用的
+        public void onHideCustomView() {
+            if (xCustomView == null||videoview==null)// 不是全屏播放状态
+                return;
+            videoview.removeView(xCustomView);
+            if(a!=null){
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+            xCustomView.setVisibility(View.GONE);
+            xCustomView = null;
+            videoview.setVisibility(View.GONE);
+            if(xCustomViewCallback!=null){
+                xCustomViewCallback.onCustomViewHidden();
+            }
+            if(webview!=null){
+                webview.setVisibility(View.VISIBLE);
+            }
+            if(setting!=null){
+                setting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);// 排版适应屏幕
+            }
+        }
+
+        // 视频加载添加默认图标
+        @Override
+        public Bitmap getDefaultVideoPoster() {
+            if (xdefaltvideo == null) {
+                xdefaltvideo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            }
+            return xdefaltvideo;
+        }
+        // 视频加载时进程loading
+        @SuppressLint("InflateParams")
+        @Override
+        public View getVideoLoadingProgressView() {
+            if (xprogressvideo == null) {
+                LayoutInflater inflater = LayoutInflater.from(a);
+                xprogressvideo = inflater.inflate(R.layout.video_loading_progress, null);
+            }
+            return xprogressvideo;
+        }
+
+        // 网页标题
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            // a.setTitle(title)
+            //view.getSettings().setBlockNetworkImage(false);
+        }
+
+        @Override
+        // 当WebView进度改变时更新窗口进度
+        public void onProgressChanged(WebView view, int newProgress) {
+            a.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, newProgress * 100);
+        }
+    }*/
 
     public class MyJavaScriptinterface {
 
@@ -333,7 +479,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     protected void onResume() {
         super.onResume();
         //恢复播放
-        wvTrainingClassDetails.resumeTimers();
+        x5Webview.resumeTimers();
     }
 
     @Override
@@ -351,7 +497,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     protected void onPause() {
         super.onPause();
         //暂停播放
-        wvTrainingClassDetails.pauseTimers();
+        x5Webview.pauseTimers();
     }
 
     @Override
@@ -363,14 +509,14 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     protected void onDestroy() {
         super.onDestroy();
         //一定要销毁，否则无法停止播放
-        wvTrainingClassDetails.destroy();
+        x5Webview.destroy();
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            wvTrainingClassDetails.loadData("", "text/html; charset=UTF-8", null);
+//            x5Webview.loadData("", "text/html; charset=UTF-8", null);
             this.finish();
             return true;
         } else {
@@ -380,6 +526,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
     /**
      * 代码设置tablayout底部tabIndicator距左右的距离
+     *
      * @param tabs
      * @param leftDip
      * @param rightDip
@@ -418,32 +565,41 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     }
 
 
-    @OnClick(R.id.btn_details_discuss)
-    public void onclick() {
+    @OnClick({R.id.btn_details_discuss})
+    public void onclick(View view) {
 
-        String commentContent = etDetailDiscuss.getText().toString();
+        switch (view.getId()) {
 
-        if (!PreferenceUtil.isLogin()) {
-            HashMap<String, Object> map = new HashMap<>();
+            /*case R.id.fl_training_class_details:
 
+                String url = "<iframe scrolling=no height=100% width=100% src='" + course.getCourseVideo() + "' frameborder=0 'allowfullscreen=true'></iframe>";
 
-            RlbActivityManager.toLoginActivity(this, map, false);
+                Uri uri = Uri.parse(course.getCourseVideo());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
 
+                break;*/
+            case R.id.btn_details_discuss:
+                String commentContent = etDetailDiscuss.getText().toString();
 
-        } else {
-            if (!PreferenceUtil.getCheckStatus().equals("success")) {
+                if (!PreferenceUtil.isLogin()) {
+                    HashMap<String, Object> map = new HashMap<>();
 
+                    RlbActivityManager.toLoginActivity(this, map, false);
 
-                ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
+                } else {
+                    if (!PreferenceUtil.getCheckStatus().equals("success")) {
 
+                        ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
+                    } else {
 
-            } else {
-
-                discussFragment.toReply(commentContent, toUserId, commentId, commentName, index, linkId);
-                hiddenInputLayout();
-
-            }
+                        discussFragment.toReply(commentContent, toUserId, commentId, commentName, index, linkId);
+                        hiddenInputLayout();
+                    }
+                }
+                break;
         }
+
 
     }
 

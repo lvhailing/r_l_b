@@ -179,7 +179,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 }
 
                 break;
-            case R.id.btn_sign: //  立即注册
+            case R.id.btn_sign: // 立即注册
                 checkDataNull();
                 break;
             case R.id.signup_web: //国恒保险
@@ -271,20 +271,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                         OK2B b = (OK2B) params.result;
                         if (b != null) {
                             if (Boolean.parseBoolean(b.getFlag())) {
-                                Toast.makeText(SignActivity.this, b.getMessage(),
-                                        Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                                 smsflag = true;
                                 startThread();
                             } else {
                                 tv_sign_get_verify_code.setClickable(true);
                                 smsflag = false;
-                                Toast.makeText(SignActivity.this,
-                                        b.getMessage(), Toast.LENGTH_LONG)
-                                        .show();
+                                Toast.makeText(SignActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            Toast.makeText(SignActivity.this, "加载失败，请确认网络通畅",
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                             tv_sign_get_verify_code.setClickable(true);
                         }
                     }
@@ -312,18 +308,13 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if(b.getFlag().equals("true")){
-                        Toast.makeText(SignActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(SignActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                         finish();
                     }else{
-                        Toast.makeText(SignActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(SignActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(SignActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -390,18 +381,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     }
 
     public void checkNull(){
-
-        //  监听输入手机号变化
-
+        /**
+         * 监听输入手机号变化
+         */
         et_sign_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -421,22 +410,20 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                     }else{
                         ViewUtils.setButton(verifyCode,password,realName,btn_sign);
                     }
-
                 }
             }
         });
 
-        //  监听输入验证码
-
+        /**
+         * 监听输入验证码
+         */
         et_sign_verify_code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -461,17 +448,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             }
         });
 
-        //  监听输入密码变化
-
+        /**
+         * 监听输入密码变化
+         */
         et_sign_password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -495,17 +481,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             }
         });
 
-        //  监听真实姓名输入变化
-
+        /**
+         * 监听真实姓名输入变化
+         */
         et_sign_real_name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -530,8 +515,9 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             }
         });
 
-        //  监听同意协议事件
-
+        /**
+         * 监听同意协议事件
+         */
         signup_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -552,12 +538,10 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         et_sign_recommendation.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -565,8 +549,6 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 recommendation = et_sign_recommendation.getText().toString();
             }
         });
-
-
     }
 
 

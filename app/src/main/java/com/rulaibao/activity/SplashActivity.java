@@ -197,7 +197,7 @@ public class SplashActivity extends FragmentActivity {
         ImageView iv = (ImageView) findViewById(R.id.splash_img);
         mViewPager = (ViewPager) findViewById(R.id.splashviewpager);
         mViewPager.setVisibility(View.GONE);
-        iv.setBackgroundResource(R.mipmap.ic_launch);
+        iv.setBackgroundResource(R.mipmap.ic_lanch);
 
         //	设置状态
 //		PreferenceUtil.setLogin(true);

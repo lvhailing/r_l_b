@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.rulaibao.activity.MainActivity;
 import com.rulaibao.bean.Collection2B;
+import com.rulaibao.bean.CommissionDetail1B;
 import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.InsuranceDetail1B;
@@ -1863,6 +1864,59 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 //                    Log.i("hh", "交易记录--明细：" + data);
 
                     Repo<TrackingDetail1B> b = json.fromJson(data, new TypeToken<Repo<TrackingDetail1B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+    /**
+     *  佣金详情
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getCommissionDetail(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_TRADE_RECORD_DETAIL;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "佣金详情页数据 ：" + data);
+
+                    Repo<CommissionDetail1B> b = json.fromJson(data, new TypeToken<Repo<CommissionDetail1B>>() {
                     }.getType());
                     if (resultEncrypt(context, b.getCode())){
                         return b.getData();

@@ -4,20 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="@color/white">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:src="@mipmap/login_bg"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="10dip"
             android:background="@color/gray_light"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dip"
@@ -28,8 +32,8 @@
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="手机号"/>
+                android:text="@string/sign_phone_name"
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/et_sign_phone"
@@ -39,11 +43,11 @@
                 android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@id/tv_sign_phone"
                 android:background="@color/transparent"
-                android:hint="请输入手机号"
+                android:hint="@string/sign_phone_hint"
                 android:inputType="phone"
                 android:maxLength="11"
-                android:textColorHint="@color/gray_d"
                 android:textColor="@color/gray_dark"
+                android:textColorHint="@color/gray_d"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp"/>
         </RelativeLayout>
@@ -55,20 +59,20 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="5dip"
             android:src="@color/gray_light"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dip"
             android:layout_marginLeft="20dip"
             android:layout_marginTop="5dip">
 
-
             <TextView
                 android:id="@+id/tv_sign_verify_code"
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="验证码"/>
+                android:text="@string/sign_verify"
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/et_sign_verify_code"
@@ -79,29 +83,31 @@
                 android:layout_toLeftOf="@+id/iv_verify_code"
                 android:layout_toRightOf="@id/tv_sign_verify_code"
                 android:background="@color/white"
-                android:hint="请输入验证码"
-                android:maxLength="20"
+                android:hint="@string/sign_verify_hint"
                 android:inputType="number"
-                android:textColorHint="@color/gray_d"
+                android:maxLength="20"
                 android:textColor="@color/gray_dark"
+                android:textColorHint="@color/gray_d"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp"/>
+
             <ImageView
                 android:id="@+id/iv_verify_code"
-                android:layout_toLeftOf="@+id/tv_sign_get_verify_code"
                 android:layout_width="2dp"
                 android:layout_height="20dip"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_sign_get_verify_code"
                 android:src="@color/gray_light"/>
+
             <TextView
                 android:id="@+id/tv_sign_get_verify_code"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="获取验证码"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:gravity="center"
-                android:layout_alignParentRight="true"
+                android:text="@string/sign_get_verify"
                 android:textColor="@color/main_color_yellow"/>
         </RelativeLayout>
 
@@ -112,20 +118,20 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="5dip"
             android:src="@color/gray_light"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dip"
             android:layout_marginLeft="20dip"
             android:layout_marginTop="5dip">
 
-
             <TextView
                 android:id="@+id/tv_sign_password"
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="密码"/>
+                android:text="@string/sign_password_name"
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/et_sign_password"
@@ -136,22 +142,23 @@
                 android:layout_toLeftOf="@+id/iv_hide_password"
                 android:layout_toRightOf="@id/tv_sign_password"
                 android:background="@color/white"
-                android:hint="(6-16位数字和字母组合)"
-                android:maxLength="20"
+                android:hint="@string/sign_password_hint"
                 android:inputType="text"
-                android:textColorHint="@color/gray_d"
+                android:maxLength="20"
                 android:textColor="@color/gray_dark"
+                android:textColorHint="@color/gray_d"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp"/>
+
             <ImageView
                 android:id="@+id/iv_hide_password"
-                android:padding="10dp"
-                android:layout_marginRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_open_password"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:src="@mipmap/icon_open_password"/>
         </RelativeLayout>
 
         <ImageView
@@ -161,6 +168,7 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="5dip"
             android:src="@color/gray_light"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dip"
@@ -171,8 +179,8 @@
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="真实姓名"/>
+                android:text="@string/sign_real_name"
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/et_sign_real_name"
@@ -182,11 +190,11 @@
                 android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@id/tv_sign_real_name"
                 android:background="@color/transparent"
-                android:hint="请输入姓名"
+                android:hint="@string/sign_real_name_hint"
                 android:inputType="text"
                 android:maxLength="10"
-                android:textColorHint="@color/gray_d"
                 android:textColor="@color/gray_dark"
+                android:textColorHint="@color/gray_d"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp"/>
         </RelativeLayout>
@@ -198,6 +206,7 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="5dip"
             android:src="@color/gray_light"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="35dip"
@@ -208,8 +217,8 @@
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="推荐码"/>
+                android:text="@string/sign_recommend_code"
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/et_sign_recommendation"
@@ -219,11 +228,11 @@
                 android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@id/tv_sign_recommendation"
                 android:background="@color/transparent"
-                android:hint="请输入推荐码"
+                android:hint="@string/sign_recommend_code_hint"
                 android:inputType="text"
                 android:maxLength="11"
-                android:textColorHint="@color/gray_d"
                 android:textColor="@color/gray_dark"
+                android:textColorHint="@color/gray_d"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp"/>
         </RelativeLayout>
@@ -235,13 +244,13 @@
             android:layout_marginRight="20dip"
             android:layout_marginTop="5dip"
             android:src="@color/gray_light"/>
-        <LinearLayout
 
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginLeft="20dip"
             android:layout_marginTop="10dip"
-            android:layout_marginLeft="20dip">
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/signup_checkbox"
@@ -249,8 +258,8 @@
                 android:layout_height="18dip"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/checkbox_signup"
-                android:checked="true"
-                android:button="@null"/>
+                android:button="@null"
+                android:checked="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -258,8 +267,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10.0dip"
                 android:text="@string/sign_agree"
-                android:textSize="14.0sp"
-                android:textColor="@color/gray_d" />
+                android:textColor="@color/gray_d"
+                android:textSize="14.0sp"/>
 
             <TextView
                 android:id="@+id/signup_web"
@@ -268,7 +277,7 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/sign_web"
                 android:textColor="@color/main_color_yellow"
-                android:textSize="14.0sp" />
+                android:textSize="14.0sp"/>
 
             <TextView
                 android:id="@+id/signup_"
@@ -276,19 +285,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/sign_agree_two"
-                android:textSize="14.0sp"
-                android:textColor="@color/gray_d" />
+                android:textColor="@color/gray_d"
+                android:textSize="14.0sp"/>
 
         </LinearLayout>
+
         <Button
             android:id="@+id/btn_sign"
             android:layout_width="match_parent"
             android:layout_height="42dip"
-            android:layout_marginTop="20dip"
-            android:text="@string/sign_btn_name"
-            android:background="@drawable/shape_gradient_orange"
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/shape_gradient_orange"
+            android:text="@string/sign_btn_name"
             android:textColor="@color/txt_white"
             android:textSize="15sp"/>
     </LinearLayout>

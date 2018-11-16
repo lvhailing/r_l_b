@@ -45,7 +45,7 @@ public class FileDisplayActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_file_display);
         initTopTitle();

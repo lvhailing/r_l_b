@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/bg_gray_new"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/item_one_title"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_one_content"
+            android:textColor="@color/txt_black1"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/item_two_title"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_two_content"
+            android:textColor="@color/txt_black1"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_two_remark"
+            android:textColor="@color/txt_black2"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/item_three_title"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_three_content"
+            android:textColor="@color/txt_black1"
+            android:textSize="14sp"/>
+
+        <include
+            layout="@layout/layout_tax_form"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/item_four_title"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_four_content"
+            android:textColor="@color/txt_black1"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/item_five_title"
+            android:textColor="@color/txt_black1"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:lineSpacingExtra="2dp"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/item_five_content"
+            android:textColor="@color/txt_black1"
+            android:textSize="14sp"/>
+
+
+    </LinearLayout>
+</ScrollView>

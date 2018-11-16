@@ -34,6 +34,7 @@
     <!-- 按钮背景色 -->
     <color name="bg_btn_orange">#ddb57f</color>
     <color name="bg_btn_gray">#cccccc</color>
+    <color name="btn_verification_code_bule">#68b0f8</color>
 
     <!-- 按钮边框色 -->
     <color name="btn_line_light_gray">#e4e4e4</color>

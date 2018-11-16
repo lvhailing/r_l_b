@@ -32,15 +32,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private EditText et_login_phone; //  用户名
     private EditText et_login_password; //  密码
-    private ImageView iv_hide_password;//隐藏密码
+    private ImageView iv_hide_password; //隐藏密码
     private Button btn_login; //  登录
     private TextView tv_login_forget_password; //  忘记密码
     private TextView tv_login_sign; //  注册
     private Login2B bean;
     public static String GOTOMAIN = "1000";
     private String resultCode = "";
-//    private ImageView iv_back;
-    private boolean isOpen=false;
+    //    private ImageView iv_back;
+    private boolean isOpen = false;
 
     private String username;
     private String password;
@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 //        bean = new ResultUserLoginContentBean();
         et_login_phone = (EditText) findViewById(R.id.et_login_phone);
         et_login_password = (EditText) findViewById(R.id.et_login_password);
-        iv_hide_password= (ImageView) findViewById(R.id.iv_hide_password);
+        iv_hide_password = (ImageView) findViewById(R.id.iv_hide_password);
         btn_login = (Button) findViewById(R.id.btn_login);
         tv_login_forget_password = (TextView) findViewById(R.id.tv_login_forget_password);
         tv_login_sign = (TextView) findViewById(R.id.tv_login_sign);
@@ -191,7 +191,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.iv_hide_password: // 隐藏密码
                 password = et_login_password.getText().toString();
-                if (TextUtils.isEmpty(password)){
+                if (TextUtils.isEmpty(password)) {
                     return;
                 }
                 if (!isOpen) {

@@ -73,6 +73,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_insurance_detail);
         initView();
+        requestData();
     }
     @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void initView() {
@@ -130,6 +131,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
         mWebview.getSettings().setUseWideViewPort(true);
 
         mWebview.getSettings().setJavaScriptEnabled(true);
+        mWebview.getSettings().setTextZoom(100);
         mWebview.addJavascriptInterface(new MyJavaScriptinterface(), "click");
 
 
@@ -154,10 +156,10 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
                 startActivity(i_login);
         }
         @JavascriptInterface
-        public void getToMyPDF() {//条款资料本地展示
+        public void getToMyPDF(String filePath) {//条款资料本地展示
             String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            String filePath = result.getAttachmentPath();
+      //      filePath = result.getAttachmentPath();
             if (!TextUtils.isEmpty(filePath)) {
                 if (!EasyPermissions.hasPermissions(InsuranceProductDetailActivity.this, perms)) {
                     EasyPermissions.requestPermissions((Activity) InsuranceProductDetailActivity.this, "需要访问手机存储权限！", 10086, perms);
@@ -253,8 +255,6 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        initView();
-        requestData();
     }
 
     /**

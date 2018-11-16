@@ -15,20 +15,19 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="168dip"
+            android:layout_height="200dip"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginStart="100dp"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@android:color/transparent"
             app:titleEnabled="false">
-
-            <WebView
-                android:id="@+id/wv_training_class_details"
+            <com.rulaibao.test.X5WebView
+                android:id="@+id/x5_webview"
                 android:layout_width="match_parent"
-                android:layout_height="168dip"
-                android:layerType="hardware">
-            </WebView>
+                android:layout_height="200dip"
+                android:scrollbars="none" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
 

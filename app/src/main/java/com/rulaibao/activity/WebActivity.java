@@ -105,8 +105,9 @@ public class WebActivity extends Activity implements View.OnClickListener {
         });
         mWebview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
         mWebview.getSettings().setUseWideViewPort(true);
-
+        mWebview.getSettings().setTextZoom(100);
         mWebview.getSettings().setJavaScriptEnabled(true);
+        mWebview.getSettings().setDomStorageEnabled(true);
         mWebview.addJavascriptInterface(new MyJavaScriptinterface(), "click");
 
         if (type.equals(WEBTYPE_BANNER)) {// 轮播图

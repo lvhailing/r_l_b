@@ -6,7 +6,6 @@
     <string name="net_fail_text">当前网络不可用，点此检查网络设置</string>
 
 
-
     <!--研修-->
 
     <string name="training">研修</string>
@@ -56,17 +55,23 @@
     <string name="login_name">登录</string>
 
     <!-- 注册 -->
-    <string name="sign_phone_name">手机号码</string>
+    <string name="sign_phone_name">手机号</string>
+    <string name="sign_phone_hint">请输入手机号</string>
     <string name="sign_verify">验证码</string>
+    <string name="sign_verify_hint">请输入验证码</string>
     <string name="sign_password">请输入登录密码</string>
     <string name="sign_real_name">真实姓名</string>
-    <string name="sign_recommendation">推荐码</string>
+    <string name="sign_real_name_hint">请输入姓名</string>
+    <string name="sign_recommend_code">推荐码</string>
+    <string name="sign_recommend_code_hint">请输入推荐码</string>
     <string name="sign_get_verify">获取验证码</string>
     <string name="sign_agree">我已阅读并同意</string>
     <string name="sign_web">《如来保》</string>
     <string name="sign_agree_two">服务协议。</string>
     <string name="sign_btn_name">立即注册</string>
     <string name="sign_getsms_again">重新获取</string>
+    <string name="sign_password_name">密码</string>
+    <string name="sign_password_hint">(6-16位数字和字母组合)</string>
 
 
     <!-- 找回密码 -->
@@ -123,8 +128,8 @@
     <string name="shared_message">如来保是一款面向广大营销员伙伴们的应用软件，可以提供在线承保；在线计划书生成、分享；在线预约；投保状态实时跟踪；在线保单检视；风险缺口分析等全方位营销工具。</string>
 
     <!-- 客服电话 -->
-    <string name="phone_number_format">4000000314</string>
-    <string name="phone_number">4000000314</string>
+    <string name="customer_service_phone_number_format">4000000314</string>
+    <string name="customer_service_phone_number">4000000314</string>
 
     <string name="title_null"></string>
     <string name="title_house_detail">房源详情</string>
@@ -197,8 +202,14 @@
     <string name="title_commission_news">佣金消息</string>
     <string name="title_policy_news">保单消息</string>
     <string name="title_other_news">其它消息</string>
-
-
+    <string name="title_my_commission">我的佣金</string>
+    <string name="title_waiting_commission">待发佣金</string>
+    <string name="title_have_get_commission">已发佣金</string>
+    <string name="title_commission_detail">佣金明细</string>
+    <string name="title_payroll_detail">工资单详情</string>
+    <string name="title_my_payroll">我的工资单</string>
+    <string name="title_my_bank_cards">我的银行卡</string>
+    <string name="title_tax_deduction_rules">扣税规则</string>
 
 
     <!-- 交易明细/保单详情 页面文字-->
@@ -213,6 +224,9 @@
     <string name="renewal_date">续费日期：</string>
     <string name="have_insurance_premiums">已交保费：</string>
     <string name="promotion_fee">推广费：</string>
+    <string name="individual_income_tax">个人所得税：</string>
+    <string name="value_added_tax">增值税：</string>
+    <string name="additional_tax">附加税：</string>
     <string name="get_commission">获得佣金：</string>
     <string name="record_date">记录日期：</string>
     <string name="settlement_time">结算时间：</string>
@@ -234,10 +248,52 @@
     <string name="expected_policy">预计交单：</string>
 
 
-
     <string name="three_month_renewal_reminder">当前3个月内待续保的保单：</string>
     <string name="head_photo">头像</string>
     <string name="no_certified">未认证</string>
+    <string name="address_personal">所在省/市</string>
+    <string name="accumulated_commission">累计佣金(元)</string>
+
+    <!-- 我的佣金 -->
+    <string name="waiting_commission">待发佣金(元)</string>
+    <string name="my_commission">已发佣金(元)</string>
+    <string name="my_payroll">我的工资单</string>
+    <string name="my_payroll_desc">查看各月的佣金情况</string>
+    <string name="my_bank_card">我的银行卡</string>
+    <string name="my_bank_card_desc">绑定银行卡后，佣金将于每月11日自动转入</string>
+    <string name="tax_rules">扣税规则</string>
+    <string name="tax_rules_desc">推广佣金年年享</string>
+
+    <string name="check_commission_details"><b>查看佣金明细</b></string>
+
+    <!-- 扣税规则 -->
+    <string name="item_one_title">1、增值税计算：</string>
+    <string name="item_one_content" formatted="false"> \n增值税=含增值税佣金收入/1.03*3% \n起征点：3万（不含增值税），即不含税佣金收入≤3万，则不征收增值税； \n税率固定：3% </string>
+    <string name="item_two_title">2、附加税计算：</string>
+    <string name="item_two_content">\n城建税：增值税 \n教育费附加：增值税 \n地方教育费附加：增值税 </string>
+    <string name="item_two_remark">注：《财政部、国家税务总局关于扩大有关政府性基金免征范围的通知》（财税〔2016〕12号）：销售额或营业额不超过10万元/月或30万/季度，免征教育费附加、地方教育费附加、水利建设基金；
+各省市附加税率并非一致。</string>
+    <string name="item_three_title">3、个人所得税计算：</string>
+    <string name="item_three_content" formatted="false">应纳税所得额：（不含税佣金收入-附加税）*（1-40%），40%为展业成本，不计算个税；\n 当应纳税所得额≤4000，个人所得税=（应纳税所得额-800）*20%
+\n当应纳税所得额≥4000，个人所得税=应纳税所得额*（1-20%）*适用税率-速算扣除数 </string>
+    <string name="item_four_title">4、税金合计：</string>
+    <string name="item_four_content">\n应交税金=增值税+附加税+个人所得税</string>
+    <string name="item_five_title">5、代理人佣金收入：</string>
+    <string name="item_five_content">\n税后收入=税前收入-应交税金</string>
+
+    <!-- 新增银行卡 -->
+
+    <string name="id_number1">身份证号</string>
+    <string name="account_opening_bank">开户银行</string>
+    <string name="account_opening_bank_address">开户地</string>
+    <string name="account_opening_bank_name">开户行名称</string>
+    <string name="et_hint1">请输入开户行名称</string>
+    <string name="bank_card_num">银行帐号</string>
+    <string name="et_hint2">请输入银行帐号</string>
+    <string name="user_phone_number">手机号</string>
+    <string name="click_and_get_verification_code">点击获取验证码</string>
+    <string name="tv_add_bank_card_hint">注：保存以后银行卡信息不可修改！</string>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

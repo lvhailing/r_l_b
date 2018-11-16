@@ -1,7 +1,10 @@
 package com.rulaibao.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,16 +27,20 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.activity.CxyTestActivity;
+import com.rulaibao.activity.FileDisplayActivity;
+import com.rulaibao.activity.WebActivity;
 import com.rulaibao.adapter.RecyclerBaseAapter;
 import com.rulaibao.adapter.TrainingHotAskListAdapter;
 import com.rulaibao.bean.ResultClassIndexBean;
 import com.rulaibao.bean.ResultCycleIndex2B;
 import com.rulaibao.bean.ResultHotAskBean;
 import com.rulaibao.bean.ResultHotAskItemBean;
+import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.test.VideoPlayActivity;
 import com.rulaibao.uitls.RlbActivityManager;
 
 import java.util.ArrayList;
@@ -45,6 +52,7 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.rulaibao.uitls.ImageUtils.getClassImgIndex;
 
@@ -245,8 +253,6 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
 
                 Toast.makeText(context, "该功能暂未开放", Toast.LENGTH_SHORT).show();
 
-              /*  Intent intent = new Intent(getContext(), CxyTestActivity.class);
-                startActivity(intent);*/
                 break;
 
             case R.id.iv_training_recommend: // 推荐课程(跳转课程详情)

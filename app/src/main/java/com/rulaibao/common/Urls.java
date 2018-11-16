@@ -27,7 +27,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_OFFICIAL;
+    private static String EC_HOST = URL_DEBUG;
 
     /**
      * 版本更新
@@ -292,6 +292,9 @@ public class Urls {
     // 交易记录-明细
     public static final String URL_ACCOUNT_TRADE_RECORD_DETAIL = EC_HOST + "account/appTradeRecord/detail";
 
+    // 佣金详情
+//    public static final String URL_ACCOUNT_TRADE_RECORD_DETAIL = EC_HOST + "account/appTradeRecord/detail";
+
     // 保单列表
     public static final String URL_ACCOUNT_ORDER_LIST = EC_HOST + "account/order/list";
 
@@ -334,6 +337,9 @@ public class Urls {
     public static final String URL_SIGN_WEB = EC_HOST + "register/agreement";
     // 服务协议
     public static final String URL_SERVICE_AGREEMENT = EC_HOST + "app/service/agreement";
+
+    // 视频播放
+    public static final String URL_TRAINGCLASS = EC_HOST + "appCourse/detailideoplay";
 
     // 联系客服
     public static final String URL_FEEDBACK_ADD = EC_HOST + "feedback/add";

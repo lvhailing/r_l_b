@@ -59,13 +59,19 @@ import java.util.HashMap;
  * 我的 --- 我的信息
  */
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener {
-    private RelativeLayout rl_layout_photo;
+    private RelativeLayout rl_layout_photo; // 头像布局
+    private RelativeLayout rl_layout_sales_certification; // 销售认证
+
     private ImageView img_photo;
-    private RelativeLayout rl_layout_phone;
-    private RelativeLayout rl_layout_sales_certification;
-    private TextView tv_phone;
+    private ImageView iv_certified_flag;
+
+    private TextView tv_phone; // 电话
+    private TextView tv_address_personal; // 所在省/市
+    private TextView tv_status; // 销售认证 状态
+
     private String realName;
     private String headPhoto;
+    private String status;
 
     //表示选择的是相册--2
     private static int GALLERY_REQUEST_CODE = 2;
@@ -91,9 +97,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
     private static final String TAG = "MyInfoActivity";
     private UserInfo2B data;
-    private TextView tv_status;
-    private ImageView iv_certified_flag;
-    private String status;
 
 
     @Override
@@ -136,10 +139,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private void initView() {
 
         rl_layout_photo = (RelativeLayout) findViewById(R.id.rl_layout_photo);
-        rl_layout_phone = (RelativeLayout) findViewById(R.id.rl_layout_phone);
         rl_layout_sales_certification = (RelativeLayout) findViewById(R.id.rl_layout_sales_certification);
         img_photo = (ImageView) findViewById(R.id.img_photo);
         tv_phone = (TextView) findViewById(R.id.tv_phone);
+        tv_address_personal = (TextView) findViewById(R.id.tv_address_personal);
         tv_status = (TextView) findViewById(R.id.tv_status);
         iv_certified_flag = (ImageView) findViewById(R.id.iv_certified_flag);
 
@@ -236,17 +239,17 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         try {
 //            checkStatus = DESUtil.decrypt(PreferenceUtil.getCheckStatus());
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         HashMap<String, Object> param = new HashMap<>();
         param.put("userId", userId);
 
         HtmlRequest.getAppUserInfoData(this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params==null || params.result == null) {
+                if (params == null || params.result == null) {
                   //  Toast.makeText(MyInfoActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }

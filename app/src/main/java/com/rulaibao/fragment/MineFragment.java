@@ -25,6 +25,7 @@ import com.rulaibao.R;
 import com.rulaibao.activity.LoginActivity;
 import com.rulaibao.activity.MyAskActivity;
 import com.rulaibao.activity.MyCollectionActivity;
+import com.rulaibao.activity.MyCommissionActivity;
 import com.rulaibao.activity.MyInfoActivity;
 import com.rulaibao.activity.MyPartakeActivity;
 import com.rulaibao.activity.MyTopicActivity;
@@ -416,8 +417,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.iv_commission_right_arrow: // 点累计佣金跳转到交易记录页
-                intent = new Intent(context, TransactionRecordActivity.class);
-                intent.putExtra("totalCommission", data.getTotalCommission());
+//                intent = new Intent(context, TransactionRecordActivity.class);
+//                intent.putExtra("totalCommission", data.getTotalCommission());
+//                startActivity(intent);
+                // 新需求是跳转到我的佣金页面
+                intent = new Intent(context, MyCommissionActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_mine_login: // 登录
