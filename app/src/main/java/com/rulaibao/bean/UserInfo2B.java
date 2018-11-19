@@ -14,6 +14,7 @@ public class UserInfo2B implements IMouldType {
     private String busiCardPhoto; // 名片
     private String position; // 从业岗位
     private String idNo; // 身份证号
+    private String area; // 省市（beijing 默认,  hebei,neimeng, guihzou）
 
     public String getRealName() {
         return realName;
@@ -69,5 +70,13 @@ public class UserInfo2B implements IMouldType {
 
     public void setIdNo(String idNo) {
         this.idNo = idNo;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

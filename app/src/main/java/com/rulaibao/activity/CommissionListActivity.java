@@ -11,7 +11,7 @@ import android.widget.ViewSwitcher;
 import com.rulaibao.R;
 import com.rulaibao.adapter.CommissionDetailAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.CommissionList2B;
+import com.rulaibao.bean.CommissionDetailList2B;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
 
@@ -27,8 +27,8 @@ public class CommissionListActivity extends BaseActivity {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private CommissionDetailAdapter commissionDetailAdapter;
-    private MouldList<CommissionList2B> totalList = new MouldList<>();
-    private MouldList<CommissionList2B> everyList;
+    private MouldList<CommissionDetailList2B> totalList = new MouldList<>();
+    private MouldList<CommissionDetailList2B> everyList;
     private int currentPage = 1;
 
 

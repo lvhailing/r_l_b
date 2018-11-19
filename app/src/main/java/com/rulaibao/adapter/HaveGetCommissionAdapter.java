@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.bean.HaveGetCommissionList2B;
-import com.rulaibao.bean.WaitingCommissionList2B;
+import com.rulaibao.bean.CommissionList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -21,7 +21,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<HaveGetCommissionList2B> list;
+    private final MouldList<CommissionList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -38,7 +38,7 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
     private int mLoadMoreStatus = 2;
 
 
-    public HaveGetCommissionAdapter(Context context, MouldList<HaveGetCommissionList2B> list) {
+    public HaveGetCommissionAdapter(Context context, MouldList<CommissionList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -47,7 +47,7 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) { // 加载已发佣金 item 布局
-            View itemView = mInflater.inflate(R.layout.item_waiting_commission, parent, false);
+            View itemView = mInflater.inflate(R.layout.item_commission_list, parent, false);
             return new ItemViewHolder(itemView);
 
         } else if (viewType == TYPE_FOOTER) {   // 加载底部布局
@@ -61,13 +61,12 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
-//            itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
-//            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
+            itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
+            itemViewHolder.tv_customer_name.setText(list.get(position).getUserName());
+            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
+            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
             // 加载图片
-//            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
+            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
             initListener(itemViewHolder.itemView,position);
         } else if (holder instanceof FooterViewHolder) {
@@ -113,7 +112,6 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tv_insurance_name; // 保单名称
-        private final TextView tv_status; // 状态
         private final TextView tv_customer_name; // 客户姓名
         private final TextView tv_insurance_premiums; // 已交保费
         private final TextView tv_insurance_period; // 保险期限
@@ -122,7 +120,6 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
         public ItemViewHolder(View itemView) {
             super(itemView);
             tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
-            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
             tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
             tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
@@ -163,12 +160,12 @@ public class HaveGetCommissionAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
 
-    public void AddHeaderItem(MouldList<HaveGetCommissionList2B> items) {
+    public void AddHeaderItem(MouldList<CommissionList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<HaveGetCommissionList2B> items) {
+    public void AddFooterItem(MouldList<CommissionList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

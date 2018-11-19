@@ -3,11 +3,11 @@ package com.rulaibao.bean;
 import com.rulaibao.network.types.IMouldType;
 
 /**
- *    待发佣金列表 实体类
- * Created by hong on 2018/11/08.
+ *    佣金明细列表 实体类
+ * Created by hong on 2018/11/13.
  */
 
-public class WaitingCommissionList2B implements IMouldType {
+public class CommissionDetailList2B implements IMouldType {
 
     private String orderId; // 保单ID
     private String insuranceName; // 保险名称

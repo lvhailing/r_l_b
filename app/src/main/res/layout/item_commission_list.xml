@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="12dp"
@@ -42,7 +43,7 @@
                 android:layout_centerVertical="true"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="国华人寿-盛世年金保险C款"
+                tools:text="国华人寿-盛世年金保险C款"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
@@ -92,7 +93,7 @@
                         android:id="@+id/tv_customer_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="小金子"
+                        tools:text="小金子"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="@color/txt_black2"
@@ -116,7 +117,7 @@
                         android:id="@+id/tv_insurance_premiums"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20000.00元"
+                        tools:text="20000.00元"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="@color/txt_black2"
@@ -140,7 +141,7 @@
                         android:id="@+id/tv_insurance_period"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3年"
+                        tools:text="3年"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textColor="@color/txt_black2"

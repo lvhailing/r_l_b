@@ -66,6 +66,7 @@
     <color name="auxiliary_color_yellow">#fab22c</color>
 
 
+    <color name="shape_color_blue">#a7d1fe</color>
     <color name="auxiliary_color_blue">#0087fd</color>
     <color name="txt_blue">#0087fd</color>
     <color name="hint_color_red">#f3482e</color>

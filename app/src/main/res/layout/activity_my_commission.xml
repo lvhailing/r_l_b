@@ -18,7 +18,6 @@
                 android:id="@+id/tv_accumulated_commission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:gravity="center"
                 android:text="50000.00"
                 android:textColor="@color/txt_black2"
@@ -54,6 +53,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_waiting_commission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -86,6 +86,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_get_commission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

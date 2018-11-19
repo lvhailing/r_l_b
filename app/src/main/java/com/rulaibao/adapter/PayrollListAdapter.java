@@ -10,17 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
-import com.rulaibao.bean.CommissionDetailList2B;
+import com.rulaibao.bean.PayrollList2B;
 import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  佣金明细 Adapter 类
+ *  我的工资单 Adapter 类
  */
-public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<CommissionDetailList2B> list;
+    private final MouldList<PayrollList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -37,7 +38,7 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 2;
 
 
-    public CommissionDetailAdapter(Context context, MouldList<CommissionDetailList2B> list) {
+    public PayrollListAdapter(Context context, MouldList<PayrollList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -45,8 +46,8 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) { // 加载待发佣金 item 布局
-            View itemView = mInflater.inflate(R.layout.item_commission_list, parent, false);
+        if (viewType == TYPE_ITEM) { // 加载我的工资单列表 item 布局
+            View itemView = mInflater.inflate(R.layout.item_payroll_list, parent, false);
             return new ItemViewHolder(itemView);
 
         } else if (viewType == TYPE_FOOTER) {   // 加载底部布局
@@ -60,11 +61,10 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
-//            itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
-//            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
+            itemViewHolder.tv_month.setText(list.get(position).getWageMonth());
+            itemViewHolder.tv_net_income.setText(list.get(position).getTotalIncome()+ "元");
+            itemViewHolder.tv_total_commission.setText(list.get(position).getTotalCommission() + "元");
+            itemViewHolder.tv_tax_deduction.setText(list.get(position).getTotalTax()+ "元");
             // 加载图片
 //            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
@@ -111,21 +111,17 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tv_insurance_name; // 保单名称
-        private final TextView tv_status; // 状态
-        private final TextView tv_customer_name; // 客户姓名
-        private final TextView tv_insurance_premiums; // 已交保费
-        private final TextView tv_insurance_period; // 保险期限
-        private final ImageView iv_company_logo; // 保险公司logo
+        private final TextView tv_month; // 月份
+        private final TextView tv_net_income; // 净收入
+        private final TextView tv_total_commission; // 总佣金
+        private final TextView tv_tax_deduction; // 扣税
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
-            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
-            tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
-            tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
-            iv_company_logo = (ImageView) itemView.findViewById(R.id.iv_company_logo);
+            tv_month = (TextView) itemView.findViewById(R.id.tv_month);
+            tv_net_income = (TextView) itemView.findViewById(R.id.tv_net_income);
+            tv_total_commission = (TextView) itemView.findViewById(R.id.tv_total_commission);
+            tv_tax_deduction = (TextView) itemView.findViewById(R.id.tv_tax_deduction);
         }
     }
 
@@ -162,12 +158,12 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void AddHeaderItem(MouldList<CommissionDetailList2B> items) {
+    public void AddHeaderItem(MouldList<PayrollList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<CommissionDetailList2B> items) {
+    public void AddFooterItem(MouldList<PayrollList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

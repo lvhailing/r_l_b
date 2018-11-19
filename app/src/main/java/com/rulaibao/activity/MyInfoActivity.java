@@ -56,7 +56,7 @@ import java.util.HashMap;
 
 
 /**
- * 我的 --- 我的信息
+ * 我的 --- 个人信息
  */
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener {
     private RelativeLayout rl_layout_photo; // 头像布局
@@ -262,8 +262,20 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void setData(UserInfo2B data) {
-        if (data.getMobile() != null) {
+        if (data.getMobile() != null) {  // 设置手机号
             tv_phone.setText(StringUtil.replaceSubString(data.getMobile()));
+        }
+        String area = data.getArea();
+        if (area != null) {  // 设置省市
+            if ("beijing".equals(area)) {
+                tv_address_personal.setText("北京");
+            } else if ("hebei".equals(area)) {
+                tv_address_personal.setText("河北");
+            } else if ("neimeng".equals(area)) {
+                tv_address_personal.setText("内蒙");
+            } else if ("guizhou".equals(area)) {
+                tv_address_personal.setText("贵州");
+            }
         }
 
         String url = data.getHeadPhoto();

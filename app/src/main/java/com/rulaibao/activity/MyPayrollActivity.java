@@ -2,11 +2,25 @@ package com.rulaibao.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.MyCommission2B;
+import com.rulaibao.bean.MyPayrollYears1B;
+import com.rulaibao.bean.MyPayrollYears2B;
+import com.rulaibao.fragment.PayrollYearsFragment;
+import com.rulaibao.fragment.TrainingAakFragment;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  *  我的工资单
@@ -17,6 +31,9 @@ public class MyPayrollActivity extends BaseActivity{
 
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
+    private MouldList<MyPayrollYears2B> years;
+    private List<MyPayrollYears2B> listTitles;
+    private List<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +42,7 @@ public class MyPayrollActivity extends BaseActivity{
 
         initTopTitle();
         initView();
-        initData();
+        requestYearsData();
     }
 
     private void initTopTitle() {
@@ -51,8 +68,47 @@ public class MyPayrollActivity extends BaseActivity{
     }
 
     private void initView() {
-        sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
+//        sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
+//        viewpager = (ViewPager) findViewById(R.id.viewpager);
+
+        listTitles = new ArrayList<>();
+        fragments = new ArrayList<>();
+    }
+
+    /**
+     *  获取 工资单年份数据
+     */
+    private void requestYearsData() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", userId);
+
+        HtmlRequest.getMyPayrollYearsData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params == null || params.result == null) {
+                    //  Toast.makeText(MyInfoActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                MyPayrollYears1B data = (MyPayrollYears1B) params.result;
+                if (years == null) {
+                    years = new MouldList<MyPayrollYears2B>();
+                }
+                years.addAll(data.getList());
+                initTabView();
+            }
+        });
+    }
+
+    private void initTabView() {
+        if (years != null) {
+            listTitles.addAll(years);
+        }
+
+        for (int i = 0; i < listTitles.size(); i++) {
+            PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i));
+            fragments.add(fragment);
+
+        }
     }
 
     @Override

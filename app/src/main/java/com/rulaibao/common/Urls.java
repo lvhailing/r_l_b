@@ -156,7 +156,6 @@ public class Urls {
     // 问答首页
     public static final String URL_TRAINING_ASK_INDEX = EC_HOST + "appQuestion/list";
 
-
     // 问答详情
     public static final String URL_TRAINING_ASK_DETAILS = EC_HOST + "appQuestion/detail";
 
@@ -349,6 +348,18 @@ public class Urls {
 
     // 修改登录密码
     public static final String URL_ACCOUNT_SET_PASSWORD_MODIFY = EC_HOST + "account/set/password/modify";
+
+    // 我的佣金
+    public static final String URL_ACCOUNT_COMMISSION_TOTAL = EC_HOST + "account/commission/total";
+
+    // 我的佣金列表（待发、已发均调此接口）
+    public static final String URL_ACCOUNT_COMMISSION_LIST = EC_HOST + "account/commission/list";
+
+    // 我的工资单（获取年份）
+    public static final String URL_ACCOUNT_USERWAGERECORD_YEARLIST = EC_HOST + "account/userwagerecord/yearlist";
+
+    // 我的工资单列表
+    public static final String URL_ACCOUNT_USERWAGERECORD_WAGERECORDLIST = EC_HOST + "account/userwagerecord/wagerecordlist";
 
 
 

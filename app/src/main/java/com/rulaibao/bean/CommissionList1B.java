@@ -4,8 +4,8 @@ import com.rulaibao.network.types.IMouldType;
 import com.rulaibao.network.types.MouldList;
 
 /**
- *    佣金明细列表 实体类
- * Created by hong on 2018/11/13.
+ *    待发佣金列表 实体类
+ * Created by hong on 2018/11/08.
  */
 
 public class CommissionList1B implements IMouldType {
@@ -15,4 +15,11 @@ public class CommissionList1B implements IMouldType {
     private String msg;
     private String message;
 
+    public MouldList<CommissionList2B> getList() {
+        return list;
+    }
+
+    public void setList(MouldList<CommissionList2B> list) {
+        this.list = list;
+    }
 }

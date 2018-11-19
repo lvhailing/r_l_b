@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/rl_payroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_left_blue"
+            android:ems="1"
+            android:gravity="center"
+            android:lineSpacingExtra="25sp"
+            android:paddingBottom="25dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="25dp"
+            android:text="五月"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_right_white"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="22dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="净收入"
+                    android:textColor="@color/txt_black1"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_net_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:ellipsize="end"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/txt_black1"
+                    android:textSize="16sp"
+                    tools:text="2000.00元"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/shape_color_blue"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="25dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_total_commission1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="总佣金："
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_total_commission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_total_commission1"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="16sp"
+                        tools:text="5656.00元"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp">
+
+                    <TextView
+                        android:id="@+id/tv_left_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="扣税："
+                        android:textColor="@color/txt_black1"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_tax_deduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_left_txt"
+                        android:ellipsize="end"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@color/txt_black1"
+                        android:textSize="18sp"
+                        tools:text="0.00元"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

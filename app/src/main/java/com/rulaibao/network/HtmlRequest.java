@@ -1,6 +1,5 @@
 package com.rulaibao.network;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -20,14 +19,15 @@ import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.InsuranceDetail1B;
 import com.rulaibao.bean.InsuranceProduct1B;
-import com.rulaibao.bean.InsuranceProduct2B;
 import com.rulaibao.bean.InteractiveNewsList1B;
 import com.rulaibao.bean.MineData2B;
 import com.rulaibao.bean.MyAskList1B;
 import com.rulaibao.bean.MyCollectionList1B;
+import com.rulaibao.bean.MyCommission2B;
 import com.rulaibao.bean.MyTopicList1B;
 import com.rulaibao.bean.NewMembersCircleList1B;
 import com.rulaibao.bean.OK2B;
+import com.rulaibao.bean.PayrollList1B;
 import com.rulaibao.bean.Plan2B;
 import com.rulaibao.bean.PlatformBulletinList1B;
 import com.rulaibao.bean.PolicyBookingDetail1B;
@@ -37,10 +37,8 @@ import com.rulaibao.bean.PolicyRecordDetail1B;
 import com.rulaibao.bean.PolicyRecordList1B;
 import com.rulaibao.bean.Recommend1B;
 import com.rulaibao.bean.RecommendRecordList1B;
-import com.rulaibao.bean.RecommendRecordList2B;
 import com.rulaibao.bean.RenewalReminderList1B;
 import com.rulaibao.bean.Repo;
-import com.rulaibao.bean.ResultCheckVersionBean;
 import com.rulaibao.bean.ResultCheckVersionContentBean;
 import com.rulaibao.bean.TrackingDetail1B;
 import com.rulaibao.bean.TrackingList1B;
@@ -62,7 +60,7 @@ import com.rulaibao.bean.ResultCircleDetailsTopicDetailsBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicListBean;
 import com.rulaibao.bean.ResultCircleIndexBean;
 import com.rulaibao.bean.ResultInfoBean;
-import com.rulaibao.common.MyApplication;
+import com.rulaibao.bean.CommissionList1B;
 import com.rulaibao.common.Urls;
 import com.rulaibao.bean.ResultCycleIndex2B;
 import com.rulaibao.bean.ResultHotAskBean;
@@ -1266,7 +1264,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-//                    Log.i("hh", "个人信息/销售认证页面数据：" + data);
+                    Log.i("hh", "个人信息/销售认证页面数据：" + data);
 
                     Repo<UserInfo2B> b = json.fromJson(data, new TypeToken<Repo<UserInfo2B>>() {
                     }.getType());
@@ -3837,7 +3835,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
-
     /**
      * 研修问答详情评论列表
      *
@@ -3946,7 +3943,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-
 
     /**
      * 回答
@@ -4223,7 +4219,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
-
     /**
      * 课程详情--研讨
      *
@@ -4279,8 +4274,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
-
-
 
     /**
      * 课程详情--研讨 回复
@@ -4399,6 +4392,223 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /************************************************* 研修模块end *****************************************************************/
 
+    /**
+     *  获取我的佣金 页面数据
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getMyCommissionData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_COMMISSION_TOTAL;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的佣金数据：" + data);
+
+                    Repo<MyCommission2B> b = json.fromJson(data, new TypeToken<Repo<MyCommission2B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+
+    /**
+     *  获取 佣金列表(待发，已发)
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getCommissionListData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_COMMISSION_LIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的待发、已发佣金列表：" + data);
+
+                    Repo<CommissionList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionList1B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+
+        });
+    }
+
+    /**
+     *  获取我的工资单年份
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void getMyPayrollYearsData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_USERWAGERECORD_YEARLIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的工资单年份数据：" + data);
+
+                    Repo<MyCommission2B> b = json.fromJson(data, new TypeToken<Repo<MyCommission2B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+
+    /**
+     * 工资单列表
+     *
+     * @param context  上下文
+     * @param listener 监听事件
+     */
+    public static void getPayrollListData(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_USERWAGERECORD_WAGERECORDLIST;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                Gson json = new Gson();
+
+                String data = null;
+                try {
+                    if (isCancelled() || result == null) {
+                        return null;
+                    }
+                    data = DESUtil.decrypt(result);
+
+                    Repo<PayrollList1B> b = json.fromJson(data, new TypeToken<Repo<PayrollList1B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
 
 
 
