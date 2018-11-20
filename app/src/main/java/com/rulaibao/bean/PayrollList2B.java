@@ -9,7 +9,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class PayrollList2B implements IMouldType {
 
-	private String id;
+	private String id; // 工资
 	private String wageMonth; // 工资月份
 	private String totalTax;  // 扣税
 	private String totalCommission; // 总佣金

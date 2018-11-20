@@ -99,6 +99,9 @@ public class MyPayrollActivity extends BaseActivity{
         });
     }
 
+    /**
+     *  初始化顶部工资单年份数据
+     */
     private void initTabView() {
         if (years != null) {
             listTitles.addAll(years);
@@ -113,6 +116,5 @@ public class MyPayrollActivity extends BaseActivity{
 
     @Override
     public void initData() {
-//        titles = new String[] ("","");
     }
 }

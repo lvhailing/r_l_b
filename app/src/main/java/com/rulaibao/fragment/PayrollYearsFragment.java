@@ -60,6 +60,13 @@ public class PayrollYearsFragment extends BaseFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
     protected void initViews() {
         payrollList2B = new MouldList<PayrollList2B>();
         initRecyclerView();
@@ -171,15 +178,9 @@ public class PayrollYearsFragment extends BaseFragment {
         PayrollYearsFragment fragment = new PayrollYearsFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
-//        bundle.putSerializable(KEY, year);
+        bundle.putSerializable(KEY, year);
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
+
 }

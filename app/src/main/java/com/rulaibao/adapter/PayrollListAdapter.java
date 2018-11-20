@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
+import com.rulaibao.activity.PayrollDetailActivity;
 import com.rulaibao.bean.PayrollList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -133,11 +135,11 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void initListener(View itemView,final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // 跳转到佣金明细
+            public void onClick(View v) { // 跳转到工资单详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-//                intent.putExtra("orderId", list.get(position).getOrderId());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, PayrollDetailActivity.class);
+                intent.putExtra("id", list.get(position).getId());
+                mContext.startActivity(intent);
             }
         });
     }

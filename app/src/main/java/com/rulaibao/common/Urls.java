@@ -361,6 +361,9 @@ public class Urls {
     // 我的工资单列表
     public static final String URL_ACCOUNT_USERWAGERECORD_WAGERECORDLIST = EC_HOST + "account/userwagerecord/wagerecordlist";
 
+    // 我的工资单列表
+    public static final String URL_ACCOUNT_USERWAGERECORD_DETAIL = EC_HOST + "account/userwagerecord/detail";
+
 
 
 
