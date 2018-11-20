@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.bean.CommissionDetailList2B;
+import com.rulaibao.bean.TrackingList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -20,7 +21,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<CommissionDetailList2B> list;
+    private final MouldList<TrackingList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -37,7 +38,7 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int mLoadMoreStatus = 2;
 
 
-    public CommissionDetailAdapter(Context context, MouldList<CommissionDetailList2B> list) {
+    public CommissionDetailAdapter(Context context, MouldList<TrackingList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -162,12 +163,12 @@ public class CommissionDetailAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public void AddHeaderItem(MouldList<CommissionDetailList2B> items) {
+    public void AddHeaderItem(MouldList<TrackingList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<CommissionDetailList2B> items) {
+    public void AddFooterItem(MouldList<TrackingList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

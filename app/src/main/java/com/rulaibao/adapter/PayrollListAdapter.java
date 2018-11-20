@@ -139,6 +139,7 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, PayrollDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
+                intent.putExtra("currentMonth", list.get(position).getWageMonth());
                 mContext.startActivity(intent);
             }
         });

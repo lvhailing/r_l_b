@@ -6,14 +6,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.CommissionDetailAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.CommissionDetailList2B;
+import com.rulaibao.bean.CommissionList1B;
+import com.rulaibao.bean.TrackingList1B;
+import com.rulaibao.bean.TrackingList2B;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.LinkedHashMap;
 
 /**
  *  佣金明细
@@ -27,9 +36,10 @@ public class CommissionListActivity extends BaseActivity {
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
     private CommissionDetailAdapter commissionDetailAdapter;
-    private MouldList<CommissionDetailList2B> totalList = new MouldList<>();
-    private MouldList<CommissionDetailList2B> everyList;
+    private MouldList<TrackingList2B> totalList = new MouldList<>();
+    private MouldList<TrackingList2B> everyList;
     private int currentPage = 1;
+    private String currentMonth;
 
 
     @Override
@@ -64,6 +74,8 @@ public class CommissionListActivity extends BaseActivity {
     }
 
     private void initView() {
+        currentMonth = getIntent().getStringExtra("currentMonth");
+
         vs = (ViewSwitcher) findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
@@ -101,9 +113,64 @@ public class CommissionListActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 获取佣金明细列表数据
+     */
     private void requestData() {
+        LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+        param.put("userId", userId);
+        param.put("currentMonth", currentMonth);
+        param.put("page", currentPage+"");
 
+        HtmlRequest.getTradeRecordData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (swipe_refresh.isRefreshing()) {
+                    //请求返回后，无论本次请求成功与否，都关闭下拉旋转
+                    swipe_refresh.setRefreshing(false);
+                }
+
+                if (params==null || params.result == null) {
+                    vs.setDisplayedChild(1);
+                    // Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                TrackingList1B data = (TrackingList1B) params.result;
+                everyList = data.getRecordList();
+                if (everyList == null) {
+                    return;
+                }
+                if (everyList.size() == 0 && currentPage != 1) {
+                    Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
+                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.NO_LOAD_MORE);
+                }
+                if (currentPage == 1) {
+                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
+                    totalList.clear();
+                }
+                totalList.addAll(everyList);
+                // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
+                if (totalList.size() == 0) {
+                    vs.setDisplayedChild(1);
+                } else {
+                    vs.setDisplayedChild(0);
+                }
+//                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
+//                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
+//                } else {
+//                    myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
+//                }
+                if (everyList.size() != 10) {
+                    // 本次取回的数据为不是10条，代表取完了
+                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.NO_LOAD_MORE);
+                } else {
+                    // 其他，均显示“数据加载中”的提示
+                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.PULLUP_LOAD_MORE);
+                }
+            }
+        });
     }
+
 
     /**
      *  列表上拉监听

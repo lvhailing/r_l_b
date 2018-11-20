@@ -1,5 +1,6 @@
 package com.rulaibao.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -33,9 +34,10 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
     private TextView tv_total_income;  // 到账金额
     private TextView tv_transfer_status; // 发放状态
     private TextView tv_look_commission_detail; // 查看佣金明细
-    private String payrollId; // 工资单
     private PayrollDetail2B data;
 
+    private String payrollId; // 工资单
+    private String currentMonth; // 当前月份
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
 
     private void initView() {
         payrollId = getIntent().getStringExtra("id");
+        currentMonth = getIntent().getStringExtra("currentMonth");
+
         tv_commission_income = (TextView) findViewById(R.id.tv_commission_income);
         tv_personal_income_tax = (TextView) findViewById(R.id.tv_personal_income_tax);
         tv_value_added_tax = (TextView) findViewById(R.id.tv_value_added_tax);
@@ -78,6 +82,7 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
         tv_total_income = (TextView) findViewById(R.id.tv_total_income);
         tv_transfer_status = (TextView) findViewById(R.id.tv_transfer_status);
         tv_look_commission_detail = (TextView) findViewById(R.id.tv_look_commission_detail);
+
 
         tv_look_commission_detail.setOnClickListener(this);
     }
@@ -143,5 +148,11 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
 
+        switch (v.getId()) {
+            case R.id.tv_look_commission_detail: // 查看佣金明细
+                Intent intent = new Intent(this, CommissionListActivity.class);
+                intent.putExtra("currentMonth", currentMonth);
+                startActivity(intent);
+        }
     }
 }

@@ -11,6 +11,7 @@ import com.rulaibao.network.types.MouldList;
 public class TrackingList1B implements IMouldType {
 
     private String totalCommission; // 累计佣金（元）
+    private String count; // 交易总条数（新增字段）
     private MouldList<TrackingList2B> recordList; // 交易记录
     private String flag;
     private String msg;
@@ -21,6 +22,14 @@ public class TrackingList1B implements IMouldType {
 
     public void setTotalCommission(String totalCommission) {
         this.totalCommission = totalCommission;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public MouldList<TrackingList2B> getRecordList() {
