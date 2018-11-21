@@ -10,10 +10,8 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
-import com.rulaibao.adapter.CommissionDetailAdapter;
+import com.rulaibao.adapter.CommissionListAdapter;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.CommissionDetailList2B;
-import com.rulaibao.bean.CommissionList1B;
 import com.rulaibao.bean.TrackingList1B;
 import com.rulaibao.bean.TrackingList2B;
 import com.rulaibao.network.BaseParams;
@@ -25,7 +23,7 @@ import com.rulaibao.widget.TitleBar;
 import java.util.LinkedHashMap;
 
 /**
- *  佣金明细
+ *  佣金明细 列表
  * Created by junde on 2018/11/13.
  */
 
@@ -35,7 +33,7 @@ public class CommissionListActivity extends BaseActivity {
     private ViewSwitcher vs;
     private SwipeRefreshLayout swipe_refresh;
     private RecyclerView recycler_view;
-    private CommissionDetailAdapter commissionDetailAdapter;
+    private CommissionListAdapter commissionListAdapter;
     private MouldList<TrackingList2B> totalList = new MouldList<>();
     private MouldList<TrackingList2B> everyList;
     private int currentPage = 1;
@@ -88,8 +86,8 @@ public class CommissionListActivity extends BaseActivity {
 
     private void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        commissionDetailAdapter = new CommissionDetailAdapter(this, totalList);
-        recycler_view.setAdapter(commissionDetailAdapter);
+        commissionListAdapter = new CommissionListAdapter(this, totalList);
+        recycler_view.setAdapter(commissionListAdapter);
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
     }
@@ -142,7 +140,7 @@ public class CommissionListActivity extends BaseActivity {
                 }
                 if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
-                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.NO_LOAD_MORE);
+                    commissionListAdapter.changeMoreStatus(commissionListAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -162,10 +160,10 @@ public class CommissionListActivity extends BaseActivity {
 //                }
                 if (everyList.size() != 10) {
                     // 本次取回的数据为不是10条，代表取完了
-                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.NO_LOAD_MORE);
+                    commissionListAdapter.changeMoreStatus(commissionListAdapter.NO_LOAD_MORE);
                 } else {
                     // 其他，均显示“数据加载中”的提示
-                    commissionDetailAdapter.changeMoreStatus(commissionDetailAdapter.PULLUP_LOAD_MORE);
+                    commissionListAdapter.changeMoreStatus(commissionListAdapter.PULLUP_LOAD_MORE);
                 }
             }
         });
@@ -184,7 +182,7 @@ public class CommissionListActivity extends BaseActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == commissionDetailAdapter.getItemCount() && firstVisibleItem != 0) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == commissionListAdapter.getItemCount() && firstVisibleItem != 0) {
                     if (everyList.size() == 0) {
                         return;
                     }

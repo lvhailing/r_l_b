@@ -11,11 +11,8 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.adapter.PayrollListAdapter;
-import com.rulaibao.adapter.RecyclerBaseAapter;
-import com.rulaibao.bean.MyPayrollYears2B;
 import com.rulaibao.bean.PayrollList1B;
 import com.rulaibao.bean.PayrollList2B;
-import com.rulaibao.bean.ResultAskTypeItemBean;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -42,7 +39,7 @@ public class PayrollYearsFragment extends BaseFragment {
     private MouldList<PayrollList2B> payrollList2B;
     private int currentPage = 1;
     private boolean noDataFlag = true;   // 控制无数据不加载
-    private MyPayrollYears2B currentYear;
+    private String currentYear;
     private MouldList<PayrollList2B> everyList;
 
     @Override
@@ -109,8 +106,8 @@ public class PayrollYearsFragment extends BaseFragment {
             if (context != null) {
                 payrollList2B.clear();
             }
-            currentYear = new MyPayrollYears2B();
-            currentYear = (MyPayrollYears2B) getArguments().getSerializable(KEY);
+//            currentYear = new MyPayrollYears2B();
+            currentYear = (String) getArguments().getSerializable(KEY);
             currentPage = 1;
             noDataFlag = true;
             requestPayrollList(currentYear);
@@ -122,7 +119,7 @@ public class PayrollYearsFragment extends BaseFragment {
     /**
      * 获取工资单列表
      */
-    public void requestPayrollList(MyPayrollYears2B year) {
+    public void requestPayrollList(String year) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("userId", userId);
         map.put("currentYear", currentYear);
@@ -174,7 +171,7 @@ public class PayrollYearsFragment extends BaseFragment {
         });
     }
 
-    public static PayrollYearsFragment newInstance(MyPayrollYears2B year) {
+    public static PayrollYearsFragment newInstance(String year) {
         PayrollYearsFragment fragment = new PayrollYearsFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);

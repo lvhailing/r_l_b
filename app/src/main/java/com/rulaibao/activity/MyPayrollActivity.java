@@ -7,15 +7,11 @@ import android.support.v4.view.ViewPager;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.MyCommission2B;
 import com.rulaibao.bean.MyPayrollYears1B;
-import com.rulaibao.bean.MyPayrollYears2B;
 import com.rulaibao.fragment.PayrollYearsFragment;
-import com.rulaibao.fragment.TrainingAakFragment;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
-import com.rulaibao.network.types.MouldList;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.ArrayList;
@@ -31,8 +27,8 @@ public class MyPayrollActivity extends BaseActivity{
 
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
-    private MouldList<MyPayrollYears2B> years;
-    private List<MyPayrollYears2B> listTitles;
+    private ArrayList years;
+    private ArrayList  listTitles;
     private List<Fragment> fragments;
 
     @Override
@@ -91,9 +87,9 @@ public class MyPayrollActivity extends BaseActivity{
                 }
                 MyPayrollYears1B data = (MyPayrollYears1B) params.result;
                 if (years == null) {
-                    years = new MouldList<MyPayrollYears2B>();
+                    years = new ArrayList();
                 }
-                years.addAll(data.getList());
+                years.addAll(data.getWageYears());
                 initTabView();
             }
         });
@@ -108,7 +104,7 @@ public class MyPayrollActivity extends BaseActivity{
         }
 
         for (int i = 0; i < listTitles.size(); i++) {
-            PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i));
+            PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i).toString());
             fragments.add(fragment);
 
         }

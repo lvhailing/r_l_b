@@ -4,19 +4,20 @@ package com.rulaibao.bean;
 import com.rulaibao.network.types.IMouldType;
 import com.rulaibao.network.types.MouldList;
 
+import java.util.List;
+
 /**
  *  我的资单 年份
  */
 public class MyPayrollYears1B implements IMouldType {
 
+	private List wageYears;
 
-	private MouldList<MyPayrollYears2B> list;
-
-    public MouldList<MyPayrollYears2B> getList() {
-        return list;
+    public List getWageYears() {
+        return wageYears;
     }
 
-    public void setList(MouldList<MyPayrollYears2B> list) {
-        this.list = list;
+    public void setWageYears(List wageYears) {
+        this.wageYears = wageYears;
     }
 }

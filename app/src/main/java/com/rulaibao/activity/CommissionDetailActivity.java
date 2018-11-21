@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.bean.CommissionDetail1B;
+import com.rulaibao.bean.TrackingDetail1B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -40,13 +40,12 @@ public class CommissionDetailActivity extends BaseActivity {
     private TextView tv_get_commission; // 获得佣金
     private TextView tv_record_date; // 记录日期
     private TextView tv_settlement_time; // 结算时间
-    private CommissionDetail1B data;
+    private TrackingDetail1B data;
     private String id;
 
 
     @Override
     public void initData() {
-
     }
 
     @Override
@@ -113,7 +112,7 @@ public class CommissionDetailActivity extends BaseActivity {
         param.put("id", id);
         param.put("userId", userId);
 
-        HtmlRequest.getCommissionDetail(CommissionDetailActivity.this, param, new BaseRequester.OnRequestListener() {
+        HtmlRequest.getTradeRecordDetail(CommissionDetailActivity.this, param, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
                 if (params.result == null) {
@@ -121,7 +120,7 @@ public class CommissionDetailActivity extends BaseActivity {
                     return;
                 }
 
-                data = (CommissionDetail1B) params.result;
+                data = (TrackingDetail1B) params.result;
                 setView();
             }
         });
@@ -140,8 +139,8 @@ public class CommissionDetailActivity extends BaseActivity {
         tv_renewal_date.setText(data.getRenewalDate());
         tv_have_insurance_premiums.setText(data.getPaymentedPremiums() + "元");
         tv_promotion_fee.setText(data.getPromotioinCost() + "%");
-        tv_individual_income_tax.setText(data.getIndividualIncomeTax());  // 个人所得税
-        tv_value_added_tax.setText(data.getValueAddedTax());  // 增值税
+        tv_individual_income_tax.setText(data.getIndividualTax());  // 个人所得税
+        tv_value_added_tax.setText(data.getValueaddedTax());  // 增值税
         tv_additional_tax.setText(data.getAdditionalTax());  // 附加税
         tv_get_commission.setText(data.getCommissionGained() + "元");
         tv_record_date.setText(data.getCreateTime());

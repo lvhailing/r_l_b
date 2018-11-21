@@ -26,6 +26,10 @@ public class TrackingDetail1B implements IMouldType {
     private String  createTime; // 记录日期
     private String  commissionedTime; // 结算时间
 
+    private String valueaddedTax;  // 增值税
+    private String additionalTax;  // 附加税
+    private String individualTax;  // 个人所得税
+
     public String getId() {
         return id;
     }
@@ -144,5 +148,29 @@ public class TrackingDetail1B implements IMouldType {
 
     public void setCommissionedTime(String commissionedTime) {
         this.commissionedTime = commissionedTime;
+    }
+
+    public String getValueaddedTax() {
+        return valueaddedTax;
+    }
+
+    public void setValueaddedTax(String valueaddedTax) {
+        this.valueaddedTax = valueaddedTax;
+    }
+
+    public String getAdditionalTax() {
+        return additionalTax;
+    }
+
+    public void setAdditionalTax(String additionalTax) {
+        this.additionalTax = additionalTax;
+    }
+
+    public String getIndividualTax() {
+        return individualTax;
+    }
+
+    public void setIndividualTax(String individualTax) {
+        this.individualTax = individualTax;
     }
 }
