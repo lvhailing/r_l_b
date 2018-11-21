@@ -1,6 +1,7 @@
 package com.rulaibao.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -82,7 +83,8 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
         tv_total_income = (TextView) findViewById(R.id.tv_total_income);
         tv_transfer_status = (TextView) findViewById(R.id.tv_transfer_status);
         tv_look_commission_detail = (TextView) findViewById(R.id.tv_look_commission_detail);
-
+        tv_look_commission_detail.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG ); //下划线
+//        tv_look_commission_detail.setPadding(0,0,0,100);
 
         tv_look_commission_detail.setOnClickListener(this);
     }
@@ -118,25 +120,25 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
 
     private void setData(PayrollDetail2B data) {
         if (data.getCommission() != null) {  // 佣金收益
-            tv_commission_income.setText(StringUtil.replaceSubString(data.getCommission()));
+            tv_commission_income.setText( data.getCommission()+"元");
         }
         if (data.getIndividualTax() != null) {  //个人所得税
-            tv_personal_income_tax.setText(StringUtil.replaceSubString(data.getIndividualTax()));
+            tv_personal_income_tax.setText(data.getIndividualTax()+"元");
         }
         if (data.getValueaddedTax() != null) {  // 增值税
-            tv_value_added_tax.setText(StringUtil.replaceSubString(data.getCommission()));
+            tv_value_added_tax.setText(data.getValueaddedTax()+"元");
         }
         if (data.getAdditionalTax() != null) {  // 附加税
-            tv_additional_tax.setText(StringUtil.replaceSubString(data.getCommission()));
+            tv_additional_tax.setText(data.getAdditionalTax()+"元");
         }
         if (data.getBankcardNo() != null) {  // 银行帐号
-            tv_bank_card_num.setText(StringUtil.replaceSubString(data.getCommission()));
+            tv_bank_card_num.setText(StringUtil.encryBankNum(data.getBankcardNo()));
         }
-        if (data.getTotalIncome() != null) {  // 到账金额
-            tv_total_income.setText(StringUtil.replaceSubString(data.getCommission()));
+        if (data.getIncome() != null) {  // 到账金额
+            tv_total_income.setText(data.getIncome()+"元");
         }
         if (data.getStatus() != null) {  // 发放状态
-            tv_transfer_status.setText(StringUtil.replaceSubString(data.getCommission()));
+            tv_transfer_status.setText(data.getStatus());
         }
     }
 

@@ -264,7 +264,7 @@
     <string name="tax_rules">扣税规则</string>
     <string name="tax_rules_desc">推广佣金年年享</string>
 
-    <string name="check_commission_details"><b>查看佣金明细</b></string>
+    <string name="check_commission_details">查看佣金明细</string>
 
     <!-- 扣税规则 -->
     <string name="item_one_title">1、增值税计算：</string>

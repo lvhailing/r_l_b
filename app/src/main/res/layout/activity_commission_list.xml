@@ -13,6 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            style="@style/v_line"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +26,7 @@
             android:paddingTop="12dp">
 
             <TextView
+                android:id="@+id/tv_count_commission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/txt_black1"
@@ -30,6 +34,7 @@
                 tools:text="6份佣金"/>
 
             <TextView
+                android:id="@+id/tv_total_commission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

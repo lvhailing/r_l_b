@@ -12,11 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
 import com.rulaibao.activity.PolicyRecordDetailActivity;
-import com.rulaibao.bean.MyBankCardsList2B;
-import com.rulaibao.bean.RenewalReminderList2B;
+import com.rulaibao.bean.BankCardList2B;
 import com.rulaibao.network.types.MouldList;
 
 
@@ -26,7 +24,7 @@ import com.rulaibao.network.types.MouldList;
  */
 public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final MouldList<MyBankCardsList2B> list;
+    private final MouldList<BankCardList2B> list;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -43,7 +41,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private int mLoadMoreStatus = 0;
 
 
-    public MyBankCardsAdapter(Context context, MouldList<MyBankCardsList2B> list) {
+    public MyBankCardsAdapter(Context context, MouldList<BankCardList2B> list) {
         mContext = context;
         this.list = list;
         mInflater = LayoutInflater.from(context);
@@ -69,8 +67,8 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
+            itemViewHolder.tv_bank_name.setText(list.get(position).getBank());
+            itemViewHolder.tv_bank_card_num.setText(list.get(position).getBankcardNo());
 //            itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
 //            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancPeremiums()+"元");
 //            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
@@ -116,16 +114,18 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView iv_bank_logo; // 银行Logo
         private final TextView tv_bank_name; // 银行名称
-        private final TextView tv_card_type; // 银行卡类型
+//        private final TextView tv_card_type; // 银行卡类型
         private final TextView tv_bank_card_num; // 银行卡号
         private final RelativeLayout rl_delete; // 删除当前银行卡
         private final RelativeLayout rl_make_payroll; // （是否）设为工资卡
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+            iv_bank_logo = (ImageView) itemView.findViewById(R.id.iv_bank_logo);
             tv_bank_name = (TextView) itemView.findViewById(R.id.tv_bank_name);
-            tv_card_type = (TextView) itemView.findViewById(R.id.tv_card_type);
+//            tv_card_type = (TextView) itemView.findViewById(R.id.tv_card_type);
             tv_bank_card_num = (TextView) itemView.findViewById(R.id.tv_bank_card_num);
             rl_delete = (RelativeLayout) itemView.findViewById(R.id.rl_delete);
             rl_make_payroll = (RelativeLayout) itemView.findViewById(R.id.rl_make_payroll);
@@ -166,12 +166,12 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public void AddHeaderItem(MouldList<MyBankCardsList2B> items) {
+    public void AddHeaderItem(MouldList<BankCardList2B> items) {
         list.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(MouldList<MyBankCardsList2B> items) {
+    public void AddFooterItem(MouldList<BankCardList2B> items) {
         list.addAll(items);
         notifyDataSetChanged();
     }

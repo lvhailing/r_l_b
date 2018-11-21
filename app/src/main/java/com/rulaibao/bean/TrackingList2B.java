@@ -8,6 +8,8 @@ public class TrackingList2B implements IMouldType {
     private String productName; // 产品名称
     private String orderCode; // 保单编号
     private String commissionGained; // 获得佣金
+    private String commissionTime ; // 收益日期
+
 
     public String getId() {
         return id;
@@ -41,4 +43,11 @@ public class TrackingList2B implements IMouldType {
         this.commissionGained = commissionGained;
     }
 
+    public String getCommissionTime() {
+        return commissionTime;
+    }
+
+    public void setCommissionTime(String commissionTime) {
+        this.commissionTime = commissionTime;
+    }
 }

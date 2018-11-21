@@ -3,6 +3,7 @@ package com.rulaibao.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.rulaibao.R;
@@ -64,8 +65,8 @@ public class MyPayrollActivity extends BaseActivity{
     }
 
     private void initView() {
-//        sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
-//        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
 
         listTitles = new ArrayList<>();
         fragments = new ArrayList<>();
@@ -106,8 +107,33 @@ public class MyPayrollActivity extends BaseActivity{
         for (int i = 0; i < listTitles.size(); i++) {
             PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i).toString());
             fragments.add(fragment);
-
         }
+
+        for (int i = 0; i < listTitles.size(); i++) {
+            sliding_tabs.addTab(sliding_tabs.newTab().setText(listTitles.get(i).toString()));//添加tab选项
+        }
+
+        FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();
+            }
+
+            //ViewPager与TabLayout绑定后，这里获取到PageTitle就是Tab的Text
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return listTitles.get(position).toString();
+            }
+        };
+        viewpager.setAdapter(mAdapter);
+
+        sliding_tabs.setupWithViewPager(viewpager);  // 将TabLayout和ViewPager关联起来。
+        sliding_tabs.setTabsFromPagerAdapter(mAdapter); // 给Tabs设置适配器
     }
 
     @Override

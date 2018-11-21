@@ -38,6 +38,8 @@ public class CommissionListActivity extends BaseActivity {
     private MouldList<TrackingList2B> everyList;
     private int currentPage = 1;
     private String currentMonth;
+    private TextView tv_count_commission; // 有几份佣金
+    private TextView tv_total_commission; // 佣金总金额
 
 
     @Override
@@ -48,6 +50,7 @@ public class CommissionListActivity extends BaseActivity {
         initTopTitle();
         initView();
         initListener();
+        requestData();
     }
 
     private void initTopTitle() {
@@ -77,6 +80,8 @@ public class CommissionListActivity extends BaseActivity {
         vs = (ViewSwitcher) findViewById(R.id.vs);
         swipe_refresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        tv_count_commission = (TextView) findViewById(R.id.tv_count_commission);
+        tv_total_commission = (TextView) findViewById(R.id.tv_total_commission);
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
         tv_empty.setText("暂无佣金");
@@ -129,11 +134,14 @@ public class CommissionListActivity extends BaseActivity {
                 }
 
                 if (params==null || params.result == null) {
-                    vs.setDisplayedChild(1);
+//                    vs.setDisplayedChild(1);
                     // Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
                 TrackingList1B data = (TrackingList1B) params.result;
+                tv_count_commission.setText(data.getTotal()+"份佣金");
+                tv_total_commission.setText("共计"+data.getTotalCommission()+"元");
+
                 everyList = data.getRecordList();
                 if (everyList == null) {
                     return;
@@ -148,11 +156,11 @@ public class CommissionListActivity extends BaseActivity {
                 }
                 totalList.addAll(everyList);
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
-                if (totalList.size() == 0) {
-                    vs.setDisplayedChild(1);
-                } else {
-                    vs.setDisplayedChild(0);
-                }
+//                if (totalList.size() == 0) {
+//                    vs.setDisplayedChild(1);
+//                } else {
+//                    vs.setDisplayedChild(0);
+//                }
 //                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
 //                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
 //                } else {
@@ -202,6 +210,5 @@ public class CommissionListActivity extends BaseActivity {
     }
     @Override
     public void initData() {
-
     }
 }

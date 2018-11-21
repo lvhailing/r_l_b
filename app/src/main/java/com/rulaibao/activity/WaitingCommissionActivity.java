@@ -54,7 +54,7 @@ public class WaitingCommissionActivity extends BaseActivity implements View.OnCl
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_my_commission))
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_waiting_commission))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
@@ -135,7 +135,7 @@ public class WaitingCommissionActivity extends BaseActivity implements View.OnCl
                     return;
                 }
                 CommissionList1B data = (CommissionList1B) params.result;
-                everyList = data.getList();
+                everyList = data.getCommisionList();
                 if (everyList == null) {
                     return;
                 }

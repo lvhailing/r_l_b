@@ -10,16 +10,40 @@ import com.rulaibao.network.types.MouldList;
 public class PayrollList1B implements IMouldType {
 
 
-	private MouldList<PayrollList2B> list;
+	private MouldList<PayrollList2B> newList;
 	private String total;
 	private String flag;
 	private String message;
 
-    public MouldList<PayrollList2B> getList() {
-        return list;
+    public MouldList<PayrollList2B> getNewList() {
+        return newList;
     }
 
-    public void setList(MouldList<PayrollList2B> list) {
-        this.list = list;
+    public void setNewList(MouldList<PayrollList2B> newList) {
+        this.newList = newList;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

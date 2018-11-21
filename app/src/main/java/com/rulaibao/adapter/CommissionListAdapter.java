@@ -1,6 +1,7 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.activity.CommissionDetailActivity;
 import com.rulaibao.bean.CommissionDetailList2B;
 import com.rulaibao.bean.TrackingList2B;
 import com.rulaibao.network.types.MouldList;
@@ -46,8 +48,8 @@ public class CommissionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) { // 加载待发佣金 item 布局
-            View itemView = mInflater.inflate(R.layout.item_commission_list, parent, false);
+        if (viewType == TYPE_ITEM) { // 加载佣金明细列表 item 布局
+            View itemView = mInflater.inflate(R.layout.item_transaction_record_commission, parent, false);
             return new ItemViewHolder(itemView);
 
         } else if (viewType == TYPE_FOOTER) {   // 加载底部布局
@@ -61,13 +63,9 @@ public class CommissionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-//            itemViewHolder.tv_insurance_name.setText(list.get(position).getInsuranceName());
-//            itemViewHolder.tv_status.setText(list.get(position).getStatus());
-//            itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getPaymentedPremiums() + "元");
-//            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
-            // 加载图片
-//            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
+            itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
+            itemViewHolder.tv_income_date.setText(list.get(position).getCommissionTime());
+            itemViewHolder.tv_commission.setText(list.get(position).getCommissionGained());
 
             initListener(itemViewHolder.itemView,position);
         } else if (holder instanceof FooterViewHolder) {
@@ -113,20 +111,14 @@ public class CommissionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final TextView tv_insurance_name; // 保单名称
-        private final TextView tv_status; // 状态
-        private final TextView tv_customer_name; // 客户姓名
-        private final TextView tv_insurance_premiums; // 已交保费
-        private final TextView tv_insurance_period; // 保险期限
-        private final ImageView iv_company_logo; // 保险公司logo
+        private final TextView tv_income_date; //收益日期
+        private final TextView tv_commission; // 佣金收益
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             tv_insurance_name = (TextView) itemView.findViewById(R.id.tv_insurance_name);
-            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
-            tv_customer_name = (TextView) itemView.findViewById(R.id.tv_customer_name);
-            tv_insurance_premiums = (TextView) itemView.findViewById(R.id.tv_insurance_premiums);
-            tv_insurance_period = (TextView) itemView.findViewById(R.id.tv_insurance_period);
-            iv_company_logo = (ImageView) itemView.findViewById(R.id.iv_company_logo);
+            tv_income_date = (TextView) itemView.findViewById(R.id.tv_income_date);
+            tv_commission = (TextView) itemView.findViewById(R.id.tv_commission);
         }
     }
 
@@ -138,11 +130,11 @@ public class CommissionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private void initListener(View itemView,final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // 跳转到佣金明细
+            public void onClick(View v) { // 跳转到佣金详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-//                intent.putExtra("orderId", list.get(position).getOrderId());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, CommissionDetailActivity.class);
+                intent.putExtra("id", list.get(position).getId());
+                mContext.startActivity(intent);
             }
         });
     }

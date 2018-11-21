@@ -134,8 +134,8 @@ public class CommissionDetailActivity extends BaseActivity {
         tv_policy_number.setText(data.getOrderCode());
         tv_customer_name.setText(data.getCustomerName());
         tv_id_number.setText(data.getIdNo());
-        tv_insurance_period.setText(data.getInsurancePeriod());
-        tv_payment_period.setText(data.getPaymentPeriod());
+        tv_insurance_period.setText(data.getInsurancePeriod()+"年");
+        tv_payment_period.setText(data.getPaymentPeriod()+"天");
         tv_renewal_date.setText(data.getRenewalDate());
         tv_have_insurance_premiums.setText(data.getPaymentedPremiums() + "元");
         tv_promotion_fee.setText(data.getPromotioinCost() + "%");

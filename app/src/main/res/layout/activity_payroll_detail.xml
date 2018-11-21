@@ -305,9 +305,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
+            android:paddingBottom="55dp"
             android:gravity="center"
             android:text="@string/check_commission_details"
-            android:textColor="@color/txt_black1"/>
+            android:textColor="@color/txt_black1"
+            android:textSize="13sp"/>
     </LinearLayout>
 </ScrollView>

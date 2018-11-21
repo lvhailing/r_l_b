@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -106,10 +109,11 @@ public class PayrollYearsFragment extends BaseFragment {
             if (context != null) {
                 payrollList2B.clear();
             }
-//            currentYear = new MyPayrollYears2B();
-            currentYear = (String) getArguments().getSerializable(KEY);
+            currentYear =getArguments().getString(KEY);
+            Log.i("hh", "setUserVisibleHint ---- currentYear = "+currentYear);
             currentPage = 1;
             noDataFlag = true;
+
             requestPayrollList(currentYear);
 
         }
@@ -120,9 +124,16 @@ public class PayrollYearsFragment extends BaseFragment {
      * 获取工资单列表
      */
     public void requestPayrollList(String year) {
+        try {
+            userId = DESUtil.decrypt(PreferenceUtil.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("userId", userId);
+        Log.i("hh", "userId = "+userId);
         map.put("currentYear", currentYear);
+        Log.i("hh", "currentYear = "+currentYear);
         map.put("page", currentPage + "");
 
         HtmlRequest.getPayrollListData(context, map, new BaseRequester.OnRequestListener() {
@@ -132,7 +143,7 @@ public class PayrollYearsFragment extends BaseFragment {
                     return;
                 }
                 PayrollList1B data = (PayrollList1B) params.result;
-                everyList = data.getList();
+                everyList = data.getNewList();
 //                if (everyList == null) {
 //                    vs.setDisplayedChild(1);
 //                    return;
@@ -174,8 +185,8 @@ public class PayrollYearsFragment extends BaseFragment {
     public static PayrollYearsFragment newInstance(String year) {
         PayrollYearsFragment fragment = new PayrollYearsFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(KEY, year);
         fragment.setArguments(bundle);
-        bundle.putSerializable(KEY, year);
         return fragment;
     }
 

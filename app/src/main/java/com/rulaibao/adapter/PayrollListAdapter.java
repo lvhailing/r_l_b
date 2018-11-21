@@ -19,7 +19,7 @@ import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  我的工资单 Adapter 类
+ *  我的工资单列表 Adapter 类
  */
 public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

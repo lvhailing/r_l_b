@@ -4,23 +4,32 @@ import com.rulaibao.network.types.IMouldType;
 import com.rulaibao.network.types.MouldList;
 
 /**
- *    待发佣金列表 实体类
- * Created by hong on 2018/11/08.
+ *    银行卡列表 实体类
+ * Created by hong on 2018/11/21.
  */
 
-public class CommissionList1B implements IMouldType {
+public class BankCardList1B implements IMouldType {
 
-    private MouldList<CommissionList2B> commisionList; // 保单列表
+    private MouldList<BankCardList2B> userBankCardList; // 保单列表
+    private String total;
     private String flag;
     private String msg;
     private String message;
 
-    public MouldList<CommissionList2B> getCommisionList() {
-        return commisionList;
+    public MouldList<BankCardList2B> getUserBankCardList() {
+        return userBankCardList;
     }
 
-    public void setCommisionList(MouldList<CommissionList2B> commisionList) {
-        this.commisionList = commisionList;
+    public void setUserBankCardList(MouldList<BankCardList2B> userBankCardList) {
+        this.userBankCardList = userBankCardList;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     public String getFlag() {

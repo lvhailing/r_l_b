@@ -13,7 +13,7 @@ public class PayrollDetail2B implements IMouldType {
     private String individualTax; // 个人所得税
     private String additionalTax; // 附加税
     private String commission; // 佣金
-    private String totalIncome; // 到账金额
+    private String income; // 到账金额
     private String bankcardNo; // 银行卡号
 
     public String getId() {
@@ -64,12 +64,12 @@ public class PayrollDetail2B implements IMouldType {
         this.commission = commission;
     }
 
-    public String getTotalIncome() {
-        return totalIncome;
+    public String getIncome() {
+        return income;
     }
 
-    public void setTotalIncome(String totalIncome) {
-        this.totalIncome = totalIncome;
+    public void setIncome(String income) {
+        this.income = income;
     }
 
     public String getBankcardNo() {
