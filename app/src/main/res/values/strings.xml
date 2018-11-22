@@ -209,6 +209,7 @@
     <string name="title_payroll_detail">工资单详情</string>
     <string name="title_my_payroll">我的工资单</string>
     <string name="title_my_bank_cards">我的银行卡</string>
+    <string name="title_add_bank_card">新增银行卡</string>
     <string name="title_tax_deduction_rules">扣税规则</string>
 
 

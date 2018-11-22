@@ -1,7 +1,6 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rulaibao.R;
-import com.rulaibao.activity.PolicyRecordDetailActivity;
 import com.rulaibao.bean.BankCardList2B;
 import com.rulaibao.network.types.MouldList;
 
@@ -64,19 +62,31 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_bank_name.setText(list.get(position).getBank());
             itemViewHolder.tv_bank_card_num.setText(list.get(position).getBankcardNo());
-//            itemViewHolder.tv_customer_name.setText(list.get(position).getCustomerName());
-//            itemViewHolder.tv_insurance_premiums.setText(list.get(position).getInsurancPeremiums()+"元");
-//            itemViewHolder.tv_insurance_period.setText(list.get(position).getInsurancePeriod());
 
             // 显示保险公司logo
 //            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(),itemViewHolder.iv_company_logo);
 
-//            initListener(itemViewHolder.itemView,list.get(position).getOrderId());
+            // 银行卡删除
+            itemViewHolder.rl_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onDeleteClick(position);
+                }
+            });
+
+            // 设置工资卡
+            itemViewHolder.rl_set_up_salary_card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.setUpSalaryCard(position);
+                }
+            });
+
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -95,6 +105,17 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         }
 
+    }
+    private OnBankCardDeleteClickListener listener;
+
+    public interface OnBankCardDeleteClickListener {
+        void onDeleteClick(int position);
+
+        void setUpSalaryCard(int position);
+    }
+
+    public void setBankCardDeleteClickListener(OnBankCardDeleteClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -119,7 +140,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //        private final TextView tv_card_type; // 银行卡类型
         private final TextView tv_bank_card_num; // 银行卡号
         private final RelativeLayout rl_delete; // 删除当前银行卡
-        private final RelativeLayout rl_make_payroll; // （是否）设为工资卡
+        private final RelativeLayout rl_set_up_salary_card; // （是否）设为工资卡
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -128,26 +149,9 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //            tv_card_type = (TextView) itemView.findViewById(R.id.tv_card_type);
             tv_bank_card_num = (TextView) itemView.findViewById(R.id.tv_bank_card_num);
             rl_delete = (RelativeLayout) itemView.findViewById(R.id.rl_delete);
-            rl_make_payroll = (RelativeLayout) itemView.findViewById(R.id.rl_make_payroll);
+            rl_set_up_salary_card = (RelativeLayout) itemView.findViewById(R.id.rl_set_up_salary_card);
         }
 
-    }
-
-    /**
-     * item 点击监听
-     *
-     * @param itemView
-     */
-    private void initListener(View itemView,final String id) {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { // 跳转到保单详情页
-//                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, PolicyRecordDetailActivity.class);
-                intent.putExtra("orderId", id);
-                mContext.startActivity(intent);
-            }
-        });
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

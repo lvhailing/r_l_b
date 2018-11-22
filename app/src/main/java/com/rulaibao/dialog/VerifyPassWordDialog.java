@@ -18,7 +18,7 @@ import com.rulaibao.R;
 import java.util.ArrayList;
 
 /**
- *
+ * 修改密码
  */
 public class VerifyPassWordDialog extends Dialog implements
 		DialogInterface.OnCancelListener, DialogInterface.OnDismissListener{

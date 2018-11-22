@@ -370,6 +370,12 @@ public class Urls {
     // 新增银行卡
     public static final String URL_ACCOUNT_USERBANKCARD_ADDSAVE= EC_HOST + "account/userbankcard/addsave";
 
+    // 我的银行卡-删除
+    public static final String URL_ACCOUNT_USERBANKCARD_TO_DELETE= EC_HOST + "account/userbankcard/to_delete";
+
+    // 我的银行卡-设置工资卡
+    public static final String URL_ACCOUNT_USERBANKCARD_TO_SETWAGECARD = EC_HOST + "account/userbankcard/to_setwagecard ";
+
 
 
 

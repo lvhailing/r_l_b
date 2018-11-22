@@ -17,12 +17,15 @@ import com.rulaibao.adapter.MyBankCardsAdapter;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.BankCardList1B;
 import com.rulaibao.bean.BankCardList2B;
+import com.rulaibao.bean.OK2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.widget.TitleBar;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -40,6 +43,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
     private int currentPage = 1;    //当前页
     private Button btn_add_new_bank_card; //  新增银行卡
     private MouldList<BankCardList2B> everyList;
+    private BankCardList1B data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
 
         initTopTitle();
         initView();
+        initListener();
         initData();
     }
 
@@ -78,7 +83,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
         TextView tv_empty = (TextView) findViewById(R.id.tv_empty);
-        tv_empty.setText("暂无待续保保单");
+        tv_empty.setText("暂无银行卡");
         btn_add_new_bank_card = (Button) findViewById(R.id.btn_add_new_bank_card);
 
         btn_add_new_bank_card.setOnClickListener(this);
@@ -89,10 +94,130 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
     private void initRecylerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         myBankCardsAdapter = new MyBankCardsAdapter(this, totalList);
+        myBankCardsAdapter.setBankCardDeleteClickListener(new MyBankCardsAdapter.OnBankCardDeleteClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                requestDeleteData(position);
+            }
+
+            @Override
+            public void setUpSalaryCard(int position) {
+                requestSetUpSalaryCardData(position);
+            }
+        });
         recycler_view.setAdapter(myBankCardsAdapter);
 
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    /**
+     *  （我的银行卡）删除
+     */
+    private void requestDeleteData(final int position) {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("id", totalList.get(position).getId()); // 银行卡id
+        param.put("userId", userId);
+
+        HtmlRequest.deleteBankCardData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params==null || params.result == null) {
+                    //    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data.getFlag().equals("true")) {
+                    Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+                    requestData();
+                } else {
+                    Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+//                    if (data.getMessage().equals("您已经在圈子里")) {
+//                        currentPage = 1;
+//                        requestData();
+//                    }
+                }
+            }
+        });
+    }
+    /**
+     *  （我的银行卡）设置工资卡
+     */
+    private void requestSetUpSalaryCardData(final int position) {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("id", totalList.get(position).getId()); // 银行卡id
+        param.put("userId", userId);
+
+        HtmlRequest.setUpSalaryCardData(this, param, new BaseRequester.OnRequestListener() {
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params==null || params.result == null) {
+                    //    Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                OK2B data = (OK2B) params.result;
+                if (data.getFlag().equals("true")) {
+                    Toast.makeText(mContext, "工资卡设置成功", Toast.LENGTH_LONG).show();
+                    requestData();
+                } else {
+                    Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+//                    if (data.getMessage().equals("您已经在圈子里")) {
+//                        currentPage = 1;
+//                        requestData();
+//                    }
+                }
+            }
+        });
+    }
+
+    private void initListener() {
+        initPullRefresh();
+        initLoadMoreListener();
+    }
+
+    /**
+     *  列表下拉监听
+     */
+    private void initPullRefresh() {
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {  // 下拉刷新
+                totalList.clear();
+                currentPage = 1;
+                requestData();
+            }
+        });
+    }
+
+    /**
+     *  列表上拉监听
+     */
+    private void initLoadMoreListener() {
+        recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int firstVisibleItem = 0;
+            private int lastVisibleItem = 0;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == myBankCardsAdapter.getItemCount() && firstVisibleItem != 0) {
+                    if (everyList.size() == 0) {
+                        return;
+                    }
+                    currentPage++;
+                    requestData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     @Override
@@ -100,6 +225,9 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         requestData();
     }
 
+    /**
+     *  获取银行卡列表 数据
+     */
     private void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);
@@ -117,7 +245,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                     // Toast.makeText(mContext, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     return;
                 }
-                BankCardList1B data = (BankCardList1B) params.result;
+                data = (BankCardList1B) params.result;
                 everyList = data.getUserBankCardList();
                 if (everyList == null) {
                     return;
@@ -155,9 +283,17 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.btn_add_new_bank_card: // 新增银行卡
-                Intent intent = new Intent(this, AddNewBankCardActivity.class);
+//                if (PreferenceUtil.getCheckStatus().equals("true")) { // 已认证的跳转新增银行卡页面
+//                    intent = new Intent(this, AddNewBankCardActivity.class);
+//                    startActivity(intent);
+//                } else { // 未销售认证的跳转销售认证页面先认证
+//                    intent = new Intent(this, SalesCertificationActivity.class);
+//                    startActivity(intent);
+//                }
+                intent = new Intent(this, AddNewBankCardActivity.class);
                 startActivity(intent);
         }
 

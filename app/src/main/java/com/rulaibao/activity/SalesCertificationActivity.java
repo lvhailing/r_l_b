@@ -188,6 +188,11 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
         // 获取身份证号
         if (data.getIdNo() != null) {
             idNo = data.getIdNo();
+            try {
+                PreferenceUtil.setIdNo(DESUtil.encrypt(idNo));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             et_id_number.setText(idNo);
         }
         // 获取从业岗位

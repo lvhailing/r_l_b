@@ -1884,59 +1884,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
             }
         });
     }
-    /**
-     *  佣金详情
-     * @param context
-     * @param param
-     * @param listener
-     */
-//    public static void getCommissionDetail(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
-//        final String data = getResult(param);
-//        final String url = Urls.URL_ACCOUNT_TRADE_RECORD_DETAIL;
-//
-//        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
-//            @Override
-//            public Object doTask(BaseParams params) {
-//                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
-//                HttpEntity entity = null;
-//                try {
-//                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-//                    nvps.add(new BasicNameValuePair("requestKey", data));
-//                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
-//                } catch (UnsupportedEncodingException e1) {
-//                    e1.printStackTrace();
-//                }
-//                client.post(url, entity);
-//                String result = (String) client.getResult();
-//                String data=null;
-//                Gson json = new Gson();
-//                if (isCancelled() || result == null) {
-//                    return null;
-//                }
-//                try {
-//                    data = DESUtil.decrypt(result);
-//                    Log.i("hh", "佣金详情页数据 ：" + data);
-//
-//                    Repo<CommissionDetail1B> b = json.fromJson(data, new TypeToken<Repo<CommissionDetail1B>>() {
-//                    }.getType());
-//                    if (resultEncrypt(context, b.getCode())){
-//                        return b.getData();
-//                    }else{
-//                        return null;
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    return null;
-//                }
-//            }
-//
-//            @Override
-//            public void onPostExecute(Object result, BaseParams params) {
-//                params.result = result;
-//                params.sendResult();
-//            }
-//        });
-//    }
 
     /**
      *  保单列表
@@ -4723,5 +4670,111 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         });
     }
 
+    /**
+     * 我的银行卡-删除、设置工资卡
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void deleteBankCardData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_USERBANKCARD_TO_DELETE;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的银行卡 ----- 删除：" + data);
+
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+    /**
+     * 我的银行卡-设置工资卡
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void setUpSalaryCardData(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ACCOUNT_USERBANKCARD_TO_SETWAGECARD;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "我的银行卡 --- 设置工资卡：" + data);
+
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
 
 }

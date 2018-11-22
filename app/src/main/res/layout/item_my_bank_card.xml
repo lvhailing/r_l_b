@@ -11,10 +11,9 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:background="@color/white"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
         app:cardCornerRadius="4dp"
         app:contentPadding="0dp">
 
@@ -22,20 +21,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="130dp"
+            android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:paddingLeft="23dp"
+            android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:paddingTop="10dp">
+            >
 
             <RelativeLayout
                 android:id="@+id/rl_delete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
 
                 <ImageView
                     android:id="@+id/iv_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:src="@mipmap/ic_delete"/>
 
                 <TextView
@@ -50,10 +52,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_make_payroll"
+                android:id="@+id/rl_set_up_salary_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
 
                 <ImageView
                     android:id="@+id/iv_make_payroll"
@@ -78,15 +81,15 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentTop="true"
         android:layout_alignBaseline="@id/card_view_bottom"
-        app:contentPaddingTop="10dp"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:layout_marginBottom="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        app:contentPaddingTop="0dp">
 
         <LinearLayout
             android:id="@+id/rl_item_insurance_record"

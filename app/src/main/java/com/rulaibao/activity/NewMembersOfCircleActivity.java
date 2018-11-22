@@ -96,7 +96,7 @@ public class NewMembersOfCircleActivity extends BaseActivity {
         newMembersCircleAdapter.setMyItemClickListener(new NewMembersCircleAdapter.OnMyItemClickListener() {
             @Override
             public void onBtnClick(int position) { // 同意按钮的回调
-                Log.i("hh", "buttonAgreeClickListener --- " + userId);
+//                Log.i("hh", "buttonAgreeClickListener --- " + userId);
                 requestAgreeData(position);
             }
 

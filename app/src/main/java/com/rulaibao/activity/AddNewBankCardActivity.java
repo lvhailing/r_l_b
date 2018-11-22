@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.dialog.BankListDialog;
+import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
 
 /**
@@ -18,15 +21,15 @@ import com.rulaibao.widget.TitleBar;
 
 public class AddNewBankCardActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tv_user_name;
-    private TextView tv_user_id;
-    private TextView tv_account_opening_bank;
-    private TextView tv_account_opening_bank_address;
-    private TextView tv_user_phone;
+    private TextView tv_user_name; // 真实姓名
+    private TextView tv_user_id; // 身份证号
+    private TextView tv_account_opening_bank; // 开户银行
+    private TextView tv_account_opening_bank_address; // 开户银行地址
+    private TextView tv_user_phone; // 手机号
 
-    private EditText et_account_opening_bank_name;
-    private EditText et_bank_card_num;
-    private EditText et_input_validation_code;
+    private EditText et_account_opening_bank_name; // 输入开户行名称
+    private EditText et_bank_card_num; // 输入银行卡号
+    private EditText et_input_validation_code; // 输入验证码
 
     private RelativeLayout rl_account_opening_bank;
     private RelativeLayout rl_account_opening_bank_address;
@@ -45,7 +48,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
         title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_my_bank_cards))
+                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_add_bank_card))
                 .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
@@ -80,6 +83,16 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
 
         btn_save = (Button)findViewById(R.id.btn_save);
 
+        try {
+            tv_user_name.setText(DESUtil.decrypt(PreferenceUtil.getUserRealName()));
+            tv_user_phone.setText(DESUtil.decrypt(PreferenceUtil.getPhone()));
+            tv_user_id.setText(DESUtil.decrypt(PreferenceUtil.getIdNo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        rl_account_opening_bank.setOnClickListener(this);
+        rl_account_opening_bank_address.setOnClickListener(this);
         btn_save.setOnClickListener(this);
     }
     @Override
@@ -89,8 +102,33 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_save:
+            case R.id.rl_account_opening_bank: // 选择开户银行
+                showBankDialog();
+                return;
+            case R.id.rl_account_opening_bank_address: // 选择开户地
+                return;
+            case R.id.btn_save: // 保存
+                return;
 
         }
+    }
+
+    /**
+     *  选择开户银行
+     */
+    private void showBankDialog() {
+        BankListDialog dialog = new BankListDialog(this, new BankListDialog.IsCancel() {
+            @Override
+            public void onConfirm() {
+//              Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+                tv_account_opening_bank.setText("");
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
+        dialog.setTitle("");
+        dialog.show();
     }
 }

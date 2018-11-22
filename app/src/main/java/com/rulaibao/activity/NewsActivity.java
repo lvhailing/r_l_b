@@ -19,7 +19,7 @@ import com.rulaibao.widget.TitleBar;
 import java.util.HashMap;
 
 /**
- * icon_mine_news
+ * （我的模块）消息
  * Created by junde on 2018/4/21.
  */
 

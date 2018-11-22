@@ -16,6 +16,10 @@ public class BankCardList2B implements IMouldType {
     private String bankcardNo; // 银行卡号
     private String isWageCard; // 是否是工资卡（yes-是，no不是）
 
+    private String userName; // 用户姓名
+    private String userMobile; // 手机号
+    private String idNo; // 用户身份证
+
     public String getId() {
         return id;
     }
@@ -62,5 +66,29 @@ public class BankCardList2B implements IMouldType {
 
     public void setIsWageCard(String isWageCard) {
         this.isWageCard = isWageCard;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 }

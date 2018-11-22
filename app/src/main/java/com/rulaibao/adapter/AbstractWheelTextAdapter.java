@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Abstract wheel adapter provides common functionality for adapters.
  */
@@ -59,6 +61,11 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
     
     // Empty items resources
     protected int emptyItemResourceId;
+
+    private int currentIndex = 0;
+    private static int maxsize = 24;
+    private static int minsize = 14;
+    private ArrayList<View> arrayList = new ArrayList<View>();
 	
     /**
      * Constructor
@@ -90,7 +97,36 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
         
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-    
+    /**
+     * Constructor
+     *
+     * @param context          the current context
+     * @param itemResource     the resource ID for a layout file containing a TextView to use
+     *                         when instantiating items views
+     * @param itemTextResource the resource ID for a text view in the item layout
+     */
+    protected AbstractWheelTextAdapter(Context context, int itemResource, int itemTextResource, int currentIndex,
+                                       int maxsize, int minsize) {
+        this.context = context;
+        itemResourceId = itemResource;
+        itemTextResourceId = itemTextResource;
+        this.currentIndex = currentIndex;
+        this.maxsize = maxsize;
+        this.minsize = minsize;
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    /**
+     * get the list of show textview
+     *
+     * @return the array of textview
+     */
+    public ArrayList<View> getTestViews() {
+        return arrayList;
+    }
+
+
     /**
      * Gets text color
      * @return the text color
