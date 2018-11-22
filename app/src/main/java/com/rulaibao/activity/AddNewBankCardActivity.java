@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
-import com.rulaibao.dialog.BankListDialog;
+import com.rulaibao.dialog.BankDialog;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
@@ -68,20 +68,20 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
-        tv_user_name = (TextView)findViewById(R.id.tv_user_name);
-        tv_user_id = (TextView)findViewById(R.id.tv_user_id);
-        tv_account_opening_bank = (TextView)findViewById(R.id.tv_account_opening_bank);
-        tv_account_opening_bank_address = (TextView)findViewById(R.id.tv_account_opening_bank_address);
-        tv_user_phone = (TextView)findViewById(R.id.tv_user_phone);
+        tv_user_name = (TextView) findViewById(R.id.tv_user_name);
+        tv_user_id = (TextView) findViewById(R.id.tv_user_id);
+        tv_account_opening_bank = (TextView) findViewById(R.id.tv_account_opening_bank);
+        tv_account_opening_bank_address = (TextView) findViewById(R.id.tv_account_opening_bank_address);
+        tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
 
-        et_account_opening_bank_name = (EditText)findViewById(R.id.et_account_opening_bank_name);
-        et_bank_card_num = (EditText)findViewById(R.id.et_bank_card_num);
-        et_input_validation_code = (EditText)findViewById(R.id.et_input_validation_code);
+        et_account_opening_bank_name = (EditText) findViewById(R.id.et_account_opening_bank_name);
+        et_bank_card_num = (EditText) findViewById(R.id.et_bank_card_num);
+        et_input_validation_code = (EditText) findViewById(R.id.et_input_validation_code);
 
-        rl_account_opening_bank = (RelativeLayout)findViewById(R.id.rl_account_opening_bank);
-        rl_account_opening_bank_address = (RelativeLayout)findViewById(R.id.rl_account_opening_bank_address);
+        rl_account_opening_bank = (RelativeLayout) findViewById(R.id.rl_account_opening_bank);
+        rl_account_opening_bank_address = (RelativeLayout) findViewById(R.id.rl_account_opening_bank_address);
 
-        btn_save = (Button)findViewById(R.id.btn_save);
+        btn_save = (Button) findViewById(R.id.btn_save);
 
         try {
             tv_user_name.setText(DESUtil.decrypt(PreferenceUtil.getUserRealName()));
@@ -95,6 +95,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         rl_account_opening_bank_address.setOnClickListener(this);
         btn_save.setOnClickListener(this);
     }
+
     @Override
     public void initData() {
     }
@@ -114,21 +115,17 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     }
 
     /**
-     *  选择开户银行
+     * 选择开户银行
      */
     private void showBankDialog() {
-        BankListDialog dialog = new BankListDialog(this, new BankListDialog.IsCancel() {
+        BankDialog dialog = new BankDialog(this, new BankDialog.BankChooseInterface() {
             @Override
-            public void onConfirm() {
-//              Toast.makeText(PolicyBookingDetailActivity.this, "取消成功", Toast.LENGTH_LONG).show();
-                tv_account_opening_bank.setText("");
-            }
-
-            @Override
-            public void onCancel() {
+            public void getBankName(String name) {
+                tv_account_opening_bank.setText(name);
             }
         });
         dialog.setTitle("");
-        dialog.show();
+        dialog.setCancelOutside(true);//点击阴影处是否能取消对话框
+        dialog.showDialog();
     }
 }

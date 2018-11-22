@@ -48,7 +48,7 @@
         android:paddingBottom="18dp"
         android:paddingTop="18dp">
 
-        <com.rulaibao.widget.WheelView
+        <com.rulaibao.widget.bankwheel.WheelView
             android:id="@+id/date_wv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
