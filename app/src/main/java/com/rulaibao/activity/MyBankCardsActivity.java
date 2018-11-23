@@ -96,12 +96,12 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         myBankCardsAdapter = new MyBankCardsAdapter(this, totalList);
         myBankCardsAdapter.setBankCardDeleteClickListener(new MyBankCardsAdapter.OnBankCardDeleteClickListener() {
             @Override
-            public void onDeleteClick(int position) {
+            public void onDeleteClick(int position) { // 删除银行卡
                 requestDeleteData(position);
             }
 
             @Override
-            public void setUpSalaryCard(int position) {
+            public void setUpSalaryCard(int position) { // 设置工资卡
                 requestSetUpSalaryCardData(position);
             }
         });
@@ -132,10 +132,6 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                     requestData();
                 } else {
                     Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
-//                    if (data.getMessage().equals("您已经在圈子里")) {
-//                        currentPage = 1;
-//                        requestData();
-//                    }
                 }
             }
         });
@@ -225,6 +221,12 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         requestData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestData();
+    }
+
     /**
      *  获取银行卡列表 数据
      */
@@ -265,11 +267,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     vs.setDisplayedChild(0);
                 }
-//                if (totalList.size() != 0 && totalList.size() % 10 == 0) {
-//                    myAskAdapter.changeMoreStatus(myAskAdapter.PULLUP_LOAD_MORE);
-//                } else {
-//                    myAskAdapter.changeMoreStatus(myAskAdapter.NO_LOAD_MORE);
-//                }
+
                 if (everyList.size() != 10) {
                     // 本次取回的数据为不是10条，代表取完了
                     myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);

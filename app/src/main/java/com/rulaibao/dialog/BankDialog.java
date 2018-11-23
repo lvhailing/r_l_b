@@ -142,7 +142,7 @@ public class BankDialog extends Dialog implements View.OnClickListener {
                 bankChooseInterface.getBankName(mSelectedBank);
                 dismissDialog();
                 break;
-            case R.id.tv_cancel://关闭日期选择对话框
+            case R.id.tv_cancel://取消
                 dismissDialog();
                 break;
         }

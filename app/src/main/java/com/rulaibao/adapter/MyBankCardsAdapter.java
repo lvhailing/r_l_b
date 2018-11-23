@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.rulaibao.R;
 import com.rulaibao.bean.BankCardList2B;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.uitls.StringUtil;
 
 
 /**
@@ -64,9 +65,9 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_bank_name.setText(list.get(position).getBank());
-            itemViewHolder.tv_bank_card_num.setText(list.get(position).getBankcardNo());
+            itemViewHolder.tv_bank_card_num.setText(StringUtil.replaceSubStringBankCard(list.get(position).getBankcardNo()));
 
             // 显示保险公司logo
 //            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(),itemViewHolder.iv_company_logo);
@@ -84,6 +85,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     listener.setUpSalaryCard(position);
+                    itemViewHolder.rl_set_up_salary_card.setBackgroundResource(R.mipmap.icon_certified);
                 }
             });
 

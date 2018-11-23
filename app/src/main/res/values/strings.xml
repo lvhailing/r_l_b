@@ -283,7 +283,6 @@
     <string name="item_five_content">\n税后收入=税前收入-应交税金</string>
 
     <!-- 新增银行卡 -->
-
     <string name="id_number1">身份证号</string>
     <string name="account_opening_bank">开户银行</string>
     <string name="account_opening_bank_address">开户地</string>
@@ -294,6 +293,11 @@
     <string name="user_phone_number">手机号</string>
     <string name="click_and_get_verification_code">点击获取验证码</string>
     <string name="tv_add_bank_card_hint">注：保存以后银行卡信息不可修改！</string>
+
+    <!-- 我的工资单 -->
+    <string name="income">净收入</string>
+    <string name="total_commission">总佣金:</string>
+    <string name="tax_deduction">扣&#160;&#160;&#160;&#160;税:</string>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

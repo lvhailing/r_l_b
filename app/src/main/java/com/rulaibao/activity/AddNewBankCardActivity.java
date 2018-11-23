@@ -1,18 +1,31 @@
 package com.rulaibao.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.bean.OK2B;
+import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.BankDialog;
+import com.rulaibao.network.BaseParams;
+import com.rulaibao.network.BaseRequester;
+import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.TitleBar;
+
+import java.util.LinkedHashMap;
 
 /**
  * 新增银行卡
@@ -34,7 +47,22 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private RelativeLayout rl_account_opening_bank;
     private RelativeLayout rl_account_opening_bank_address;
 
-    private Button btn_save;
+    private Button btn_save; // 保存
+    private Button btn_get_verification_code; // 获取验证码
+    private String userPhone;
+    private String userName;
+    private String userIdNo;
+    private String bankName;  // 开户银行名称
+    private String bankCardNum;
+    private String validationCode;
+    private String openingBank; // 开户银行
+    private String openingBankAddress;
+
+    private boolean smsflag = true;
+    private boolean flag = true;
+    private MyHandler mHandler;
+    private String btnString;
+    private int time = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,19 +109,28 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         rl_account_opening_bank = (RelativeLayout) findViewById(R.id.rl_account_opening_bank);
         rl_account_opening_bank_address = (RelativeLayout) findViewById(R.id.rl_account_opening_bank_address);
 
+        btn_get_verification_code = (Button) findViewById(R.id.btn_get_verification_code);
         btn_save = (Button) findViewById(R.id.btn_save);
 
         try {
-            tv_user_name.setText(DESUtil.decrypt(PreferenceUtil.getUserRealName()));
-            tv_user_phone.setText(DESUtil.decrypt(PreferenceUtil.getPhone()));
-            tv_user_id.setText(DESUtil.decrypt(PreferenceUtil.getIdNo()));
+            userPhone = DESUtil.decrypt(PreferenceUtil.getPhone());
+            userName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+            userIdNo = DESUtil.decrypt(PreferenceUtil.getIdNo());
+
+            tv_user_name.setText(userName);
+            tv_user_phone.setText(userPhone);
+            tv_user_id.setText(userIdNo);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         rl_account_opening_bank.setOnClickListener(this);
         rl_account_opening_bank_address.setOnClickListener(this);
+        btn_get_verification_code.setOnClickListener(this);
         btn_save.setOnClickListener(this);
+
+        mHandler = new MyHandler();
+        btnString = getResources().getString(R.string.sign_getsms_again);
     }
 
     @Override
@@ -105,13 +142,108 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.rl_account_opening_bank: // 选择开户银行
                 showBankDialog();
-                return;
+                break;
             case R.id.rl_account_opening_bank_address: // 选择开户地
-                return;
+                break;
+            case R.id.btn_get_verification_code: // 获取验证码
+                if(TextUtils.isEmpty(userPhone.trim())){
+                    Toast.makeText(this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                requestSMS();
+                btn_get_verification_code.setClickable(false);
+                break;
             case R.id.btn_save: // 保存
-                return;
+                checkDataNull();
+                break;
 
         }
+    }
+
+    /**
+     * 判断为空条件
+     */
+    private void checkDataNull() {
+        userName = tv_user_name.getText().toString();
+        userIdNo = tv_user_id.getText().toString();
+        openingBank = tv_account_opening_bank.getText().toString();
+        openingBankAddress = tv_account_opening_bank_address.getText().toString();
+        bankName = et_account_opening_bank_name.getText().toString();
+        bankCardNum = et_bank_card_num.getText().toString();
+        userPhone = tv_user_phone.getText().toString();
+        validationCode = et_input_validation_code.getText().toString();
+
+        if(TextUtils.isEmpty(userName)){
+            Toast.makeText(this,"姓名不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(userIdNo)){
+            Toast.makeText(this,"身份证号不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(openingBank)){
+            Toast.makeText(this,"请选择开户银行",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(openingBankAddress)){
+            Toast.makeText(this,"请选择开户地",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(bankName)){
+            Toast.makeText(this,"请输入开户行名称",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(bankCardNum)){
+            Toast.makeText(this,"请输入银行帐号",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(userPhone.trim())){
+            Toast.makeText(this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(validationCode)){
+            Toast.makeText(this,"请输入验证码",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        requestSaveBankCard();
+    }
+
+    /**
+     * 我的银行卡-新增
+     */
+    private void requestSaveBankCard() {
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+
+        param.put("userId",userId);
+        param.put("realName", userName);
+        param.put("mobile", userPhone);
+        param.put("idNo", userIdNo);// 身份证号
+        param.put("validateCode",validationCode );
+        param.put("bank", openingBank); // 所属银行
+        param.put("bankName",bankName ); // 开户行名称
+        param.put("bankcardNo",bankCardNum ); // 银行卡号
+        param.put("bankAddress", "北京"); // 开户行地址
+
+        HtmlRequest.requestSaveBankCardData(AddNewBankCardActivity.this, param,new BaseRequester.OnRequestListener() {
+
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params==null){
+                    return;
+                }
+                OK2B b = (OK2B) params.result;
+                if (b != null) {
+                    if (Boolean.parseBoolean(b.getFlag())) {
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(AddNewBankCardActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     /**
@@ -127,5 +259,103 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         dialog.setTitle("");
         dialog.setCancelOutside(true);//点击阴影处是否能取消对话框
         dialog.showDialog();
+    }
+
+    /**
+     * 获取验证码
+     */
+    private void requestSMS() {
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+
+        param.put("mobile", userPhone);
+        param.put("userId",userId);
+        param.put("busiType", Urls.ADDBANKCARD);
+
+        HtmlRequest.sendSMS(AddNewBankCardActivity.this, param,new BaseRequester.OnRequestListener() {
+
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params==null){
+                    return;
+                }
+                OK2B b = (OK2B) params.result;
+                if (b != null) {
+                    if (Boolean.parseBoolean(b.getFlag())) {
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                        smsflag = true;
+                        startThread();
+                    } else {
+                        btn_get_verification_code.setClickable(true);
+                        smsflag = false;
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(AddNewBankCardActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                    btn_get_verification_code.setClickable(true);
+                }
+            }
+        });
+    }
+
+
+    private void startThread() {
+        if (smsflag) {
+            Thread t = new Thread(myRunnable);
+            flag = true;
+            t.start();
+        }
+    }
+
+
+    Runnable myRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            while (flag) {
+                Message msg = new Message();
+                time -= 1;
+                msg.arg1 = time;
+                if (time == 0) {
+                    flag = false;
+                    mHandler.sendMessage(msg);
+                    time = 60;
+                    mHandler.removeCallbacks(myRunnable);
+                } else {
+                    mHandler.sendMessage(msg);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
+    class MyHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            setButtonStyle(msg.arg1);
+        }
+
+    }
+
+    private void setButtonStyle(int time) {
+        if (time == 0) {
+            btn_get_verification_code.setClickable(true);
+            btn_get_verification_code.setBackgroundResource(R.drawable.shape_center_blue_light);
+            btn_get_verification_code.setTextColor(getResources().getColor(R.color.white));
+            btn_get_verification_code.setText(getResources().getString(R.string.sign_getsms_again));
+        } else if (time < 60) {
+            btn_get_verification_code.setClickable(false);
+            btn_get_verification_code.setBackgroundResource(R.drawable.shape_center_gray_light);
+            btn_get_verification_code.setTextColor(getResources().getColor(R.color.txt_black2));
+            btn_get_verification_code.setText(btnString+"("+time+")");
+
+        }
     }
 }
