@@ -11,6 +11,7 @@ public class CommissionList2B implements IMouldType {
 
     private String id; // ID
     private String productId; // 产品ID
+    private String orderId; // 保单编号
     private String productName; // 产品名称
     private String userId; // 用户ID
     private String userName; // 用户名称
@@ -32,6 +33,14 @@ public class CommissionList2B implements IMouldType {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getProductName() {

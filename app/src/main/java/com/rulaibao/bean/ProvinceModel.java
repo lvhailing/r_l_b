@@ -8,4 +8,27 @@ public class ProvinceModel {
 	public String NAME;
 	public String CODE;
 
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String ID) {
+		this.ID = ID;
+	}
+
+	public String getNAME() {
+		return NAME;
+	}
+
+	public void setNAME(String NAME) {
+		this.NAME = NAME;
+	}
+
+	public String getCODE() {
+		return CODE;
+	}
+
+	public void setCODE(String CODE) {
+		this.CODE = CODE;
+	}
 }

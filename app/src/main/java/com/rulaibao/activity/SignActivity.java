@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.common.Urls;
+import com.rulaibao.dialog.SelectAddressDialog;
+import com.rulaibao.dialog.SelectAddressOneDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -44,6 +47,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     private EditText et_sign_verify_code; //  验证码
     private EditText et_sign_password; //  密码
     private EditText et_sign_real_name; //  真实姓名
+    private RelativeLayout rl_select_address;
+    private TextView tv_sign_address;//选择地址
     private EditText et_sign_recommendation; //  推荐码
     private CheckBox signup_checkbox; //  同意协议
     private TextView signup_web; //  服务协议
@@ -54,6 +59,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
     private String password = "";
     private String realName = "";
     private String recommendation = "";
+    private String address;
 
     private boolean smsflag = true;
     private boolean flag = true;
@@ -87,6 +93,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         et_sign_verify_code = (EditText) findViewById(R.id.et_sign_verify_code);
         et_sign_password = (EditText) findViewById(R.id.et_sign_password);
         et_sign_real_name = (EditText) findViewById(R.id.et_sign_real_name);
+        rl_select_address=(RelativeLayout) findViewById(R.id.rl_select_address);
+        tv_sign_address= (TextView) findViewById(R.id.tv_sign_address);
         et_sign_recommendation = (EditText) findViewById(R.id.et_sign_recommendation);
         signup_checkbox = (CheckBox) findViewById(R.id.signup_checkbox);
         signup_web = (TextView) findViewById(R.id.signup_web);
@@ -97,6 +105,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         btn_sign.setOnClickListener(this);
         tv_sign_get_verify_code.setOnClickListener(this);
         iv_hide_password.setOnClickListener(this);
+        rl_select_address.setOnClickListener(this);
 
         mHandler = new MyHandler();
         btnString = getResources().getString(R.string.sign_getsms_again);
@@ -203,6 +212,20 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 tv_sign_get_verify_code.setClickable(false);
                 requestSMS();
                 break;
+            case R.id.rl_select_address:
+                SelectAddressOneDialog dialog=new SelectAddressOneDialog(this, new SelectAddressOneDialog.OnExitChanged() {
+                    @Override
+                    public void onConfim(String selectText) {
+                        tv_sign_address.setText(selectText);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+                dialog.show();
+                break;
 
             default:
 
@@ -220,6 +243,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         password = et_sign_password.getText().toString();
         realName = et_sign_real_name.getText().toString();
         recommendation = et_sign_recommendation.getText().toString();
+        address=tv_sign_address.getText().toString();
         if(TextUtils.isEmpty(mobile.trim())){
             Toast.makeText(context,"请输入手机号",Toast.LENGTH_SHORT).show();
             return;
@@ -242,6 +266,10 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         }
         if(TextUtils.isEmpty(realName)){
             Toast.makeText(context,"请输入真实姓名",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if("请选择".equals(address)){
+            Toast.makeText(context,"请选择所在省/市",Toast.LENGTH_SHORT).show();
             return;
         }
         if(!signup_checkbox.isChecked()){
@@ -300,7 +328,16 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
         param.put("parentRecommendCode", recommendation);
         param.put("appid", "");
         param.put("terminal", "");
-
+        if ("北京".equals(address)){
+            address="beijing";
+        }else if("河北".equals(address)){
+            address="hebei";
+        }else if("内蒙".equals(address)){
+            address="neimeng";
+        }else if("贵州".equals(address)){
+            address="guizhou";
+        }
+        param.put("area", address);
         HtmlRequest.getRegisterData(SignActivity.this, param,new BaseRequester.OnRequestListener() {
 
             @Override

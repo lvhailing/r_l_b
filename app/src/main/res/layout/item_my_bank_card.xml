@@ -60,7 +60,8 @@
                     android:id="@+id/iv_make_payroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_uncertified"/>
+                    tools:src="@mipmap/icon_uncertified"
+                    />
 
                 <TextView
                     android:id="@+id/tv_payroll"
@@ -110,7 +111,7 @@
                     android:id="@+id/iv_bank_logo"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/img_default_photo"/>
+                    tools:src="@mipmap/img_default_photo"/>
 
                 <TextView
                     android:id="@+id/tv_bank_name"

@@ -17,6 +17,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.BankDialog;
+import com.rulaibao.dialog.SelectAddressDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -45,7 +46,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private EditText et_input_validation_code; // 输入验证码
 
     private RelativeLayout rl_account_opening_bank;
-    private RelativeLayout rl_account_opening_bank_address;
+    private RelativeLayout rl_account_opening_bank_address; // 开户地
 
     private Button btn_save; // 保存
     private Button btn_get_verification_code; // 获取验证码
@@ -63,6 +64,11 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private MyHandler mHandler;
     private String btnString;
     private int time = 60;
+
+    private String[] selectInfo;
+    private String addressId;
+    private String aa;
+    private String bb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +150,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
                 showBankDialog();
                 break;
             case R.id.rl_account_opening_bank_address: // 选择开户地
+                showSelectAddressDialog();
                 break;
             case R.id.btn_get_verification_code: // 获取验证码
                 if(TextUtils.isEmpty(userPhone.trim())){
@@ -158,6 +165,28 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
                 break;
 
         }
+    }
+
+    /**
+     *  选择银行开户地
+     */
+    private void showSelectAddressDialog() {
+        SelectAddressDialog dialog = new SelectAddressDialog(this, new SelectAddressDialog.OnExitChanged() {
+            @Override
+            public void onConfim(String selectText) {
+                tv_account_opening_bank_address.setText(selectText);
+                selectInfo = selectText.split("-");
+                aa = selectInfo[0];
+                bb = selectInfo[1];
+//                cc = selectInfo[2];
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+        dialog.show();
     }
 
     /**
@@ -222,7 +251,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         param.put("bank", openingBank); // 所属银行
         param.put("bankName",bankName ); // 开户行名称
         param.put("bankcardNo",bankCardNum ); // 银行卡号
-        param.put("bankAddress", "北京"); // 开户行地址
+        param.put("bankAddress",openingBankAddress); // 开户行地址
 
         HtmlRequest.requestSaveBankCardData(AddNewBankCardActivity.this, param,new BaseRequester.OnRequestListener() {
 

@@ -69,8 +69,6 @@ public class BankDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initListener() {
-
-        //日期********************
         mWheelView.addChangingListener(new OnWheelChangedListener() {
 
             @Override

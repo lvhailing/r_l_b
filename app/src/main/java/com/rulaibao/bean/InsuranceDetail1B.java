@@ -21,7 +21,6 @@ public class InsuranceDetail1B implements IMouldType {
     private String claimProcess;
     private String commonProblem;
     private String minimumPremium;
-    private String promotionMoney;
     private String prospectus;
     private String productLink;
     private String checkStatus;
@@ -30,6 +29,11 @@ public class InsuranceDetail1B implements IMouldType {
     private String prospectusStatus;
     private String productStatus;
     private String attachmentPath;
+    private String promotionMoney;
+    private String promotionMoney2;
+    private String promotionMoney3;
+    private String promotionMoney4;
+    private String promotionMoney5;
 
     public String getId() {
         return id;
@@ -245,5 +249,37 @@ public class InsuranceDetail1B implements IMouldType {
 
     public void setAttachmentPath(String attachmentPath) {
         this.attachmentPath = attachmentPath;
+    }
+
+    public String getPromotionMoney2() {
+        return promotionMoney2;
+    }
+
+    public void setPromotionMoney2(String promotionMoney2) {
+        this.promotionMoney2 = promotionMoney2;
+    }
+
+    public String getPromotionMoney3() {
+        return promotionMoney3;
+    }
+
+    public void setPromotionMoney3(String promotionMoney3) {
+        this.promotionMoney3 = promotionMoney3;
+    }
+
+    public String getPromotionMoney4() {
+        return promotionMoney4;
+    }
+
+    public void setPromotionMoney4(String promotionMoney4) {
+        this.promotionMoney4 = promotionMoney4;
+    }
+
+    public String getPromotionMoney5() {
+        return promotionMoney5;
+    }
+
+    public void setPromotionMoney5(String promotionMoney5) {
+        this.promotionMoney5 = promotionMoney5;
     }
 }

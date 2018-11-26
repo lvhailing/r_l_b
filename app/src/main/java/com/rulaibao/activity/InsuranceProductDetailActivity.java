@@ -16,22 +16,26 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rulaibao.R;
+import com.rulaibao.adapter.PromotionMoneyListAdapter;
 import com.rulaibao.bean.InsuranceDetail1B;
+import com.rulaibao.bean.ResultPromotionMoneyItemBean;
 import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.ShareSDKDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.ShareUtil;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
+import com.rulaibao.widget.MyListView;
 
 import java.util.LinkedHashMap;
 
@@ -43,15 +47,16 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class InsuranceProductDetailActivity extends Activity implements View.OnClickListener {
     private RelativeLayout rl_appointment;
-    private Button btn_appointment;//预约
+    private TextView btn_appointment;//预约
     private TextView tv_appointment_minimumPremium;
     private TextView tv_appointment_promotionmoney;
 
     private RelativeLayout rl_appointmented;
-    private Button btn_planbook;//计划书
-    private Button btn_buy;//购买
+    private TextView btn_planbook;//计划书
+    private TextView btn_buy;//购买
     private TextView tv_appointmented_minimumPremium;
     private TextView tv_appointmented_promotionmoney;
+    private ImageView img_promotionmoney;
 
     private WebView mWebview;
 
@@ -65,15 +70,17 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
     private String userId=null;
     public String title;
     private String url;
-
-
+    private MyListView listView;
+    private PromotionMoneyListAdapter adapter;
+    private MouldList<ResultPromotionMoneyItemBean> list;
+    private FrameLayout fl_promotionmoney;
+    private ImageView img_close;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_insurance_detail);
         initView();
-        requestData();
     }
     @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void initView() {
@@ -94,18 +101,29 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_btn_share = (ImageView) findViewById(R.id.iv_btn_share);
         rl_appointment = (RelativeLayout) findViewById(R.id.rl_appointment);
-        btn_appointment = (Button) findViewById(R.id.btn_appointment);
+        btn_appointment = (TextView) findViewById(R.id.btn_appointment);
         tv_appointment_minimumPremium = (TextView) findViewById(R.id.tv_appointment_minimumPremium);
         tv_appointment_promotionmoney = (TextView) findViewById(R.id.tv_appointment_promotionmoney);
         rl_appointmented = (RelativeLayout) findViewById(R.id.rl_appointmented);
-        btn_planbook = (Button) findViewById(R.id.btn_planbook);
-        btn_buy = (Button) findViewById(R.id.btn_buy);
+        btn_planbook = (TextView) findViewById(R.id.btn_planbook);
+        btn_buy = (TextView) findViewById(R.id.btn_buy);
         tv_appointmented_minimumPremium = (TextView) findViewById(R.id.tv_appointmented_minimumPremium);
         tv_appointmented_promotionmoney = (TextView) findViewById(R.id.tv_appointmented_promotionmoney);
+        img_promotionmoney= (ImageView) findViewById(R.id.img_promotionmoney);
+        fl_promotionmoney= (FrameLayout) findViewById(R.id.fl_promotionmoney);
+        img_close= (ImageView) findViewById(R.id.img_close);
+        list = new MouldList<ResultPromotionMoneyItemBean>();
+
+        listView= (MyListView) findViewById(R.id.lv_promotion_money);
+        adapter = new PromotionMoneyListAdapter(this, list);
+        listView.setAdapter(adapter);
+
         btn_appointment.setOnClickListener(this);
         btn_planbook.setOnClickListener(this);
+        img_promotionmoney.setOnClickListener(this);
         btn_buy.setOnClickListener(this);
         iv_back.setOnClickListener(this);
+        img_close.setOnClickListener(this);
         iv_btn_share.setOnClickListener(this);
         iv_btn_share.setClickable(false);
 
@@ -249,12 +267,24 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
                 intent.putExtra("title", "购买");
                 startActivity(intent);
                 break;
+            case R.id.img_promotionmoney://长期险--推广费
+                if (!PreferenceUtil.isLogin()) {
+                    intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                fl_promotionmoney.setVisibility(View.VISIBLE);
+                break;
+            case R.id.img_close://关闭长期险--推广费
+                fl_promotionmoney.setVisibility(View.GONE);
+                break;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        requestData();
     }
 
     /**
@@ -297,6 +327,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
     }
 
     private void setData(InsuranceDetail1B data) {
+        list.clear();
         String appointmentStatus = data.getAppointmentStatus();
         String prospectusStatus = data.getProspectusStatus();
         String type = data.getType();
@@ -320,6 +351,30 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
                 } else {
                     tv_appointment_promotionmoney.setText(setTextStyle1(this,"认证可见"));
                 }
+                ResultPromotionMoneyItemBean bean1=new ResultPromotionMoneyItemBean();
+                bean1.setPromotionMoney("第一年推广费："+data.getPromotionMoney()+"%");
+                list.add(bean1);
+                if (!TextUtils.isEmpty(data.getPromotionMoney2())){
+                    ResultPromotionMoneyItemBean bean2=new ResultPromotionMoneyItemBean();
+                    bean2.setPromotionMoney("第二年推广费："+data.getPromotionMoney2()+"%");
+                    list.add(bean2);
+                }
+                if (!TextUtils.isEmpty(data.getPromotionMoney3())){
+                    ResultPromotionMoneyItemBean bean3=new ResultPromotionMoneyItemBean();
+                    bean3.setPromotionMoney("第三年推广费："+data.getPromotionMoney3()+"%");
+                    list.add(bean3);
+                }
+                if (!TextUtils.isEmpty(data.getPromotionMoney4())){
+                    ResultPromotionMoneyItemBean bean4=new ResultPromotionMoneyItemBean();
+                    bean4.setPromotionMoney("第四年推广费："+data.getPromotionMoney4()+"%");
+                    list.add(bean4);
+                }
+                if (!TextUtils.isEmpty(data.getPromotionMoney5())){
+                    ResultPromotionMoneyItemBean bean5=new ResultPromotionMoneyItemBean();
+                    bean5.setPromotionMoney("第五年推广费："+data.getPromotionMoney5()+"%");
+                    list.add(bean5);
+                }
+                adapter.notifyDataSetChanged();
 
             } else if ("shortTermInsurance".equals(type)) {//短期险---购买
 

@@ -2,6 +2,7 @@ package com.rulaibao.adapter.holder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rulaibao.R;
@@ -27,6 +28,10 @@ public class AnswerDetailsViewHolder extends RecyclerView.ViewHolder {
     public MyListView lvAnswerDetails;
     @BindView(R.id.tv_answer_detailas_line)
     public TextView tvAnswerDetailasLine;
+    @BindView(R.id.tv_answer_detailas_link)
+    public TextView tvAnswerDetailasLink;
+    @BindView(R.id.iv_answer_detailas)
+    public ImageView ivAnswerDetailas;
 
     public AnswerDetailsViewHolder(View view) {
         super(view);

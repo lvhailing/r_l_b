@@ -54,6 +54,28 @@
         android:textSize="16sp"
 
         />
+    <TextView
+        android:id="@+id/tv_answer_detailas_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="5dip"
+        android:autoLink="all"
+        android:textColorLink="@color/txt_blue"
+        android:text=""
+        android:textColor="@color/txt_gray"
+        android:visibility="gone"
+        />
+    <ImageView
+        android:id="@+id/iv_answer_detailas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="5dip"
+        android:visibility="gone"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

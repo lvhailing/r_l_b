@@ -48,24 +48,24 @@
             android:orientation="horizontal"
             android:padding="3dp">
 
-            <com.haidehui.widget.WheelView
+            <com.rulaibao.widget.WheelView
                 android:id="@+id/provinceView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
-            <com.haidehui.widget.WheelView
+            <com.rulaibao.widget.WheelView
                 android:id="@+id/cityView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
-            <com.haidehui.widget.WheelView
-                android:id="@+id/districtView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="gone"/>
+            <!--<com.rulaibao.widget.WheelView-->
+                <!--android:id="@+id/districtView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:visibility="gone"/>-->
         </LinearLayout>
     </LinearLayout>
 

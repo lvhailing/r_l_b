@@ -27,7 +27,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_DEBUG;
+    private static String EC_HOST = URL_OUTER_NET_DEBUG;
 
     /**
      * 版本更新
@@ -126,6 +126,10 @@ public class Urls {
     // 研修圈子详情话题详情
     public static final String URL_TRAINING_CIRCLE_DETAILS_TOPIC_DETAILS = EC_HOST + "appTopic/detail";
 
+
+    // 话题评论上传图片
+    public static final String URL_UPLOAD = EC_HOST + "android/account/otherimage/upload";
+
     // 研修圈子详情话题详情评论列表
     public static final String URL_TRAINING_CIRCLE_COMMENT_LIST = EC_HOST + "appTopic/comment/list";
 
@@ -155,6 +159,7 @@ public class Urls {
 
     // 问答首页
     public static final String URL_TRAINING_ASK_INDEX = EC_HOST + "appQuestion/list";
+
 
     // 问答详情
     public static final String URL_TRAINING_ASK_DETAILS = EC_HOST + "appQuestion/detail";

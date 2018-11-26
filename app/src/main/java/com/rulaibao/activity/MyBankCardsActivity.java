@@ -18,6 +18,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.BankCardList1B;
 import com.rulaibao.bean.BankCardList2B;
 import com.rulaibao.bean.OK2B;
+import com.rulaibao.dialog.CancelNormalDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
@@ -53,7 +54,6 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         initTopTitle();
         initView();
         initListener();
-        initData();
     }
 
     private void initTopTitle() {
@@ -97,18 +97,58 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         myBankCardsAdapter.setBankCardDeleteClickListener(new MyBankCardsAdapter.OnBankCardDeleteClickListener() {
             @Override
             public void onDeleteClick(int position) { // 删除银行卡
-                requestDeleteData(position);
+                showDeleteDialog(position);
             }
 
             @Override
             public void setUpSalaryCard(int position) { // 设置工资卡
-                requestSetUpSalaryCardData(position);
+                showSetUpDialog(position);
             }
         });
         recycler_view.setAdapter(myBankCardsAdapter);
 
         //添加动画
         recycler_view.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    /**
+     *  弹出删除银行卡提示框
+     * @param position
+     */
+    private void showDeleteDialog(final int position) {
+        CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
+            @Override
+            public void onConfirm() {
+                requestDeleteData(position);
+            }
+
+            @Override
+            public void onCancel() {
+//                Toast.makeText(MyBankCardsActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+            }
+        });
+        dialog.setTitle("是否确定删除该银行卡？");
+        dialog.show();
+    }
+
+    /**
+     *  弹出设置工资卡的提示框
+     * @param position
+     */
+    private void showSetUpDialog(final int position) {
+        CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
+            @Override
+            public void onConfirm() {
+                requestSetUpSalaryCardData(position);
+            }
+
+            @Override
+            public void onCancel() {
+//                Toast.makeText(MyBankCardsActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+            }
+        });
+        dialog.setTitle("确定保存新银行卡吗？");
+        dialog.show();
     }
 
     /**
@@ -154,13 +194,11 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                 OK2B data = (OK2B) params.result;
                 if (data.getFlag().equals("true")) {
                     Toast.makeText(mContext, "工资卡设置成功", Toast.LENGTH_LONG).show();
+                    totalList.clear();
                     requestData();
+                    recycler_view.scrollToPosition(0);
                 } else {
                     Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
-//                    if (data.getMessage().equals("您已经在圈子里")) {
-//                        currentPage = 1;
-//                        requestData();
-//                    }
                 }
             }
         });
@@ -168,7 +206,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
 
     private void initListener() {
         initPullRefresh();
-        initLoadMoreListener();
+//        initLoadMoreListener();
     }
 
     /**
@@ -179,7 +217,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onRefresh() {  // 下拉刷新
                 totalList.clear();
-                currentPage = 1;
+//                currentPage = 1;
                 requestData();
             }
         });
@@ -201,8 +239,8 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                     if (everyList.size() == 0) {
                         return;
                     }
-                    currentPage++;
-                    requestData();
+//                    currentPage++;
+//                    requestData();
                 }
             }
 
@@ -218,12 +256,12 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void initData() {
-        requestData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        totalList.clear();
         requestData();
     }
 
@@ -252,15 +290,16 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                 if (everyList == null) {
                     return;
                 }
-                if (everyList.size() == 0 && currentPage != 1) {
-                    Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
-                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);
-                }
-                if (currentPage == 1) {
-                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
-                    totalList.clear();
-                }
+//                if (everyList.size() == 0 && currentPage != 1) {
+//                    Toast.makeText(mContext, "已显示全部", Toast.LENGTH_SHORT).show();
+//                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);
+//                }
+//                if (currentPage == 1) {
+//                    //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
+//                    totalList.clear();
+//                }
                 totalList.addAll(everyList);
+                myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);
                 // 0:从后台获取到数据展示的布局；1：从后台没有获取到数据时展示的布局；
                 if (totalList.size() == 0) {
                     vs.setDisplayedChild(1);
@@ -268,13 +307,13 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                     vs.setDisplayedChild(0);
                 }
 
-                if (everyList.size() != 10) {
-                    // 本次取回的数据为不是10条，代表取完了
-                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);
-                } else {
-                    // 其他，均显示“数据加载中”的提示
-                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.PULLUP_LOAD_MORE);
-                }
+//                if (everyList.size() != 10) {
+//                    // 本次取回的数据为不是10条，代表取完了
+//                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.NO_LOAD_MORE);
+//                } else {
+//                    // 其他，均显示“数据加载中”的提示
+//                    myBankCardsAdapter.changeMoreStatus(myBankCardsAdapter.PULLUP_LOAD_MORE);
+//                }
             }
         });
     }

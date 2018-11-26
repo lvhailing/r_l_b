@@ -40,6 +40,7 @@
     <string name="training_class_details_discuss_comment">发表</string>
     <string name="training_circle_topic_issue">发布话题</string>
     <string name="training_class_details_discuss_comment_hint">我也来说几句...(最多500字)</string>
+    <string name="training_class_details_discuss_comment_link_hint">输入链接</string>
     <string name="training_toanswer">请认真输入您的回答...(1000字以内)</string>
     <string name="training_commit">提交</string>
 
@@ -72,6 +73,7 @@
     <string name="sign_getsms_again">重新获取</string>
     <string name="sign_password_name">密码</string>
     <string name="sign_password_hint">(6-16位数字和字母组合)</string>
+    <string name="sign_address">所在省/市</string>
 
 
     <!-- 找回密码 -->

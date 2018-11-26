@@ -46,10 +46,10 @@ public class SelectAddressDialog extends Dialog implements DialogInterface.OnCan
 
     private WheelView provinceView;
     private WheelView cityView;
-    private WheelView districtView;
+//    private WheelView districtView;
     private List<ProvinceModel> provinceDatas = new ArrayList<>();
     private List<CityModel> cityDatas = new ArrayList<>();
-    private List<DistrictModel> districtDatas = new ArrayList<>();
+//    private List<DistrictModel> districtDatas = new ArrayList<>();
     private String mCurrentProvince;
     private String mCurrentCity;
     private String mCurrentDistrict;
@@ -89,16 +89,16 @@ public class SelectAddressDialog extends Dialog implements DialogInterface.OnCan
 
         provinceView = (WheelView) findViewById(R.id.provinceView);
         cityView = (WheelView) findViewById(R.id.cityView);
-        districtView = (WheelView) findViewById(R.id.districtView);
+//        districtView = (WheelView) findViewById(R.id.districtView);
         // 设置可见条目数量
         provinceView.setVisibleItems(7);
         cityView.setVisibleItems(7);
-        districtView.setVisibleItems(7);
+//        districtView.setVisibleItems(7);
 
         // 添加change事件
         provinceView.addChangingListener(this);
         cityView.addChangingListener(this);
-        districtView.addChangingListener(this);
+//        districtView.addChangingListener(this);
 
         initData();
     }
@@ -195,15 +195,15 @@ public class SelectAddressDialog extends Dialog implements DialogInterface.OnCan
             mCurrentProvince = provinceDatas.get(0).NAME;
             cityDatas = dataHelper.getCityByParentId(db, provinceDatas.get(0).CODE);
         }
-        if (cityDatas.size() > 0) {
-            districtDatas = dataHelper.getDistrictById(db, cityDatas.get(0).CODE);
-        }
+//        if (cityDatas.size() > 0) {
+//            districtDatas = dataHelper.getDistrictById(db, cityDatas.get(0).CODE);
+//        }
         provinceAdapter = new ProvinceAdapter(mContext, provinceDatas);
         provinceAdapter.setTextSize(TEXTSIZE);//设置字体大小
         provinceView.setViewAdapter(provinceAdapter);
         mCurrentProvince = provinceDatas.get(provinceView.getCurrentItem()).NAME;
         mCurrentCity = cityDatas.get(cityView.getCurrentItem()).NAME;
-        mCurrentDistrict = districtDatas.get(districtView.getCurrentItem()).NAME;
+//        mCurrentDistrict = districtDatas.get(districtView.getCurrentItem()).NAME;
         updateCitys();
         updateAreas();
     }
@@ -218,27 +218,27 @@ public class SelectAddressDialog extends Dialog implements DialogInterface.OnCan
             mCurrentCity = cityDatas.get(newValue).NAME;
             updateAreas();
         }
-        if (wheel == districtView) {
-            mCurrentDistrict = districtDatas.get(newValue).NAME;
-        }
+//        if (wheel == districtView) {
+//            mCurrentDistrict = districtDatas.get(newValue).NAME;
+//        }
     }
 
     private void updateAreas() {
         int cCurrent = cityView.getCurrentItem();
-        if (cityDatas.size() > 0) {
-            districtDatas = dataHelper.getDistrictById(db, cityDatas.get(cCurrent).CODE);
-        } else {
-            districtDatas.clear();
-        }
-        areaAdapter = new AreaAdapter(mContext, districtDatas);
-        areaAdapter.setTextSize(TEXTSIZE);
-        districtView.setViewAdapter(areaAdapter);
-        if (districtDatas.size() > 0) {
-            mCurrentDistrict = districtDatas.get(0).NAME;
-            districtView.setCurrentItem(0);
-        } else {
-            mCurrentDistrict = "";
-        }
+//        if (cityDatas.size() > 0) {
+//            districtDatas = dataHelper.getDistrictById(db, cityDatas.get(cCurrent).CODE);
+//        } else {
+//            districtDatas.clear();
+//        }
+//        areaAdapter = new AreaAdapter(mContext, districtDatas);
+//        areaAdapter.setTextSize(TEXTSIZE);
+//        districtView.setViewAdapter(areaAdapter);
+//        if (districtDatas.size() > 0) {
+//            mCurrentDistrict = districtDatas.get(0).NAME;
+//            districtView.setCurrentItem(0);
+//        } else {
+//            mCurrentDistrict = "";
+//        }
     }
 
     private void updateCitys() {

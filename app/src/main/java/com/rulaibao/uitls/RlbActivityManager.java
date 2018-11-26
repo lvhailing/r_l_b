@@ -20,6 +20,7 @@ import com.rulaibao.activity.TrainingSetAuthorityActivity;
 import com.rulaibao.activity.TrainingToAskActivity;
 import com.rulaibao.activity.TrainingTopicDetailsActivity;
 import com.rulaibao.base.BaseActivity;
+import com.rulaibao.test.TestActivity;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -371,7 +372,20 @@ public class RlbActivityManager {
             startActivity(activity,map, SalesCertificationActivity.class);
         }
     }
+    /**
+     * 前往测试页面
+     * @param activity toSaleCertificationActivity
+     * @param isFinish  是否关闭当前页面  true  false
+     *
+     */
 
+    public static void toTestActivity(Activity activity, boolean isFinish) {
+        if (isFinish) {
+            startActivityAndFinish(activity, TestActivity.class);
+        } else {
+            startActivity(activity, TestActivity.class);
+        }
+    }
 
     /************************************************ 研修模块end ***********************************************************/
 

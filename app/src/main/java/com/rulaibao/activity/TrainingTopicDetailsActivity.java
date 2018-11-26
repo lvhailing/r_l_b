@@ -1,12 +1,22 @@
 package com.rulaibao.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,9 +24,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rulaibao.R;
@@ -30,22 +42,34 @@ import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicDetailsBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicDetailsItemBean;
 import com.rulaibao.bean.ResultInfoBean;
+import com.rulaibao.bean.ResultPhotoContentBean;
 import com.rulaibao.bean.TestBean;
 import com.rulaibao.common.Urls;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
+import com.rulaibao.network.http.AsyncHttpClient;
+import com.rulaibao.network.http.AsyncHttpResponseHandler;
+import com.rulaibao.network.http.RequestParams;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.InputMethodUtils;
+import com.rulaibao.uitls.PhotoUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.RlbActivityManager;
+import com.rulaibao.uitls.ToastUtils;
 import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.widget.CircularImage;
 import com.rulaibao.widget.MyRecyclerView;
+import com.rulaibao.widget.SelectPhotoDialog;
 import com.rulaibao.widget.TitleBar;
 
+import org.apache.http.Header;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -63,6 +87,16 @@ import butterknife.OnTouch;
 
 public class TrainingTopicDetailsActivity extends BaseActivity implements TrainingAnswerDetailsListAdapter.Reply, MyRecyclerView.OnResizeListener {
 
+
+    @BindView(R.id.ll_training_link)
+    LinearLayout llTrainingLink;
+    @BindView(R.id.ll_training_upload)
+    LinearLayout llTrainingUpload;
+
+    @BindView(R.id.iv_training_topic_upload)
+    ImageView ivTrainingTopicUpload;
+    @BindView(R.id.et_topic_details_link)
+    EditText etTopicDetailsLink;
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
@@ -110,6 +144,28 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private String linkId = "";
     private boolean noDataFlag = true;      //  控制无数据不加载
 
+    private boolean linkFlag = false;       //  链接控制的是否显示
+    private boolean imageFlag = false;      //  上图图片是否显示
+
+
+
+    private static final int CODE_GALLERY_REQUEST = 0xa0;
+    private static final int CODE_CAMERA_REQUEST = 0xa1;
+    private static final int CODE_RESULT_REQUEST = 0xa2;
+    private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 0x03;
+    private static final int STORAGE_PERMISSIONS_REQUEST_CODE = 0x04;
+    private File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
+    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
+    private Uri imageUri;
+    private Uri cropImageUri;
+    private static final int OUTPUT_X = 480;
+    private static final int OUTPUT_Y = 480;
+    private Bitmap bitmap;
+    private Bitmap bitmapNew;
+    private ResultPhotoContentBean photoContentBean;
+    private String imgCommentUrl;      //  评论图片地址
+    private String linkCommentUrl;      //  评论链接
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +173,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         initTopTitle();
 
         initView();
-
+        initData();
 
     }
 
@@ -127,6 +183,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         commentItemBeans.clear();
         requestTopicDetailsData();
 
+
+
     }
 
     public void initView() {
@@ -134,7 +192,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         appTopicId = getIntent().getStringExtra("appTopicId");
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
-
+        mHandler = new MyHandler();
         setRereshEnable(true);
 
         initRecyclerView();
@@ -155,38 +213,39 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         setHeaderView(lvTopicDetails);
 //        setFooterView(lvAskDetails);
 
+            lvTopicDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                int lastVisibleItem;
 
-        lvTopicDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastVisibleItem;
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if(!swipe.isRefreshing()){
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
-
-                    if (!(lastVisibleItem == 1 && page == 1)) {
-                        if (noDataFlag) {
-                            adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-                            page++;
-                            requestCircleCommentData();
+                            if (!(lastVisibleItem == 1 && page == 1)) {
+                                if (noDataFlag) {
+                                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                                    page++;
+                                    requestCircleCommentData();
+                                }
+                            }
                         }
-
                     }
-
                 }
 
-            }
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                //最后一个可见的ITEM
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+//                    int topRowVerticalPosition =
+//                            (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+//                    swipe.setEnabled(topRowVerticalPosition >= 0);
 
-
-            }
-        });
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    //最后一个可见的ITEM
+                    lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                }
+            });
 
     }
 
@@ -387,7 +446,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             tv_answer_details_comment_count.setVisibility(View.VISIBLE);
                             tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
                             commentItemBeans.addAll(bean.getList());
-                            adapter.notifyDataSetChanged();
+//                            adapter.notifyDataSetChanged();
 
                             if (commentItemBeans.size() % 10 == 0) {
                                 adapter.changeMoreStatus(RecyclerBaseAapter.PULLUP_LOAD_MORE);
@@ -399,10 +458,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     }
 
 
-
                 } else {
 
                 }
+
                 swipe.setRefreshing(false);
             }
         });
@@ -432,13 +491,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         });
     }
 
-    @OnClick(R.id.btn_topic_details)
+    @OnClick({R.id.btn_topic_details, R.id.ll_training_link, R.id.ll_training_upload})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_topic_details:
 
                 String commentContent = etTopicDetails.getText().toString();
-
+                linkCommentUrl = etTopicDetailsLink.getText().toString();
                 if (!PreferenceUtil.isLogin()) {
 
                     HashMap<String, Object> map = new HashMap<>();
@@ -469,6 +528,32 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 }
 
                 break;
+            case R.id.ll_training_link:             //  添加链接
+                if(linkFlag){
+                    etTopicDetailsLink.setVisibility(View.GONE);
+                    linkFlag = false;
+                }else{
+                    etTopicDetailsLink.setVisibility(View.VISIBLE);
+                    linkFlag = true;
+                }
+//                etTopicDetailsLink.setVisibility(View.VISIBLE);
+//                linkFlag = true;
+
+                break;
+            case R.id.ll_training_upload:           //  添加图片
+
+                selectPhoto();
+//                if(imageFlag){
+//                    ivTrainingTopicUpload.setVisibility(View.GONE);
+//                    imageFlag = false;
+//                }else{
+//                    ivTrainingTopicUpload.setVisibility(View.VISIBLE);
+//                    imageFlag = true;
+//                }
+//                ivTrainingTopicUpload.setVisibility(View.VISIBLE);
+//                imageFlag = true;
+
+                break;
 
             default:
 
@@ -478,19 +563,238 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     }
 
+    //设置头像，选择相册或相机
+    private void selectPhoto() {
+        SelectPhotoDialog mDialog = new SelectPhotoDialog(this, new SelectPhotoDialog.OnSelectPhotoChanged() {
+            @Override
+            public void onAlbum() {//相册
+                autoObtainStoragePermission();
+            }
+
+            @Override
+            public void onCamera() {//相机
+                autoObtainCameraPermission();
+            }
+
+        });
+        mDialog.show();
+    }
+
+    /**
+     * 自动获取sdk权限
+     */
+
+    private void autoObtainStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSIONS_REQUEST_CODE);
+        } else {
+            PhotoUtils.openPic(this, CODE_GALLERY_REQUEST);
+        }
+
+    }
+
+    /**
+     * 自动获取相机权限
+     */
+    private void autoObtainCameraPermission() {
+           /* if (hasSdcard()) {
+                imageUri = Uri.fromFile(fileUri);
+                //通过FileProvider创建一个content类型的Uri
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    imageUri = FileProvider.getUriForFile(AccountSetActivity.this, "com.vjinke.fileprovider", fileUri);
+                }
+                if (Build.VERSION.SDK_INT >= 23) {
+                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSIONS_REQUEST_CODE);
+                        return;
+                    }else{
+                        PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
+                    }
+                } else {
+                    PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
+                }
+            } else {
+                ToastUtils.showShort(this, "设备没有SD卡！");
+            }*/
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                ToastUtils.showShort(this, "您已经拒绝过一次");
+            }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_PERMISSIONS_REQUEST_CODE);
+        } else {//有权限直接调用系统相机拍照
+            if (hasSdcard()) {
+                imageUri = Uri.fromFile(fileUri);
+                //通过FileProvider创建一个content类型的Uri
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    imageUri = FileProvider.getUriForFile(TrainingTopicDetailsActivity.this, "com.vjinke.fileprovider", fileUri);
+                }
+                PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
+            } else {
+                ToastUtils.showShort(this, "设备没有SD卡！");
+            }
+        }
+    }
+
+
+    /**
+     * 检查设备是否存在SDCard的工具方法
+     */
+    public static boolean hasSdcard() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
+
+
+    // 根据用户选择，返回图片资源
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+            //拍照完成回调
+            if (requestCode == CODE_CAMERA_REQUEST) {
+                cropImageUri = Uri.fromFile(fileCropUri);
+                PhotoUtils.cropImageUri(this, imageUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+            }
+
+            //访问相册完成回调
+            if (requestCode == CODE_GALLERY_REQUEST) {
+                if (hasSdcard()) {
+                    cropImageUri = Uri.fromFile(fileCropUri);
+                    Uri newUri = Uri.parse(PhotoUtils.getPath(this, data.getData()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        newUri = FileProvider.getUriForFile(this, "com.rulaibao.fileprovider", new File(newUri.getPath()));
+                    }
+                    PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+                } else {
+                    ToastUtils.showShort(this, "设备没有SD卡！");
+                }
+            }
+            if (requestCode == CODE_RESULT_REQUEST) {
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+                try {
+                    bitmap= PhotoUtils.getBitmapFormUri(this,cropImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (bitmap != null) {
+                    bitmapNew=bitmap;
+                    dialog.setmLoadingTip("图片加载中，请稍后……");
+                    startLoading();
+                    sendImage(bitmap);
+                }
+            }
+        }
+    }
+
+    private void sendImage(Bitmap bm) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bytes = stream.toByteArray();
+        String img = new String(Base64.encodeToString(bytes, Base64.DEFAULT));
+        try {
+//            String id = DESUtil.decrypt(PreferenceUtil.getUserId());
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            RequestParams params = new RequestParams();
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < 8; i++) {
+                int j = (int) (Math.random() * 10 - 1);
+                sb.append(j);
+            }
+
+            params.add("photo", img);
+            params.add("name", sb + ".jpg");
+//            params.add("id", id);
+            params.add("photoType", "commentPhoto");
+            params.add("topicId", appTopicId);          //  话题id
+            String url = Urls.URL_UPLOAD;
+
+            client.post(url, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers,
+                                      String content) {
+                    super.onSuccess(statusCode, headers, content);
+
+                    Gson json = new Gson();
+                    photoContentBean = json.fromJson(content, ResultPhotoContentBean.class);
+                    if (photoContentBean.getFlag().equals("true")){
+                        imgCommentUrl = photoContentBean.getImgCommentUrl();
+                        mthread = new Thread(myRunnable);
+                        mthread.start();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private MyHandler mHandler;
+    private Thread mthread;
+
+    class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            stopLoading();
+            if (msg.what == 1) {
+                ivTrainingTopicUpload.refreshDrawableState();//清除之前加载过的图片缓存
+                showImages(bitmapNew);
+            } else {
+
+            }
+        }
+
+    }
+    private void showImages(Bitmap bitmap) {
+
+        ivTrainingTopicUpload.setVisibility(View.VISIBLE);
+        ivTrainingTopicUpload.setImageBitmap(bitmap);
+
+    }
+
+    Runnable myRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Message msg = mHandler.obtainMessage();
+            msg.what = 1;
+            mHandler.sendMessage(msg);
+        }
+    };
+
+
+
     //回复评论
     public void requestReplyData(final String commentContent) {
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
-        if (TextUtils.isEmpty(commentId)) {
+        if (TextUtils.isEmpty(commentId)) {     // 评论
 
             map.put("appTopicId", appTopicId);      //  话题id
             map.put("commentContent", commentContent);
             map.put("userId", userId);
             map.put("linkId", linkId);
-        } else {
+            map.put("linkCommentUrl", linkCommentUrl);
+            map.put("imgCommentUrl", imgCommentUrl);
+
+        } else {            //  回复
 
             map.put("appTopicId", appTopicId);      //  话题id
             map.put("commentId", commentId);
@@ -543,6 +847,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             page = 1;
                             commentItemBeans.clear();
                             requestCircleCommentData();
+
+                            etTopicDetailsLink.setVisibility(View.GONE);
+                            ivTrainingTopicUpload.setVisibility(View.GONE);
+                            linkCommentUrl = "";
+                            etTopicDetailsLink.setText("");
+                            ivTrainingTopicUpload.setImageBitmap(null);
+
                         }
 
 
@@ -651,7 +962,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     @Override
     protected void onResume() {
         super.onResume();
-        initData();
+
     }
 
     @Override

@@ -1,17 +1,24 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingProgressListener;
 import com.rulaibao.R;
 import com.rulaibao.adapter.holder.AnswerDetailsViewHolder;
 import com.rulaibao.adapter.holder.FooterViewHolder;
@@ -19,11 +26,9 @@ import com.rulaibao.bean.ResultCircleDetailsTopicCommentItemBean;
 import com.rulaibao.bean.ResultCircleDetailsTopicCommentReplyItemBean;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.ImageLoaderManager;
-import com.rulaibao.widget.CircularImage;
-import com.rulaibao.widget.MyListView;
+import com.rulaibao.uitls.TouchListener;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 话题详情  问题详情 adapter
@@ -32,11 +37,15 @@ import butterknife.ButterKnife;
 public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
 
 
+
     private MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList;
     private Reply reply;
     private ResultCircleDetailsTopicCommentReplyItemBean replyItemBean;
     private ReplyAdapter replyAdapter;
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_default_photo, R.mipmap.img_default_photo, R.mipmap.img_default_photo);
+    private ImageView imageView;
+
+    private DisplayImageOptions displayImageOptions_img = ImageLoaderManager.initDisplayImageOptions(R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend, R.mipmap.img_traffining_recommend);
 
     public TrainingAnswerDetailsListAdapter(Context context, MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList, Reply reply) {
         super(context);
@@ -65,7 +74,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
     @Override
     public void initHolderData(RecyclerView.ViewHolder holder, final int position) {
-        AnswerDetailsViewHolder holder1 = (AnswerDetailsViewHolder) holder;
+        final AnswerDetailsViewHolder holder1 = (AnswerDetailsViewHolder) holder;
         int index = position;
         if (getmHeaderView() != null) {
             index = position - 1;
@@ -76,6 +85,64 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         holder1.tvAnswerDetailsName.setText(arrayList.get(index).getCommentName());
         holder1.tvAnswerDetailsDate.setText(arrayList.get(index).getCommentTime());
         holder1.tvAnswerDetailsContent.setText(arrayList.get(index).getCommentContent());
+        final int finalIndex = index;
+        if(!TextUtils.isEmpty(arrayList.get(index).getImgCommentUrlSmall())){
+            holder1.ivAnswerDetailas.setVisibility(View.VISIBLE);
+            ImageLoader.getInstance().displayImage(arrayList.get(index).getImgCommentUrlSmall(), holder1.ivAnswerDetailas, displayImageOptions);
+
+            holder1.ivAnswerDetailas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    imageView = new ImageView(context);
+                    imageView.setOnTouchListener(new TouchListener(holder1.ivAnswerDetailas));
+
+                    ImageLoader.getInstance().displayImage(arrayList.get(finalIndex).getImgCommentUrlBig(), imageView, displayImageOptions_img, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String s, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String s, View view) {
+
+                        }
+                    }, new ImageLoadingProgressListener() {
+                        @Override
+                        public void onProgressUpdate(String s, View view, int i, int i1) {
+
+                        }
+                    });
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setView(imageView);
+                    builder.show();
+//                    AlertDialog alert = builder.create();
+                }
+            });
+
+
+        }else{
+            holder1.ivAnswerDetailas.setVisibility(View.GONE);
+        }
+
+        if(!TextUtils.isEmpty(arrayList.get(index).getLinkCommentUrl())){
+            holder1.tvAnswerDetailasLink.setVisibility(View.VISIBLE);
+            holder1.tvAnswerDetailasLink.setText(arrayList.get(index).getLinkCommentUrl());
+        }else{
+            holder1.tvAnswerDetailasLink.setVisibility(View.GONE);
+        }
 
         replyAdapter = new ReplyAdapter(context, index);
         replyAdapter.clearAll();
@@ -88,7 +155,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         }
         holder1.lvAnswerDetails.setAdapter(replyAdapter);
 
-        final int finalIndex = index;
+
         //  回复
         holder1.tvAnswerDetailsReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +164,11 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
             }
         });
+
+
+
+
+
 
     }
 
@@ -108,6 +180,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
             return arrayList.size() + 1;
         }
     }
+
 
     public interface Reply {
 

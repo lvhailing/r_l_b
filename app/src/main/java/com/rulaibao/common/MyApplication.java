@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rulaibao.R;
 import com.rulaibao.network.http.APNManager;
 import com.rulaibao.photo_preview.fresco.ImageLoader;
+import com.rulaibao.service.PreLoadX5Service;
 import com.rulaibao.widget.superfile.ExceptionHandler;
 import com.rulaibao.uitls.AuthImageDownloader;
 import com.rulaibao.uitls.CityDataHelper;
@@ -27,6 +28,7 @@ import com.rulaibao.uitls.NetworkUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.SystemInfo;
 import com.mob.MobSDK;
+import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.io.File;
@@ -34,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import static com.rulaibao.activity.RecommendActivity.getSDPath;
@@ -86,6 +89,13 @@ public class MyApplication extends Application {
         QbSdk.initX5Environment(getApplicationContext(), pcb);
         ExceptionHandler.getInstance().initConfig(this);
 
+
+//        HashMap map = new HashMap();
+//        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+//        QbSdk.initTbsSettings(map);
+
+//        initX5();//启动预加载的服务
+
         //imageLoader初始化
         initImageLoader();
         ImageLoaderManager.initImageLoader(this);
@@ -117,6 +127,11 @@ public class MyApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initX5() {
+        Intent intent = new Intent(this, PreLoadX5Service.class);
+        startService(intent);
     }
 
     /****

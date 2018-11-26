@@ -1,7 +1,9 @@
 package com.rulaibao.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.rulaibao.R;
@@ -69,8 +72,33 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemViewHolder.tv_bank_name.setText(list.get(position).getBank());
             itemViewHolder.tv_bank_card_num.setText(StringUtil.replaceSubStringBankCard(list.get(position).getBankcardNo()));
 
-            // 显示保险公司logo
-//            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(),itemViewHolder.iv_company_logo);
+            if (list.get(position).getIsWageCard().equals("yes")) {
+                itemViewHolder.tv_payroll.setTextColor(Color.parseColor("#5fabef"));
+                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_certified);
+            } else {
+                itemViewHolder.tv_payroll.setTextColor(Color.parseColor("#666666"));
+                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_uncertified);
+            }
+            // 显示各银行logo
+            if (list.get(position).getBank().equals("中国银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("农业银行")) {
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("工商银行")) {
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.gongshang);
+            } else if (list.get(position).getBank().equals("建设银行")) {
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.jianhang);
+            } else if (list.get(position).getBank().equals("交通银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("招商银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("广发银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("华夏银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            } else if (list.get(position).getBank().equals("浦发银行")) {
+//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+            }
 
             // 银行卡删除
             itemViewHolder.rl_delete.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +113,6 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     listener.setUpSalaryCard(position);
-                    itemViewHolder.rl_set_up_salary_card.setBackgroundResource(R.mipmap.icon_certified);
                 }
             });
 
@@ -108,6 +135,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
     }
+
     private OnBankCardDeleteClickListener listener;
 
     public interface OnBankCardDeleteClickListener {
@@ -122,7 +150,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.size()+1;
+        return list == null ? 0 : list.size() + 1;
     }
 
     @Override
@@ -139,17 +167,21 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private final ImageView iv_bank_logo; // 银行Logo
         private final TextView tv_bank_name; // 银行名称
-//        private final TextView tv_card_type; // 银行卡类型
         private final TextView tv_bank_card_num; // 银行卡号
+        private final TextView tv_payroll; // 设为工资卡
         private final RelativeLayout rl_delete; // 删除当前银行卡
         private final RelativeLayout rl_set_up_salary_card; // （是否）设为工资卡
+        private final ImageView iv_make_payroll; //
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             iv_bank_logo = (ImageView) itemView.findViewById(R.id.iv_bank_logo);
+            iv_make_payroll = (ImageView) itemView.findViewById(R.id.iv_make_payroll);
+
             tv_bank_name = (TextView) itemView.findViewById(R.id.tv_bank_name);
-//            tv_card_type = (TextView) itemView.findViewById(R.id.tv_card_type);
             tv_bank_card_num = (TextView) itemView.findViewById(R.id.tv_bank_card_num);
+            tv_payroll = (TextView) itemView.findViewById(R.id.tv_payroll);
+
             rl_delete = (RelativeLayout) itemView.findViewById(R.id.rl_delete);
             rl_set_up_salary_card = (RelativeLayout) itemView.findViewById(R.id.rl_set_up_salary_card);
         }

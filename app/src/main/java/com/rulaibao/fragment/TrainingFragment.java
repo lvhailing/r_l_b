@@ -250,6 +250,7 @@ public class TrainingFragment extends BaseFragment implements TrainingHotAskList
                 break;
             case R.id.tv_training_promote: // 展业
 //                RlbActivityManager.toTrainingPromoteActivity(getActivity(), false);
+//                RlbActivityManager.toTestActivity(getActivity(), false);
 
                 Toast.makeText(context, "该功能暂未开放", Toast.LENGTH_SHORT).show();
 

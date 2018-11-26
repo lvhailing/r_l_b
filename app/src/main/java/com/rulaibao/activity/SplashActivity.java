@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import com.lzy.imagepicker.view.SystemBarTintManager;
 import com.rulaibao.R;
 import com.rulaibao.common.Urls;
+import com.rulaibao.service.PreLoadX5Service;
 import com.rulaibao.uitls.encrypt.DESUtil;
 import com.rulaibao.uitls.PreferenceUtil;
 
@@ -91,6 +92,14 @@ public class SplashActivity extends FragmentActivity {
             e.printStackTrace();
         }
         requestData();
+
+//        initX5();//启动预加载的服务
+
+    }
+
+    private void initX5() {
+        Intent intent = new Intent(this, PreLoadX5Service.class);
+        startService(intent);
     }
 
     /**

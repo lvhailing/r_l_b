@@ -29,7 +29,7 @@ public class MyPayrollActivity extends BaseActivity{
     private TabLayout sliding_tabs;
     private ViewPager viewpager;
     private ArrayList years;
-    private ArrayList  listTitles;
+    private ArrayList<String> listTitles;
     private List<Fragment> fragments;
 
     @Override
@@ -105,12 +105,12 @@ public class MyPayrollActivity extends BaseActivity{
         }
 
         for (int i = 0; i < listTitles.size(); i++) {
-            PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i).toString());
+            PayrollYearsFragment fragment = PayrollYearsFragment.newInstance(listTitles.get(i));
             fragments.add(fragment);
         }
 
         for (int i = 0; i < listTitles.size(); i++) {
-            sliding_tabs.addTab(sliding_tabs.newTab().setText(listTitles.get(i).toString()));//添加tab选项
+            sliding_tabs.addTab(sliding_tabs.newTab().setText(listTitles.get(i)));//添加tab选项
         }
 
         FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

@@ -36,5 +36,15 @@ public class MyRecyclerView extends RecyclerView {
         listener.OnResize(w, h, oldw, oldh);
     }
 
+    @Override
+    public boolean canScrollVertically(int direction) {
+        // check if scrolling up
+        if (direction < 1) {
+            boolean original = super.canScrollVertically(direction);
+            return !original && getChildAt(0) != null && getChildAt(0).getTop() < 0 || original;
+        }
+        return super.canScrollVertically(direction);
+
+    }
 
 }

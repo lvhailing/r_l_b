@@ -397,8 +397,17 @@
         <activity
             android:name="com.rulaibao.activity.CxyTestActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".test.TestActivity" />
 
         <service android:name=".service.AppUpgradeService"/>
+
+        <!--<service android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+
+        android:label="dexopt"
+
+        android:process=":dexopt"/>
+        <service android:name=".service.PreLoadX5Service" />-->
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"
