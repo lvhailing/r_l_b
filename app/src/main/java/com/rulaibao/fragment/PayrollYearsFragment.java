@@ -74,7 +74,7 @@ public class PayrollYearsFragment extends BaseFragment {
 
     public void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new PayrollListAdapter(getActivity(), payrollList2B);
+        adapter = new PayrollListAdapter(getActivity(), currentYear,payrollList2B);
         recycler_view.setAdapter(adapter);
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
@@ -110,7 +110,7 @@ public class PayrollYearsFragment extends BaseFragment {
                 payrollList2B.clear();
             }
             currentYear =getArguments().getString(KEY);
-            Log.i("hh", "setUserVisibleHint ---- currentYear = "+currentYear);
+//            Log.i("hh", "setUserVisibleHint ---- currentYear = "+currentYear);
             currentPage = 1;
             noDataFlag = true;
 
@@ -131,9 +131,9 @@ public class PayrollYearsFragment extends BaseFragment {
         }
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("userId", userId);
-        Log.i("hh", "userId = "+userId);
+//        Log.i("hh", "userId = "+userId);
         map.put("currentYear", currentYear);
-        Log.i("hh", "currentYear = "+currentYear);
+//        Log.i("hh", "currentYear = "+currentYear);
         map.put("page", currentPage + "");
 
         HtmlRequest.getPayrollListData(context, map, new BaseRequester.OnRequestListener() {

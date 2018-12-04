@@ -132,7 +132,7 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
             tv_additional_tax.setText(data.getAdditionalTax()+"元");
         }
         if (data.getBankcardNo() != null) {  // 银行帐号
-            tv_bank_card_num.setText(StringUtil.encryBankNum(data.getBankcardNo()));
+            tv_bank_card_num.setText(data.getBankcardNo());
         }
         if (data.getIncome() != null) {  // 到账金额
             tv_total_income.setText(data.getIncome()+"元");

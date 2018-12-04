@@ -373,7 +373,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     /**
      * 打开app接口 && 控制强制登录设置userid为空
      */
-    private void requestAppData() {
+    public void requestAppData() {
         try {
             userId = null;
             userId = DESUtil.decrypt(PreferenceUtil.getUserId());

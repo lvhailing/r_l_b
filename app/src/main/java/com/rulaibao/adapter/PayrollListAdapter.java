@@ -19,11 +19,12 @@ import com.rulaibao.network.types.MouldList;
 
 
 /**
- *  我的工资单列表 Adapter 类
+ * 我的工资单列表 Adapter 类
  */
 public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<PayrollList2B> list;
+    private final String currentYear;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -38,10 +39,12 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 2;
+    private String month;
 
 
-    public PayrollListAdapter(Context context, MouldList<PayrollList2B> list) {
+    public PayrollListAdapter(Context context, String currentYear,MouldList<PayrollList2B> list) {
         mContext = context;
+        this.currentYear = currentYear;
         this.list = list;
         mInflater = LayoutInflater.from(context);
     }
@@ -63,14 +66,63 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.tv_month.setText(list.get(position).getWageMonth());
-            itemViewHolder.tv_net_income.setText(list.get(position).getTotalIncome()+ "元");
+            month = list.get(position).getWageMonth();
+            if (month.equals("01")) {
+                itemViewHolder.tv_month.setText("一月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            } else if (month.equals("02")) {
+                itemViewHolder.tv_month.setText("二月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("03")) {
+                itemViewHolder.tv_month.setText("三月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("04")) {
+                itemViewHolder.tv_month.setText("四月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("05")) {
+                itemViewHolder.tv_month.setText("五月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("06")) {
+                itemViewHolder.tv_month.setText("六月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("07")) {
+                itemViewHolder.tv_month.setText("七月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("08")) {
+                itemViewHolder.tv_month.setText("八月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("09")) {
+                itemViewHolder.tv_month.setText("九月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("10")) {
+                itemViewHolder.tv_month.setText("十月");
+                itemViewHolder.tv_month.setPadding(8,28,8,28);
+                itemViewHolder.tv_month.setLineSpacing(25,1);
+            }else if (month.equals("11")) {
+                itemViewHolder.tv_month.setText("十一月");
+                itemViewHolder.tv_month.setPadding(8,12,8,12);
+                itemViewHolder.tv_month.setLineSpacing(24,1);
+            }else if (month.equals("12")) {
+                itemViewHolder.tv_month.setText("十二月");
+                itemViewHolder.tv_month.setPadding(8,12,8,12);
+                itemViewHolder.tv_month.setLineSpacing(24,1);
+            }
+            itemViewHolder.tv_net_income.setText(list.get(position).getTotalIncome() + "元");
             itemViewHolder.tv_total_commission.setText(list.get(position).getTotalCommission() + "元");
-            itemViewHolder.tv_tax_deduction.setText(list.get(position).getTotalTax()+ "元");
+            itemViewHolder.tv_tax_deduction.setText(list.get(position).getTotalTax() + "元");
             // 加载图片
 //            ImageLoader.getInstance().displayImage(list.get(position).getCompanyLogo(), itemViewHolder.iv_company_logo);
 
-            initListener(itemViewHolder.itemView,position);
+            initListener(itemViewHolder.itemView, position);
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
@@ -99,7 +151,7 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.size()+1;
+        return list == null ? 0 : list.size() + 1;
     }
 
     @Override
@@ -132,14 +184,14 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      *
      * @param itemView
      */
-    private void initListener(View itemView,final int position) {
+    private void initListener(View itemView, final int position) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 跳转到工资单详情
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, PayrollDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
-                intent.putExtra("currentMonth", list.get(position).getWageMonth());
+                intent.putExtra("currentMonth", currentYear +"-"+list.get(position).getWageMonth());
                 mContext.startActivity(intent);
             }
         });

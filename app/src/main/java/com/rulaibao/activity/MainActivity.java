@@ -238,6 +238,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             if (i == 3) {
                 tab_mine.requestData();
             }
+            if (i==0){
+                tab_home.requestAppData();
+            }
         }
         setTab(i);
         mViewPager.setCurrentItem(i);

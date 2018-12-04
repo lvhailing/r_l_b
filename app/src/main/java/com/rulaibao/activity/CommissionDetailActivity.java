@@ -134,14 +134,14 @@ public class CommissionDetailActivity extends BaseActivity {
         tv_policy_number.setText(data.getOrderCode());
         tv_customer_name.setText(data.getCustomerName());
         tv_id_number.setText(data.getIdNo());
-        tv_insurance_period.setText(data.getInsurancePeriod()+"年");
-        tv_payment_period.setText(data.getPaymentPeriod()+"天");
+        tv_insurance_period.setText(data.getInsurancePeriod()+"");      //  后台录入单位
+        tv_payment_period.setText(data.getPaymentPeriod()+"");          //  后台录入单位
         tv_renewal_date.setText(data.getRenewalDate());
         tv_have_insurance_premiums.setText(data.getPaymentedPremiums() + "元");
         tv_promotion_fee.setText(data.getPromotioinCost() + "%");
-        tv_individual_income_tax.setText(data.getIndividualTax());  // 个人所得税
-        tv_value_added_tax.setText(data.getValueaddedTax());  // 增值税
-        tv_additional_tax.setText(data.getAdditionalTax());  // 附加税
+        tv_individual_income_tax.setText(data.getIndividualTax()+ "元");  // 个人所得税
+        tv_value_added_tax.setText(data.getValueaddedTax()+ "元");  // 增值税
+        tv_additional_tax.setText(data.getAdditionalTax()+ "元");  // 附加税
         tv_get_commission.setText(data.getCommissionGained() + "元");
         tv_record_date.setText(data.getCreateTime());
         tv_settlement_time.setText(data.getCommissionedTime());

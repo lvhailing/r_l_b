@@ -37,6 +37,6 @@
         android:layout_marginRight="40dp"
         android:background="@drawable/shape_gradient_orange"
         android:text="新增银行卡"
-        android:textColor="@color/txt_black1"
+        android:textColor="@color/white"
         android:textSize="16sp"/>
 </RelativeLayout>

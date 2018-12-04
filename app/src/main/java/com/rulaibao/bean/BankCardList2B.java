@@ -14,7 +14,7 @@ public class BankCardList2B implements IMouldType {
     private String bankName; // 开户行名称
     private String bankAddress; // 开户行地址
     private String bankcardNo; // 银行卡号
-    private String isWageCard; // 是否是工资卡（yes-是，no不是）
+    private String isWageCard; // 是否是工资卡（1-是，0不是）
 
     private String userName; // 用户姓名
     private String userMobile; // 手机号

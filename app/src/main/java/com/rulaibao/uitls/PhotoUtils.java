@@ -81,6 +81,32 @@ public class PhotoUtils {
     }
 
     /**
+     * @param activity    当前activity
+     * @param orgUri      剪裁原图的Uri
+     * @param desUri      剪裁后的图片的Uri
+     * @param requestCode 剪裁图片的请求码
+     */
+    public static void cropImageUri(Activity activity, Uri orgUri, Uri desUri , int requestCode) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        intent.setDataAndType(orgUri, "image/*");
+        //发送裁剪信号
+        intent.putExtra("crop", "true");
+        intent.putExtra("scale", true);
+        //将剪切的图片保存到目标Uri中
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, desUri);
+        //1-false用uri返回图片
+        //2-true直接用bitmap返回图片（此种只适用于小图片，返回图片过大会报错）
+        intent.putExtra("return-data", false);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+
+    /**
      * 读取uri所在的图片
      *
      * @param uri      图片对应的Uri
@@ -96,6 +122,7 @@ public class PhotoUtils {
             return null;
         }
     }
+
     /**
      * 通过uri获取图片并进行压缩
      *
@@ -135,6 +162,7 @@ public class PhotoUtils {
         input.close();
 
         return compressImage(bitmap);//再进行质量压缩
+//        return bitmap;
     }
 
     /**
@@ -148,7 +176,7 @@ public class PhotoUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 200) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             //第一个参数 ：图片格式 ，第二个参数： 图片质量，100为最高，0为最差  ，第三个参数：保存压缩后的数据的流
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
@@ -158,6 +186,7 @@ public class PhotoUtils {
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
         return bitmap;
     }
+
     /**
      * @param context 上下文对象
      * @param uri     当前相册照片的Uri

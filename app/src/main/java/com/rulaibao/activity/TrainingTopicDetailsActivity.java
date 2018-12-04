@@ -4,12 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -25,6 +28,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +56,7 @@ import com.rulaibao.network.http.AsyncHttpClient;
 import com.rulaibao.network.http.AsyncHttpResponseHandler;
 import com.rulaibao.network.http.RequestParams;
 import com.rulaibao.network.types.MouldList;
+import com.rulaibao.photo_preview.LogUtil;
 import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.InputMethodUtils;
 import com.rulaibao.uitls.PhotoUtils;
@@ -69,6 +74,7 @@ import org.apache.http.Header;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +103,12 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     ImageView ivTrainingTopicUpload;
     @BindView(R.id.et_topic_details_link)
     EditText etTopicDetailsLink;
+    @BindView(R.id.iv_topic_delete)
+    ImageView ivTopicDelete;
+    @BindView(R.id.rl_training_topic_upload)
+    RelativeLayout rlTrainingTopicUpload;
+    @BindView(R.id.ll_training_topic_link_pic)
+    LinearLayout llTrainingTopicLinkPic;
 
     private DisplayImageOptions displayImageOptions = ImageLoaderManager.initDisplayImageOptions(R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default, R.mipmap.ic_ask_photo_default);
 
@@ -148,7 +160,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private boolean imageFlag = false;      //  上图图片是否显示
 
 
-
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
     private static final int CODE_RESULT_REQUEST = 0xa2;
@@ -165,24 +176,29 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     private ResultPhotoContentBean photoContentBean;
     private String imgCommentUrl;      //  评论图片地址
     private String linkCommentUrl;      //  评论链接
+    private ResultCircleDetailsTopicCommentListBean commentListBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_topic_details);
-        initTopTitle();
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        initTopTitle();
         initView();
         initData();
 
     }
 
+
     public void initData() {
+
         noDataFlag = true;
         page = 1;
         commentItemBeans.clear();
         requestTopicDetailsData();
-
 
 
     }
@@ -193,7 +209,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
         mHandler = new MyHandler();
-        setRereshEnable(true);
+//        setRereshEnable(true);
 
         initRecyclerView();
 
@@ -213,39 +229,39 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         setHeaderView(lvTopicDetails);
 //        setFooterView(lvAskDetails);
 
-            lvTopicDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                int lastVisibleItem;
+        lvTopicDetails.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastVisibleItem;
 
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if(!swipe.isRefreshing()){
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!swipe.isRefreshing()) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                            if (!(lastVisibleItem == 1 && page == 1)) {
-                                if (noDataFlag) {
-                                    adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
-                                    page++;
-                                    requestCircleCommentData();
-                                }
+                        if (!(lastVisibleItem == 1 && page == 1)) {
+                            if (noDataFlag) {
+                                adapter.changeMoreStatus(TrainingHotAskListAdapter.LOADING_MORE);
+                                page++;
+                                requestCircleCommentData();
                             }
                         }
                     }
                 }
+            }
 
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-//                    int topRowVerticalPosition =
-//                            (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-//                    swipe.setEnabled(topRowVerticalPosition >= 0);
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipe.setEnabled(topRowVerticalPosition >= 0);
 
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    //最后一个可见的ITEM
-                    lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                }
-            });
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                //最后一个可见的ITEM
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+            }
+        });
 
     }
 
@@ -428,9 +444,9 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                 if (params.result != null) {
 
-                    ResultCircleDetailsTopicCommentListBean bean = (ResultCircleDetailsTopicCommentListBean) params.result;
-                    if (bean.getList() != null) {
-                        if (bean.getList().size() == 0) {
+                    commentListBean = (ResultCircleDetailsTopicCommentListBean) params.result;
+                    if (commentListBean.getList() != null) {
+                        if (commentListBean.getList().size() == 0) {
                             if (page != 1) {
                                 page--;
                                 adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
@@ -444,8 +460,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                         } else {
                             tv_answer_details_comment_count.setVisibility(View.VISIBLE);
-                            tv_answer_details_comment_count.setText(bean.getTotal() + "评论");
-                            commentItemBeans.addAll(bean.getList());
+                            tv_answer_details_comment_count.setText(commentListBean.getTotal() + "评论");
+                            commentItemBeans.addAll(commentListBean.getList());
 //                            adapter.notifyDataSetChanged();
 
                             if (commentItemBeans.size() % 10 == 0) {
@@ -461,8 +477,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 } else {
 
                 }
-
                 swipe.setRefreshing(false);
+
             }
         });
     }
@@ -491,7 +507,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         });
     }
 
-    @OnClick({R.id.btn_topic_details, R.id.ll_training_link, R.id.ll_training_upload})
+    @OnClick({R.id.btn_topic_details, R.id.ll_training_link, R.id.ll_training_upload, R.id.iv_topic_delete})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_topic_details:
@@ -529,10 +545,12 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                 break;
             case R.id.ll_training_link:             //  添加链接
-                if(linkFlag){
+                if (linkFlag) {
                     etTopicDetailsLink.setVisibility(View.GONE);
+                    linkCommentUrl = "";
+                    etTopicDetailsLink.setText("");
                     linkFlag = false;
-                }else{
+                } else {
                     etTopicDetailsLink.setVisibility(View.VISIBLE);
                     linkFlag = true;
                 }
@@ -553,6 +571,14 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //                ivTrainingTopicUpload.setVisibility(View.VISIBLE);
 //                imageFlag = true;
 
+                break;
+
+            case R.id.iv_topic_delete:          //  删除图片
+
+
+                rlTrainingTopicUpload.setVisibility(View.GONE);
+                imgCommentUrl = "";
+                ivTrainingTopicUpload.setImageBitmap(null);
                 break;
 
             default:
@@ -601,7 +627,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 imageUri = Uri.fromFile(fileUri);
                 //通过FileProvider创建一个content类型的Uri
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    imageUri = FileProvider.getUriForFile(AccountSetActivity.this, "com.vjinke.fileprovider", fileUri);
+                    imageUri = FileProvider.getUriForFile(AccountSetActivity.this, "com.rulaibao.fileprovider", fileUri);
                 }
                 if (Build.VERSION.SDK_INT >= 23) {
                     int checkCallPhonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -629,7 +655,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 imageUri = Uri.fromFile(fileUri);
                 //通过FileProvider创建一个content类型的Uri
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    imageUri = FileProvider.getUriForFile(TrainingTopicDetailsActivity.this, "com.vjinke.fileprovider", fileUri);
+                    imageUri = FileProvider.getUriForFile(TrainingTopicDetailsActivity.this, "com.rulaibao.fileprovider", fileUri);
                 }
                 PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
             } else {
@@ -648,7 +674,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
 
-
     // 根据用户选择，返回图片资源
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -657,7 +682,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             //拍照完成回调
             if (requestCode == CODE_CAMERA_REQUEST) {
                 cropImageUri = Uri.fromFile(fileCropUri);
-                PhotoUtils.cropImageUri(this, imageUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+                PhotoUtils.cropImageUri(this, imageUri, cropImageUri,  CODE_RESULT_REQUEST);
             }
 
             //访问相册完成回调
@@ -668,35 +693,53 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         newUri = FileProvider.getUriForFile(this, "com.rulaibao.fileprovider", new File(newUri.getPath()));
                     }
-                    PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+                    PhotoUtils.cropImageUri(this, newUri, cropImageUri , CODE_RESULT_REQUEST);
                 } else {
                     ToastUtils.showShort(this, "设备没有SD卡！");
                 }
             }
             if (requestCode == CODE_RESULT_REQUEST) {
-                if (bitmap != null && !bitmap.isRecycled()) {
-                    bitmap.recycle();
-                    bitmap = null;
-                }
-                try {
-                    bitmap= PhotoUtils.getBitmapFormUri(this,cropImageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (bitmap != null) {
-                    bitmapNew=bitmap;
+
+                if (!TextUtils.isEmpty(cropImageUri.getPath())) {
                     dialog.setmLoadingTip("图片加载中，请稍后……");
                     startLoading();
-                    sendImage(bitmap);
+                    sendImage(cropImageUri.getPath());
                 }
+
+
+//                if (bitmap != null && !bitmap.isRecycled()) {
+//                    bitmap.recycle();
+//                    bitmap = null;
+//                }
+//                try {
+//                    bitmap = PhotoUtils.getBitmapFormUri(this, cropImageUri);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                if (bitmap != null) {
+//                    bitmapNew = bitmap;
+//                    dialog.setmLoadingTip("图片加载中，请稍后……");
+//                    startLoading();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            sendImage(bitmap);
+//                            sendImage(cropImageUri.getPath());
+//                        }
+//                    }).start();
+//
+//                }
             }
         }
     }
 
-    private void sendImage(Bitmap bm) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] bytes = stream.toByteArray();
+    private void sendImage(String bm) {
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        bm.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//        byte[] bytes = stream.toByteArray();
+
+        byte[] bytes = getBytes(bm);
+
         String img = new String(Base64.encodeToString(bytes, Base64.DEFAULT));
         try {
 //            String id = DESUtil.decrypt(PreferenceUtil.getUserId());
@@ -726,7 +769,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                     Gson json = new Gson();
                     photoContentBean = json.fromJson(content, ResultPhotoContentBean.class);
-                    if (photoContentBean.getFlag().equals("true")){
+                    if (photoContentBean.getFlag().equals("true")) {
                         imgCommentUrl = photoContentBean.getImgCommentUrl();
                         mthread = new Thread(myRunnable);
                         mthread.start();
@@ -761,10 +804,22 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         }
 
     }
+
     private void showImages(Bitmap bitmap) {
 
-        ivTrainingTopicUpload.setVisibility(View.VISIBLE);
-        ivTrainingTopicUpload.setImageBitmap(bitmap);
+        rlTrainingTopicUpload.setVisibility(View.VISIBLE);
+        try {
+            Bitmap bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), cropImageUri);
+            ivTrainingTopicUpload.setImageBitmap(bmp);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        ivTrainingTopicUpload.setImageBitmap(bitmap);
+//        ivTrainingTopicUpload.setImageURI(cropImageUri);
+//        ivTrainingTopicUpload.setImageURI(cropImageUri);
 
     }
 
@@ -776,7 +831,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             mHandler.sendMessage(msg);
         }
     };
-
 
 
     //回复评论
@@ -848,11 +902,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             commentItemBeans.clear();
                             requestCircleCommentData();
 
-                            etTopicDetailsLink.setVisibility(View.GONE);
-                            ivTrainingTopicUpload.setVisibility(View.GONE);
-                            linkCommentUrl = "";
-                            etTopicDetailsLink.setText("");
-                            ivTrainingTopicUpload.setImageBitmap(null);
+                            clearInputLinkPic();
 
                         }
 
@@ -866,6 +916,62 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 }
             }
         });
+    }
+
+    /**
+     * 清空链接输入框以及上传图片框内容以及隐藏
+     */
+
+    public void clearInputLinkPic() {
+
+        etTopicDetailsLink.setVisibility(View.GONE);
+        rlTrainingTopicUpload.setVisibility(View.GONE);
+        linkCommentUrl = "";
+        imgCommentUrl = "";
+        etTopicDetailsLink.setText("");
+        ivTrainingTopicUpload.setImageBitmap(null);
+
+    }
+
+
+    //  压缩图片
+    private byte[] getBytes(String path) {
+        //File file = new File(path);
+        //读取图片 只读边,不读内容
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        newOpts.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, newOpts);
+        //开始按比例缩放图片
+        newOpts.inJustDecodeBounds = false;
+        int width = newOpts.outWidth;
+        int height = newOpts.outHeight;
+        float maxSize = 1200;
+        int be = 1;
+        if (width >= height && width > maxSize) {//缩放比,用高或者宽其中较大的一个数据进行计算
+            be = (int) (newOpts.outWidth / maxSize);
+            be++;
+        } else if (width < height && height > maxSize) {
+            be = (int) (newOpts.outHeight / maxSize);
+            be++;
+        }
+        newOpts.inSampleSize = be;//设置采样率
+        newOpts.inPreferredConfig = Bitmap.Config.ARGB_8888;//该模式是默认的,可不设
+        newOpts.inPurgeable = true;// 同时设置才会有效
+        newOpts.inInputShareable = true;//。当系统内存不够时候图片自动被回收
+        //下面可是图片压缩
+        Bitmap bitmap = BitmapFactory.decodeFile(path, newOpts);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int options = 100;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//质量压缩方法，把压缩后的数据存放到baos中 (100表示不压缩，0表示压缩到最小)
+        while (baos.toByteArray().length > 200 * 1024) {//循环判断如果压缩后图片是否大于指定大小,大于继续压缩
+            baos.reset();//重置baos即让下一次的写入覆盖之前的内容
+            options -= 5;//图片质量每次减少5
+            if (options <= 5) options = 5;//如果图片质量小于5，为保证压缩后的图片质量，图片最底压缩质量为5
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//将压缩后的图片保存到baos中
+            if (options == 5) break;//如果图片的质量已降到最低则，不再进行压缩
+        }
+//        LogUtil.i("size=="+baos.toByteArray().length);
+        return baos.toByteArray();
     }
 
     //点赞
@@ -996,6 +1102,10 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         this.linkId = linkId;
         etTopicDetails.setHint("回复" + replyToName + "：");
 
+        //  处理回复状态链接和图片选择的隐藏
+        llTrainingTopicLinkPic.setVisibility(View.GONE);
+        clearInputLinkPic();
+
         setBottomOffset(index);
 
     }
@@ -1080,6 +1190,9 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         isShowComment.set(false);
         etTopicDetails.setText("");
         etTopicDetails.setHint(getString(R.string.training_class_details_discuss_comment_hint));
+
+        //  处理回复撤销状态链接和图片选择的隐藏
+        llTrainingTopicLinkPic.setVisibility(View.VISIBLE);
 
 //        flAnswerDetails.setVisibility(View.GONE);
         InputMethodUtils.hiddenSoftKeyboard(this);

@@ -355,6 +355,32 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_get_commission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/get_commission"
+                    android:textColor="@color/txt_black2"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_get_commission"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text=""
+                    android:textColor="@color/txt_black2"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="22dp"

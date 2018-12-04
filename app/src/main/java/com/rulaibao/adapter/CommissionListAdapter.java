@@ -64,8 +64,8 @@ public class CommissionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             itemViewHolder.tv_insurance_name.setText(list.get(position).getProductName());
-            itemViewHolder.tv_income_date.setText(list.get(position).getCommissionTime());
-            itemViewHolder.tv_commission.setText(list.get(position).getCommissionGained());
+            itemViewHolder.tv_income_date.setText("收益日期："+list.get(position).getCommissionTime());
+            itemViewHolder.tv_commission.setText("+"+list.get(position).getCommissionGained());
 
             initListener(itemViewHolder.itemView,position);
         } else if (holder instanceof FooterViewHolder) {

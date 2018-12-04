@@ -163,13 +163,17 @@ public class BankDialog extends Dialog implements View.OnClickListener {
     }
 
     public void dismissDialog() {
-        if (Looper.myLooper() != Looper.getMainLooper()) {
-            return;
+//        if (Looper.myLooper() != Looper.getMainLooper()) {
+//            return;
+//        }
+//        if (!isShowing() || null == mContext || ((Activity) mContext).isFinishing()) {
+//            return;
+//        }
+//        dismiss();
+
+        if (this.isShowing()) {
+            this.dismiss();
         }
-        if (!isShowing() || null == mContext || ((Activity) mContext).isFinishing()) {
-            return;
-        }
-        dismiss();
     }
 
     private class CalendarTextAdapter extends AbstractWheelTextAdapter {

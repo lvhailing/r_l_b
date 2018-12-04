@@ -3,25 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/bg_line"
     android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:background="@color/white"
         android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/bg_gray_new"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/item_one_title"
             android:textColor="@color/txt_black1"
@@ -30,9 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
+            android:layout_marginLeft="25dp"
             android:text="@string/item_one_content"
             android:textColor="@color/txt_black1"
             android:textSize="14sp"/>
@@ -41,9 +36,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
-            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/item_two_title"
             android:textColor="@color/txt_black1"
@@ -52,9 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
+            android:layout_marginLeft="25dp"
             android:text="@string/item_two_content"
             android:textColor="@color/txt_black1"
             android:textSize="14sp"/>
@@ -62,10 +52,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
+            android:lineSpacingExtra="1dp"
+            android:lineSpacingMultiplier="1.3"
             android:text="@string/item_two_remark"
             android:textColor="@color/txt_black2"
             android:textSize="12sp"/>
@@ -74,9 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
-            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/item_three_title"
             android:textColor="@color/txt_black1"
@@ -85,10 +72,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
             android:text="@string/item_three_content"
             android:textColor="@color/txt_black1"
             android:textSize="14sp"/>
@@ -100,9 +85,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
-            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/item_four_title"
             android:textColor="@color/txt_black1"
@@ -111,9 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
+            android:layout_marginLeft="25dp"
             android:text="@string/item_four_content"
             android:textColor="@color/txt_black1"
             android:textSize="14sp"/>
@@ -122,9 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
-            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/item_five_title"
             android:textColor="@color/txt_black1"
@@ -133,9 +110,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:lineSpacingExtra="2dp"
-            android:lineSpacingMultiplier="1.5"
+            android:layout_marginLeft="25dp"
+            android:paddingBottom="25dp"
             android:text="@string/item_five_content"
             android:textColor="@color/txt_black1"
             android:textSize="14sp"/>

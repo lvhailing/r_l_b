@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_margin="12dp"
+    android:background="@drawable/shape_center_white_gray"
+    android:orientation="vertical"
+    >
 
     <View
         style="@style/v_line"/>
@@ -14,6 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
         android:paddingTop="12dp">
 
         <TextView
@@ -77,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center_horizontal"
-            android:text="X≤20 000元部分"
+            android:text="X≤20000元"
             android:textColor="@color/txt_black2"
             android:textSize="11sp"/>
 
@@ -124,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center_horizontal"
-            android:text="20 000&#060;X≤50 000元"
+            android:text="20000&#060;X≤50000元"
             android:textColor="@color/txt_black2"
             android:textSize="11sp"/>
 
@@ -171,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center_horizontal"
-            android:text=" X&#062;50 000元 "
+            android:text=" X&#062;50000元 "
             android:textColor="@color/txt_black2"
             android:textSize="11sp"/>
 
@@ -196,5 +199,4 @@
 
     <View
         style="@style/v_line"/>
-
 </LinearLayout>

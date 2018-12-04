@@ -181,6 +181,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(PlanActivity.this, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     startActivity(intent);
                     return;
                 }
@@ -228,6 +229,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("companyName", category);
         param.put("page", currentPage + "");
+        param.put("userId", userId);
 
         try {
             HtmlRequest.getPlanData(mContext, param, new BaseRequester.OnRequestListener() {
@@ -283,6 +285,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
                     mContext.startActivity(intent);
                 }else{
                     intent = new Intent(mContext, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     mContext.startActivity(intent);
                 }
                 break;

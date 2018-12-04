@@ -143,8 +143,16 @@ public class StringUtil {
     public static String replaceSubStringBankCard(String str) {
         String sub = "";
         try {
-            String sub2 = str.substring(str.length() - 4, str.length());
-            sub = "**** **** **** " + sub2;
+            if (str.length() == 16) {
+                String sub2 = str.substring(str.length() - 4, str.length());
+                sub = "**** **** **** " + sub2;
+            } else if (str.length() == 17) {
+                String sub2 = str.substring(str.length() - 4, str.length());
+                sub = "**** **** **** * " + sub2;
+            } else if (str.length() == 19) {
+                String sub2 = str.substring(str.length() - 4, str.length());
+                sub = "**** **** **** *** " + sub2;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

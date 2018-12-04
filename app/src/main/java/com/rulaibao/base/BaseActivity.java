@@ -1,5 +1,6 @@
 package com.rulaibao.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -83,7 +84,7 @@ public abstract class BaseActivity extends FragmentActivity implements MyApplica
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        dialog = new CustomProgressDialog(this, "", R.drawable.frame_loading);
+        dialog = new CustomProgressDialog(this, "", R.drawable.frame_loading, ProgressDialog.THEME_HOLO_LIGHT);
         View v = inflater.inflate(layoutResId, null);
         llContent.addView(v);
         initSwipeView();

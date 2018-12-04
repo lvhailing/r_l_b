@@ -107,7 +107,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:maxLength="10"
-            android:text=""
+            tools:text="北京"
             android:textColor="@color/txt_black2"
             android:textSize="16sp"/>
     </RelativeLayout>

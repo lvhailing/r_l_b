@@ -37,14 +37,16 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
     private TextView tv_your_name;//你的姓名
     private TextView tv_your_phone;//你的电话
     private TextView tv_insurance_company;//保险公司
+    private TextView tv_select_time;//时间
+
     private EditText et_insurance_plan;//保险计划
     private EditText et_insurance_amount;//保险金额
     private EditText et_pay_year;//年缴保费
     private EditText et_insurance_limit;//保险期限
     private EditText et_pay_limit;//缴费期限
-    private RelativeLayout rl_select_time;//选择时间
-    private TextView tv_select_time;//时间
     private EditText et_remark;//备注说明
+
+    private RelativeLayout rl_select_time;//选择时间
     private Button btn_submit;//提交预约
 
     private String id;
@@ -65,44 +67,12 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_product_appointment);
+
         initTopTitle();
         initView();
         initData();
     }
-    public void initView(){
-        context = this;
-        tv_name=(TextView) findViewById(R.id.tv_name);
-        tv_your_name= (TextView) findViewById(R.id.tv_your_name);
-        tv_your_phone= (TextView) findViewById(R.id.tv_your_phone);
-        tv_insurance_company= (TextView) findViewById(R.id.tv_insurance_company);
-        et_insurance_plan= (EditText) findViewById(R.id.et_insurance_plan);
-        et_insurance_amount= (EditText) findViewById(R.id.et_insurance_amount);
-        et_pay_year= (EditText) findViewById(R.id.et_pay_year);
-        et_insurance_limit= (EditText) findViewById(R.id.et_insurance_limit);
-        et_pay_limit= (EditText) findViewById(R.id.et_pay_limit);
-        rl_select_time =(RelativeLayout) findViewById(R.id.rl_select_time);
-        tv_select_time= (TextView) findViewById(R.id.tv_select_time);
-        et_remark= (EditText) findViewById(R.id.et_remark);
-        btn_submit= (Button) findViewById(R.id.btn_submit);
-        rl_select_time.setOnClickListener(this);
-        btn_submit.setOnClickListener(this);
-    }
-    public void initData() {
-        id=getIntent().getStringExtra("id");
-        companyName=getIntent().getStringExtra("companyName");
-        name=getIntent().getStringExtra("name");
-        category=getIntent().getStringExtra("category");
-        try {
-            realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
-            phone = DESUtil.decrypt(PreferenceUtil.getPhone());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        tv_name.setText(name);
-        tv_your_name.setText(realName);
-        tv_your_phone.setText(phone);
-        tv_insurance_company.setText(companyName);
-    }
+
     private void initTopTitle() {
         TitleBar titleBar = (TitleBar) findViewById(R.id.rl_title);
         titleBar.showLeftImg(true);
@@ -131,13 +101,52 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
         });
     }
 
+    public void initView(){
+        context = this;
+        tv_name=(TextView) findViewById(R.id.tv_name);
+        tv_your_name= (TextView) findViewById(R.id.tv_your_name);
+        tv_your_phone= (TextView) findViewById(R.id.tv_your_phone);
+        tv_insurance_company= (TextView) findViewById(R.id.tv_insurance_company);
+        tv_select_time= (TextView) findViewById(R.id.tv_select_time);
+
+        et_insurance_plan= (EditText) findViewById(R.id.et_insurance_plan);
+        et_insurance_amount= (EditText) findViewById(R.id.et_insurance_amount);
+        et_pay_year= (EditText) findViewById(R.id.et_pay_year);
+        et_insurance_limit= (EditText) findViewById(R.id.et_insurance_limit);
+        et_pay_limit= (EditText) findViewById(R.id.et_pay_limit);
+        et_remark= (EditText) findViewById(R.id.et_remark);
+
+        rl_select_time =(RelativeLayout) findViewById(R.id.rl_select_time);
+        btn_submit= (Button) findViewById(R.id.btn_submit);
+
+        rl_select_time.setOnClickListener(this);
+        btn_submit.setOnClickListener(this);
+    }
+    public void initData() {
+        id=getIntent().getStringExtra("id");
+        companyName=getIntent().getStringExtra("companyName");
+        name=getIntent().getStringExtra("name");
+        category=getIntent().getStringExtra("category");
+        try {
+            realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
+            phone = DESUtil.decrypt(PreferenceUtil.getPhone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        tv_name.setText(name);
+        tv_your_name.setText(realName);
+        tv_your_phone.setText(phone);
+        tv_insurance_company.setText(companyName);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.rl_select_time:
+            case R.id.rl_select_time: // 日期选择
                 onYearMonthDayPicker();
                 break;
-           case R.id.btn_submit:
+           case R.id.btn_submit: //提交预约
                checkNull(); //判空
                 break;
             default:
@@ -190,6 +199,7 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
         paymentPeriod=et_pay_limit.getText().toString();
         exceptSubmitTime=tv_select_time.getText().toString();
         remark=et_remark.getText().toString();
+
         if(TextUtils.isEmpty(insurancePlan)){
             Toast.makeText(context,"请输入保险计划",Toast.LENGTH_SHORT).show();
             return;
@@ -217,8 +227,12 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
         productapponitment();//产品预约
     }
 
+    /**
+     *  保险详情 -- 产品预约
+     */
     private void productapponitment() {
         final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+
         param.put("productId", id);
         param.put("productName", name);
         param.put("mobile", phone);
@@ -245,18 +259,13 @@ public class ProductAppointmentActivity extends BaseActivity implements View.OnC
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {
-                        Toast.makeText(ProductAppointmentActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(ProductAppointmentActivity.this, b.getMessage(), Toast.LENGTH_LONG) .show();
                         finish();
                     } else {
-                        Toast.makeText(ProductAppointmentActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(ProductAppointmentActivity.this, b.getMessage(), Toast.LENGTH_LONG) .show();
                     }
                 } else {
-                    Toast.makeText(ProductAppointmentActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProductAppointmentActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                 }
             }
         });

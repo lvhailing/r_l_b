@@ -8,16 +8,7 @@
     android:orientation="vertical"
     tools:context="com.rulaibao.activity.MainActivity">
 
-    <com.rulaibao.widget.MyRecyclerView
-        android:id="@+id/lv_topic_details"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="88dip"
-        android:divider="@color/white"
-        android:dividerHeight="0dip"
-        android:visibility="visible">
 
-    </com.rulaibao.widget.MyRecyclerView>
 
     <FrameLayout
         android:id="@+id/fy_training_topic_details"
@@ -41,14 +32,32 @@
                 android:paddingLeft="12dip"
                 android:paddingRight="12dip">
 
-                <ImageView
-                    android:id="@+id/iv_training_topic_upload"
+                <RelativeLayout
+                    android:id="@+id/rl_training_topic_upload"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
-                    android:layout_marginBottom="5dip"
-                    android:src="@mipmap/ic_empty"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_training_topic_upload"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_empty" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:id="@+id/iv_topic_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/img_delete" />
+                    </FrameLayout>
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/et_topic_details_link"
@@ -61,12 +70,11 @@
                     android:paddingLeft="10dip"
                     android:textColorHint="@color/txt_mark_gray"
                     android:textSize="14sp"
-                    android:visibility="gone"
-                    />
-
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_training_topic_link_pic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -75,8 +83,7 @@
                 android:paddingLeft="20dip"
                 android:paddingRight="20dip"
                 android:paddingTop="10dip"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/ll_training_link"
@@ -116,7 +123,6 @@
                         android:layout_marginLeft="5dip"
                         android:text="上传图片" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <RelativeLayout
@@ -148,9 +154,17 @@
                     android:textColorHint="@color/txt_mark_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
-
         </LinearLayout>
-
     </FrameLayout>
+    <com.rulaibao.widget.MyRecyclerView
+        android:id="@+id/lv_topic_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/white"
+        android:dividerHeight="0dip"
+        android:visibility="visible"
+        android:layout_above="@id/fy_training_topic_details"
+        >
+    </com.rulaibao.widget.MyRecyclerView>
 </RelativeLayout>
 

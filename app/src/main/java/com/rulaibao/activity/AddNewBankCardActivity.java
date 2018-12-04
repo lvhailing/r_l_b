@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.OK2B;
 import com.rulaibao.common.Urls;
 import com.rulaibao.dialog.BankDialog;
+import com.rulaibao.dialog.CancelNormalDialog;
 import com.rulaibao.dialog.SelectAddressDialog;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -37,15 +39,15 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
 
     private TextView tv_user_name; // 真实姓名
     private TextView tv_user_id; // 身份证号
-    private TextView tv_account_opening_bank; // 开户银行
-    private TextView tv_account_opening_bank_address; // 开户银行地址
+    private TextView tv_selected_opening_bank; // 选择开户银行
+    private TextView tv_selected_opening_bank_address; // 选择开户银行地址
     private TextView tv_user_phone; // 手机号
 
     private EditText et_account_opening_bank_name; // 输入开户行名称
     private EditText et_bank_card_num; // 输入银行卡号
     private EditText et_input_validation_code; // 输入验证码
 
-    private RelativeLayout rl_account_opening_bank;
+    private RelativeLayout rl_account_opening_bank;  // 选择开户银行
     private RelativeLayout rl_account_opening_bank_address; // 开户地
 
     private Button btn_save; // 保存
@@ -56,8 +58,8 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private String bankName;  // 开户银行名称
     private String bankCardNum;
     private String validationCode;
-    private String openingBank; // 开户银行
-    private String openingBankAddress;
+    private String selectedOpeningBank = ""; // 开户银行
+    private String selectedOpeningBankAddress = "";
 
     private boolean smsflag = true;
     private boolean flag = true;
@@ -81,9 +83,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_add_bank_card))
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.title_add_bank_card)).showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
 
             @Override
             public void onMenu(int id) {
@@ -104,8 +104,8 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     private void initView() {
         tv_user_name = (TextView) findViewById(R.id.tv_user_name);
         tv_user_id = (TextView) findViewById(R.id.tv_user_id);
-        tv_account_opening_bank = (TextView) findViewById(R.id.tv_account_opening_bank);
-        tv_account_opening_bank_address = (TextView) findViewById(R.id.tv_account_opening_bank_address);
+        tv_selected_opening_bank = (TextView) findViewById(R.id.tv_selected_opening_bank);
+        tv_selected_opening_bank_address = (TextView) findViewById(R.id.tv_selected_opening_bank_address);
         tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
 
         et_account_opening_bank_name = (EditText) findViewById(R.id.et_account_opening_bank_name);
@@ -123,9 +123,10 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
             userName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
             userIdNo = DESUtil.decrypt(PreferenceUtil.getIdNo());
 
+
             tv_user_name.setText(userName);
-            tv_user_phone.setText(userPhone);
-            tv_user_id.setText(userIdNo);
+            tv_user_phone.setText(StringUtil.replaceSubString(userPhone));
+            tv_user_id.setText(StringUtil.replaceSubStringIdNo(userIdNo));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,8 +154,8 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
                 showSelectAddressDialog();
                 break;
             case R.id.btn_get_verification_code: // 获取验证码
-                if(TextUtils.isEmpty(userPhone.trim())){
-                    Toast.makeText(this,"手机号不能为空",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(userPhone.trim())) {
+                    Toast.makeText(this, "手机号不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 requestSMS();
@@ -168,13 +169,30 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     }
 
     /**
-     *  选择银行开户地
+     * 选择开户银行
+     */
+    private void showBankDialog() {
+        BankDialog dialog = new BankDialog(this, new BankDialog.BankChooseInterface() {
+            @Override
+            public void getBankName(String name) {
+                selectedOpeningBank = name;
+                tv_selected_opening_bank.setText(name);
+            }
+        });
+        dialog.setTitle("");
+        dialog.setCancelOutside(true);//点击阴影处是否能取消对话框
+        dialog.showDialog();
+    }
+
+    /**
+     * 选择银行开户地
      */
     private void showSelectAddressDialog() {
         SelectAddressDialog dialog = new SelectAddressDialog(this, new SelectAddressDialog.OnExitChanged() {
             @Override
             public void onConfim(String selectText) {
-                tv_account_opening_bank_address.setText(selectText);
+                selectedOpeningBankAddress = selectText;
+                tv_selected_opening_bank_address.setText(selectText);
                 selectInfo = selectText.split("-");
                 aa = selectInfo[0];
                 bb = selectInfo[1];
@@ -190,121 +208,27 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
     }
 
     /**
-     * 判断为空条件
-     */
-    private void checkDataNull() {
-        userName = tv_user_name.getText().toString();
-        userIdNo = tv_user_id.getText().toString();
-        openingBank = tv_account_opening_bank.getText().toString();
-        openingBankAddress = tv_account_opening_bank_address.getText().toString();
-        bankName = et_account_opening_bank_name.getText().toString();
-        bankCardNum = et_bank_card_num.getText().toString();
-        userPhone = tv_user_phone.getText().toString();
-        validationCode = et_input_validation_code.getText().toString();
-
-        if(TextUtils.isEmpty(userName)){
-            Toast.makeText(this,"姓名不能为空",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(userIdNo)){
-            Toast.makeText(this,"身份证号不能为空",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(openingBank)){
-            Toast.makeText(this,"请选择开户银行",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(openingBankAddress)){
-            Toast.makeText(this,"请选择开户地",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(bankName)){
-            Toast.makeText(this,"请输入开户行名称",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(bankCardNum)){
-            Toast.makeText(this,"请输入银行帐号",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(userPhone.trim())){
-            Toast.makeText(this,"手机号不能为空",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(validationCode)){
-            Toast.makeText(this,"请输入验证码",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        requestSaveBankCard();
-    }
-
-    /**
-     * 我的银行卡-新增
-     */
-    private void requestSaveBankCard() {
-        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-
-        param.put("userId",userId);
-        param.put("realName", userName);
-        param.put("mobile", userPhone);
-        param.put("idNo", userIdNo);// 身份证号
-        param.put("validateCode",validationCode );
-        param.put("bank", openingBank); // 所属银行
-        param.put("bankName",bankName ); // 开户行名称
-        param.put("bankcardNo",bankCardNum ); // 银行卡号
-        param.put("bankAddress",openingBankAddress); // 开户行地址
-
-        HtmlRequest.requestSaveBankCardData(AddNewBankCardActivity.this, param,new BaseRequester.OnRequestListener() {
-
-            @Override
-            public void onRequestFinished(BaseParams params) {
-                if (params==null){
-                    return;
-                }
-                OK2B b = (OK2B) params.result;
-                if (b != null) {
-                    if (Boolean.parseBoolean(b.getFlag())) {
-                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(AddNewBankCardActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    /**
-     * 选择开户银行
-     */
-    private void showBankDialog() {
-        BankDialog dialog = new BankDialog(this, new BankDialog.BankChooseInterface() {
-            @Override
-            public void getBankName(String name) {
-                tv_account_opening_bank.setText(name);
-            }
-        });
-        dialog.setTitle("");
-        dialog.setCancelOutside(true);//点击阴影处是否能取消对话框
-        dialog.showDialog();
-    }
-
-    /**
      * 获取验证码
      */
     private void requestSMS() {
         final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
-
+        String userPhone = null;
+        try {
+            userPhone = DESUtil.decrypt(PreferenceUtil.getPhone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         param.put("mobile", userPhone);
-        param.put("userId",userId);
+//        Log.i("hh", "获取验证码时传给后台的手机号1：" + userPhone);
+//        Log.i("hh", "获取验证码时传给后台的手机号2：" +  PreferenceUtil.getPhone());
+        param.put("userId", userId);
         param.put("busiType", Urls.ADDBANKCARD);
 
-        HtmlRequest.sendSMS(AddNewBankCardActivity.this, param,new BaseRequester.OnRequestListener() {
+        HtmlRequest.sendSMS(AddNewBankCardActivity.this, param, new BaseRequester.OnRequestListener() {
 
             @Override
             public void onRequestFinished(BaseParams params) {
-                if (params==null){
+                if (params == null) {
                     return;
                 }
                 OK2B b = (OK2B) params.result;
@@ -326,6 +250,118 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
         });
     }
 
+    /**
+     * 判断为空条件
+     */
+    private void checkDataNull() {
+        userName = tv_user_name.getText().toString();
+        userIdNo = tv_user_id.getText().toString();
+        selectedOpeningBank = tv_selected_opening_bank.getText().toString();
+        selectedOpeningBankAddress = tv_selected_opening_bank_address.getText().toString();
+        bankName = et_account_opening_bank_name.getText().toString();
+        bankCardNum = et_bank_card_num.getText().toString();
+        userPhone = tv_user_phone.getText().toString();
+        validationCode = et_input_validation_code.getText().toString();
+
+        if (TextUtils.isEmpty(userName)) {
+            Toast.makeText(this, "姓名不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(userIdNo)) {
+            Toast.makeText(this, "身份证号不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(selectedOpeningBank)) {
+            Toast.makeText(this, "请选择开户银行", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(selectedOpeningBankAddress)) {
+            Toast.makeText(this, "请选择开户地", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(bankName)) {
+            Toast.makeText(this, "请输入开户行名称", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(bankCardNum)) {
+            Toast.makeText(this, "请输入银行帐号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(userPhone.trim())) {
+            Toast.makeText(this, "手机号不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(validationCode)) {
+            Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        showSaveNewBankDialog();
+
+    }
+
+    /**
+     * 我的银行卡-新增银行卡的保存
+     */
+    private void requestSaveBankCard() {
+        final LinkedHashMap<String, Object> param = new LinkedHashMap<>();
+
+        String userPhone = null;
+        try {
+            userPhone = DESUtil.decrypt(PreferenceUtil.getPhone());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        param.put("userId", userId);
+        param.put("realName", userName);
+        param.put("mobile", userPhone);
+        param.put("idNo", userIdNo);// 身份证号
+        param.put("validateCode", validationCode);
+        param.put("bank", selectedOpeningBank); // 选择的银行名称
+        param.put("bankName", bankName); // 手动输入的开户行名称
+        param.put("bankcardNo", bankCardNum); // 银行卡号
+        param.put("bankAddress", selectedOpeningBankAddress); // 开户行地址
+
+        HtmlRequest.requestSaveBankCardData(AddNewBankCardActivity.this, param, new BaseRequester.OnRequestListener() {
+
+            @Override
+            public void onRequestFinished(BaseParams params) {
+                if (params == null) {
+                    return;
+                }
+                OK2B b = (OK2B) params.result;
+                if (b != null) {
+                    if (Boolean.parseBoolean(b.getFlag())) {
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(AddNewBankCardActivity.this, b.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(AddNewBankCardActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * 保存新银行卡弹框
+     */
+    private void showSaveNewBankDialog() {
+        CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
+            @Override
+            public void onConfirm() {
+                requestSaveBankCard();
+//                btn_save.setClickable(false);
+            }
+
+            @Override
+            public void onCancel() {
+//                Toast.makeText(MyBankCardsActivity.this, "取消成功", Toast.LENGTH_LONG).show();
+            }
+        });
+        dialog.setTitle("确定保存新银行卡吗？");
+        dialog.show();
+    }
 
     private void startThread() {
         if (smsflag) {
@@ -383,7 +419,7 @@ public class AddNewBankCardActivity extends BaseActivity implements View.OnClick
             btn_get_verification_code.setClickable(false);
             btn_get_verification_code.setBackgroundResource(R.drawable.shape_center_gray_light);
             btn_get_verification_code.setTextColor(getResources().getColor(R.color.txt_black2));
-            btn_get_verification_code.setText(btnString+"("+time+")");
+            btn_get_verification_code.setText(btnString + "(" + time + ")");
 
         }
     }

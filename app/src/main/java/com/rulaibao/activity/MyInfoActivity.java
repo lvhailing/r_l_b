@@ -275,6 +275,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 tv_address_personal.setText("内蒙");
             } else if ("guizhou".equals(area)) {
                 tv_address_personal.setText("贵州");
+            }else {
+                tv_address_personal.setText("--");
             }
         }
 

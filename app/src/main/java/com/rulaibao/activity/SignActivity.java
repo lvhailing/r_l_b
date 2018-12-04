@@ -212,7 +212,7 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
                 tv_sign_get_verify_code.setClickable(false);
                 requestSMS();
                 break;
-            case R.id.rl_select_address:
+            case R.id.rl_select_address: // 选择省市
                 SelectAddressOneDialog dialog=new SelectAddressOneDialog(this, new SelectAddressOneDialog.OnExitChanged() {
                     @Override
                     public void onConfim(String selectText) {
@@ -336,6 +336,8 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             address="neimeng";
         }else if("贵州".equals(address)){
             address="guizhou";
+        }else if("不分区域".equals(address)){
+            address="other";
         }
         param.put("area", address);
         HtmlRequest.getRegisterData(SignActivity.this, param,new BaseRequester.OnRequestListener() {

@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
@@ -31,6 +33,7 @@ public class MyPayrollActivity extends BaseActivity{
     private ArrayList years;
     private ArrayList<String> listTitles;
     private List<Fragment> fragments;
+    private ViewSwitcher vs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +68,12 @@ public class MyPayrollActivity extends BaseActivity{
     }
 
     private void initView() {
+        vs = (ViewSwitcher)findViewById(R.id.vs);
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);
+
+        TextView tv_empty = (TextView)findViewById(R.id.tv_empty);
+        tv_empty.setText("暂无工资单");
 
         listTitles = new ArrayList<>();
         fragments = new ArrayList<>();
@@ -87,6 +94,10 @@ public class MyPayrollActivity extends BaseActivity{
                     return;
                 }
                 MyPayrollYears1B data = (MyPayrollYears1B) params.result;
+                if (data.getWageYears().size() == 0) {
+                    vs.setDisplayedChild(1);
+                    return;
+                }
                 if (years == null) {
                     years = new ArrayList();
                 }

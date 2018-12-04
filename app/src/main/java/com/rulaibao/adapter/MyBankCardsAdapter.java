@@ -3,7 +3,6 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.rulaibao.R;
@@ -72,32 +70,38 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemViewHolder.tv_bank_name.setText(list.get(position).getBank());
             itemViewHolder.tv_bank_card_num.setText(StringUtil.replaceSubStringBankCard(list.get(position).getBankcardNo()));
 
-            if (list.get(position).getIsWageCard().equals("yes")) {
+            // 工资卡设置状态
+            if (list.get(position).getIsWageCard().equals("1")) {
                 itemViewHolder.tv_payroll.setTextColor(Color.parseColor("#5fabef"));
-                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_certified);
+                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_selected);
+                itemViewHolder.rl_set_up_salary_card.setClickable(false);
             } else {
                 itemViewHolder.tv_payroll.setTextColor(Color.parseColor("#666666"));
-                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_uncertified);
+                itemViewHolder.iv_make_payroll.setBackgroundResource(R.mipmap.icon_unselected);
+                itemViewHolder.rl_set_up_salary_card.setClickable(true);
             }
-            // 显示各银行logo
+
+            // 设置银行logo
             if (list.get(position).getBank().equals("中国银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_zhonghang);
             } else if (list.get(position).getBank().equals("农业银行")) {
-                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_nonghang);
             } else if (list.get(position).getBank().equals("工商银行")) {
-                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.gongshang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_gongshang);
             } else if (list.get(position).getBank().equals("建设银行")) {
-                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.jianhang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_jianhang);
             } else if (list.get(position).getBank().equals("交通银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_jiaohang);
             } else if (list.get(position).getBank().equals("招商银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_zhaohang);
             } else if (list.get(position).getBank().equals("广发银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_guangfa);
             } else if (list.get(position).getBank().equals("华夏银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_huaxia);
             } else if (list.get(position).getBank().equals("浦发银行")) {
-//                        itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.nonghang);
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_pufa);
+            } else {
+                itemViewHolder.iv_bank_logo.setBackgroundResource(R.mipmap.icon_bank_empty_logo);
             }
 
             // 银行卡删除
@@ -112,7 +116,13 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemViewHolder.rl_set_up_salary_card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.setUpSalaryCard(position);
+                    if (list.get(position).getIsWageCard().equals("1")) {
+                        listener.setUpSalaryCard(position, "1");
+                        itemViewHolder.rl_set_up_salary_card.setClickable(false);
+                    }else {
+                        listener.setUpSalaryCard(position, "0");
+                        itemViewHolder.rl_set_up_salary_card.setClickable(true);
+                    }
                 }
             });
 
@@ -141,7 +151,7 @@ public class MyBankCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface OnBankCardDeleteClickListener {
         void onDeleteClick(int position);
 
-        void setUpSalaryCard(int position);
+        void setUpSalaryCard(int position, String isWageCard);
     }
 
     public void setBankCardDeleteClickListener(OnBankCardDeleteClickListener listener) {

@@ -8,6 +8,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -29,13 +30,13 @@ import com.rulaibao.uitls.ImageLoaderManager;
 import com.rulaibao.uitls.TouchListener;
 
 import butterknife.BindView;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 /**
  * 话题详情  问题详情 adapter
  */
 
 public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<RecyclerView.ViewHolder> {
-
 
 
     private MouldList<ResultCircleDetailsTopicCommentItemBean> arrayList;
@@ -86,7 +87,7 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
         holder1.tvAnswerDetailsDate.setText(arrayList.get(index).getCommentTime());
         holder1.tvAnswerDetailsContent.setText(arrayList.get(index).getCommentContent());
         final int finalIndex = index;
-        if(!TextUtils.isEmpty(arrayList.get(index).getImgCommentUrlSmall())){
+        if (!TextUtils.isEmpty(arrayList.get(index).getImgCommentUrlSmall())) {
             holder1.ivAnswerDetailas.setVisibility(View.VISIBLE);
             ImageLoader.getInstance().displayImage(arrayList.get(index).getImgCommentUrlSmall(), holder1.ivAnswerDetailas, displayImageOptions);
 
@@ -95,10 +96,15 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
                 public void onClick(View v) {
 
 
-                    imageView = new ImageView(context);
-                    imageView.setOnTouchListener(new TouchListener(holder1.ivAnswerDetailas));
+                    View view = LayoutInflater.from(context).inflate(R.layout.dialog_image, null);
+                    ImageViewTouch view1 = (ImageViewTouch) view.findViewById(R.id.iv_dialog);
+//                    imageView = new ImageView(context);
+//                    view1.setOnTouchListener(new TouchListener(holder1.ivAnswerDetailas));
 
-                    ImageLoader.getInstance().displayImage(arrayList.get(finalIndex).getImgCommentUrlBig(), imageView, displayImageOptions_img, new ImageLoadingListener() {
+                    final AlertDialog dialog = new AlertDialog.Builder(context).setView(view).show();
+                    dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+                    ImageLoader.getInstance().displayImage(arrayList.get(finalIndex).getImgCommentUrlBig(), view1, displayImageOptions_img, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String s, View view) {
 
@@ -125,22 +131,20 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
                         }
                     });
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setView(imageView);
-                    builder.show();
+
 //                    AlertDialog alert = builder.create();
                 }
             });
 
 
-        }else{
+        } else {
             holder1.ivAnswerDetailas.setVisibility(View.GONE);
         }
 
-        if(!TextUtils.isEmpty(arrayList.get(index).getLinkCommentUrl())){
+        if (!TextUtils.isEmpty(arrayList.get(index).getLinkCommentUrl())) {
             holder1.tvAnswerDetailasLink.setVisibility(View.VISIBLE);
             holder1.tvAnswerDetailasLink.setText(arrayList.get(index).getLinkCommentUrl());
-        }else{
+        } else {
             holder1.tvAnswerDetailasLink.setVisibility(View.GONE);
         }
 
@@ -164,10 +168,6 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 
             }
         });
-
-
-
-
 
 
     }

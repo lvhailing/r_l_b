@@ -180,7 +180,7 @@
     <string name="title_my_info">个人信息</string>
     <string name="title_sales_certification">销售认证</string>
     <string name="title_transaction_record">交易记录</string>
-    <string name="title_transaction_detail">交易明细</string>
+    <string name="title_transaction_detail">佣金详情</string>
     <string name="title_policy_record">保单记录</string>
     <string name="title_policy_record_detail">保单详情</string>
     <string name="title_insurance_product">保险产品</string>
@@ -271,14 +271,14 @@
 
     <!-- 扣税规则 -->
     <string name="item_one_title">1、增值税计算：</string>
-    <string name="item_one_content" formatted="false"> \n增值税=含增值税佣金收入/1.03*3% \n起征点：3万（不含增值税），即不含税佣金收入≤3万，则不征收增值税； \n税率固定：3% </string>
+    <string name="item_one_content" formatted="false"> \n增值税=含增值税佣金收入/1.03*3% \n\n起征点：3万(不含增值税)，即不含税佣金收入≤3万，则不征收增值税； \n\n税率固定：3% </string>
     <string name="item_two_title">2、附加税计算：</string>
-    <string name="item_two_content">\n城建税：增值税 \n教育费附加：增值税 \n地方教育费附加：增值税 </string>
-    <string name="item_two_remark">注：《财政部、国家税务总局关于扩大有关政府性基金免征范围的通知》（财税〔2016〕12号）：销售额或营业额不超过10万元/月或30万/季度，免征教育费附加、地方教育费附加、水利建设基金；
+    <string name="item_two_content">\n城建税：增值税 \n\n教育费附加：增值税 \n\n地方教育费附加：增值税 </string>
+    <string name="item_two_remark">注：《财政部、国家税务总局关于扩大有关政府性基金免征范围的通知》(财税〔2016〕12号)：销售额或营业额不超过10万元/月或30万/季度，免征教育费附加、地方教育费附加、水利建设基金；
 各省市附加税率并非一致。</string>
     <string name="item_three_title">3、个人所得税计算：</string>
-    <string name="item_three_content" formatted="false">应纳税所得额：（不含税佣金收入-附加税）*（1-40%），40%为展业成本，不计算个税；\n 当应纳税所得额≤4000，个人所得税=（应纳税所得额-800）*20%
-\n当应纳税所得额≥4000，个人所得税=应纳税所得额*（1-20%）*适用税率-速算扣除数 </string>
+    <string name="item_three_content" formatted="false">应纳税所得额：(不含税佣金收入-附加税)*(1-40%),40%为展业成本,不计算个税；\n\n当应纳税所得额≤4000，个人所得税=(应纳税所得额-800)*20%
+\n\n当应纳税所得额≥4000，个人所得税=应纳税所得额*(1-20%)*适用税率-速算扣除数 </string>
     <string name="item_four_title">4、税金合计：</string>
     <string name="item_four_content">\n应交税金=增值税+附加税+个人所得税</string>
     <string name="item_five_title">5、代理人佣金收入：</string>

@@ -293,7 +293,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
     private void requestListData(String name) {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("name", name);
-
+        param.put("userId", userId);
         try {
             HtmlRequest.getPlanSearch(mContext, param, new BaseRequester.OnRequestListener() {
                 @Override

@@ -11,6 +11,8 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
@@ -75,6 +77,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
     private MouldList<ResultPromotionMoneyItemBean> list;
     private FrameLayout fl_promotionmoney;
     private ImageView img_close;
+    private boolean isOpen;//推广费是否打开
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,6 +174,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
         public void getToMyLogin() {//收藏未登录跳转
                 Intent i_login = new Intent();
                 i_login.setClass(InsuranceProductDetailActivity.this, LoginActivity.class);
+                i_login.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                 startActivity(i_login);
         }
         @JavascriptInterface
@@ -218,6 +222,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
             case R.id.btn_appointment://预约
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(this, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     startActivity(intent);
                     return;
                 }
@@ -236,6 +241,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
             case R.id.btn_planbook://计划书
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(this, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     startActivity(intent);
                     return;
                 }
@@ -253,6 +259,7 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
             case R.id.btn_buy://购买
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(this, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     startActivity(intent);
                     return;
                 }
@@ -270,13 +277,33 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
             case R.id.img_promotionmoney://长期险--推广费
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(this, LoginActivity.class);
+                    intent.putExtra("GOTOMAIN", LoginActivity.GOTOMAIN);
                     startActivity(intent);
                     return;
                 }
-                fl_promotionmoney.setVisibility(View.VISIBLE);
+                if (isOpen){
+                    Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_opposite);
+                    img_promotionmoney.startAnimation(animation);
+                    fl_promotionmoney.setVisibility(View.GONE);
+                    isOpen=false;
+
+               //     img_promotionmoney.setImageResource(R.mipmap.img_up);
+                }else{
+                    Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+                    img_promotionmoney.startAnimation(animation);
+                    fl_promotionmoney.setVisibility(View.VISIBLE);
+                    isOpen=true;
+
+                  //  img_promotionmoney.setImageResource(R.mipmap.img_down);
+                }
                 break;
             case R.id.img_close://关闭长期险--推广费
+                Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_opposite);
+                img_promotionmoney.startAnimation(animation);
                 fl_promotionmoney.setVisibility(View.GONE);
+                isOpen=false;
+
+         //       img_promotionmoney.setImageResource(R.mipmap.img_up);
                 break;
         }
     }

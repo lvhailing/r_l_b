@@ -19,7 +19,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="115dp"
+            android:layout_marginTop="125dp"
             android:paddingBottom="10dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
@@ -33,8 +33,9 @@
 
                 <ImageView
                     android:id="@+id/iv_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:src="@mipmap/ic_delete"/>
 
@@ -60,7 +61,8 @@
                     android:id="@+id/iv_make_payroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:src="@mipmap/icon_uncertified"
+                    android:layout_centerVertical="true"
+                    tools:src="@mipmap/icon_unselected"
                     />
 
                 <TextView
@@ -117,12 +119,12 @@
                     android:id="@+id/tv_bank_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_bank_logo"
-                    android:maxLength="10"
+                    android:maxLength="15"
                     android:maxLines="1"
                     android:textColor="@color/txt_black1"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     tools:text="中国建设银行"/>
 
                 <!--<TextView-->
@@ -141,7 +143,9 @@
                     android:layout_below="@id/iv_bank_logo"
                     android:paddingBottom="10dp"
                     android:paddingTop="18dp"
-                    tools:text="**** **** **** 2277"/>
+                    android:textSize="20sp"
+                    android:textColor="@color/txt_black2"
+                    tools:text="**** **** **** 2277 886"/>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

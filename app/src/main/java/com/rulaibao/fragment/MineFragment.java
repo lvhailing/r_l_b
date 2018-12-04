@@ -248,10 +248,12 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 }
                 data = (MineData2B) params.result;
 
-                // 认证状态保存到sp
+                // 认证成功后就有用户身份证号了，所以进入到我的页面时就要把认证状态和身份证号都保存到sp,后面跳新增银行卡页面时要用身份证号
                 if (!TextUtils.isEmpty(data.getCheckStatus())) {
                     try {
                         PreferenceUtil.setCheckStatus(data.getCheckStatus());
+//                        Log.i("hh"," 认证状态: checkStatus = " + data.getCheckStatus());
+                        PreferenceUtil.setIdNo(DESUtil.encrypt(data.getIdNo()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

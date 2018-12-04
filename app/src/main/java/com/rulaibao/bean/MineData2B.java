@@ -11,6 +11,7 @@ public class MineData2B implements IMouldType {
     private String totalCommission; // 累计佣金(元)
     private String messageTotal; // 消息总数
     private String insuranceWarning; // 续保提醒数量
+    private String idNo; // 身份证号
 
     public String getRealName() {
         return realName;
@@ -66,5 +67,13 @@ public class MineData2B implements IMouldType {
 
     public void setInsuranceWarning(String insuranceWarning) {
         this.insuranceWarning = insuranceWarning;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 }

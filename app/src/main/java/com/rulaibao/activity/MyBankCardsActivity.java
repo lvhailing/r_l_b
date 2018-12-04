@@ -24,6 +24,7 @@ import com.rulaibao.network.BaseRequester;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.network.types.MouldList;
 import com.rulaibao.uitls.PreferenceUtil;
+import com.rulaibao.uitls.ViewUtils;
 import com.rulaibao.widget.TitleBar;
 
 import java.util.HashMap;
@@ -101,8 +102,10 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
             }
 
             @Override
-            public void setUpSalaryCard(int position) { // 设置工资卡
-                showSetUpDialog(position);
+            public void setUpSalaryCard(int position,String isWageCard) { // 设置工资卡
+                if (isWageCard.equals("0")) {
+                    showSetUpDialog(position,"0");
+                }
             }
         });
         recycler_view.setAdapter(myBankCardsAdapter);
@@ -135,7 +138,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
      *  弹出设置工资卡的提示框
      * @param position
      */
-    private void showSetUpDialog(final int position) {
+    private void showSetUpDialog(final int position,final String isWageCard) {
         CancelNormalDialog dialog = new CancelNormalDialog(this, new CancelNormalDialog.IsCancel() {
             @Override
             public void onConfirm() {
@@ -147,7 +150,7 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
 //                Toast.makeText(MyBankCardsActivity.this, "取消成功", Toast.LENGTH_LONG).show();
             }
         });
-        dialog.setTitle("确定保存新银行卡吗？");
+        dialog.setTitle("确定设为工资卡吗？");
         dialog.show();
     }
 
@@ -169,7 +172,9 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
                 OK2B data = (OK2B) params.result;
                 if (data.getFlag().equals("true")) {
                     Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
+                    totalList.clear();
                     requestData();
+                    recycler_view.scrollToPosition(0);
                 } else {
                     Toast.makeText(mContext, data.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -323,15 +328,12 @@ public class MyBankCardsActivity extends BaseActivity implements View.OnClickLis
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_add_new_bank_card: // 新增银行卡
-//                if (PreferenceUtil.getCheckStatus().equals("true")) { // 已认证的跳转新增银行卡页面
-//                    intent = new Intent(this, AddNewBankCardActivity.class);
-//                    startActivity(intent);
-//                } else { // 未销售认证的跳转销售认证页面先认证
-//                    intent = new Intent(this, SalesCertificationActivity.class);
-//                    startActivity(intent);
-//                }
-                intent = new Intent(this, AddNewBankCardActivity.class);
-                startActivity(intent);
+                if (PreferenceUtil.getCheckStatus().equals("success")) { // 已认证的跳转新增银行卡页面
+                    intent = new Intent(this, AddNewBankCardActivity.class);
+                    startActivity(intent);
+                } else { // 未销售认证的提示认证
+                    ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
+                }
         }
 
     }

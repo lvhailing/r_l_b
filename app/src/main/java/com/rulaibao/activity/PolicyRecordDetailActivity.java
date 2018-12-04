@@ -48,6 +48,9 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
     private TextView tv_renewal_date2; // 续期日期
     private TextView tv_have_insurance_premiums; // 已交保费
     private TextView tv_promotion_fee; // 推广费
+    private LinearLayout ll_get_commission; // 获得佣金 布局
+    private TextView tv_get_commission; // 获得佣金
+
     private TextView tv_record_date; // 记录日期
     private ImageView iv_id_card_positive; // 身份证正面
     private ImageView iv_id_card_negative; // 身份证反面
@@ -116,6 +119,9 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
         tv_renewal_date2 = (TextView) findViewById(R.id.tv_renewal_date2);
         tv_have_insurance_premiums = (TextView) findViewById(R.id.tv_have_insurance_premiums);
         tv_promotion_fee = (TextView) findViewById(R.id.tv_promotion_fee);
+
+        ll_get_commission = (LinearLayout) findViewById(R.id.ll_get_commission);
+        tv_get_commission = (TextView) findViewById(R.id.tv_get_commission);
         tv_record_date = (TextView) findViewById(R.id.tv_record_date);
         iv_id_card_positive = (ImageView) findViewById(R.id.iv_id_card_positive);
         iv_id_card_negative = (ImageView) findViewById(R.id.iv_id_card_negative);
@@ -196,43 +202,54 @@ public class PolicyRecordDetailActivity extends BaseActivity implements View.OnC
             tv_underwriting_time.setText(data.getUnderwirteTime());
             ll_policy_number.setVisibility(View.VISIBLE);
             tv_policy_number.setText(data.getOrderCode());
+            ll_get_commission.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(data.getCommissionGained())) { // 获得佣金
+                tv_get_commission.setText(data.getCommissionGained());
+            }
         }else if ("renewing".equals(status)) {
             tv_policy_status.setText("续保中");
             ll_underwriting_time.setVisibility(View.VISIBLE);
             tv_underwriting_time.setText(data.getUnderwirteTime());
             ll_policy_number.setVisibility(View.VISIBLE);
             tv_policy_number.setText(data.getOrderCode());
+            ll_get_commission.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(data.getCommissionGained())) { // 获得佣金
+                tv_get_commission.setText(data.getCommissionGained());
+            }
         }else if ("renewed".equals(status)) {
             tv_policy_status.setText("已续保");
             ll_underwriting_time.setVisibility(View.VISIBLE);
             tv_underwriting_time.setText(data.getUnderwirteTime());
             ll_policy_number.setVisibility(View.VISIBLE);
             tv_policy_number.setText(data.getOrderCode());
+            ll_get_commission.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(data.getCommissionGained())) { // 获得佣金
+                tv_get_commission.setText(data.getCommissionGained());
+            }
         }
 
-
-        if (!TextUtils.isEmpty(data.getCustomerName())) {
+        if (!TextUtils.isEmpty(data.getCustomerName())) {  // 客户姓名
             tv_customer_name.setText(data.getCustomerName());
         }
-        if (!TextUtils.isEmpty(data.getCustomerIdNo())) {
+        if (!TextUtils.isEmpty(data.getCustomerIdNo())) {  // 身份证号
             tv_id_number.setText(data.getCustomerIdNo());
         }
-        if (!TextUtils.isEmpty(data.getInsurancePeriod())) {
+        if (!TextUtils.isEmpty(data.getInsurancePeriod())) {  // 保险期限
             tv_insurance_period.setText(data.getInsurancePeriod());
         }
-        if (!TextUtils.isEmpty(data.getPaymentPeriod())) {
+        if (!TextUtils.isEmpty(data.getPaymentPeriod())) { // 缴费期限
             tv_payment_period.setText(data.getPaymentPeriod());
         }
-        if (!TextUtils.isEmpty(data.getRenewalDate())) {
+        if (!TextUtils.isEmpty(data.getRenewalDate())) { // 续期日期
             tv_renewal_date2.setText(data.getRenewalDate());
         }
-        if (!TextUtils.isEmpty(data.getPaymentedPremiums())) {
+        if (!TextUtils.isEmpty(data.getPaymentedPremiums())) {  // 已交保费
             tv_have_insurance_premiums.setText(data.getPaymentedPremiums());
         }
-        if (!TextUtils.isEmpty(data.getPromotioinCost())) {
+        if (!TextUtils.isEmpty(data.getPromotioinCost())) { // 推广费
             tv_promotion_fee.setText(data.getPromotioinCost());
         }
-        if (!TextUtils.isEmpty(data.getRecordTime())) {
+        if (!TextUtils.isEmpty(data.getRecordTime())) { // 记录日期
             tv_record_date.setText(data.getRecordTime());
         }
 

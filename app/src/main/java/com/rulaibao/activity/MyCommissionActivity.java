@@ -121,7 +121,7 @@ public class MyCommissionActivity extends BaseActivity implements View.OnClickLi
             tv_waiting_commission.setText(data.getUnCommissioned());
         }
         if (data.getUnCommissioned()!= null) { // 已发佣金
-            tv_get_commission.setText(data.getUnCommissioned());
+            tv_get_commission.setText(data.getCommissioned());
         }
     }
 

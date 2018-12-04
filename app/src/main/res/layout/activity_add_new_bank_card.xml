@@ -105,13 +105,16 @@
                 android:src="@mipmap/icon_arrow"/>
 
             <TextView
-                android:id="@+id/tv_account_opening_bank"
+                android:id="@+id/tv_selected_opening_bank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="58dp"
                 android:layout_marginRight="18dp"
                 android:layout_toLeftOf="@id/iv_arrow1"
-                android:text="请选择"
+                android:text=""
+                android:hint="请选择"
+                android:textColorHint="@color/txt_black2"
                 android:textColor="@color/txt_black2"
                 android:textSize="14sp"/>
         </RelativeLayout>
@@ -144,13 +147,16 @@
                 android:src="@mipmap/icon_arrow"/>
 
             <TextView
-                android:id="@+id/tv_account_opening_bank_address"
+                android:id="@+id/tv_selected_opening_bank_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="50dp"
                 android:layout_marginRight="18dp"
                 android:layout_toLeftOf="@id/iv_arrow2"
-                android:text="请选择"
+                android:text=""
+                android:hint="请选择"
+                android:textColorHint="@color/txt_black2"
                 android:textColor="@color/txt_black2"
                 android:textSize="14sp"/>
         </RelativeLayout>
@@ -179,11 +185,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="75dp"
                 android:background="@color/transparent"
                 android:hint="@string/et_hint1"
+                android:textColorHint="@color/txt_black2"
                 android:textColor="@color/txt_black2"
+                android:maxLines="2"
+                android:maxLength="20"
                 android:textSize="14sp"
-                tools:text=""/>
+                android:gravity="right"
+                tools:text="中国人民银行中国人民银行中国人民银行中国人民银行中国人民银行中国人民银行"/>
         </RelativeLayout>
 
         <View
@@ -212,7 +223,11 @@
                 android:layout_alignParentRight="true"
                 android:background="@color/transparent"
                 android:hint="@string/et_hint2"
+                android:textColorHint="@color/txt_black2"
                 android:textColor="@color/txt_black2"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="19"
                 android:textSize="14sp"
                 tools:text=""/>
         </RelativeLayout>
@@ -290,6 +305,7 @@
                 android:layout_toLeftOf="@id/btn_get_verification_code"
                 android:background="@drawable/shape_center_gray_light"
                 android:hint="@string/sign_verify_hint"
+                android:textColorHint="@color/txt_black2"
                 android:paddingBottom="10dp"
                 android:paddingLeft="23dp"
                 android:paddingRight="23dp"
