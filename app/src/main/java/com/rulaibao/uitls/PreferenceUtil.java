@@ -442,4 +442,21 @@ public class PreferenceUtil {
 
     }
 
+    /**
+     * 是否显示我的佣金收益
+     *
+     * @return
+     */
+    public static boolean isShowMyCommitssion() {
+        return getUserSharedPreferences().getBoolean("ISSHOWCOMMITSSION", true);
+    }
+
+    /**
+     * 设置是否显示我的佣金收益
+     *
+     * @param ishow
+     */
+    public static void setShowMyCommitssion(boolean ishow) {
+        getUserSharedPreferences().edit().putBoolean("ISSHOWCOMMITSSION", ishow).commit();
+    }
 }

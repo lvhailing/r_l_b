@@ -276,6 +276,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 //				PreferenceUtil.setPhone("");
                 PreferenceUtil.setUserId("");
                 PreferenceUtil.setUserNickName("");
+                PreferenceUtil.setShowMyCommitssion(true);
                 PreferenceUtil.setToken("");
                 PreferenceUtil.setCheckStatus("");
                 context.startActivity(i_account);

@@ -94,7 +94,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private MineData2B data;
     private int messageTotal;
 
-    private boolean isShowMoney = true; // 默认显示佣金额
     private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";  // 图片保存SD卡位置
     private int insuranceWarning;
     private String totalCommission;
@@ -119,6 +118,16 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     rl_total_commission.setVisibility(View.VISIBLE);
                     tv_mine_login.setVisibility(View.GONE);
                     requestData();
+                    if (PreferenceUtil.isShowMyCommitssion()) {
+                        iv_show_money.setImageResource(R.mipmap.icon_open_password);
+                        if (!TextUtils.isEmpty(totalCommission)) {
+                            tv_total_commission.setText(totalCommission);
+                        }
+                    } else {
+                        iv_show_money.setImageResource(R.mipmap.icon_hide_password);
+                        tv_total_commission.setText("****");
+                    }
+
                 }
             }
 
@@ -220,6 +229,16 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             rl_total_commission.setVisibility(View.VISIBLE);
             tv_mine_login.setVisibility(View.GONE);
             requestData();
+            if (PreferenceUtil.isShowMyCommitssion()) {
+                iv_show_money.setImageResource(R.mipmap.icon_open_password);
+                if (!TextUtils.isEmpty(totalCommission)) {
+                    tv_total_commission.setText(totalCommission);
+                }
+            } else {
+                iv_show_money.setImageResource(R.mipmap.icon_hide_password);
+                tv_total_commission.setText("****");
+            }
+
         }
     }
 
@@ -405,13 +424,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 toWhichActivity(MyInfoActivity.class);
                 break;
             case R.id.iv_show_money: // 显示佣金金额
-                if (isShowMoney) {
+                if (PreferenceUtil.isShowMyCommitssion()) {
                     iv_show_money.setImageResource(R.mipmap.icon_hide_password);
                     tv_total_commission.setText("****");
-                    isShowMoney = false;
+                    PreferenceUtil.setShowMyCommitssion(false);
                 } else {
-                    isShowMoney = true;
                     iv_show_money.setImageResource(R.mipmap.icon_open_password);
+                    PreferenceUtil.setShowMyCommitssion(true);
                     if (!TextUtils.isEmpty(totalCommission)) {
                         tv_total_commission.setText(totalCommission);
                     }
