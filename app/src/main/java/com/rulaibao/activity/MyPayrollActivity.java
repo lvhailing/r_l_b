@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -124,7 +125,7 @@ public class MyPayrollActivity extends BaseActivity{
             sliding_tabs.addTab(sliding_tabs.newTab().setText(listTitles.get(i)));//添加tab选项
         }
 
-        FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        FragmentPagerAdapter vPAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return fragments.get(position);
@@ -141,10 +142,10 @@ public class MyPayrollActivity extends BaseActivity{
                 return listTitles.get(position).toString();
             }
         };
-        viewpager.setAdapter(mAdapter);
+        viewpager.setAdapter(vPAdapter);
 
         sliding_tabs.setupWithViewPager(viewpager);  // 将TabLayout和ViewPager关联起来。
-        sliding_tabs.setTabsFromPagerAdapter(mAdapter); // 给Tabs设置适配器
+        sliding_tabs.setTabsFromPagerAdapter(vPAdapter); // 给Tabs设置适配器
     }
 
     @Override

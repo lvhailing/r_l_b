@@ -3,6 +3,7 @@ package com.rulaibao.activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -74,6 +75,7 @@ public class PayrollDetailActivity extends BaseActivity implements View.OnClickL
     private void initView() {
         payrollId = getIntent().getStringExtra("id");
         currentMonth = getIntent().getStringExtra("currentMonth");
+        Log.i("hh", getClass() + " --- " + currentMonth);
 
         tv_commission_income = (TextView) findViewById(R.id.tv_commission_income);
         tv_personal_income_tax = (TextView) findViewById(R.id.tv_personal_income_tax);

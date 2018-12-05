@@ -38,7 +38,7 @@ public class PayrollYearsFragment extends BaseFragment {
     RecyclerView recycler_view;
     private ArrayList arrayList = new ArrayList();
     private String string = "";
-    private PayrollListAdapter adapter;
+    private PayrollListAdapter payrollListadapter;
     private MouldList<PayrollList2B> payrollList2B;
     private int currentPage = 1;
     private boolean noDataFlag = true;   // 控制无数据不加载
@@ -74,18 +74,18 @@ public class PayrollYearsFragment extends BaseFragment {
 
     public void initRecyclerView() {
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new PayrollListAdapter(getActivity(), currentYear,payrollList2B);
-        recycler_view.setAdapter(adapter);
+        payrollListadapter = new PayrollListAdapter(getActivity(),payrollList2B);
+        recycler_view.setAdapter(payrollListadapter);
         recycler_view.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem;
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == payrollListadapter.getItemCount()) {
 
                     if (noDataFlag) {
-                        adapter.changeMoreStatus(PayrollListAdapter.LOADING_MORE);
+                        payrollListadapter.changeMoreStatus(PayrollListAdapter.LOADING_MORE);
                         currentPage++;
                         requestPayrollList(currentYear);
                     }
@@ -109,13 +109,12 @@ public class PayrollYearsFragment extends BaseFragment {
             if (context != null) {
                 payrollList2B.clear();
             }
-            currentYear =getArguments().getString(KEY);
-//            Log.i("hh", "setUserVisibleHint ---- currentYear = "+currentYear);
+            currentYear = getArguments().getString(KEY);
+//            Log.i("hh", getClass()+" setUserVisibleHint ---- currentYear = "+currentYear);
             currentPage = 1;
             noDataFlag = true;
 
             requestPayrollList(currentYear);
-
         }
     }
 
@@ -150,7 +149,7 @@ public class PayrollYearsFragment extends BaseFragment {
 //                }
                 if (everyList.size() == 0 && currentPage != 1) {
                     Toast.makeText(context, "已显示全部", Toast.LENGTH_SHORT).show();
-                    adapter.changeMoreStatus(PayrollListAdapter.NO_LOAD_MORE);
+                    payrollListadapter.changeMoreStatus(PayrollListAdapter.NO_LOAD_MORE);
                 }
                 if (currentPage == 1) {
                     //刚进来时 加载第一页数据，或下拉刷新 重新加载数据 。这两种情况之前的数据都清掉
@@ -172,10 +171,10 @@ public class PayrollYearsFragment extends BaseFragment {
 
                 if (everyList.size() != 10) {
                     // 本次取回的数据为不是10条，代表取完了
-                    adapter.changeMoreStatus(PayrollListAdapter.NO_LOAD_MORE);
+                    payrollListadapter.changeMoreStatus(PayrollListAdapter.NO_LOAD_MORE);
                 } else {
                     // 其他，均显示“数据加载中”的提示
-                    adapter.changeMoreStatus(PayrollListAdapter.PULLUP_LOAD_MORE);
+                    payrollListadapter.changeMoreStatus(PayrollListAdapter.PULLUP_LOAD_MORE);
                 }
 
             }

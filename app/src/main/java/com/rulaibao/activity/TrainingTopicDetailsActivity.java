@@ -253,9 +253,9 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                int topRowVerticalPosition =
-                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                swipe.setEnabled(topRowVerticalPosition >= 0);
+//                int topRowVerticalPosition =
+//                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+//                swipe.setEnabled(topRowVerticalPosition >= 0);
 
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 //最后一个可见的ITEM

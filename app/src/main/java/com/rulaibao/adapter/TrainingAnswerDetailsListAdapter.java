@@ -102,7 +102,10 @@ public class TrainingAnswerDetailsListAdapter extends RecyclerBaseAapter<Recycle
 //                    view1.setOnTouchListener(new TouchListener(holder1.ivAnswerDetailas));
 
                     final AlertDialog dialog = new AlertDialog.Builder(context).setView(view).show();
-                    dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    if(dialog.getWindow()!=null){
+                        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                    }
+
 
                     ImageLoader.getInstance().displayImage(arrayList.get(finalIndex).getImgCommentUrlBig(), view1, displayImageOptions_img, new ImageLoadingListener() {
                         @Override

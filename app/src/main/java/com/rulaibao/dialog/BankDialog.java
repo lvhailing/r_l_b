@@ -138,10 +138,10 @@ public class BankDialog extends Dialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.tv_sure://确定选择按钮监听
                 bankChooseInterface.getBankName(mSelectedBank);
-                dismissDialog();
+                dismissBankListDialog();
                 break;
             case R.id.tv_cancel://取消
-                dismissDialog();
+                dismissBankListDialog();
                 break;
         }
     }
@@ -162,18 +162,14 @@ public class BankDialog extends Dialog implements View.OnClickListener {
         show();
     }
 
-    public void dismissDialog() {
-//        if (Looper.myLooper() != Looper.getMainLooper()) {
-//            return;
-//        }
-//        if (!isShowing() || null == mContext || ((Activity) mContext).isFinishing()) {
-//            return;
-//        }
-//        dismiss();
-
-        if (this.isShowing()) {
-            this.dismiss();
+    public void dismissBankListDialog() {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            return;
         }
+        if (!isShowing() || null == mContext || ((Activity) mContext).isFinishing()) {
+            return;
+        }
+        dismiss();
     }
 
     private class CalendarTextAdapter extends AbstractWheelTextAdapter {

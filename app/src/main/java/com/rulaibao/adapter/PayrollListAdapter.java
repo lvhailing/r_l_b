@@ -3,6 +3,8 @@ package com.rulaibao.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,6 @@ import com.rulaibao.network.types.MouldList;
 public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final MouldList<PayrollList2B> list;
-    private final String currentYear;
     Context mContext;
     LayoutInflater mInflater;
     private static final int TYPE_ITEM = 0;
@@ -42,9 +43,8 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private String month;
 
 
-    public PayrollListAdapter(Context context, String currentYear,MouldList<PayrollList2B> list) {
+    public PayrollListAdapter(Context context,MouldList<PayrollList2B> list) {
         mContext = context;
-        this.currentYear = currentYear;
         this.list = list;
         mInflater = LayoutInflater.from(context);
     }
@@ -66,7 +66,12 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            month = list.get(position).getWageMonth();
+           String yearAndMonth = list.get(position).getWageMonth();
+//                Log.i("hh", "截取前的的年月 = " + yearAndMonth);
+            if (!TextUtils.isEmpty(yearAndMonth) && yearAndMonth != null) {
+                 month = yearAndMonth.substring(5, 7);
+//                Log.i("hh", "截取后的月份 = " + month);
+            }
             if (month.equals("01")) {
                 itemViewHolder.tv_month.setText("一月");
                 itemViewHolder.tv_month.setPadding(8,28,8,28);
@@ -191,7 +196,8 @@ public class PayrollListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, PayrollDetailActivity.class);
                 intent.putExtra("id", list.get(position).getId());
-                intent.putExtra("currentMonth", currentYear +"-"+list.get(position).getWageMonth());
+                intent.putExtra("currentMonth",  list.get(position).getWageMonth());
+                Log.i("hh",getClass()+" --- " +"currentYear = "+list.get(position).getWageMonth());
                 mContext.startActivity(intent);
             }
         });
