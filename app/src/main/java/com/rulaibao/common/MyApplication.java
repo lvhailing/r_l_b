@@ -85,14 +85,16 @@ public class MyApplication extends Application {
             }
         };
 
+        HashMap map = new HashMap();
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        QbSdk.initTbsSettings(map);
+
         //x5内核预加载，异步初始化x5 webview所需环境
         QbSdk.initX5Environment(getApplicationContext(), pcb);
         ExceptionHandler.getInstance().initConfig(this);
 
 
-//        HashMap map = new HashMap();
-//        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
-//        QbSdk.initTbsSettings(map);
+
 
 //        initX5();//启动预加载的服务
 

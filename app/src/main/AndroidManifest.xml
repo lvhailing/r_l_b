@@ -401,12 +401,12 @@
 
         <service android:name=".service.AppUpgradeService"/>
 
-        <!--<service android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+        <service android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
 
         android:label="dexopt"
 
         android:process=":dexopt"/>
-        <service android:name=".service.PreLoadX5Service" />-->
+        <service android:name=".service.PreLoadX5Service" />
 
 
         <provider

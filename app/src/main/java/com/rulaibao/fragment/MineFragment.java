@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import com.rulaibao.activity.PolicyBookingListActivity;
 import com.rulaibao.activity.PolicyRecordListActivity;
 import com.rulaibao.activity.RenewalReminderActivity;
 import com.rulaibao.activity.SettingActivity;
-import com.rulaibao.activity.TransactionRecordActivity;
 import com.rulaibao.bean.MineData2B;
 import com.rulaibao.network.BaseParams;
 import com.rulaibao.network.BaseRequester;
@@ -118,15 +116,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     rl_total_commission.setVisibility(View.VISIBLE);
                     tv_mine_login.setVisibility(View.GONE);
                     requestData();
-                    if (PreferenceUtil.isShowMyCommitssion()) {
-                        iv_show_money.setImageResource(R.mipmap.icon_open_password);
-                        if (!TextUtils.isEmpty(totalCommission)) {
-                            tv_total_commission.setText(totalCommission);
-                        }
-                    } else {
-                        iv_show_money.setImageResource(R.mipmap.icon_hide_password);
-                        tv_total_commission.setText("****");
-                    }
+                    isShowTotalCommission();
 
                 }
             }
@@ -229,16 +219,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             rl_total_commission.setVisibility(View.VISIBLE);
             tv_mine_login.setVisibility(View.GONE);
             requestData();
-            if (PreferenceUtil.isShowMyCommitssion()) {
-                iv_show_money.setImageResource(R.mipmap.icon_open_password);
-                if (!TextUtils.isEmpty(totalCommission)) {
-                    tv_total_commission.setText(totalCommission);
-                }
-            } else {
-                iv_show_money.setImageResource(R.mipmap.icon_hide_password);
-                tv_total_commission.setText("****");
-            }
+            isShowTotalCommission();
 
+        }
+    }
+
+    /**
+     *  设置 佣金的显示与隐藏
+     */
+    private void isShowTotalCommission() {
+        if (PreferenceUtil.isShowMyCommission()) {
+            iv_show_money.setImageResource(R.mipmap.icon_open_password);
+            if (!TextUtils.isEmpty(totalCommission)) {
+                tv_total_commission.setText(totalCommission);
+            }
+        } else {
+            iv_show_money.setImageResource(R.mipmap.icon_hide_password);
+            tv_total_commission.setText("****");
         }
     }
 
@@ -323,7 +320,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         tv_user_phone.setText(StringUtil.replaceSubString(data.getMobile()));
 
         totalCommission = data.getTotalCommission();
-        tv_total_commission.setText(totalCommission);
+        isShowTotalCommission();
 
         String url = data.getHeadPhoto();
         if (!TextUtils.isEmpty(url)) {
@@ -424,13 +421,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 toWhichActivity(MyInfoActivity.class);
                 break;
             case R.id.iv_show_money: // 显示佣金金额
-                if (PreferenceUtil.isShowMyCommitssion()) {
+                if (PreferenceUtil.isShowMyCommission()) {
                     iv_show_money.setImageResource(R.mipmap.icon_hide_password);
                     tv_total_commission.setText("****");
-                    PreferenceUtil.setShowMyCommitssion(false);
+                    PreferenceUtil.setShowMyCommission(false);
                 } else {
                     iv_show_money.setImageResource(R.mipmap.icon_open_password);
-                    PreferenceUtil.setShowMyCommitssion(true);
+                    PreferenceUtil.setShowMyCommission(true);
                     if (!TextUtils.isEmpty(totalCommission)) {
                         tv_total_commission.setText(totalCommission);
                     }

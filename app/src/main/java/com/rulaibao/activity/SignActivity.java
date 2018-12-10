@@ -336,8 +336,6 @@ public class SignActivity extends BaseActivity implements View.OnClickListener{
             address="neimeng";
         }else if("贵州".equals(address)){
             address="guizhou";
-        }else if("不分区域".equals(address)){
-            address="other";
         }
         param.put("area", address);
         HtmlRequest.getRegisterData(SignActivity.this, param,new BaseRequester.OnRequestListener() {

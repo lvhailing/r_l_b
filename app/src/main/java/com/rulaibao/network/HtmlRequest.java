@@ -15,7 +15,6 @@ import com.google.gson.reflect.TypeToken;
 import com.rulaibao.activity.MainActivity;
 import com.rulaibao.bean.BankCardList1B;
 import com.rulaibao.bean.Collection2B;
-import com.rulaibao.bean.CommissionDetail1B;
 import com.rulaibao.bean.CommissionNewsList1B;
 import com.rulaibao.bean.HomeIndex2B;
 import com.rulaibao.bean.InsuranceDetail1B;
@@ -276,7 +275,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 //				PreferenceUtil.setPhone("");
                 PreferenceUtil.setUserId("");
                 PreferenceUtil.setUserNickName("");
-                PreferenceUtil.setShowMyCommitssion(true);
+                PreferenceUtil.setShowMyCommission(true);
                 PreferenceUtil.setToken("");
                 PreferenceUtil.setCheckStatus("");
                 context.startActivity(i_account);

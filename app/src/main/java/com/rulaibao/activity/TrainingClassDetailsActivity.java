@@ -124,6 +124,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_training_class_details);
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
         initTopTitle();
         initView();
 
@@ -291,9 +292,7 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
 
 //        x5Webview.addJavascriptInterface(new MyJavaScriptinterface(), "click");
 
-
         /********************************************* 测试 ***********************************************/
-
 
         Bundle data = new Bundle();
         data.putBoolean("standardFullScreen", false);
@@ -304,23 +303,17 @@ public class TrainingClassDetailsActivity extends BaseActivity implements Traini
         //1：以页面内开始播放，2：以全屏开始播放；不设置默认：1
         x5Webview.getX5WebViewExtension().invokeMiscMethod("setVideoParams", data);
 
-
-
-
-
         /********************************************* 测试 ************************************************/
 
-
-
         x5Webview.setWebChromeClient(new com.tencent.smtt.sdk.WebChromeClient());
-        x5Webview.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView webView, String s) {
-
-                return true;
-            }
-        });
+//        x5Webview.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
+//
+//            @Override
+//            public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView webView, String s) {
+//
+//                return true;
+//            }
+//        });
 
 
         /**

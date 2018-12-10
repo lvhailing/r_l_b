@@ -175,13 +175,10 @@ public class SelectAddressOneDialog extends Dialog implements DialogInterface.On
         provinceMode3.setNAME("河北");
         ProvinceModel provinceMode4 =new ProvinceModel();
         provinceMode4.setNAME("贵州");
-        ProvinceModel provinceMode5 =new ProvinceModel();
-        provinceMode5.setNAME("不分区域");
         provinceList.add(provinceModel);
         provinceList.add(provinceMode2);
         provinceList.add(provinceMode3);
         provinceList.add(provinceMode4);
-        provinceList.add(provinceMode5);
 
         provinceDatas = provinceList;
         provinceAdapter = new ProvinceAdapter(mContext, provinceDatas);

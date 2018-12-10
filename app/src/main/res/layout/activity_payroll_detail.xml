@@ -233,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
-                android:maxLength="17"
+                android:maxLength="19"
                 android:maxLines="1"
                 tools:text="45489213694857812"
                 android:textColor="@color/txt_black1"

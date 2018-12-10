@@ -447,7 +447,7 @@ public class PreferenceUtil {
      *
      * @return
      */
-    public static boolean isShowMyCommitssion() {
+    public static boolean isShowMyCommission() {
         return getUserSharedPreferences().getBoolean("ISSHOWCOMMITSSION", true);
     }
 
@@ -456,7 +456,7 @@ public class PreferenceUtil {
      *
      * @param ishow
      */
-    public static void setShowMyCommitssion(boolean ishow) {
+    public static void setShowMyCommission(boolean ishow) {
         getUserSharedPreferences().edit().putBoolean("ISSHOWCOMMITSSION", ishow).commit();
     }
 }

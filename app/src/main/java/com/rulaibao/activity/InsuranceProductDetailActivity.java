@@ -373,10 +373,11 @@ public class InsuranceProductDetailActivity extends Activity implements View.OnC
                 }
 
                 if ("success".equals(data.getCheckStatus())) {
-
                     tv_appointment_promotionmoney.setText(setTextStyle1(this,data.getPromotionMoney()));
+                    img_promotionmoney.setVisibility(View.VISIBLE);
                 } else {
                     tv_appointment_promotionmoney.setText(setTextStyle1(this,"认证可见"));
+                    img_promotionmoney.setVisibility(View.GONE);
                 }
                 ResultPromotionMoneyItemBean bean1=new ResultPromotionMoneyItemBean();
                 bean1.setPromotionMoney("第一年推广费："+data.getPromotionMoney()+"%");
