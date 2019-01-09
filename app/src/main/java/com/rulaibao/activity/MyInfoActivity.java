@@ -82,9 +82,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private Bitmap newZoomImage;
 
     //图片保存SD卡位置
-    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";
+    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rulaibao/imgs/";
    //图片保存SD卡位置
-    private final static String IMG_PATH_TWO = Environment.getExternalStorageDirectory() + "/rlb/imgs2/";
+    private final static String IMG_PATH_TWO = Environment.getExternalStorageDirectory() + "/rulaibao/imgs2/";
 
   //使用照相机拍照获取图片
     public static final int SELECT_PIC_BY_TACK_PHOTO = 1;

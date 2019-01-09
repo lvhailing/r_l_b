@@ -32,7 +32,7 @@ import butterknife.BindView;
  * 圈子
  */
 
-public class TrainingCircleActivity extends BaseActivity{
+public class TrainingCircleActivity extends BaseActivity {
 
     @BindView(R.id.lv_mycircle)
     MyListView lvMycircle;
@@ -97,75 +97,77 @@ public class TrainingCircleActivity extends BaseActivity{
 
     public void initAdapterData() {
 
-        if(myAppCircle.size() == 0&&myJoinAppCircle.size() == 0&&myRecomAppCircle.size() == 0){
+        if (myAppCircle.size() == 0 && myJoinAppCircle.size() == 0 && myRecomAppCircle.size() == 0) {
             vsTrainingCircle.setDisplayedChild(1);
             tvEmpty.setText("暂无圈子");
-        }else{
+        } else {
             vsTrainingCircle.setDisplayedChild(0);
-        }
-
-        if (myAppCircle.size() == 0) {
-            llMycircle.setVisibility(View.GONE);
-        } else {
-            llMycircle.setVisibility(View.VISIBLE);
-        }
-
-        if (myJoinAppCircle.size() == 0) {
-            llMycircleJoin.setVisibility(View.GONE);
-        } else {
-            llMycircleJoin.setVisibility(View.VISIBLE);
-        }
-
-        if (myRecomAppCircle.size() == 0) {
-            llRecommendCircle.setVisibility(View.GONE);
-        } else {
-            llRecommendCircle.setVisibility(View.VISIBLE);
-        }
 
 
-
-        myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE, userId);
-        lvMycircle.setAdapter(myCircleAdapter);
-
-        joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN, userId);
-        lvMycircleJoin.setAdapter(joinAdapter);
-
-        recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND, userId);
-        lvRecommendCircle.setAdapter(recommendAdapter);
-
-        lvMycircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("circleId", myAppCircle.get(position).getCircleId());
-                map.put("isApply", myAppCircle.get(position).getIsApply());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
-
+            if (myAppCircle.size() == 0) {
+                llMycircle.setVisibility(View.GONE);
+            } else {
+                llMycircle.setVisibility(View.VISIBLE);
             }
-        });
 
-        lvMycircleJoin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("circleId", myJoinAppCircle.get(position).getCircleId());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
-
+            if (myJoinAppCircle.size() == 0) {
+                llMycircleJoin.setVisibility(View.GONE);
+            } else {
+                llMycircleJoin.setVisibility(View.VISIBLE);
             }
-        });
 
-        lvRecommendCircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("circleId", myRecomAppCircle.get(position).getCircleId());
-                RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
-
+            if (myRecomAppCircle.size() == 0) {
+                llRecommendCircle.setVisibility(View.GONE);
+            } else {
+                llRecommendCircle.setVisibility(View.VISIBLE);
             }
-        });
+
+
+            myCircleAdapter = new TrainingMyCircleListAdapter(this, myAppCircle, MINE, userId);
+            lvMycircle.setAdapter(myCircleAdapter);
+
+            joinAdapter = new TrainingMyCircleListAdapter(this, myJoinAppCircle, JOIN, userId);
+            lvMycircleJoin.setAdapter(joinAdapter);
+
+            recommendAdapter = new TrainingMyCircleListAdapter(this, myRecomAppCircle, RECOMMEND, userId);
+            lvRecommendCircle.setAdapter(recommendAdapter);
+
+            lvMycircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    HashMap<String, Object> map = new HashMap<String, Object>();
+                    map.put("circleId", myAppCircle.get(position).getCircleId());
+                    map.put("isApply", myAppCircle.get(position).getIsApply());
+                    RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
+
+                }
+            });
+
+            lvMycircleJoin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    HashMap<String, Object> map = new HashMap<String, Object>();
+                    map.put("circleId", myJoinAppCircle.get(position).getCircleId());
+                    RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
+
+                }
+            });
+
+            lvRecommendCircle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    HashMap<String, Object> map = new HashMap<String, Object>();
+                    map.put("circleId", myRecomAppCircle.get(position).getCircleId());
+                    RlbActivityManager.toTrainingCircleDetailsActivity(TrainingCircleActivity.this, map, false);
+
+                }
+            });
+
+        }
+
 
     }
 

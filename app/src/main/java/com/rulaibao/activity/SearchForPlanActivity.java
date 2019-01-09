@@ -241,7 +241,7 @@ public class SearchForPlanActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.iv_delete_history: // 删除 历史搜索记录
-                DeleteHistoryDialog dialog = new DeleteHistoryDialog(mContext, new DeleteHistoryDialog.OnExitChanged() {
+                DeleteHistoryDialog dialog = new DeleteHistoryDialog(SearchForPlanActivity.this, new DeleteHistoryDialog.OnExitChanged() {
 
                     @Override
                     public void onConfirm() {

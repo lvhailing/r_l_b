@@ -4,14 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.rulaibao.R;
 import com.rulaibao.base.BaseActivity;
 import com.rulaibao.bean.ResultCheckVersionContentBean;
@@ -87,8 +84,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         baseSetContentView(R.layout.activity_main);
-        selectPage = getIntent().getIntExtra("selectIndex", 0);
 
+        getQuestionsAndAnswersId();
+
+        initTopTitle();
+        initView();
+        initVP();
+        setSelect(selectPage);
+        initData();
+    }
+
+    /**
+     *  获取 页面需要的一些Id
+     */
+    private void getQuestionsAndAnswersId() {
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (uri != null) {
@@ -99,18 +108,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             speechmakeId = uri.getQueryParameter("speechmakeId");
         }
 
+        // 根据type 打开不同的H5 页面
         if (!TextUtils.isEmpty(type)) {
-            fromH5();
+            openH5();
         }
-
-        initTopTitle();
-        initView();
-        initVP();
-        setSelect(selectPage);
-        initData();
     }
 
-    public void fromH5() {
+    public void openH5() {
         if (type.equals("answer")) { // 回答问题详情页
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("questionId", questionId);
@@ -156,7 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             }
 
             if (!TextUtils.isEmpty(type)) {
-                fromH5();
+                openH5();
             }
         }
     }
@@ -167,6 +171,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initView() {
+        selectPage = getIntent().getIntExtra("selectIndex", 0);
+
         mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
         ll_tab_home = (LinearLayout) findViewById(R.id.ll_tab_home);
         ll_tab_training = (LinearLayout) findViewById(R.id.ll_tab_training);
