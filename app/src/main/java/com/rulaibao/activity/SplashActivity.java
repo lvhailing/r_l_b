@@ -46,7 +46,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.rulaibao.activity.RecommendActivity.getSDPath;
 
-
+/**
+ *  启动页
+ */
 public class SplashActivity extends FragmentActivity {
 
     private Thread mThread;
@@ -73,24 +75,20 @@ public class SplashActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView(PreferenceUtil.isFirst());
+
 //        try {
-//            saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+//            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+//
+//            if (!EasyPermissions.hasPermissions(this, perms)) {
+//                EasyPermissions.requestPermissions(this, "需要访问手机存储权限！", 10086, perms);
+//            } else {
+//                saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+//            }
+//
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        try {
-            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-            if (!EasyPermissions.hasPermissions(this, perms)) {
-                EasyPermissions.requestPermissions(this, "需要访问手机存储权限！", 10086, perms);
-            } else {
-                saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         requestData();
 
 //        initX5();//启动预加载的服务
@@ -300,22 +298,22 @@ public class SplashActivity extends FragmentActivity {
 
     }
 
-    private static final int LOGIN = 0;
-    private static final int NOLOGIN = 1;
-    private static final int NOPWD = 2;
+    private static final int LOGIN = 0;  // 登录并且已设置手势密码
+    private static final int NOLOGIN = 1; // 未登录
+    private static final int NOPWD = 2; // 登录未设置手势密码
 
     class MyRunnable implements Runnable {
 
         @Override
         public void run() {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2500);
                 Message msg = new Message();
                 if (PreferenceUtil.isLogin()) {
                     if (TextUtils.isEmpty(PreferenceUtil.getGesturePwd())) {
-                        msg.what = NOPWD; // 登录未设置
+                        msg.what = NOPWD; // 登录未设置手势密码
                     } else {
-                        msg.what = LOGIN; // 已设置手势密码
+                        msg.what = LOGIN;  // 登录并且已设置手势密码
                     }
                 } else {
                     msg.what = NOLOGIN; // 未登录

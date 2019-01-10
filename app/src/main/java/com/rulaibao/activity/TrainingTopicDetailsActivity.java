@@ -192,19 +192,31 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     }
 
+    private void initTopTitle() {
+        title = (TitleBar) findViewById(R.id.rl_title);
+        title.showLeftImg(true);
+        title.setFromActivity("1000");
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
+             .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_topic_details))
+             .showMore(false).setTitleRightButton(R.drawable.ic_share_title)
+             .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+            @Override
+            public void onMenu(int id) {
+            }
 
-    public void initData() {
+            @Override
+            public void onBack() {
+                finish();
+            }
 
-        noDataFlag = true;
-        page = 1;
-        commentItemBeans.clear();
-        requestTopicDetailsData();
+            @Override
+            public void onAction(int id) {
 
-
+            }
+        });
     }
 
     public void initView() {
-
         appTopicId = getIntent().getStringExtra("appTopicId");
         appTopic = new ResultCircleDetailsTopicDetailsItemBean();
         commentItemBeans = new MouldList<ResultCircleDetailsTopicCommentItemBean>();
@@ -212,18 +224,22 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //        setRereshEnable(true);
 
         initRecyclerView();
+    }
 
+    public void initData() {
+        noDataFlag = true;
+        page = 1;
+
+        commentItemBeans.clear();
+        requestTopicDetailsData();
     }
 
     public void initRecyclerView() {
-
         lvTopicDetails.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrainingAnswerDetailsListAdapter(this, commentItemBeans, TrainingTopicDetailsActivity.this);
 
         lvTopicDetails.setOnResizeListener(this);
-
         lvTopicDetails.setAdapter(adapter);
-
 
         //为RecyclerView添加HeaderView和FooterView
         setHeaderView(lvTopicDetails);
@@ -266,7 +282,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     }
 
     private void setHeaderView(RecyclerView view) {
-
         header = LayoutInflater.from(this).inflate(R.layout.activity_training_topic_details_top, view, false);
 
         iv_answer_detatils_manager = (CircularImage) header.findViewById(R.id.iv_answer_detatils_manager);
@@ -279,14 +294,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         tv_answer_details_comment_count = (TextView) header.findViewById(R.id.tv_answer_details_comment_count);
         iv_answer_detailas_zan = (ImageView) header.findViewById(R.id.iv_answer_detailas_zan);
 
-
         adapter.setmHeaderView(header);
 
     }
 
     public void initHeadData() {
-
-
         String id = "23232323";
         String url = Urls.URL_SHARED_TOPIC + appTopicId;
         title.setActivityParameters(url, id, appTopic.getCircleName(), "话题描述：" + appTopic.getTopicContent());
@@ -314,11 +326,8 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-
                         allowClick = "true";
-
                     }
-
                 }, 3000);
 
                 if (allowClick.equals("true")) {
@@ -329,29 +338,24 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                     } else {
                         requestTopData("yes");
                     }
-
                 } else {
                     Toast.makeText(TrainingTopicDetailsActivity.this, "请勿频繁操作", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
 
         iv_answer_detailas_zan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (appTopic.getLikeStatus().equals("yes")) {      //  已点赞     不处理
+                if (appTopic.getLikeStatus().equals("yes")) {  //  已点赞  不处理
 //                    requestLikeData();
                 } else {
                     if (!PreferenceUtil.isLogin()) {
                         HashMap<String, Object> map = new HashMap<>();
                         RlbActivityManager.toLoginActivity(TrainingTopicDetailsActivity.this, map, false);
-
                     } else {
                         if (!PreferenceUtil.getCheckStatus().equals("success")) {
                             ViewUtils.showToSaleCertificationDialog(TrainingTopicDetailsActivity.this, "您还未认证，是否去认证");
-
                         } else {
                             if (appTopic.getIsJoin().equals("no")) {
                                 Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
@@ -360,10 +364,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             }
                         }
                     }
-
-
                 }
-
             }
         });
 
@@ -377,17 +378,13 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
         if (appTopic.getIsTop().equals("yes")) {
             tv_answer_details_settop.setText("取消置顶");
-
         } else {
-
             tv_answer_details_settop.setText("设为置顶");
         }
-
     }
 
     // 获取详情主页信息
     public void requestTopicDetailsData() {
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 //        appTopicId = "111";
@@ -397,9 +394,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         HtmlRequest.getTrainingCircleDetailsTopicDetails(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     ResultCircleDetailsTopicDetailsBean bean = (ResultCircleDetailsTopicDetailsBean) params.result;
                     if (bean.getFlag().equals("true")) {
                         appTopic = bean.getAppTopic();
@@ -407,22 +402,16 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                         requestCircleCommentData();
 //                    initRecyclerView();
                         initHeadData();
-
                     } else {
                         if (bean.getCode().equals("1001")) {      //  参数错误
-
                             Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
-
                         } else if (bean.getCode().equals("1002")) {        //  该话题已删除
                             ViewUtils.showDeleteDialog(TrainingTopicDetailsActivity.this, bean.getMessage());
 //                            Toast.makeText(TrainingTopicDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
 //                            finish();
                         }
-
                     }
-
                 } else {
-
                 }
             }
         });
@@ -430,7 +419,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
     // 获取评论列表
     public void requestCircleCommentData() {
-
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
 
@@ -441,9 +429,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
         HtmlRequest.getTrainingCircleCommentList(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     commentListBean = (ResultCircleDetailsTopicCommentListBean) params.result;
                     if (commentListBean.getList() != null) {
                         if (commentListBean.getList().size() == 0) {
@@ -456,8 +442,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                                 noDataFlag = false;
                                 tv_answer_details_comment_count.setVisibility(View.GONE);
                             }
-
-
                         } else {
                             tv_answer_details_comment_count.setVisibility(View.VISIBLE);
                             tv_answer_details_comment_count.setText(commentListBean.getTotal() + "评论");
@@ -469,40 +453,11 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
                             } else {
                                 adapter.changeMoreStatus(RecyclerBaseAapter.NO_LOAD_MORE);
                             }
-
                         }
                     }
-
-
                 } else {
-
                 }
                 swipe.setRefreshing(false);
-
-            }
-        });
-    }
-
-
-    private void initTopTitle() {
-        title = (TitleBar) findViewById(R.id.rl_title);
-        title.showLeftImg(true);
-        title.setFromActivity("1000");
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_topic_details)).showMore(false).setTitleRightButton(R.drawable.ic_share_title)
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
-            @Override
-            public void onMenu(int id) {
-            }
-
-            @Override
-            public void onBack() {
-                finish();
-            }
-
-            @Override
-            public void onAction(int id) {
-
             }
         });
     }
@@ -511,40 +466,31 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_topic_details:
-
                 String commentContent = etTopicDetails.getText().toString();
                 linkCommentUrl = etTopicDetailsLink.getText().toString();
                 if (!PreferenceUtil.isLogin()) {
-
                     HashMap<String, Object> map = new HashMap<>();
                     RlbActivityManager.toLoginActivity(TrainingTopicDetailsActivity.this, map, false);
-
                 } else {
-
                     if (!PreferenceUtil.getCheckStatus().equals("success")) {
                         ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
-
                     } else {
                         if (appTopic.getIsJoin().equals("no")) {
                             Toast.makeText(TrainingTopicDetailsActivity.this, "请您加入该圈子后再进行相关操作", Toast.LENGTH_SHORT).show();
                         } else {
-                            if (TextUtils.isEmpty(commentId)) {       //  评论
+                            if (TextUtils.isEmpty(commentId)) { // 评论
                                 hiddenInputLayout();
                                 requestReplyData(commentContent);
-                            } else {              //  回复
-
-
+                            } else {  // 回复
                                 hiddenInputLayout();
                                 requestReplyData(commentContent);
                             }
                         }
                     }
-
-
                 }
 
                 break;
-            case R.id.ll_training_link:             //  添加链接
+            case R.id.ll_training_link: // 添加链接
                 if (linkFlag) {
                     etTopicDetailsLink.setVisibility(View.GONE);
                     linkCommentUrl = "";
@@ -558,8 +504,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 //                linkFlag = true;
 
                 break;
-            case R.id.ll_training_upload:           //  添加图片
-
+            case R.id.ll_training_upload: // 添加图片
                 selectPhoto();
 //                if(imageFlag){
 //                    ivTrainingTopicUpload.setVisibility(View.GONE);
@@ -573,9 +518,7 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
 
                 break;
 
-            case R.id.iv_topic_delete:          //  删除图片
-
-
+            case R.id.iv_topic_delete: //  删除图片
                 rlTrainingTopicUpload.setVisibility(View.GONE);
                 imgCommentUrl = "";
                 ivTrainingTopicUpload.setImageBitmap(null);
@@ -609,7 +552,6 @@ public class TrainingTopicDetailsActivity extends BaseActivity implements Traini
     /**
      * 自动获取sdk权限
      */
-
     private void autoObtainStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSIONS_REQUEST_CODE);

@@ -2,7 +2,10 @@ package com.rulaibao.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -36,12 +39,17 @@ import com.rulaibao.uitls.SystemInfo;
 import com.rulaibao.widget.TitleBar;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static com.rulaibao.activity.RecommendActivity.getSDPath;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private ViewPager mViewPager;
@@ -86,6 +94,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         baseSetContentView(R.layout.activity_main);
 
         getQuestionsAndAnswersId();
+        getPermissions();
 
         initTopTitle();
         initView();
@@ -141,6 +150,66 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             RlbActivityManager.toTrainingTopicDetailsActivity(this, map, false);
         }
     }
+
+    protected void getPermissions() {
+        try {
+            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
+
+            if (!EasyPermissions.hasPermissions(this, perms)) {
+                EasyPermissions.requestPermissions(this, "需要访问手机存储权限！", 10086, perms);
+            } else {
+                saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 保存图片的方法 保存到sdcard
+     * @throws Exception
+     */
+    public static void saveImage(Bitmap bitmap, String imageName) throws Exception {
+        String filePath = isExistsFilePath();
+        FileOutputStream fos = null;
+        File file = new File(filePath, imageName);
+        try {
+            fos = new FileOutputStream(file);
+            if (null != fos) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取缓存文件夹目录 如果不存在创建 否则则创建文件夹
+     * @return filePath
+     */
+
+    private final static String CACHE = "/rulaibao/imgs";
+
+    private static String isExistsFilePath() {
+        String filePath = getSDPath() + CACHE;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return filePath;
+    }
+
+    private Bitmap drawableToBitamp(Drawable drawable) {
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        return bd.getBitmap();
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -356,16 +425,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     final ResultCheckVersionContentBean b = (ResultCheckVersionContentBean) params.result;
                     if (!TextUtils.isEmpty(b.getVersion())) {
                         if (!b.getVersion().equals(SystemInfo.sVersionName)) {
-
-
-                            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-                            if (!EasyPermissions.hasPermissions(mContext, perms)) {
-                                EasyPermissions.requestPermissions(mContext, "需要访问手机存储权限！", 10086, perms);
-                            }
-
-
+//                            String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+//                                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+//
+//                            if (!EasyPermissions.hasPermissions(mContext, perms)) {
+//                                EasyPermissions.requestPermissions(mContext, "需要访问手机存储权限！", 10086, perms);
+//                            }
                             showDialog(b);
                         } else {
                             if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {

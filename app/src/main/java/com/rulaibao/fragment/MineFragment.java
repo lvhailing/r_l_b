@@ -1,12 +1,9 @@
 package com.rulaibao.fragment;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,10 +52,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import pub.devrel.easypermissions.EasyPermissions;
-
-import static com.rulaibao.activity.RecommendActivity.getSDPath;
-
 /**
  * “我的”模块
  * Created by junde on 2018/3/26.
@@ -99,8 +92,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private MineData2B data;
     private int messageTotal;
 
-    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rulaibao/imgs/";  // 图片保存SD卡位置
-    private final static String CACHE = "/rulaibao/imgs";
+    private final static String IMG_PATH = Environment.getExternalStorageDirectory() + "/rlb/imgs/";  // 图片保存SD卡位置
     private int insuranceWarning;
     private String totalCommission;
 
@@ -145,15 +137,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             mView = inflater.inflate(R.layout.fragment_mine, container, false);
             try {
                 initView(mView);
-
-                // 6.0以后的手机系统需要动态设置 手机权限
-                String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA};
-                if (!EasyPermissions.hasPermissions(getActivity(), perms)) {
-                    EasyPermissions.requestPermissions(getActivity(), "需要访问手机存储权限！", 10086, perms);
-                } else {
-                    saveImage(drawableToBitamp(getResources().getDrawable(R.mipmap.logo)), "rulaibao.png");
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -216,48 +199,6 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         rl_my_participation.setOnClickListener(this); // 我的参与
         rl_my_collection.setOnClickListener(this); // 我的收藏
 
-    }
-
-    /**
-     * 保存图片的方法 保存到sdcard
-     *
-     * @throws Exception
-     */
-    public static void saveImage(Bitmap bitmap, String imageName) throws Exception {
-        String filePath = isExistsFilePath();
-        FileOutputStream fos = null;
-        File file = new File(filePath, imageName);
-        try {
-            fos = new FileOutputStream(file);
-            if (null != fos) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                fos.flush();
-                fos.close();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 获取缓存文件夹目录 如果不存在创建 否则则创建文件夹
-     *
-     * @return filePath
-     */
-    private static String isExistsFilePath() {
-        String filePath = getSDPath() + CACHE;
-        File file = new File(filePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return filePath;
-    }
-
-    private Bitmap drawableToBitamp(Drawable drawable) {
-        BitmapDrawable bd = (BitmapDrawable) drawable;
-        return bd.getBitmap();
     }
 
     @Override

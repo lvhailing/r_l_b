@@ -33,6 +33,7 @@ import com.rulaibao.network.http.AsyncHttpClient;
 import com.rulaibao.network.http.AsyncHttpResponseHandler;
 import com.rulaibao.network.http.RequestParams;
 import com.rulaibao.uitls.ImageUtils;
+import com.rulaibao.uitls.PhotoUtils;
 import com.rulaibao.uitls.PreferenceUtil;
 import com.rulaibao.uitls.StringUtil;
 import com.rulaibao.uitls.encrypt.DESUtil;
@@ -355,8 +356,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 			photoUri = Uri.fromFile(temp);//获取文件的Uri*/
             ContentValues values = new ContentValues();
             photoUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Log.i("aa", "photoUri: -- " + photoUri);
+            // 例：（三星手机）photoUri = content://media/external/images/media/27388
+            // 例：（华为手机）photoUri = content://media/external/images/media/539797
+
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            /**-----------------*/
             startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
         } else {
             Toast.makeText(this, "内存卡不存在", Toast.LENGTH_LONG).show();
@@ -460,6 +464,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
         input = ac.getContentResolver().openInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        int degree = PhotoUtils.readPictureDegree(uri.toString());//获取相片拍摄角度
+        if(degree!=0){//旋转照片角度，防止头像横着显示
+            bitmap = PhotoUtils.rotateBitmap(bitmap,degree);
+        }
         input.close();
 
         return compressImage(bitmap);//再进行质量压缩
