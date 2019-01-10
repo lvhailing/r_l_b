@@ -3,6 +3,7 @@ package com.rulaibao.activity;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -368,6 +369,30 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     /**
+     * 通过Uri获取文件
+     * @param ac
+     * @param uri
+     * @return
+     */
+    public static File getFileFromMediaUri(Context ac, Uri uri) {
+        if(uri.getScheme().toString().compareTo("content") == 0){
+            ContentResolver cr = ac.getContentResolver();
+            Cursor cursor = cr.query(uri, null, null, null, null);// 根据Uri从数据库中找
+            if (cursor != null) {
+                cursor.moveToFirst();
+                String filePath = cursor.getString(cursor.getColumnIndex("_data"));// 获取图片路径
+                cursor.close();
+                if (filePath != null) {
+                    return new File(filePath);
+                }
+            }
+        }else if(uri.getScheme().toString().compareTo("file") == 0){
+            return new File(uri.toString().replace("file://",""));
+        }
+        return null;
+    }
+
+    /**
      * 根据用户选择，返回图片资源
      * @param requestCode
      * @param resultCode
@@ -378,15 +403,22 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 //			doPhoto(requestCode, data);
         if (requestCode == SELECT_PIC_BY_TACK_PHOTO) {  // 表示用的相机
             Bitmap photoBmp = null;
+            File file = null;
+            file = getFileFromMediaUri(this, photoUri);
 
             if (photoUri != null) {
                 try {
-                    photoBmp = getBitmapFormUri(MyInfoActivity.this, photoUri);
+                    photoBmp = getBitmapFormUri(MyInfoActivity.this, Uri.fromFile(file));
+                    int degree = PhotoUtils.readPictureDegree(file.getAbsolutePath());
+//                    Log.i("aaa", "degree:  " + degree);
+                    // 把图片旋转为正的方向
+                    Bitmap newbitmap = PhotoUtils.rotateBitmap(photoBmp, degree);
                     if (photoBmp != null) {
                         dialog.setmLoadingTip("正在上传照片，请稍后……");
                         startLoading();
                     }
-                    newZoomImage = photoBmp;
+
+                    newZoomImage = newbitmap;
                     sendImage(photoBmp);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -464,10 +496,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
         input = ac.getContentResolver().openInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-        int degree = PhotoUtils.readPictureDegree(uri.toString());//获取相片拍摄角度
-        if(degree!=0){//旋转照片角度，防止头像横着显示
-            bitmap = PhotoUtils.rotateBitmap(bitmap,degree);
-        }
         input.close();
 
         return compressImage(bitmap);//再进行质量压缩
