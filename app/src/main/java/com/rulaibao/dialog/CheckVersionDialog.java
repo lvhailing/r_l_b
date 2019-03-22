@@ -20,7 +20,7 @@ import com.rulaibao.R;
 import java.util.ArrayList;
 
 /**
- *
+ *  版本更新弹框
  */
 public class CheckVersionDialog extends Dialog implements
 		DialogInterface.OnCancelListener, DialogInterface.OnDismissListener{
@@ -147,6 +147,7 @@ public class CheckVersionDialog extends Dialog implements
 
 	public void removeListeners(OnCancelListener c, OnDismissListener d) {
 		m_arrDismissListeners.remove(d);
+
 		m_arrCancelListeners.remove(c);
 	}
 

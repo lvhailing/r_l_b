@@ -1,16 +1,13 @@
 package com.rulaibao.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,15 +16,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
-import com.lzy.imagepicker.view.SystemBarTintManager;
 import com.rulaibao.R;
 import com.rulaibao.common.Urls;
 import com.rulaibao.service.PreLoadX5Service;
@@ -41,8 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.rulaibao.activity.RecommendActivity.getSDPath;
 
@@ -204,7 +195,7 @@ public class SplashActivity extends FragmentActivity {
         ImageView iv = (ImageView) findViewById(R.id.splash_img);
         mViewPager = (ViewPager) findViewById(R.id.splashviewpager);
         mViewPager.setVisibility(View.GONE);
-        iv.setBackgroundResource(R.mipmap.ic_lanch);
+        iv.setBackgroundResource(R.mipmap.ic_launch);
 
         //	设置状态
 //		PreferenceUtil.setLogin(true);

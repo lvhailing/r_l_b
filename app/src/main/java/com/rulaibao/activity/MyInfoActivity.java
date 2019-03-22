@@ -413,13 +413,13 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 //                    Log.i("aaa", "degree:  " + degree);
                     // 把图片旋转为正的方向
                     Bitmap newbitmap = PhotoUtils.rotateBitmap(photoBmp, degree);
-                    if (photoBmp != null) {
+                    if (newbitmap != null) {
                         dialog.setmLoadingTip("正在上传照片，请稍后……");
                         startLoading();
                     }
 
                     newZoomImage = newbitmap;
-                    sendImage(photoBmp);
+                    sendImage(newbitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

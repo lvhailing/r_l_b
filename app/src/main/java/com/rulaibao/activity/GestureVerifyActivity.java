@@ -140,7 +140,6 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onGestureCodeInput(String inputCode) {
-
             }
 
             @Override
@@ -217,7 +216,6 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 									});
 							builder.create().show();*/
 
-
                     BasicDialog dialog = new BasicDialog(GestureVerifyActivity.this, new BasicDialog.OnBasicChanged() {
                         @Override
                         public void onConfim() {
@@ -238,7 +236,6 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 
                         @Override
                         public void onCancel() {
-
                         }
                     }, "您输入的手势密码错误次数已达到最大次数，请使用登录密码进行登录", "确认", false);
                     dialog.show();

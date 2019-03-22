@@ -1,4 +1,4 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 apply plugin: 'com.mob.sdk'
 apply from: '../MobSDK.gradle'
 dependencies {

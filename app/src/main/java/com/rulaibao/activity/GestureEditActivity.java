@@ -112,8 +112,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 		mTextReset.setClickable(false);
 		mTextArrow.setVisibility(View.VISIBLE);
 //		mTextReset.setVisibility(View.GONE);
-		mTextReset
-				.setText(getString(R.string.set_gesture_pattern_jump));
+		mTextReset.setText(getString(R.string.set_gesture_pattern_jump));
 		// mLockIndicator = (LockIndicator) findViewById(R.id.lock_indicator);
 		mTextTip = (TextView) findViewById(R.id.text_tip);
 		mGestureContainer = (FrameLayout) findViewById(R.id.gesture_container);
@@ -123,8 +122,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 					@Override
 					public void onGestureCodeInput(String inputCode) {
 						if (!isInputPassValidate(inputCode)) {
-							mTextTip.setText(Html
-									.fromHtml("<font color='#c70c1e'>最少连接4个点, 请重新输入</font>"));
+							mTextTip.setText(Html.fromHtml("<font color='#c70c1e'>最少连接4个点, 请重新输入</font>"));
 							mGestureContentView.clearDrawlineState(0L);
 							return;
 						}
@@ -135,8 +133,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 							mTextReset.setClickable(true);
 							mTextArrow.setVisibility(View.VISIBLE);
 							mTextReset.setVisibility(View.VISIBLE);
-							mTextReset
-									.setText(getString(R.string.reset_gesture_code));
+							mTextReset.setText(getString(R.string.reset_gesture_code));
 
 							mTextTip.setText(getString(R.string.setup_gesture_pattern_again));
 						} else {
@@ -147,8 +144,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 								// MainActivity.class);
 								// startActivity(i);
 								try {
-									PreferenceUtil.setGesturePwd(DESUtil
-											.encrypt(mFirstPassword));
+									PreferenceUtil.setGesturePwd(DESUtil.encrypt(mFirstPassword));
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -156,8 +152,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 									case SPLASHACT:
 									if(!"skip_from_account".equals(skip)){
 										Intent i_splash = new Intent();
-										i_splash.setClass(GestureEditActivity.this,
-												MainActivity.class);
+										i_splash.setClass(GestureEditActivity.this, MainActivity.class);
 										Toast.makeText(GestureEditActivity.this, "设置成功", Toast.LENGTH_LONG).show();
 										startActivity(i_splash);
 										finish();
@@ -169,10 +164,8 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 										break;
 									case SETTINGACT:
 										Intent i_set = new Intent();
-										i_set.setClass(GestureEditActivity.this,
-												GestureVerifyActivity.class);
-										i_set.putExtra("from",
-												Urls.ACTIVITY_GESEDIT);
+										i_set.setClass(GestureEditActivity.this, GestureVerifyActivity.class);
+										i_set.putExtra("from", Urls.ACTIVITY_GESEDIT);
 										i_set.putExtra("title", R.string.title_changegesture);
 										setResult(RESULT_OK);
 										startActivity(i_set);
@@ -182,8 +175,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 										Toast.makeText(GestureEditActivity.this, "设置成功", Toast.LENGTH_LONG).show();
 										if(tomain!=null){
 											if(tomain.equals(GestureVerifyActivity.TOMAIN)){
-												Intent i_main = new Intent(GestureEditActivity.this,
-														MainActivity.class);
+												Intent i_main = new Intent(GestureEditActivity.this, MainActivity.class);
 												startActivity(i_main);
 											}
 										}
@@ -191,10 +183,8 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 										break;
 									case VERIFYACT:
 										Intent i_verify = new Intent();
-										i_verify.setClass(GestureEditActivity.this,
-												GestureVerifyActivity.class);
-										i_verify.putExtra("from",
-												Urls.ACTIVITY_GESVERIFY);
+										i_verify.setClass(GestureEditActivity.this, GestureVerifyActivity.class);
+										i_verify.putExtra("from", Urls.ACTIVITY_GESVERIFY);
 										startActivity(i_verify);
 										finish();
 										break;
@@ -202,8 +192,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 										Toast.makeText(GestureEditActivity.this, "设置成功", Toast.LENGTH_LONG).show();
 										if (!TextUtils.isEmpty(back_from_splah)){
 											PreferenceUtil.setGestureChose(true);
-											Intent i_main = new Intent(GestureEditActivity.this,
-													MainActivity.class);
+											Intent i_main = new Intent(GestureEditActivity.this, MainActivity.class);
 											startActivity(i_main);
 										}else{
 											Intent intent = new Intent();
@@ -215,13 +204,9 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 								}
 
 							} else {
-								mTextTip.setText(Html
-										.fromHtml("<font color='#c70c1e'>与上一次绘制不一致，请重新绘制</font>"));
+								mTextTip.setText(Html.fromHtml("<font color='#c70c1e'>与上一次绘制不一致，请重新绘制</font>"));
 								// 左右移动动画
-								Animation shakeAnimation = AnimationUtils
-										.loadAnimation(
-												GestureEditActivity.this,
-												R.anim.shake);
+								Animation shakeAnimation = AnimationUtils.loadAnimation(GestureEditActivity.this, R.anim.shake);
 								mTextTip.startAnimation(shakeAnimation);
 								// 保持绘制的线，1.5秒后清除
 								mGestureContentView.clearDrawlineState(1300L);
@@ -239,9 +224,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 
 					}
 				});
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams( FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		params.gravity = Gravity.CENTER_HORIZONTAL;
 		mGestureContentView.setLayoutParams(params);
 		// 设置手势解锁显示到哪个布局里面
@@ -285,8 +268,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 			 break;*/
 			case R.id.text_reset:
 				if(mIsFirstInput){
-					Intent iMain = new Intent(GestureEditActivity.this,
-							MainActivity.class);
+					Intent iMain = new Intent(GestureEditActivity.this, MainActivity.class);
 //				startActivity(iMain);
 					if(comeFlag==SPLASHACT){
 						startActivity(iMain);
@@ -313,8 +295,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 					mTextReset.setClickable(true);
 				    mTextReset.setVisibility(View.VISIBLE);
 					mTextArrow.setVisibility(View.VISIBLE);
-					mTextReset
-							.setText(getString(R.string.set_gesture_pattern_jump));
+					mTextReset.setText(getString(R.string.set_gesture_pattern_jump));
 					mTextTip.setText(getResources().getString(R.string.setup_gesture_pattern));
 
 				}
@@ -336,8 +317,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if(comeFlag==1){
-				Intent iMain = new Intent(GestureEditActivity.this,
-						MainActivity.class);
+				Intent iMain = new Intent(GestureEditActivity.this, MainActivity.class);
 				startActivity(iMain);
 				PreferenceUtil.setGestureChose(false);
 				PreferenceUtil.setFirstLogin(true);
@@ -345,8 +325,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 				finish();
 				return true;
 			}else if (back_from_splah!=null){ //控制登录后没有设置手势密码，点击设置手势密码的返回，跳到主页
-				Intent iMain = new Intent(GestureEditActivity.this,
-						MainActivity.class);
+				Intent iMain = new Intent(GestureEditActivity.this, MainActivity.class);
 				startActivity(iMain);
 				PreferenceUtil.setGestureChose(false);
 				PreferenceUtil.setFirstLogin(true);
@@ -357,9 +336,7 @@ public class GestureEditActivity extends BaseActivity implements OnClickListener
 				this.finish();
 				return true;
 			}
-
 		} else {
-
 			return super.onKeyDown(keyCode, event);
 		}
 	}

@@ -9,8 +9,8 @@ android {
         applicationId "com.rulaibao"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 6
+        versionName "1.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         //X5兼容64位手机
