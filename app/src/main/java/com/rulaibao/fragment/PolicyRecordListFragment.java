@@ -167,6 +167,9 @@ public class PolicyRecordListFragment extends Fragment {
         });
     }
 
+    /**
+     *  获取保单列表数据
+     */
     public void requestData() {
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("userId", userId);

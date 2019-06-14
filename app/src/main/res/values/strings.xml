@@ -213,6 +213,7 @@
     <string name="title_my_bank_cards">我的银行卡</string>
     <string name="title_add_bank_card">新增银行卡</string>
     <string name="title_tax_deduction_rules">扣税规则</string>
+    <string name="title_add_new_insurance_policy">新增保单</string>
 
 
     <!-- 交易明细/保单详情 页面文字-->

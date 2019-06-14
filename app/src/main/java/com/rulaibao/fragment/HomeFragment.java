@@ -58,7 +58,7 @@ import java.util.List;
  * 首页模块
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener {
     private View mView;
     private Context context;
     private Intent intent;
@@ -116,14 +116,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 ((ViewGroup) mView.getParent()).removeView(mView);
             }
         }
-
         return mView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -136,11 +134,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-                requestAppData();
-
-        } else {
+            requestAppData();
         }
-
     }
 
     private void initView(View mView) {
@@ -244,8 +239,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         for (int i = 0; i < homeVpList.size(); i++) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_home_viewpager, null);
             imgView = new ImageView(context);
-            LinearLayout.LayoutParams params_linear = new LinearLayout.LayoutParams(
-                    18, 18);
+            LinearLayout.LayoutParams params_linear = new LinearLayout.LayoutParams(18, 18);
             params_linear.setMargins(7, 10, 7, 10);
             imgView.setLayoutParams(params_linear);
             indicator_imgs.add(i, imgView);
@@ -302,7 +296,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("category", "医疗险");
                 startActivity(intent);
                 break;
-            case R.id.tv_old_young://一老一小---
+            case R.id.tv_old_young://一老一小--- 一老一小
                 intent = new Intent(context, InsuranceProductActivity.class);
                 intent.putExtra("category", "一老一小");
                 startActivity(intent);
@@ -370,6 +364,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         });
     }
+
     /**
      * 打开app接口 && 控制强制登录设置userid为空
      */
@@ -393,11 +388,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     return;
                 }
                 Repo<OK2B> b = (Repo<OK2B>) params.result;
-                String code=b.getCode();
-                if (code.equals("0000")){
+                String code = b.getCode();
+                if (code.equals("0000")) {
 
-                }else{
-                    if (code.equals("9999")){
+                } else {
+                    if (code.equals("9999")) {
                         PreferenceUtil.setAutoLoginPwd("");
                         PreferenceUtil.setLogin(false);
                         PreferenceUtil.setFirstLogin(true);
@@ -415,6 +410,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         });
     }
+
     /**
      * 请求轮播图数据
      */
@@ -498,8 +494,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 indicator_imgs.get(i).setBackgroundResource(R.drawable.round_gray);
             }
             // 改变当前背景图片为：选中
-            indicator_imgs.get(position)
-                    .setBackgroundResource(R.drawable.round_orange);
+            indicator_imgs.get(position).setBackgroundResource(R.drawable.round_orange);
         }
     }
 }

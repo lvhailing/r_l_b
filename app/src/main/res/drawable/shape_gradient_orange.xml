@@ -3,11 +3,11 @@
     android:shape="rectangle" >
 
     <!-- 填充的颜色 -->
-    <solid android:color="#fab22c" />
+    <solid android:color="#ffff6b52" />
 
     <!--设置渐变-->
-    <gradient android:startColor="#fab22c"
-              android:endColor="#f59f01"
+    <gradient android:startColor="#fffab22b"
+              android:endColor="#fff59e01"
               android:type="linear"
               android:angle="0"/>
     <!--angle控制渐变的方向-->

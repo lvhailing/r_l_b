@@ -23,12 +23,6 @@ import com.lzy.imagepicker.view.SystemBarTintManager;
 import com.rulaibao.R;
 import com.rulaibao.network.HtmlRequest;
 import com.rulaibao.uitls.ActivityStack;
-import com.rulaibao.uitls.OSUtils;
-import com.rulaibao.uitls.StatusBarUtil;
-
-import static com.rulaibao.uitls.StatusBarUtil.ANDROID_M;
-import static com.rulaibao.uitls.StatusBarUtil.FLYME;
-import static com.rulaibao.uitls.StatusBarUtil.MIUI;
 
 
 public class WebActivity extends Activity implements View.OnClickListener {
@@ -78,7 +72,7 @@ public class WebActivity extends Activity implements View.OnClickListener {
         ActivityStack stack = ActivityStack.getActivityManage();
         stack.addActivity(this);
 
-        mWebview = (WebView) findViewById(R.id.webview_web);
+        mWebview = (WebView) findViewById(R.id.web_view);
         tv_web_title = (TextView) findViewById(R.id.tv_web_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_btn_share = (ImageView) findViewById(R.id.iv_btn_share);

@@ -494,7 +494,7 @@
         </ScrollView>
 
         <RelativeLayout
-            android:id="@+id/rl_appointmented"
+            android:id="@+id/rl_short_insurance_buy"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
@@ -512,12 +512,12 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toLeftOf="@+id/btn_planbook"
+                android:layout_toLeftOf="@+id/btn_plan_book"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_appointmented_minimumPremium"
+                    android:id="@+id/tv_buy_minimumPremium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -526,7 +526,7 @@
                     android:textColor="@color/gray_dark"/>
 
                 <TextView
-                    android:id="@+id/tv_appointmented_promotionmoney"
+                    android:id="@+id/tv_buy_promotion_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -537,7 +537,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_planbook"
+                android:id="@+id/btn_plan_book"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
@@ -562,7 +562,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_appointment"
+            android:id="@+id/rl_long_insurance_appointment"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"

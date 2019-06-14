@@ -3,37 +3,42 @@ package com.rulaibao.bean;
 import com.rulaibao.network.types.IMouldType;
 
 public class InsuranceDetail1B implements IMouldType {
-    private String id;
-    private String type;
-    private String name;
+
     private String logo;
-    private String collectionDataStatus;
-    private String collectionId;
+    private String collectionDataStatus; // 是否为收藏（valid收藏/ invalid未收藏）
+    private String collectionId; // 收藏id
     private String appointmentStatus;
-    private String insuranceAge;
-    private String insuranceOccupation;
-    private String insurancePeriod;
-    private String purchaseNumber;
-    private String recommendations;
-    private String securityResponsibility;
-    private String coverNotes;
-    private String dataTerms;
-    private String claimProcess;
-    private String commonProblem;
-    private String minimumPremium;
-    private String prospectus;
-    private String productLink;
-    private String checkStatus;
-    private String companyName;
-    private String category;
-    private String prospectusStatus;
-    private String productStatus;
+    private String insuranceAge; // 投保年龄
+    private String insuranceOccupation; // 承保职业
+    private String insurancePeriod; // 保障期限
+    private String purchaseNumber; // 限购份数
+    private String securityResponsibility; // 保障责任
+    private String dataTerms; // 条款资料
+    private String coverNotes; // 投保须知
+    private String claimProcess; // 理赔流程
+    private String commonProblem; // 常见问题
+
+
+    private String id; // 编号
+    private String type; // longTermInsurance:长期险;   shortTermInsurance:短期险
+    private String name; // 产品名称
+    private String minimumPremium; // 最低保费
+    private String recommendations; // 推荐说明
+    private String checkStatus; // 认证状态
+    private String prospectus; // 计划书
+    private String productLink; // 购买链接
+    private String companyName; // 保险公司名称
+    private String category; // 险种类别（accident:意外险;criticalIllness:重疾险;annuity:年金险;medical:医疗险;property:家财险;wholeLife:终身寿险;enterpriseGroup:企业团体)
+    private String prospectusStatus; // 判断有无计划书（yes:有，no:无）
+    private String productStatus; //产品状态(normal: 正常  delete删除; down: 下架)
     private String attachmentPath;
-    private String promotionMoney;
+    private String promotionMoney; // 推广费
     private String promotionMoney2;
     private String promotionMoney3;
     private String promotionMoney4;
     private String promotionMoney5;
+    private String shareLinkStatus; // 判断是否显示 分享链接 按钮
+    private String shareLink; //分享链接
 
     public String getId() {
         return id;
@@ -281,5 +286,21 @@ public class InsuranceDetail1B implements IMouldType {
 
     public void setPromotionMoney5(String promotionMoney5) {
         this.promotionMoney5 = promotionMoney5;
+    }
+
+    public String getShareLinkStatus() {
+        return shareLinkStatus;
+    }
+
+    public void setShareLinkStatus(String shareLinkStatus) {
+        this.shareLinkStatus = shareLinkStatus;
+    }
+
+    public String getShareLink() {
+        return shareLink;
+    }
+
+    public void setShareLink(String shareLink) {
+        this.shareLink = shareLink;
     }
 }

@@ -39,8 +39,7 @@
 
         <activity
             android:name="com.rulaibao.activity.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
+            android:theme="@style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -396,10 +395,12 @@
             android:name=".activity.MyPayrollActivity"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name="com.rulaibao.activity.CxyTestActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".test.TestActivity" />
+
+        <activity
+            android:name=".activity.AddNewInsurancePolicyActivity"
+            android:screenOrientation="portrait"/>
+
 
         <service android:name=".service.AppUpgradeService"/>
 

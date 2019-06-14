@@ -100,7 +100,6 @@ public class SalesCertificationActivity extends BaseActivity implements View.OnC
 
     @Override
     public void initData() {
-
     }
 
     @Override

@@ -240,7 +240,7 @@ public class Urls {
     // 保险详情
     public static final String URL_INSURANCE_DETAILS = EC_HOST + "product/detail";
 
-    // 保险详情----new
+    // 保险详情(底部悬浮框接口)---new
     public static final String URL_INSURANCE_DETAILS_NEW = EC_HOST + "product/detail/other";
 
     // 保险详情H5----new
@@ -381,7 +381,8 @@ public class Urls {
     // 我的银行卡-设置工资卡
     public static final String URL_ACCOUNT_USERBANKCARD_TO_SETWAGECARD = EC_HOST + "account/userbankcard/to_setwagecard";
 
-
+    //(新增保单)提交
+    public static final String URL_ADD_INSURANCE_POLICE_SUBMIT = EC_HOST + "account/order/tianan/add";
 
 
 

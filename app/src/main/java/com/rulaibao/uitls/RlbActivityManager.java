@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
  * activity的开启以及activity的跳转管理
- *
  */
 
 public class RlbActivityManager {
@@ -139,9 +137,9 @@ public class RlbActivityManager {
 
     /**
      * 前往课程页面
-     * @param activity TrainingClassListActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingClassListActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
     public static void toTrainingClassActivity(Activity activity, boolean isFinish) {
@@ -154,25 +152,25 @@ public class RlbActivityManager {
 
     /**
      * 前往问答页面
-     * @param activity TrainingAskActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingAskActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingAskActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingAskActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingAskActivity.class);
+            startActivityAndFinish(activity, map, TrainingAskActivity.class);
         } else {
-            startActivity(activity,map, TrainingAskActivity.class);
+            startActivity(activity, map, TrainingAskActivity.class);
         }
     }
 
 
     /**
      * 前往圈子页面
-     * @param activity TrainingCircleActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingCircleActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
     public static void toTrainingCircleActivity(Activity activity, boolean isFinish) {
@@ -186,9 +184,9 @@ public class RlbActivityManager {
 
     /**
      * 前往展业页面
-     * @param activity TrainingPromoteActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingPromoteActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
     public static void toTrainingPromoteActivity(Activity activity, boolean isFinish) {
@@ -202,181 +200,181 @@ public class RlbActivityManager {
 
     /**
      * 前往课程详情
-     * @param activity TrainingClassDetailsActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingClassDetailsActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingClassDetailsActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingClassDetailsActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingClassDetailsActivity.class);
+            startActivityAndFinish(activity, map, TrainingClassDetailsActivity.class);
         } else {
-            startActivity(activity,map, TrainingClassDetailsActivity.class);
+            startActivity(activity, map, TrainingClassDetailsActivity.class);
         }
     }
 
     /**
      * 前往我要提问
-     * @param activity TrainingToAskActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingToAskActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingToAskActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingToAskActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingToAskActivity.class);
+            startActivityAndFinish(activity, map, TrainingToAskActivity.class);
         } else {
-            startActivity(activity,map, TrainingToAskActivity.class);
+            startActivity(activity, map, TrainingToAskActivity.class);
         }
     }
 
     /**
      * 前往问答详情
-     * @param activity TrainingAskDetailsActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingAskDetailsActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingAskDetailsActivity(Activity activity,HashMap<String,Object>map, boolean isFinish) {
+    public static void toTrainingAskDetailsActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingAskDetailsActivity.class);
+            startActivityAndFinish(activity, map, TrainingAskDetailsActivity.class);
         } else {
-            startActivity(activity,map, TrainingAskDetailsActivity.class);
+            startActivity(activity, map, TrainingAskDetailsActivity.class);
         }
     }
 
 
-
     /**
      * 前往我要回答
-     * @param activity TrainingAnswerActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingAnswerActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingAnswerActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingAnswerActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingAnswerActivity.class);
+            startActivityAndFinish(activity, map, TrainingAnswerActivity.class);
         } else {
-            startActivity(activity,map, TrainingAnswerActivity.class);
+            startActivity(activity, map, TrainingAnswerActivity.class);
         }
     }
 
 
     /**
      * 前往回答详情
-     * @param activity TrainingAnswerDetailsActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingAnswerDetailsActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingAnswerDetailsActivity(Activity activity,HashMap<String,Object>map, boolean isFinish) {
+    public static void toTrainingAnswerDetailsActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingAnswerDetailsActivity.class);
+            startActivityAndFinish(activity, map, TrainingAnswerDetailsActivity.class);
         } else {
-            startActivity(activity,map, TrainingAnswerDetailsActivity.class);
+            startActivity(activity, map, TrainingAnswerDetailsActivity.class);
         }
     }
 
 
     /**
      * 前往圈子详情主页
-     * @param activity TrainingCircleDetailsActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingCircleDetailsActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingCircleDetailsActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingCircleDetailsActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map,TrainingCircleDetailsActivity.class);
+            startActivityAndFinish(activity, map, TrainingCircleDetailsActivity.class);
         } else {
-            startActivity(activity, map,TrainingCircleDetailsActivity.class);
+            startActivity(activity, map, TrainingCircleDetailsActivity.class);
         }
     }
 
 
     /**
      * 前往发布话题页面
-     * @param activity TrainingIssueTopicActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingIssueTopicActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingIssueTopicActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingIssueTopicActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingIssueTopicActivity.class);
+            startActivityAndFinish(activity, map, TrainingIssueTopicActivity.class);
         } else {
-            startActivity(activity,map, TrainingIssueTopicActivity.class);
+            startActivity(activity, map, TrainingIssueTopicActivity.class);
         }
     }
 
 
     /**
      * 前往话题详情页面
-     * @param activity TrainingTopicDetailsActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingTopicDetailsActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingTopicDetailsActivity(Activity activity,HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingTopicDetailsActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity, map,TrainingTopicDetailsActivity.class);
+            startActivityAndFinish(activity, map, TrainingTopicDetailsActivity.class);
         } else {
-            startActivity(activity, map,TrainingTopicDetailsActivity.class);
+            startActivity(activity, map, TrainingTopicDetailsActivity.class);
         }
     }
 
     /**
      * 前往设置圈子权限页面
-     * @param activity TrainingSetAuthorityActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity TrainingSetAuthorityActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toTrainingSetAuthorityActivity(Activity activity, HashMap<String,Object> map, boolean isFinish) {
+    public static void toTrainingSetAuthorityActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, TrainingSetAuthorityActivity.class);
+            startActivityAndFinish(activity, map, TrainingSetAuthorityActivity.class);
         } else {
-            startActivity(activity,map, TrainingSetAuthorityActivity.class);
+            startActivity(activity, map, TrainingSetAuthorityActivity.class);
         }
     }
 
 
     /**
      * 前往登录页面
-     * @param activity LoginActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity LoginActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toLoginActivity(Activity activity, HashMap<String,Object> map, boolean isFinish) {
+    public static void toLoginActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, LoginActivity.class);
+            startActivityAndFinish(activity, map, LoginActivity.class);
         } else {
-            startActivity(activity,map, LoginActivity.class);
+            startActivity(activity, map, LoginActivity.class);
         }
     }
 
 
     /**
      * 前往认证页面
-     * @param activity toSaleCertificationActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity toSaleCertificationActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
-    public static void toSaleCertificationActivity(Activity activity, HashMap<String,Object> map, boolean isFinish) {
+    public static void toSaleCertificationActivity(Activity activity, HashMap<String, Object> map, boolean isFinish) {
         if (isFinish) {
-            startActivityAndFinish(activity,map, SalesCertificationActivity.class);
+            startActivityAndFinish(activity, map, SalesCertificationActivity.class);
         } else {
-            startActivity(activity,map, SalesCertificationActivity.class);
+            startActivity(activity, map, SalesCertificationActivity.class);
         }
     }
+
     /**
      * 前往测试页面
-     * @param activity toSaleCertificationActivity
-     * @param isFinish  是否关闭当前页面  true  false
      *
+     * @param activity toSaleCertificationActivity
+     * @param isFinish 是否关闭当前页面  true  false
      */
 
     public static void toTestActivity(Activity activity, boolean isFinish) {
@@ -388,8 +386,6 @@ public class RlbActivityManager {
     }
 
     /************************************************ 研修模块end ***********************************************************/
-
-
 
 
 }

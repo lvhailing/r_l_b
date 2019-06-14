@@ -180,16 +180,16 @@ public class InsuranceProductDetailBeiFenActivity extends BaseActivity implement
         webview_claims_process = (WebView) findViewById(R.id.webview_claims_process);
         webview_faq = (WebView) findViewById(R.id.webview_faq);
 
-        rl_appointment = (RelativeLayout) findViewById(R.id.rl_appointment);
+        rl_appointment = (RelativeLayout) findViewById(R.id.rl_long_insurance_appointment);
         btn_appointment = (Button) findViewById(R.id.btn_appointment);
         tv_appointment_minimumPremium = (TextView) findViewById(R.id.tv_appointment_minimumPremium);
         tv_appointment_promotionmoney = (TextView) findViewById(R.id.tv_appointment_promotionmoney);
 
-        rl_appointmented = (RelativeLayout) findViewById(R.id.rl_appointmented);
-        btn_planbook = (Button) findViewById(R.id.btn_planbook);
+        rl_appointmented = (RelativeLayout) findViewById(R.id.rl_short_insurance_buy);
+        btn_planbook = (Button) findViewById(R.id.btn_plan_book);
         btn_buy = (Button) findViewById(R.id.btn_buy);
-        tv_appointmented_minimumPremium = (TextView) findViewById(R.id.tv_appointmented_minimumPremium);
-        tv_appointmented_promotionmoney = (TextView) findViewById(R.id.tv_appointmented_promotionmoney);
+        tv_appointmented_minimumPremium = (TextView) findViewById(R.id.tv_buy_minimumPremium);
+        tv_appointmented_promotionmoney = (TextView) findViewById(R.id.tv_buy_promotion_money);
 
         vs = (ViewSwitcher) findViewById(R.id.vs);
         tv_empty = (TextView) findViewById(R.id.tv_empty);
@@ -307,7 +307,7 @@ public class InsuranceProductDetailBeiFenActivity extends BaseActivity implement
                 intent.putExtra("category", result.getCategory());
                 startActivity(intent);
                 break;
-            case R.id.btn_planbook://计划书
+            case R.id.btn_plan_book://计划书
                 if (!PreferenceUtil.isLogin()) {
                     intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);

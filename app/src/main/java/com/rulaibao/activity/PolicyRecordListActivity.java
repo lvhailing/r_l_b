@@ -1,5 +1,7 @@
 package com.rulaibao.activity;
 
+import android.app.LauncherActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.rulaibao.R;
@@ -35,6 +38,8 @@ public class PolicyRecordListActivity extends BaseActivity {
      * currentTabPosition = 4 (回执签收)
      */
     private int currentTabPosition = 0;
+    private ImageView iv_back;
+    private ImageView iv_add_insurance_policy; // (新增保单)图标
 
 
     @Override
@@ -50,16 +55,17 @@ public class PolicyRecordListActivity extends BaseActivity {
 
     private void initTopTitle() {
         TitleBar title = (TitleBar) findViewById(R.id.rl_title);
-        title.setTitle(getResources().getString(R.string.title_null))
+        title.setVisibility(View.GONE);
+      /*  title.setTitle(getResources().getString(R.string.title_null))
                 .setLogo(R.mipmap.logo, false)
                 .setIndicator(R.mipmap.icon_back)
                 .setCenterText(getResources().getString(R.string.title_policy_record))
                 .showMore(false)
+                .setTitleRightButton(R.mipmap.add_new_insurance_policy)
                 .setOnActionListener(new TitleBar.OnActionListener() {
 
                     @Override
                     public void onMenu(int id) {
-
                     }
 
                     @Override
@@ -69,16 +75,43 @@ public class PolicyRecordListActivity extends BaseActivity {
 
                     @Override
                     public void onAction(int id) {
-
                     }
-                });
+                });*/
     }
 
     private void initView() {
         currentTabPosition = getIntent().getIntExtra("position", 0);
 
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_add_insurance_policy = (ImageView) findViewById(R.id.iv_add_insurance_policy);
         sliding_tabs = (TabLayout) findViewById(R.id.sliding_tabs);
         viewpager = (ViewPager) findViewById(R.id.viewpager);
+
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        iv_add_insurance_policy.setOnClickListener(new View.OnClickListener() { // (跳转至)新增保单
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PolicyRecordListActivity.this, AddNewInsurancePolicyActivity.class);
+//                intent.putExtra("currentTabPosition",currentTabPosition);
+                startActivityForResult(intent,100);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            int position = data.getIntExtra("currentTabPosition", 0);
+            Log.i("hh", "onActivityResult -- " + position);
+            //设置1tab选中
+            sliding_tabs.getTabAt(position).select();
+        }
     }
 
     public void initData() {
@@ -129,6 +162,13 @@ public class PolicyRecordListActivity extends BaseActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentTabPosition = 0;
+
     }
 
     /**

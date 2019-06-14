@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rulaibao.R;
-import com.rulaibao.activity.CxyTestActivity;
 import com.rulaibao.activity.FileDisplayActivity;
 import com.rulaibao.activity.WebActivity;
 import com.rulaibao.adapter.RecyclerBaseAapter;

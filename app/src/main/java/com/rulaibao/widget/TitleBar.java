@@ -733,7 +733,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
      *
      * @return
      */
-    public TitleBar setTitleRigterIcon(int drawable) {
+    public TitleBar setTitleRightIcon(int drawable) {
         iv_top_title_menu.setBackgroundResource(drawable);
         return TitleBar.this;
     }
@@ -873,7 +873,7 @@ public class TitleBar extends RelativeLayout implements OnClickListener {
         this.flag = flag;
     }
 
-    public void refeshMenu() {
+    public void refreshMenu() {
         mAdapter.notifyDataSetChanged();
         // TODO 需要吗
         mTitleAdapter.notifyDataSetChanged();

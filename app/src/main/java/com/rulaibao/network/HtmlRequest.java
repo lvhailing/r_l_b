@@ -973,7 +973,13 @@ public class HtmlRequest<T> extends BaseRequester<T> {
             }
         });
     }
-    // 保险详情----new
+
+    /**
+     * 保险详情 (new)
+     * @param context
+     * @param param
+     * @param listener
+     */
     public static void getInsuranceDetailsNew(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
         final String url = Urls.URL_INSURANCE_DETAILS_NEW;
@@ -999,7 +1005,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-
+                    Log.i("hh", "保险详情(新接口)：" + data);
                     Repo<InsuranceDetail1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceDetail1B>>() {
                     }.getType());
                     if (resultEncrypt(context, b.getCode())){
@@ -1916,7 +1922,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 try {
                     data = DESUtil.decrypt(result);
-//                    Log.i("hh", "保单列表：" + data);
+                    Log.i("hh", "保单列表：" + data);
 
                     Repo<PolicyRecordList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordList1B>>() {
                     }.getType());
@@ -4820,7 +4826,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -4828,7 +4833,62 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 params.result = result;
                 params.sendResult();
             }
-
         });
     }
+
+    /**
+     *  (新增保单)提交
+     * @param context
+     * @param param
+     * @param listener
+     */
+    public static void addInsurancePoliceSubmit(final Context context, HashMap<String, Object> param, OnRequestListener listener) {
+        final String data = getResult(param);
+        final String url = Urls.URL_ADD_INSURANCE_POLICE_SUBMIT;
+
+        getTaskManager().addTask(new MyAsyncTask(buildParams(context, listener, url)) {
+            @Override
+            public Object doTask(BaseParams params) {
+                SimpleHttpClient client = new SimpleHttpClient(context, SimpleHttpClient.RESULT_STRING);
+                HttpEntity entity = null;
+                try {
+                    List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                    nvps.add(new BasicNameValuePair("requestKey", data));
+                    entity = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                client.post(url, entity);
+                String result = (String) client.getResult();
+                String data=null;
+                Gson json = new Gson();
+                if (isCancelled() || result == null) {
+                    return null;
+                }
+                try {
+                    data = DESUtil.decrypt(result);
+                    Log.i("hh", "(新增保单)提交接口：" + data);
+
+                    Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
+                    }.getType());
+                    if (resultEncrypt(context, b.getCode())){
+                        return b.getData();
+                    }else{
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public void onPostExecute(Object result, BaseParams params) {
+                params.result = result;
+                params.sendResult();
+            }
+        });
+    }
+
+
 }

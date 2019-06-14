@@ -1,9 +1,6 @@
 package com.rulaibao.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -338,9 +335,10 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         title = (TitleBar) findViewById(R.id.rl_title);
         title.showLeftImg(true);
         title.setFromActivity("1000");
-        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false)
-                .setIndicator(R.mipmap.icon_back).setCenterText(getResources().getString(R.string.training_answer_details)).showMore(false).setTitleRightButton(R.drawable.ic_share_title)
-                .showMore(false).setOnActionListener(new TitleBar.OnActionListener() {
+        title.setTitle(getResources().getString(R.string.title_null)).setLogo(R.mipmap.logo, false).setIndicator(R.mipmap.icon_back)
+             .setCenterText(getResources().getString(R.string.training_answer_details))
+             .showMore(false).setTitleRightButton(R.drawable.ic_share_title).showMore(false)
+             .setOnActionListener(new TitleBar.OnActionListener() {
             @Override
             public void onMenu(int id) {
             }
@@ -394,32 +392,24 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
     @OnClick(R.id.btn_answer_details)
     public void onClick() {
-
         String commentContent = etAnswerDetails.getText().toString();
 
         if (!PreferenceUtil.isLogin()) {
-
             HashMap<String, Object> map = new HashMap<>();
             RlbActivityManager.toLoginActivity(TrainingAnswerDetailsActivity.this, map, false);
-
         } else {
             if (!PreferenceUtil.getCheckStatus().equals("success")) {
                 ViewUtils.showToSaleCertificationDialog(this, "您还未认证，是否去认证");
             } else {
-                if (TextUtils.isEmpty(commentId)) {       //  评论
-
+                if (TextUtils.isEmpty(commentId)) {  // 评论
                     requestReplyData(commentContent);
                     hiddenInputLayout();
-                } else {              //  回复
-
+                } else {  // 回复
                     requestReplyData(commentContent);
                     hiddenInputLayout();
                 }
             }
-
-
         }
-
     }
 
     //回复评论  或者  评论
@@ -427,17 +417,16 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
 //        ArrayMap<String,Object> map = new ArrayMap<String,Object>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-        if (TextUtils.isEmpty(commentId)) {            //   评论id
-            map.put("answerId", answerId);      //  回答id
+        if (TextUtils.isEmpty(commentId)) { //评论id
+            map.put("answerId", answerId); //回答id
             map.put("commentContent", commentContent);
             map.put("userId", userId);
             map.put("linkId", linkId);
-
         } else {
-            map.put("commentId", commentId);      //  话题id和
+            map.put("commentId", commentId);  //话题id和
             map.put("answerId", answerId);
             map.put("commentContent", commentContent);
-            map.put("toUserId", toUserId);          //  被回复人id
+            map.put("toUserId", toUserId);  //被回复人id
             map.put("userId", userId);
             map.put("linkId", linkId);
         }
@@ -445,49 +434,37 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         HtmlRequest.getTrainingAnswerReply(this, map, new BaseRequester.OnRequestListener() {
             @Override
             public void onRequestFinished(BaseParams params) {
-
                 if (params.result != null) {
-
                     ResultInfoBean bean = (ResultInfoBean) params.result;
                     if (bean.getFlag().equals("true")) {
 //                        fyTrainingTopicDetails.setVisibility(View.GONE);
-
-                        if (!TextUtils.isEmpty(commentId)) {      //  回复
-
+                        if (!TextUtils.isEmpty(commentId)) { //回复
                             ResultCircleDetailsTopicCommentReplyItemBean itemBean = new ResultCircleDetailsTopicCommentReplyItemBean();
                             itemBean.setReplyContent(commentContent);
-
-                            itemBean.setReplyId(userId);      //      回复人id
-                            itemBean.setReplyToId(toUserId);    //  被回复人id
-
+                            itemBean.setReplyId(userId); //回复人id
+                            itemBean.setReplyToId(toUserId); // 被回复人id
                             String realName = "";
                             try {
                                 realName = DESUtil.decrypt(PreferenceUtil.getUserRealName());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-                            itemBean.setReplyName(realName);       //  回复人姓名
-                            itemBean.setReplyToName(replyToName);      //  被回复人姓名
+                            itemBean.setReplyName(realName); //回复人姓名
+                            itemBean.setReplyToName(replyToName); //被回复人姓名
                             itemBean.setRid(bean.getReplyId());
-
                             commentItemBeans.get(index).getReplys().add(itemBean);
 
                             commentId = "";
                             adapter.notifyDataSetChanged();
-                        } else {          //  评论
+                        } else {  // 评论
                             page = 1;
                             commentItemBeans.clear();
                             requestComment();
                         }
-
                     } else {
-
                         Toast.makeText(TrainingAnswerDetailsActivity.this, bean.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
-
                 }
             }
         });
@@ -522,7 +499,6 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
 
     @Override
     public void reply(String commentId, String toUserId, String replyToName, int index, String linkId) {
-
         this.commentId = commentId;
         this.toUserId = toUserId;
         this.replyToName = replyToName;
@@ -533,11 +509,11 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
         setBottomOffset(index);
     }
 
-
-    //  弹出键盘
-
+    /**
+     *  弹出键盘
+     * @param position
+     */
     public void setBottomOffset(int position) {
-
         LinearLayoutManager layoutManager = (LinearLayoutManager) lvAnswerDetails.getLayoutManager();
         int index = layoutManager.findFirstVisibleItemPosition();
         try {
@@ -556,7 +532,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
             e.printStackTrace();
         }
 
-        if (!deal(position)) showInputLyaout();
+        if (!deal(position)) showInputLayout();
     }
 
     private AtomicBoolean isShowComment = new AtomicBoolean(false);
@@ -583,7 +559,7 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     }
 
 
-    private void showInputLyaout() {
+    private void showInputLayout() {
         isShowComment.set(true);
         InputMethodUtils.showSoftKeyboard(etAnswerDetails);
     }
@@ -599,8 +575,9 @@ public class TrainingAnswerDetailsActivity extends BaseActivity implements Train
     }
 
 
-    //  隐藏键盘
-
+    /**
+     * 隐藏键盘
+     */
     private void hiddenInputLayout() {
         isShowComment.set(false);
         etAnswerDetails.setText("");
