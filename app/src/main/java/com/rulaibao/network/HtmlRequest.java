@@ -220,12 +220,10 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         }
         return result;
     }
+
     /**
      * 处理结果
      * 正常返回 true，异常返回false
-     *
-     * @param result 处理数据
-     * @return fanhuizhi
      */
     public static Boolean resultEncrypt(final Context context, String result) {
 
@@ -284,6 +282,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
         }
         return true;
     }
+
     /**
      * 注册
      *
@@ -308,7 +307,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -319,9 +318,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
 
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -363,7 +362,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -413,7 +412,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -423,9 +422,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -466,7 +465,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -476,9 +475,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Log.i("hh", "发送验证码：" + data);
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -523,7 +522,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 client.post(url, entity);
                 client.getResult();
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -533,7 +532,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                   return b;
+                    return b;
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
@@ -573,7 +572,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -623,19 +622,19 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-            //    String data=null;
+                //    String data=null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
                 }
                 try {
-            //        data = DESUtil.decrypt(result);
+                    //        data = DESUtil.decrypt(result);
 
                     Repo<ResultCheckVersionContentBean> b = json.fromJson(result, new TypeToken<Repo<ResultCheckVersionContentBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
 
@@ -657,6 +656,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 首页---保险产品数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -679,7 +679,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -689,9 +689,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -711,6 +711,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 保险产品搜索
+     *
      * @param context
      * @param param
      * @param listener
@@ -733,7 +734,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -743,9 +744,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<InsuranceProduct1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceProduct1B>>() {
                     }.getType());
 //                    b.setCode("9999");
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -765,6 +766,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 首页---计划书数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -787,7 +789,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -797,9 +799,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Plan2B> b = json.fromJson(data, new TypeToken<Repo<Plan2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -818,6 +820,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 计划书搜索
+     *
      * @param context
      * @param param
      * @param listener
@@ -840,7 +843,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -849,9 +852,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     data = DESUtil.decrypt(result);
                     Repo<Plan2B> b = json.fromJson(data, new TypeToken<Repo<Plan2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -871,6 +874,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 首页---保单规划数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -893,7 +897,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -902,9 +906,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     data = DESUtil.decrypt(result);
                     Repo<PolicyPlan2B> b = json.fromJson(data, new TypeToken<Repo<PolicyPlan2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -924,6 +928,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 保险详情
+     *
      * @param context
      * @param param
      * @param listener
@@ -946,7 +951,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -955,9 +960,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     data = DESUtil.decrypt(result);
                     Repo<InsuranceDetail1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceDetail1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -976,6 +981,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 保险详情 (new)
+     *
      * @param context
      * @param param
      * @param listener
@@ -998,7 +1004,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1008,9 +1014,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Log.i("hh", "保险详情(新接口)：" + data);
                     Repo<InsuranceDetail1B> b = json.fromJson(data, new TypeToken<Repo<InsuranceDetail1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1031,6 +1037,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 保险详情--收藏取消收藏
+     *
      * @param context
      * @param param
      * @param listener
@@ -1053,7 +1060,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1063,9 +1070,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Collection2B> b = json.fromJson(data, new TypeToken<Repo<Collection2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1084,6 +1091,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 保险详情--预约
+     *
      * @param context
      * @param param
      * @param listener
@@ -1106,7 +1114,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1116,9 +1124,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1137,6 +1145,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 测试
+     *
      * @param context  上下文
      * @param listener 监听事件
      */
@@ -1167,9 +1176,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MouldList<ResultCycleIndex2B>> b = json.fromJson(data, new TypeToken<Repo<MouldList<ResultCycleIndex2B>>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1188,6 +1197,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 我的页面数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -1210,7 +1220,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1221,9 +1231,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MineData2B> b = json.fromJson(data, new TypeToken<Repo<MineData2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1243,7 +1253,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取个人信息 页面数据
+     * 获取个人信息 页面数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -1266,7 +1277,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1277,9 +1288,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<UserInfo2B> b = json.fromJson(data, new TypeToken<Repo<UserInfo2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1297,7 +1308,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  (销售认证页)提交认证
+     * (销售认证页)提交认证
+     *
      * @param context
      * @param param
      * @param listener
@@ -1320,7 +1332,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1331,9 +1343,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1351,7 +1363,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取未读消息数
+     * 获取未读消息数
+     *
      * @param context
      * @param param
      * @param listener
@@ -1374,7 +1387,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1385,9 +1398,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<UnreadNewsCount2B> b = json.fromJson(data, new TypeToken<Repo<UnreadNewsCount2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1405,7 +1418,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取佣金消息/保单消息/其它消息等列表
+     * 获取佣金消息/保单消息/其它消息等列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -1428,7 +1442,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1439,9 +1453,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<CommissionNewsList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionNewsList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1459,7 +1473,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取互动消息列表
+     * 获取互动消息列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -1482,7 +1497,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1493,9 +1508,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<InteractiveNewsList1B> b = json.fromJson(data, new TypeToken<Repo<InteractiveNewsList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1513,7 +1528,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  同意新成员加入申请
+     * 同意新成员加入申请
+     *
      * @param context
      * @param param
      * @param listener
@@ -1536,7 +1552,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1547,9 +1563,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1567,7 +1583,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  删除成员申请信息
+     * 删除成员申请信息
+     *
      * @param context
      * @param param
      * @param listener
@@ -1590,7 +1607,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1601,9 +1618,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1621,7 +1638,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取圈子新成员列表
+     * 获取圈子新成员列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -1644,7 +1662,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1655,9 +1673,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<NewMembersCircleList1B> b = json.fromJson(data, new TypeToken<Repo<NewMembersCircleList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1675,7 +1693,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  推荐app给好友
+     * 推荐app给好友
+     *
      * @param context
      * @param param
      * @param listener
@@ -1698,7 +1717,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1709,9 +1728,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<Recommend1B> b = json.fromJson(data, new TypeToken<Repo<Recommend1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1729,7 +1748,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取推荐记录数据
+     * 获取推荐记录数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -1752,7 +1772,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1763,9 +1783,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<RecommendRecordList1B> b = json.fromJson(data, new TypeToken<Repo<RecommendRecordList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1784,6 +1804,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 我的 - 累计佣金 - 交易记录
+     *
      * @param context
      * @param param
      * @param listener
@@ -1806,7 +1827,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1817,9 +1838,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<TrackingList1B> b = json.fromJson(data, new TypeToken<Repo<TrackingList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1838,7 +1859,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  交易记录-明细( 佣金详情)
+     * 交易记录-明细( 佣金详情)
+     *
      * @param context
      * @param param
      * @param listener
@@ -1861,7 +1883,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1872,9 +1894,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<TrackingDetail1B> b = json.fromJson(data, new TypeToken<Repo<TrackingDetail1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1892,7 +1914,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  保单列表
+     * 保单列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -1915,7 +1938,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1926,9 +1949,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyRecordList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -1946,7 +1969,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  保单详情
+     * 保单详情
+     *
      * @param context
      * @param param
      * @param listener
@@ -1969,7 +1993,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -1980,9 +2004,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyRecordDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyRecordDetail1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2000,7 +2024,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  续保提醒列表
+     * 续保提醒列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2023,7 +2048,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2034,9 +2059,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<RenewalReminderList1B> b = json.fromJson(data, new TypeToken<Repo<RenewalReminderList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2054,7 +2079,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  (我的)预约列表
+     * (我的)预约列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2077,7 +2103,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2088,9 +2114,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyBookingList1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2110,7 +2136,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  预约详情
+     * 预约详情
+     *
      * @param context
      * @param param
      * @param listener
@@ -2133,7 +2160,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2144,9 +2171,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PolicyBookingDetail1B> b = json.fromJson(data, new TypeToken<Repo<PolicyBookingDetail1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2164,7 +2191,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  取消预约
+     * 取消预约
+     *
      * @param context
      * @param param
      * @param listener
@@ -2187,7 +2215,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2198,9 +2226,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2218,7 +2246,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  我的提问列表
+     * 我的提问列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2241,7 +2270,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2252,9 +2281,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2272,8 +2301,10 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
         });
     }
+
     /**
-     *  我参与的（提问列表）
+     * 我参与的（提问列表）
+     *
      * @param context
      * @param param
      * @param listener
@@ -2296,7 +2327,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2307,9 +2338,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyAskList1B> b = json.fromJson(data, new TypeToken<Repo<MyAskList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2328,6 +2359,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 我参与的（话题列表）
+     *
      * @param context
      * @param param
      * @param listener
@@ -2350,7 +2382,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2361,9 +2393,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2382,7 +2414,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
 
     /**
-     *  我的话题列表
+     * 我的话题列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2405,7 +2438,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2416,9 +2449,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyTopicList1B> b = json.fromJson(data, new TypeToken<Repo<MyTopicList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2436,7 +2469,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  平台公告列表
+     * 平台公告列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2459,7 +2493,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2470,9 +2504,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PlatformBulletinList1B> b = json.fromJson(data, new TypeToken<Repo<PlatformBulletinList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2490,7 +2524,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  联系客服
+     * 联系客服
+     *
      * @param context
      * @param param
      * @param listener
@@ -2512,7 +2547,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2523,9 +2558,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2543,7 +2578,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  我的收藏列表
+     * 我的收藏列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -2566,7 +2602,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2577,9 +2613,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyCollectionList1B> b = json.fromJson(data, new TypeToken<Repo<MyCollectionList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2597,7 +2633,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  修改登录密码
+     * 修改登录密码
+     *
      * @param context
      * @param param
      * @param listener
@@ -2620,7 +2657,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -2631,9 +2668,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2685,9 +2722,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2739,9 +2776,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultHotAskBean> b = json.fromJson(data, new TypeToken<Repo<ResultHotAskBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2793,9 +2830,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2848,9 +2885,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassIndexBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2866,7 +2903,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
             }
         });
     }
-
 
 
     /**
@@ -2904,9 +2940,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleIndexBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -2958,9 +2994,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3013,9 +3049,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicListBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3037,7 +3073,6 @@ public class HtmlRequest<T> extends BaseRequester<T> {
      *
      * @param context  上下文
      * @param listener 监听事件
-     *
      */
     public static void getTrainingCircleDetailsTopicDetails(final Context context, LinkedHashMap<String, Object> param, OnRequestListener listener) {
         final String data = getResult(param);
@@ -3068,9 +3103,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicDetailsBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3122,9 +3157,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicCommentListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicCommentListBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3176,9 +3211,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3230,9 +3265,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3284,9 +3319,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3338,9 +3373,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3392,9 +3427,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3446,9 +3481,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3500,9 +3535,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3556,9 +3591,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskTypeBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskTypeBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3610,9 +3645,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskIndexBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskIndexBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3664,9 +3699,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskDetailsBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3718,9 +3753,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAskDetailsAnswerBean> b = json.fromJson(data, new TypeToken<Repo<ResultAskDetailsAnswerBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3772,9 +3807,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultAnswerDetailsBean> b = json.fromJson(data, new TypeToken<Repo<ResultAnswerDetailsBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3826,9 +3861,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultCircleDetailsTopicCommentListBean> b = json.fromJson(data, new TypeToken<Repo<ResultCircleDetailsTopicCommentListBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3880,9 +3915,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3935,9 +3970,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -3990,9 +4025,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4045,9 +4080,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4100,9 +4135,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassDetailsIntroductionBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsIntroductionBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4155,9 +4190,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<ResultClassDetailsCatalogBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsCatalogBean>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4211,9 +4246,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultClassDetailsDiscussBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsDiscussBean>>() {
                     }.getType());
 
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4267,9 +4302,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultInfoBean> b = json.fromJson(data, new TypeToken<Repo<ResultInfoBean>>() {
                     }.getType());
 
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4323,9 +4358,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Repo<ResultClassDetailsPPTBean> b = json.fromJson(data, new TypeToken<Repo<ResultClassDetailsPPTBean>>() {
                     }.getType());
 
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4344,12 +4379,11 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
 
-
-
     /************************************************* 研修模块end *****************************************************************/
 
     /**
-     *  获取我的佣金 页面数据
+     * 获取我的佣金 页面数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -4372,7 +4406,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4383,9 +4417,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyCommission2B> b = json.fromJson(data, new TypeToken<Repo<MyCommission2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4403,7 +4437,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取 佣金列表(待发，已发)
+     * 获取 佣金列表(待发，已发)
+     *
      * @param context
      * @param param
      * @param listener
@@ -4426,7 +4461,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4437,9 +4472,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<CommissionList1B> b = json.fromJson(data, new TypeToken<Repo<CommissionList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4459,7 +4494,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取我的工资单年份
+     * 获取我的工资单年份
+     *
      * @param context
      * @param param
      * @param listener
@@ -4482,7 +4518,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4493,9 +4529,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<MyPayrollYears1B> b = json.fromJson(data, new TypeToken<Repo<MyPayrollYears1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4547,9 +4583,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Log.i("hh", "工资单列表：" + data);
                     Repo<PayrollList1B> b = json.fromJson(data, new TypeToken<Repo<PayrollList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4567,7 +4603,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  获取工资单详情 页面数据
+     * 获取工资单详情 页面数据
+     *
      * @param context
      * @param param
      * @param listener
@@ -4590,7 +4627,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4601,9 +4638,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<PayrollDetail2B> b = json.fromJson(data, new TypeToken<Repo<PayrollDetail2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4622,6 +4659,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 银行卡列表
+     *
      * @param context
      * @param param
      * @param listener
@@ -4644,7 +4682,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4655,9 +4693,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<BankCardList1B> b = json.fromJson(data, new TypeToken<Repo<BankCardList1B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4678,6 +4716,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
     /**
      * 我的银行卡-删除、设置工资卡
+     *
      * @param context
      * @param param
      * @param listener
@@ -4700,7 +4739,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4711,9 +4750,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4729,8 +4768,10 @@ public class HtmlRequest<T> extends BaseRequester<T> {
             }
         });
     }
+
     /**
      * 我的银行卡-设置工资卡
+     *
      * @param context
      * @param param
      * @param listener
@@ -4753,7 +4794,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4764,9 +4805,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4784,7 +4825,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  新增银行卡 -- 保存
+     * 新增银行卡 -- 保存
+     *
      * @param context
      * @param param
      * @param listener
@@ -4807,7 +4849,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4817,9 +4859,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                     Log.i("hh", "新增银行卡 -- 保存：" + data);
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
@@ -4837,7 +4879,8 @@ public class HtmlRequest<T> extends BaseRequester<T> {
     }
 
     /**
-     *  (新增保单)提交
+     * (新增保单)提交
+     *
      * @param context
      * @param param
      * @param listener
@@ -4860,7 +4903,7 @@ public class HtmlRequest<T> extends BaseRequester<T> {
                 }
                 client.post(url, entity);
                 String result = (String) client.getResult();
-                String data=null;
+                String data = null;
                 Gson json = new Gson();
                 if (isCancelled() || result == null) {
                     return null;
@@ -4871,9 +4914,9 @@ public class HtmlRequest<T> extends BaseRequester<T> {
 
                     Repo<OK2B> b = json.fromJson(data, new TypeToken<Repo<OK2B>>() {
                     }.getType());
-                    if (resultEncrypt(context, b.getCode())){
+                    if (resultEncrypt(context, b.getCode())) {
                         return b.getData();
-                    }else{
+                    } else {
                         return null;
                     }
                 } catch (Exception e) {
