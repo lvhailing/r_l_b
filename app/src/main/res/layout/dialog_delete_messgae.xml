@@ -73,7 +73,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/dialog_btn_confim"
+                android:id="@+id/dialog_btn_confirm"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

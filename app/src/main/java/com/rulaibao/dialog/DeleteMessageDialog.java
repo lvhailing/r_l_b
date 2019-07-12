@@ -92,7 +92,7 @@ public class DeleteMessageDialog extends Dialog implements DialogInterface.OnCan
     }
 
     private void initView(View mView) {
-        txtConfirm = (TextView) mView.findViewById(R.id.dialog_btn_confim);
+        txtConfirm = (TextView) mView.findViewById(R.id.dialog_btn_confirm);
         txtCancel = (TextView) mView.findViewById(R.id.dialog_btn_cancel);
         txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
 

@@ -5,14 +5,15 @@
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:scrollbars="none"
-        android:fillViewport="true">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,6 +42,7 @@
                     android:orientation="horizontal"
                     android:visibility="invisible"/>
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/ll_home_notice"
                 android:layout_width="match_parent"
@@ -67,67 +69,76 @@
                     android:id="@+id/marqueeView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/txt_gray"
-                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:ellipsize="end"/>
-               <!-- <com.rulaibao.uitls.MarqueeView
-                    android:id="@+id/marqueeView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    app:mvTextColor="@color/txt_gray"
-                    app:mvDirection="bottom_to_top"
-                    app:mvAnimDuration="1000"
-                    app:mvInterval="3000"
-                    app:mvSingleLine="true"/>-->
+                    android:singleLine="true"
+                    android:textColor="@color/txt_gray"/>
+                <!-- <com.rulaibao.uitls.MarqueeView
+                     android:id="@+id/marqueeView"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:background="@android:color/transparent"
+                     android:paddingLeft="10dp"
+                     android:paddingRight="10dp"
+                     app:mvTextColor="@color/txt_gray"
+                     app:mvDirection="bottom_to_top"
+                     app:mvAnimDuration="1000"
+                     app:mvInterval="3000"
+                     app:mvSingleLine="true"/>-->
             </LinearLayout>
+
             <include layout="@layout/activity_home_view"/>
+
             <LinearLayout
                 android:id="@+id/ll_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:padding="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_dark"
                     android:text="重磅推荐"
-                    android:background="@color/white"/>
+                    android:textColor="@color/gray_dark"
+                    android:textSize="16sp"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gray_light"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:background="@color/white">
+
                     <android.support.v4.view.ViewPager
                         android:id="@+id/home_viewpager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+
                     <LinearLayout
                         android:id="@+id/home_indicator"
                         android:layout_width="fill_parent"
-                        android:layout_height="20.0dip"
-                        android:gravity="center_horizontal"
+                        android:layout_height="20dp"
                         android:layout_alignParentBottom="true"
-                        android:orientation="horizontal" />
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"/>
                 </RelativeLayout>
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/gray_light"
                 android:padding="10dp"
-                android:textSize="16sp"
-                android:textColor="@color/gray_dark"
                 android:text="热销精品"
-                android:background="@color/gray_light"/>
+                android:textColor="@color/gray_dark"
+                android:textSize="16sp"/>
+
             <com.rulaibao.widget.MyListView
                 android:id="@+id/home_listview"
                 android:layout_width="match_parent"

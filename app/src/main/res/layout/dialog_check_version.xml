@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical"
 
-    android:orientation="vertical">
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <ImageView
@@ -38,21 +38,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:alpha="0.5"
-            android:src="@drawable/tab_lines" />
+            android:src="@drawable/tab_lines"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/rl_check_version_cancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/dialog_btn_cancel"
@@ -61,29 +59,27 @@
                     android:gravity="center"
                     android:text="取消"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/vertical_lines" />
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/vertical_lines"/>
             </RelativeLayout>
 
-
             <TextView
-                android:id="@+id/dialog_btn_confim"
+                android:id="@+id/dialog_btn_confirm"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="确认"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

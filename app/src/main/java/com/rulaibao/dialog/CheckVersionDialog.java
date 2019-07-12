@@ -20,165 +20,154 @@ import com.rulaibao.R;
 import java.util.ArrayList;
 
 /**
- *  版本更新弹框
+ * 版本更新弹框
  */
-public class CheckVersionDialog extends Dialog implements
-		DialogInterface.OnCancelListener, DialogInterface.OnDismissListener{
+public class CheckVersionDialog extends Dialog implements DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
-	private Context mContext;
-	private LayoutInflater inflater;
-	private LayoutParams lp;
-	private int percentageH = 4;
-	private int percentageW = 8;
-	private TextView txtConfim = null;
-	private TextView txtCancel = null;
-	private String info = null;
-	private TextView txtInfo = null;
-	private RelativeLayout rl_check_version_cancel;
+    private Context mContext;
+    private LayoutInflater inflater;
+    private LayoutParams lp;
+    private int percentageH = 4;
+    private int percentageW = 8;
+    private TextView txtConfirm = null;
+    private TextView txtCancel = null;
+    private String info = null;
+    private TextView txtInfo = null;
+    private RelativeLayout rl_check_version_cancel;
 
-	ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
-	ArrayList<OnDismissListener> m_arrDismissListeners = new ArrayList<OnDismissListener>();
-	private OnCheckVersion onChanged = null;
-	private String forcedUpgrade = "false";
+    ArrayList<OnCancelListener> m_arrCancelListeners = new ArrayList<OnCancelListener>();
+    ArrayList<OnDismissListener> m_arrDismissListeners = new ArrayList<OnDismissListener>();
+    private OnCheckVersion onChanged = null;
+    private String forcedUpgrade = "false";
 
-	public CheckVersionDialog(Context context, OnCheckVersion onChanged, String info, String forcedUpgrade) {
-		super(context, R.style.Dialog);
-		this.mContext = context;
-		this.onChanged = onChanged;
-		this.info = info;
-		this.forcedUpgrade = forcedUpgrade;
-	}
+    public CheckVersionDialog(Context context, OnCheckVersion onChanged, String info, String forcedUpgrade) {
+        super(context, R.style.Dialog);
+        this.mContext = context;
+        this.onChanged = onChanged;
+        this.info = info;
+        this.forcedUpgrade = forcedUpgrade;
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		inflater = (LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View mView = inflater.inflate(R.layout.dialog_check_version, null);
-		setContentView(mView);
-		// 设置window属性
-		lp = getWindow().getAttributes();
-		lp.gravity = Gravity.CENTER;
-		lp.dimAmount = 0.6f; // 去背景遮盖
-		lp.alpha = 1.0f;
-		int[] wh = initWithScreenWidthAndHeight(mContext);
-		lp.width = wh[0] - wh[0] / percentageW;
-		lp.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-		getWindow().setAttributes(lp);
-		setCanceledOnTouchOutside(false);
-		setOnDismissListener(this);
-		setOnCancelListener(this);
-		initView(mView);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mView = inflater.inflate(R.layout.dialog_check_version, null);
+        setContentView(mView);
+        // 设置window属性
+        lp = getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.dimAmount = 0.6f; // 去背景遮盖
+        lp.alpha = 1.0f;
+        int[] wh = initWithScreenWidthAndHeight(mContext);
+        lp.width = wh[0] - wh[0] / percentageW;
+        lp.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+        getWindow().setAttributes(lp);
+        setCanceledOnTouchOutside(false);
+        setOnDismissListener(this);
+        setOnCancelListener(this);
+        initView(mView);
 
-	}
+    }
 
-	private void initView(View mView) {
-		txtConfim = (TextView) mView
-				.findViewById(R.id.dialog_btn_confim);
-		txtCancel = (TextView) mView
-				.findViewById(R.id.dialog_btn_cancel);
-		txtInfo = (TextView) mView
-				.findViewById(R.id.dialog_btn_info);
+    private void initView(View mView) {
+        txtConfirm = (TextView) mView.findViewById(R.id.dialog_btn_confirm);
+        txtCancel = (TextView) mView.findViewById(R.id.dialog_btn_cancel);
+        txtInfo = (TextView) mView.findViewById(R.id.dialog_btn_info);
 
-		rl_check_version_cancel = (RelativeLayout) mView
-				.findViewById(R.id.rl_check_version_cancel);
+        rl_check_version_cancel = (RelativeLayout) mView.findViewById(R.id.rl_check_version_cancel);
 
-		txtInfo.setText(info);
-		txtConfim.setOnClickListener(confimListener);
-		txtCancel.setOnClickListener(cancelListener);
-		if(!TextUtils.isEmpty(forcedUpgrade)){
-			if(forcedUpgrade.equals("false")){
-				rl_check_version_cancel.setVisibility(View.VISIBLE);
-			}else if(forcedUpgrade.equals("true")){
-				rl_check_version_cancel.setVisibility(View.GONE);
-			}else{
-				rl_check_version_cancel.setVisibility(View.VISIBLE);
-			}
-		}else{
-			rl_check_version_cancel.setVisibility(View.VISIBLE);
-		}
+        txtInfo.setText(info);
+        txtConfirm.setOnClickListener(confirmListener);
+        txtCancel.setOnClickListener(cancelListener);
+        if (!TextUtils.isEmpty(forcedUpgrade)) {
+            if (forcedUpgrade.equals("false")) {
+                rl_check_version_cancel.setVisibility(View.VISIBLE);
+            } else if (forcedUpgrade.equals("true")) {
+                rl_check_version_cancel.setVisibility(View.GONE);
+            } else {
+                rl_check_version_cancel.setVisibility(View.VISIBLE);
+            }
+        } else {
+            rl_check_version_cancel.setVisibility(View.VISIBLE);
+        }
 
-	}
+    }
 
-	private View.OnClickListener confimListener = new View.OnClickListener() {
+    private View.OnClickListener confirmListener = new View.OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			onChanged.onConfim();
-			onDismiss();
-		}
+        @Override
+        public void onClick(View v) {
+            onChanged.onConfirm();
+            onDismiss();
+        }
 
-	};
+    };
 
-	private View.OnClickListener cancelListener = new View.OnClickListener() {
+    private View.OnClickListener cancelListener = new View.OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			onDismiss();
-		}
-	};
+        @Override
+        public void onClick(View v) {
+            onDismiss();
+        }
+    };
 
-	private void ondismiss() {
+    private void ondismiss() {
+    }
 
-	}
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (m_arrDismissListeners != null) {
+            for (int x = 0; x < m_arrDismissListeners.size(); x++)
+                m_arrDismissListeners.get(x).onDismiss(dialog);
+        }
+        ondismiss();
+    }
 
-	@Override
-	public void onDismiss(DialogInterface dialog) {
-		if (m_arrDismissListeners != null) {
-			for (int x = 0; x < m_arrDismissListeners.size(); x++)
-				m_arrDismissListeners.get(x).onDismiss(dialog);
-		}
-		ondismiss();
-	}
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (m_arrCancelListeners != null) {
+            for (int x = 0; x < m_arrDismissListeners.size(); x++)
+                m_arrCancelListeners.get(x).onCancel(dialog);
+        }
+    }
 
-	@Override
-	public void onCancel(DialogInterface dialog) {
-		if (m_arrCancelListeners != null) {
-			for (int x = 0; x < m_arrDismissListeners.size(); x++)
-				m_arrCancelListeners.get(x).onCancel(dialog);
-		}
-	}
+    public void addListeners(OnCancelListener c, OnDismissListener d) {
+        m_arrDismissListeners.add(d);
+        m_arrCancelListeners.add(c);
+    }
 
-	public void addListeners(OnCancelListener c, OnDismissListener d) {
-		m_arrDismissListeners.add(d);
-		m_arrCancelListeners.add(c);
-	}
+    public void removeListeners(OnCancelListener c, OnDismissListener d) {
+        m_arrDismissListeners.remove(d);
 
-	public void removeListeners(OnCancelListener c, OnDismissListener d) {
-		m_arrDismissListeners.remove(d);
+        m_arrCancelListeners.remove(c);
+    }
 
-		m_arrCancelListeners.remove(c);
-	}
+    private void onDismiss() {
+        if (this.isShowing()) {
+            this.dismiss();
+        }
+    }
 
-	private void onDismiss() {
-		if (this.isShowing()) {
-			this.dismiss();
-		}
+    /**
+     * 获取当前window width,height
+     * @param context
+     * @return
+     */
+    private static int[] initWithScreenWidthAndHeight(Context context) {
+        int[] wh = new int[2];
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        wh[0] = dm.widthPixels;
+        wh[1] = dm.heightPixels;
+        return wh;
+    }
 
-	}
+    public interface OnCheckVersion {
+        public void onConfirm();
 
-	/**
-	 * 获取当前window width,height
-	 * 
-	 * @param context
-	 * @return
-	 */
-	private static int[] initWithScreenWidthAndHeight(Context context) {
-		int[] wh = new int[2];
-		DisplayMetrics dm = new DisplayMetrics();
-		((Activity) context).getWindowManager().getDefaultDisplay()
-				.getMetrics(dm);
-		wh[0] = dm.widthPixels;
-		wh[1] = dm.heightPixels;
-		return wh;
-	}
+        public void onCancel();
 
-	public interface OnCheckVersion {
-		public void onConfim();
-
-		public void onCancel();
-
-	}
+    }
 
 }

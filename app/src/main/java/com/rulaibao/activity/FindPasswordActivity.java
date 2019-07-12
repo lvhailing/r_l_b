@@ -288,13 +288,10 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                     } else {
                         tv_findpassword_get_verify_code.setClickable(true);
                         smsflag = false;
-                        Toast.makeText(FindPasswordActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(FindPasswordActivity.this, b.getMessage(), Toast.LENGTH_LONG) .show();
                     }
                 } else {
-                    Toast.makeText(FindPasswordActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(FindPasswordActivity.this, "加载失败，请确认网络通畅", Toast.LENGTH_LONG).show();
                     tv_findpassword_get_verify_code.setClickable(true);
                 }
             }
@@ -317,21 +314,16 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
                 OK2B b = (OK2B) params.result;
                 if (b != null) {
                     if (Boolean.parseBoolean(b.getFlag())) {
-                        Toast.makeText(FindPasswordActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(FindPasswordActivity.this,b.getMessage(),Toast.LENGTH_LONG) .show();
                         Intent i_login = new Intent(FindPasswordActivity.this, LoginActivity.class);
                         i_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(i_login);
                         finish();
                     } else {
-                        Toast.makeText(FindPasswordActivity.this,
-                                b.getMessage(), Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(FindPasswordActivity.this,b.getMessage(),Toast.LENGTH_LONG) .show();
                     }
                 } else {
-                    Toast.makeText(FindPasswordActivity.this, "加载失败，请确认网络通畅",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(FindPasswordActivity.this, "加载失败，请确认网络通畅",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -384,14 +376,11 @@ public class FindPasswordActivity extends BaseActivity implements View.OnClickLi
     private void setButtonStyle(int time) {
         if (time == 0) {
             tv_findpassword_get_verify_code.setClickable(true);
-            tv_findpassword_get_verify_code
-                    .setTextColor(getResources().getColor(R.color.main_color_yellow));
-            tv_findpassword_get_verify_code.setText(getResources().getString(
-                    R.string.sign_getsms_again));
+            tv_findpassword_get_verify_code.setTextColor(getResources().getColor(R.color.main_color_yellow));
+            tv_findpassword_get_verify_code.setText(getResources().getString(R.string.sign_getsms_again));
         } else if (time < 60) {
             tv_findpassword_get_verify_code.setClickable(false);
-            tv_findpassword_get_verify_code
-                    .setTextColor(getResources().getColor(R.color.gray_d));
+            tv_findpassword_get_verify_code.setTextColor(getResources().getColor(R.color.gray_d));
             tv_findpassword_get_verify_code.setText(btnString+"("+time+")");
 
         }

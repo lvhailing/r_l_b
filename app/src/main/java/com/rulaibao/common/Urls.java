@@ -27,7 +27,7 @@ public class Urls {
     public static final String URL_SN = "http://192.168.1.138:9999/rulaibao-app/";
 
     // 调试，上线时只需改此处环境即可
-    private static String EC_HOST = URL_OUTER_NET_DEBUG;
+    private static String EC_HOST = URL_DEBUG;
 
     /**
      * 版本更新
@@ -86,7 +86,7 @@ public class Urls {
     public static final String WITHDRAW = "withdrawCashNum";       //  提现
 
 
-    // */ 手势密码点的状态
+    // 手势密码点的状态
     public static final int POINT_STATE_NORMAL = 0; // 正常状态
 
     public static final int POINT_STATE_SELECTED = 1; // 按下状态

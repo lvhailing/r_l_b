@@ -319,7 +319,7 @@ public class GestureVerifyActivity extends BaseActivity implements View.OnClickL
 //						new CheckVersionDialog.OnCheckVersion() {
 //
 //							@Override
-//							public void onConfim() {
+//							public void onConfirm() {
 //								UserLoadout out = new UserLoadout(GestureVerifyActivity.this,userId);
 //								out.requestAskData();
 //							}

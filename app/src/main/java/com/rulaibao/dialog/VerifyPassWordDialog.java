@@ -71,7 +71,7 @@ public class VerifyPassWordDialog extends Dialog implements
 
 	private void initView(View mView) {
 		txtConfim = (TextView) mView
-				.findViewById(R.id.dialog_btn_confim);
+				.findViewById(R.id.dialog_btn_confirm);
 		txtCancel = (TextView) mView
 				.findViewById(R.id.dialog_btn_cancel);
 		txtInfo = (TextView) mView

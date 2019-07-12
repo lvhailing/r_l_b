@@ -18,7 +18,6 @@ import com.rulaibao.adapter.AreaAdapter;
 import com.rulaibao.adapter.CitysAdapter;
 import com.rulaibao.adapter.ProvinceAdapter;
 import com.rulaibao.bean.CityModel;
-import com.rulaibao.bean.DistrictModel;
 import com.rulaibao.bean.ProvinceModel;
 import com.rulaibao.uitls.CityDataHelper;
 import com.rulaibao.widget.OnWheelChangedListener;
@@ -105,7 +104,7 @@ public class SelectAddressDialog extends Dialog implements DialogInterface.OnCan
 
     private void initView(View mView) {
 
-        txtConfim = (TextView) mView.findViewById(R.id.dialog_btn_confim);
+        txtConfim = (TextView) mView.findViewById(R.id.dialog_btn_confirm);
         txtCancel = (TextView) mView.findViewById(R.id.dialog_btn_cancel);
         txtConfim.setOnClickListener(confimListener);
         txtCancel.setOnClickListener(cancelListener);

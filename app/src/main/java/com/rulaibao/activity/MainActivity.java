@@ -451,7 +451,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
         CheckVersionDialog dialog = new CheckVersionDialog(MainActivity.this, new CheckVersionDialog.OnCheckVersion() {
             @Override
-            public void onConfim() {
+            public void onConfirm() {
                 Intent updateIntent = new Intent(MainActivity.this, AppUpgradeService.class);
                 updateIntent.putExtra("titleId", R.string.app_chinesename);
                 updateIntent.putExtra("downloadUrl", b.getUrl());
